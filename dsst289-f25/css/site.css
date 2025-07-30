@@ -1,0 +1,113 @@
+body {
+    font-family: "Noto Sans", serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 40px 20px;
+    background-color: #fff;
+    color: #333;
+}
+
+.container {
+    max-width: 650px;
+    margin: 0 auto;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Noto Serif", sans-serif;
+    font-weight: 600;
+    color: #222;
+    margin-top: 2em;
+    margin-bottom: 0.2em;
+}
+
+h1 {
+    margin-top: 0;
+    font-size: 1.5em;
+    margin-bottom: 0;
+    white-space: nowrap;
+}
+
+a {
+    color: #3491ab;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+a:visited {
+    color: #3491ab;
+}
+
+.link-hidden {
+    color: grey !important;
+    cursor: not-allowed;
+    opacity: 0.5;
+    text-decoration: none;
+    pointer-events: none;
+    cursor: pointer;
+}
+
+
+p {
+    margin-bottom: 1.2em;
+    text-align: justify;
+}
+
+li {
+    text-align: justify;
+}
+
+table {
+    width: 650px;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+th, td {
+    border: 1px solid #000;
+    padding: 10px;
+    text-align: left;
+    vertical-align: top;
+    word-wrap: break-word;
+    text-align: center;
+}
+
+th {
+    background-color: #ddd;
+}
+
+/* Set fixed width for the first column */
+th:first-child,
+td:first-child {
+    width: 120px;
+}
+
+/* Let the remaining columns take up equal space */
+th:nth-child(2),
+th:nth-child(3),
+td:nth-child(2),
+td:nth-child(3) {
+    width: calc((100% - 120px) / 2);
+}
+
+.td-grey {
+    background-color: #bbb;
+    text-align: center;
+    font-weight: bold;
+}
+
+.td-blue {
+    background-color: #d4ebf2;
+    text-align: center;
+    font-weight: bold;
+}
+
+.td-green {
+    background-color: #d4f2db;
+    text-align: center;
+    font-weight: bold;
+}
+
