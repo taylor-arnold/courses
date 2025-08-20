@@ -96,7 +96,6 @@ td:nth-child(3) {
 .td-grey {
     background-color: #bbb;
     text-align: center;
-    font-weight: bold;
 }
 
 .td-blue {
@@ -107,6 +106,12 @@ td:nth-child(3) {
 
 .td-green {
     background-color: #d4f2db;
+    text-align: center;
+    font-weight: bold;
+}
+
+.td-red {
+    background-color: #f2d4dc;
     text-align: center;
     font-weight: bold;
 }
