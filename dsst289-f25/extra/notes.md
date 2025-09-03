@@ -26,3 +26,18 @@
     it's a real theory, not just code syntax
   - ACTIVITY: (Distribute data viz books). Find a scatterplot (or something close to one) in the book. Answer the following questions on a piece of paper: • What is the unit of observation? In other words, what “thing” does a point represent? • What are the x and y aesthetics? We don’t know their names as variables, but what information is represented by them? • Are there other elements of each point that distinguishes something about them?
   - Then, move to the notebook. Try to keep a good amount of time for this.
+  - Took about 65-70 minutes, with just a few students that were not finished or
+  almost finished.
+
+# 2025-09-03
+
+  - Question:
+  - Show the slides for today
+  - Show the Hans Roslin Video
+  - Activity: What are the aesthetics? What are the scales?
+  - Do the notebook.
+
+
+
+
+
