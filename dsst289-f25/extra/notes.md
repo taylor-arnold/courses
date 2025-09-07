@@ -37,6 +37,7 @@
   - Activity: What are the aesthetics? What are the scales?
   - Do the notebook.
 
+# 2025-09-08
 
 
 
