@@ -39,6 +39,10 @@
 
 # 2025-09-08
 
+  - Question: None
+  - Explained Exam I and gave overview of where we are going with ther semester
+  - Students struggled with the questions a bit but finished early once they got some help
+  - Maybe clarify the first question(s) better because students didn't understand the whole index thing and how it relates
 
 
 
