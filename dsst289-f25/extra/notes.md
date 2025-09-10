@@ -44,5 +44,17 @@
   - Students struggled with the questions a bit but finished early once they got some help
   - Maybe clarify the first question(s) better because students didn't understand the whole index thing and how it relates
 
+# 2025-09-10
+
+  - Question: Create a line of a csv file (values seperated by commas) with the following fields: number of countries you have visited, number of hours you slept last night, favorite animal, least favorite animal (will use on the exam)
+  - Go over notes from the book (no slides)
+  - Create a custom dataset in Google sheets for more fruits:
+    - Needs to have:
+  - Demonstrate how to upload the file to Colab and how to save colab notebooks
+  - Talk about polars and then Work through the notebook. Answer any questions etc.
+
+
+
+
 
 
