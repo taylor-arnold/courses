@@ -49,9 +49,10 @@
   - Question: Create a line of a csv file (values seperated by commas) with the following fields: number of countries you have visited, number of hours you slept last night, favorite animal, least favorite animal (will use on the exam)
   - Go over notes from the book (no slides)
   - Create a custom dataset in Google sheets for more fruits:
-    - Needs to have:
+    - Needs to have: item, calories, sugar
   - Demonstrate how to upload the file to Colab and how to save colab notebooks
   - Talk about polars and then Work through the notebook. Answer any questions etc.
+  - Took longer than expected for the notebook; students were particularly confused about the syntax for selecting rows and columns; some finished about 10 minutes early but many were not able to
 
 
 
