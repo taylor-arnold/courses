@@ -54,7 +54,12 @@
   - Talk about polars and then Work through the notebook. Answer any questions etc.
   - Took longer than expected for the notebook; students were particularly confused about the syntax for selecting rows and columns; some finished about 10 minutes early but many were not able to
 
+# 2025-09-15
 
+  - Question: None
+  - Started by doing a dry-run of the exam. Ask students to get out a piece of paper and create a version of the first 7 question in a Word document. Then
+  go over them.
+  - Practice exam and discussing the solutions took first 30 minutes. Notebooks was well-timed (~40 minutes for most students to finish most of it).
 
 
 
