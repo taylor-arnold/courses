@@ -38,8 +38,8 @@
     <br/>
     <p>There are also five conceptional questions:</p>
     <ol start="6">
-      <li>Identify (at least one) primary key in the five example tables.</li>
-      <li>Describe all of the relations (foreign keys) present in the collection of tables.</li>
+      <li>Identify (at least one) primary key in all six example tables.</li>
+      <li><del>Describe all of the relations (foreign keys) present in the collection of tables.</del> No longer going to ask this. Free ten points for everyone!</li>
       <li>Identify the units of observation in the five example tables.</li>
       <li>Perform a manual pivot of one of the tables. In other words, you will re-write the table manually given a new unit of observation.</li>
       <li>Perform a manual melt of one of the tables.</li>
@@ -48,6 +48,69 @@
     <p>
       I teach two sections back-to-back of this course in the same room. If you have a DAN for extra time, you are more than welcome to stay late (first section) or come early (second section). If those don't work for you or you have other accomodations that we can't meet in the classroom, please just book a time in the testing center and I will send the exam over.
     </p>
+  </div>
+  <div class="container">
+    <h3>Review Questions</h3>
+    <p><i>All of the questions refer to the datasets in notebook04d.</i></p>
+    <p>1. Draw a plot with year post quem on the x-axis and year ante quem on the y-axis. Points colored by genre and size equal to 4.</p>
+    <pre>
+(
+  ggplot(plays, aes("year_post_quem", "year_ante_quem"))
+  + geom_point(aes(color = "genre"), size = 4)
+)
+    </pre>
+    <p>2. Select only the comedy plays and compute the difference between year ante quem and year post quem.</p>
+    <pre>
+(
+  plays
+  .query("genre == 'comedy'")
+  .eval("diff = year_ante_quem - year_post_quem")
+)
+    </pre>
+    <p>3. Group by the genre. Compute the number of plays and the mean year post quem for each genre.</p>
+    <pre>
+(
+  plays
+  .groupby("genre")
+  .agg(
+    year = ("year_post_quem", "mean"),
+    count = ("play", "count")
+  )
+  .reset_index()   # optional here, but a good idea
+)
+    </pre>
+    <p>4. Merge the lines dataset with the plays dataset on the key play. </p>
+    <pre>
+(
+  lines
+  .merge(plays, on="play")
+)
+    </pre>
+    <p>5. Assume that the "play" variable in lines was called "title" instead. Redo the last question.</p>
+    <pre>
+(
+  lines
+  .merge(plays, left_on="title", right_on="play")
+)
+    </pre>
+    <p>6. Identify (at least one) primary key in the example tables.</p>
+    <ul>
+      <li><b>plays</b>: "play"</li>
+      <li><b>lines</b>: either ["play", "globalnumber"] or ["play", "act", "number"]</li>
+      <li><b>people</b>: either ["play", "full_name"] or ["play", "short_name"]</li>
+      <li><b>stage</b>: either ["play", "sdglobalnumber"] or ["play", "act", "sdnumber"]</li>
+    </ul>
+    <p>7. See above. No longer going to ask this question because it's conceptually easy but difficult to know how to write the answer properly.</p>
+    <p>8. Identify the units of observation in the example tables. Note that there is sometimes some subjectivity with units of observation but the exam examples should be very clear.</p>
+    <ul>
+      <li><b>plays</b>: a play</li>
+      <li><b>lines</b>: a line OR a line from a play OR a line crossed with play</li>
+      <li><b>people</b>: a character crossed with play (</li>
+      <li><b>stage</b>: a stage direction OR a stage direction from a play OR a stage direction crossed with play</li>
+    </ul>
+    <p>9. Perform a manual pivot of a table on "act". In other words, make the new dataset have play as the unit of observation. (Answer is below, with the starting table on top and the pivoted table on the bottom)</p>
+    <img src="exam02.png" width="200px" style="margin: auto;">
+    <p>10. Make sure you could do the previous question the other way around, starting with the bottom table and moving to the top one.</p>
   </div>
 
   <script src="js/site.js"></script>
