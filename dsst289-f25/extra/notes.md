@@ -88,3 +88,7 @@
 
     - Study Location Preferences
       - Where do students in this class prefer to study throughout the week, and how do study locations relate to the type of work being done and time of day?
+
+# 2025-10-26
+
+It was a bright cold day in April and the clocks were striking thirteen. Winston Smith, his chin nuzzled into his breast in an effort to escape the vile wind, slipped quickly through the glass doors of Victory Mansions, though not quickly enough to prevent a swirl of gritty dust from entering along with him.

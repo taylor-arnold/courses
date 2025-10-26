@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<html lang="en">
+ <head>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>DSST289: Introduction to Data Science</title>
+
+  <meta name="description" content="title">
+  <meta name="author" content="Taylor Arnold">
+  <meta charset="UTF-8"> 
+
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/fonts.css">
+  <link rel="stylesheet" href="../css/site.css">
+ </head>
+
+ <body>
+  <div class="container">
+    <h1>Exam 04 Study Guide</h1>
+    <p style="padding: 0 1em 1em 1em; font-size: 0.9em">
+      <span style="padding-right: 0.5em">
+        <b>
+          <a href="../index.html">[← back]</a>
+        </b>
+      </span>
+    </p>
+    <p>The four and final exam is similar to the programming parts of the first two exams. It serves as a chance to show that you have learned how to apply all of the core data-science concepts for visualization and manipulating data through the Python libraries that we have learned. Combined with the data creation task in Exam 3 and the end-to-end analysis in the final project, you will have demonstrated your ability to do all of the core tasks that we expect from students in DSST289.</p>
+    <p>I will not be indicating the exact questions this time around as almost all of the functions you have seen and practiced with for over a month. However, I will this time tell you the datasets ahead of time: we'll be writing code for the curling dataset that is the subject of your final project. As usual, I will provide the first few rows of each table so you have the names and formats at hand.</p>
+    <p>Below is an exhaustive list of the functions that you need to be able to apply during the exam. It is also a good reminder of the topics that you should be able to use in the future.</p>
+    <ol>
+      <li>Functions for plotting: <code>ggplot()</code>, <code>aes()</code>, <code>geom_point()</code> and <code>geom_text()</code>. You should also know how to use <code>reorder()</code>. No need to remember other functions for scales, labels, or other geometry types.</li>
+      <li>How to use <code>.loc[]</code> to select rows and columns from a dataset.</li>
+      <li>The following methods attached to a DataFrame object: <code>query()</code>, <code>eval()</code>, <code>groupby()</code>, <code>agg()</code>, <code>reset_index()</code>, <code>sort_values()</code> and <code>assign()</code>.</li>
+      <li>For <code>agg()</code> you should know the following aggregation functions: "mean", "min", "sum", "first".</li>
+      <li>For <code>assign()</code> you should know how to use a lambda function to compute mathematical operations based on existing columns.</li>
+    </ol>
+    <br/>
+    <p>You will not need to memorize the modeling functions, the pivot/melt methods, or be able to apply more complex lambda functions or aggregations.</p>
+  </div>
+
+  <script src="js/site.js"></script>
+ </body>
+</html>
