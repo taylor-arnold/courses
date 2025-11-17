@@ -33,13 +33,99 @@
     <ol>
       <li>Functions for plotting: <code>ggplot()</code>, <code>aes()</code>, <code>geom_point()</code> and <code>geom_text()</code>. You should also know how to use <code>reorder()</code>. No need to remember other functions for scales, labels, or other geometry types.</li>
       <li>How to use <code>.loc[]</code> to select rows and columns from a dataset.</li>
-      <li>The following methods attached to a DataFrame object: <code>query()</code>, <code>eval()</code>, <code>groupby()</code>, <code>agg()</code>, <code>reset_index()</code>, <code>sort_values()</code> and <code>assign()</code>.</li>
+      <li>The following methods attached to a DataFrame object: <code>query()</code>, <code>eval()</code>, <code>groupby()</code>, <code>agg()</code>, <code>reset_index()</code>, <code>merge()</code> and <code>sort_values()</code>.</li>
       <li>For <code>agg()</code> you should know the following aggregation functions: "mean", "min", "sum", "first".</li>
+      <li>For <code>merge()</code> you should by able to use the function with both `on=` (when the key name(s) match) as well as `left_on` and `right_on`.</li>
       <!-- <li>For <code>assign()</code> you should know how to use a lambda function to compute mathematical operations based on existing columns.</li> -->
     </ol>
     <br/>
     <p>You will not need to memorize the modeling functions, the pivot/melt methods, or be able to apply more complex lambda functions or aggregations.</p>
   </div>
+  <div class="container">
+    <h3>Review Questions</h3>
+    <p><i>All of the questions refer to the datasets from Exam 02.</i></p>
+    <p>1. Compute total amount of salt in each recipe.</p>
+    <pre>
+(
+  ingredients
+  .merge(food, left_on="item", right_on="food")
+  .eval("salt_amt = salt * (amount / 100)")
+  .groupby("recipe")
+  .agg(
+    salt_amt = ("salt_amt", "sum")
+  )
+  .reset_index()
+)
+    </pre>
+    <p>2. Compute total time of each recipe and sort from shortest to longest.</p>
+    <pre>
+(
+  steps
+  .groupby("recipe")
+  .agg(
+    time = ("time", "sum")
+  )
+  .reset_index()
+  .sort_values("time")
+)
+    </pre>
+    <p>3. Compute the largest amount of an ingredient included in each recipe.</p>
+    <pre>
+(
+  ingredients
+  .groupby("recipe")
+  .agg(
+    amount = ("amount", "max")
+  )
+  .reset_index()
+)
+    </pre>
+    <p>4. Plot recipe name with time on the x-axis and number of steps on the y-axis.</p>
+    <pre>
+temp = (
+  steps
+  .groupby("recipe")
+  .agg(
+    time = ("time", "sum"),
+    steps = ("instructions", "count")
+  )
+  .reset_index()
+)
+
+(
+  ggplot(temp, aes("time", "steps"))
+  + geom_text(aes(label = "recipe"))
+)
+    </pre>
+    <p>5. </p>
+    <pre>
+(
+  ingredients
+  .sort_values("amount", ascending=False)
+  .groupby("recipe")
+  .agg(
+    largest_ing = ("item", "first")
+  )
+)
+    </pre>
+    <p>6. </p>
+    <pre>
+temp = (
+  preferences
+  .groupby("person")
+  .agg(
+    score = ("score", "mean")
+  )
+  .reset_index()
+)
+
+(
+  ggplot(temp, aes("score", "reorder(person, score)"))
+  + geom_point()
+)
+    </pre>
+  </div>
+
 
   <script src="js/site.js"></script>
  </body>
