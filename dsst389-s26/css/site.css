@@ -8,7 +8,7 @@ body {
 }
 
 .container {
-    max-width: 650px;
+    max-width: 750px;
     margin: 0 auto;
 }
 
@@ -61,7 +61,7 @@ li {
 }
 
 table {
-    width: 650px;
+    width: 750px;
     border-collapse: collapse;
     table-layout: fixed;
 }
@@ -82,13 +82,17 @@ th {
 /* Set fixed width for the first column */
 th:first-child,
 td:first-child {
-    width: 120px;
+    width: 110px;
+}
+
+th:nth-child(2),
+td:nth-child(2) {
+    width: 260px;
+
 }
 
 /* Let the remaining columns take up equal space */
-th:nth-child(2),
 th:nth-child(3),
-td:nth-child(2),
 td:nth-child(3) {
     width: calc((100% - 120px) / 2);
 }
