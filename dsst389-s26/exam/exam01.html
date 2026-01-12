@@ -27,8 +27,23 @@
         </b>
       </span>
     </p>
-    <p>...</p>
-
+    <p>The first exam consists of 10 questions. All involve hand-writting short code blocks concerning the <code>country</code> and <code>border</code> datasets. You should generally be comfortable with the material in <a href="https://taylor-arnold.github.io/fds-py/02_modify.html#setup" target="_blank" rel="noopener noreferrer">Chapter 2</a>, <a href="https://taylor-arnold.github.io/fds-py/03_graphics.html#setup" target="_blank" rel="noopener noreferrer">Chapter 3</a>  and <a href="https://taylor-arnold.github.io/fds-py/04_combine.html" target="_blank" rel="noopener noreferrer">Chapter 4</a>. However, only the following functions will be needed for the exam:</p>
+    <ol>
+      <li>Creating a scatterplot with <code>geom_point</code>, which may have variable or fixed color or size.</li>
+      <li>Adding text to a plot with <code>geom_text</code>, which may have variable or fixed color or size. No need to build in nudging (it is not possible without seeing the full dataset to get the scale correct anyway).</li>
+      <li>Changing the scale of a plot by adding <code>scale_x_log10</code>, <code>scale_y_log10</code>, <code>scale_color_cmap_d</code> or <code>scale_size_area</code>. You do not need to know how to set the breaks manually.</li>
+      <li>Using <code>.sort</code> to sort the data by ascending or descending  order.</li>
+      <li>Selecting a certain number of rows using <code>.head</code> or <code>.tail</code>.</li>
+      <li>Using <code>.group_by</code> to apply <code>.head</code> or <code>.tail</code> to select a certain number of rows (at most) from each group.</li>
+      <li>Selecting rows using <code>.filter</code> based on a numeric variable being less than, less than or equal to, equal to, greater than or equal to, or greater than a fixed value.</li>
+      <li>Selecting rows using <code>.filter</code> based on a string variable being equal to a specific value.</li>      
+      <li>Selecting rows using <code>.filter</code> and <code>.is_in</code> to select rows where a string column is in a set of values.</li>
+      <li>Using <code>.with_columns</code> to create a new variable based on arthimetic manipulation of two or more other columns.</li>
+      <li>Using the <code>agg</code> function with <code>.group_by</code> to compute data aggregates using the column methods <code>.mean</code>, <code>.min</code>, <code>.max</code>, <code>.first</code>, or <code>.last</code>. Also, you should be able to use <code>pl.len</code> within <code>.agg</code>.</li>
+      <li>Know how to combine two datasets using <code>.join</code> where there may be multiple keys or the keys may have different names in the two tables. The datasets here have no missing relations, so everyhing can use the default join type (inner).</li>
+    </ol>
+    <p></p>
+    <p>Most questions will require putting multiple functions together in a method chain. All can be done with at most three methods. Your code should follow the class formatting rules of putting parantheses around the whole block, starting with the DataFrame, and having each method on its own line. You should be familiar with the other formatting rules regarding spacing and names, but these will not be graded on the exam.</p>
   </div>
 
   <script src="js/site.js"></script>
