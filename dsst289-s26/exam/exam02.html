@@ -26,8 +26,19 @@
           <a href="../index.html">[← back]</a>
         </b>
       </span>
-    </p>
+    <p>The first exam consists of 10 questions. All involve hand-writting short code blocks concerning the RVA flights datasets: <code>rva</code>, <code>airport</code>, and <code>airline</code>. It is very similar in style to Exam 1. You should generally be comfortable with the material in <a href="https://taylor-arnold.github.io/fds-py/02_modify.html#setup" target="_blank" rel="noopener noreferrer">Chapter 2</a>, <a href="https://taylor-arnold.github.io/fds-py/03_graphics.html#setup" target="_blank" rel="noopener noreferrer">Chapter 3</a>  and <a href="https://taylor-arnold.github.io/fds-py/04_combine.html" target="_blank" rel="noopener noreferrer">Chapter 4</a>. However, only those mentioned below along with <u>everything list on Exam 1</u>, will be required for this exam.</p>
+    <ol>
+      <li>Creating a scatterplot with <code>geom_point</code>, which may have variable or fixed color or size.</li>
+      <li>Adding text to a plot with <code>geom_text</code>, which may have variable or fixed color or size. No need to build in nudging (it is not possible without seeing the full dataset to get the scale correct anyway).</li>
+      <li>Building a histogram or boxplot using the appropriate geometries. You do not need to flip the axes or order the categories. For each of these you can use the default bins, colors, offsets and fill values provided by plotnine.</li>
+      <li>Changing the scale of a plot by adding <code>scale_x_log10</code>, <code>scale_y_log10</code>, <code>scale_color_cmap_d</code> or <code>scale_size_area</code>. You do not need to know how to set the breaks manually.</li>
+      <li>Know how to combine two datasets using <code>.join</code> where there may be multiple keys or the keys may have different names in the two tables. The datasets here have no missing relations, so everyhing can use the default join type (inner).</li>
+      <li>Be able to use <code>.pivot</code> with the parameters index, on, and values. The unpivot method will not be on the exam.</li>
+      <li>The explode method should be on the exam, but there are no columns to explode here, so there will not be any questions on it.</li>
+    </ol>
     <p></p>
+    <p>Many questions will require putting multiple functions together in a method chain. All can be done with at most three methods and three graphics commands. Your code should follow the class formatting rules of putting parantheses around the whole block, starting with the DataFrame, and having each method on its own line. You should be familiar with the other formatting rules regarding spacing and names, but these will not be graded on the exam.</p>
+
   </div>
 
   <script src="js/site.js"></script>

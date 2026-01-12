@@ -27,27 +27,20 @@
         </b>
       </span>
     </p>
-    <p>The first exam consists of 10 questions. You will have the whole class period to finish them but should not need more than 30 minutes. More than the others, this exam is focused on being able to write short Python code related to what we are doing in class. There are seven questions that require writing some code relative to a dataset that I will give you the first few rows of:</p>
+    <p>The first exam consists of 10 questions. All involve hand-writting short code blocks concerning the <code>food</code> dataset. You should generally be comfortable with the material in <a href="https://taylor-arnold.github.io/fds-py/02_modify.html#setup" target="_blank" rel="noopener noreferrer">Chapter 2</a>, but only the following functions will be needed for the exam:</p>
     <ol>
-      <li>Produce a scatter plot with one variable on the x-axis and another on the y-axis.</li>
-      <li>Modify the scatter plot from the first question to make the points a different fixed size and color.</li>
-      <li>Modify the scatter plot to make the color change with one of the other variables in the dataset. No need to add a custom scale.</li>
-      <li>Select the rows of a dataset where one of the variable is greater than some fixed value.</li>
-      <li>Add a column to the dataset by changing the units of measurement of one column (for example, feet to inches). I will give the units of conversion.</li>
-      <li>Sort the dataset by one of the columns in descending order.</li>
-      <li>Select a subset of the columns from a dataset using the list notation given in Notebook3a.</li>
+      <li>Using <code>.sort</code> to sort the data by ascending or descending  order.</li>
+      <li>Selecting a certain number of rows using <code>.head</code> or <code>.tail</code>.</li>
+      <li>Using <code>.group_by</code> to apply <code>.head</code> or <code>.tail</code> to select a certain number of rows (at most) from each group.</li>
+      <li>Selecting rows using <code>.filter</code> based on a numeric variable being less than, less than or equal to, equal to, greater than or equal to, or greater than a fixed value.</li>
+      <li>Selecting rows using <code>.filter</code> based on a string variable being equal to a specific value.</li>      
+      <li>Selecting rows using <code>.filter</code> and <code>.is_in</code> to select rows where a string column is in a set of values.</li>
+      <li>Using <code>.with_columns</code> to create a new variable based on arthimetic manipulation of two or more other columns.</li>
+      <li>Using the <code>agg</code> function with <code>.group_by</code> to compute data aggregates using the column methods <code>.mean</code>, <code>.min</code>, <code>.max</code>, <code>.first</code>, or <code>.last</code>.</li>
+      <li>Using the <code>pl.len</code> function within <code>.agg</code>.</li>
     </ol>
-    <br/>
-    <p>There are also three conceptional questions:</p>
-    <ol start="8">
-      <li>I will give you a scatter plot with text labels and describe the names of the variables in the plot. You will need to describe in words what features are associated with the x, y, label, size, shape, and color aesthetics.</li>
-      <li>I will give you a second scatter plot with just a few points. You will need to create a tabular dataset approximating what data would produce this plot.</li>
-      <li>I will describe 10 different types of information we might record in a dataset. You will need to describe whether the data should be an integer, float, or string and give an example of the data type. It will either be very clear what the answer is <i>or</i> I will give credit for any of the possible values (mostly this concerns whether we have an integer or a float).</li>
-    </ol>
-    <br/>
-    <p>
-      I teach two sections back-to-back of this course in the same room. If you have a DAN for extra time, you are more than welcome to stay late (first section) or come early (second section). If those don't work for you or you have other accomodations that we can't meet in the classroom, please just book a time in the testing center and I will send the exam over.
-    </p>
+    <p></p>
+    <p>Many questions will require putting multiple functions together in a method chain. All can be done with at most three methods. Your code should follow the class formatting rules of putting parantheses around the whole block, starting with the DataFrame, and having each method on its own line. You should be familiar with the other formatting rules regarding spacing and names, but these will not be graded on the exam.</p>
   </div>
 
   <script src="js/site.js"></script>
