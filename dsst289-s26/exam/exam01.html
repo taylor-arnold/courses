@@ -31,13 +31,14 @@
     <ol>
       <li>Using <code>.sort</code> to sort the data by ascending or descending  order.</li>
       <li>Selecting a certain number of rows using <code>.head</code> or <code>.tail</code>.</li>
-      <li>Using <code>.group_by</code> to apply <code>.head</code> or <code>.tail</code> to select a certain number of rows (at most) from each group.</li>
+      <li>Using <code>.group_by</code> to apply <code>.head</code> or <code>.tail</code> to select a certain number of rows from each group.</li>
       <li>Selecting rows using <code>.filter</code> based on a numeric variable being less than, less than or equal to, equal to, greater than or equal to, or greater than a fixed value.</li>
       <li>Selecting rows using <code>.filter</code> based on a string variable being equal to a specific value.</li>      
       <li>Selecting rows using <code>.filter</code> and <code>.is_in</code> to select rows where a string column is in a set of values.</li>
       <li>Using <code>.with_columns</code> to create a new variable based on arthimetic manipulation of two or more other columns.</li>
-      <li>Using the <code>agg</code> function with <code>.group_by</code> to compute data aggregates using the column methods <code>.mean</code>, <code>.min</code>, <code>.max</code>, <code>.first</code>, or <code>.last</code>.</li>
-      <li>Using the <code>pl.len</code> function within <code>.agg</code>.</li>
+      <li>Using <code>.with_columns</code> to create a new variable based on applying a mathematical method (such as the logarithm; I will give you the name of the method) to one of the columns.</li>
+<!--       <li>Using the <code>agg</code> function with <code>.group_by</code> to compute data aggregates using the column methods <code>.mean</code>, <code>.min</code>, <code>.max</code>, <code>.first</code>, or <code>.last</code>.</li>
+      <li>Using the <code>pl.len</code> function within <code>.agg</code>.</li> -->
     </ol>
     <p></p>
     <p>Many questions will require putting multiple functions together in a method chain. All can be done with at most three methods. Your code should follow the class formatting rules of putting parantheses around the whole block, starting with the DataFrame, and having each method on its own line. You should be familiar with the other formatting rules regarding spacing and names, but these will not be graded on the exam.</p>
