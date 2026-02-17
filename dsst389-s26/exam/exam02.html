@@ -27,7 +27,124 @@
         </b>
       </span>
     </p>
-    <p>...</p>
+<p>The exam is 75 minutes. There are <strong>6 tasks</strong> (labeled A–F), each presenting a block of Python code, with <strong>12 total questions</strong> (typically 2 per task). You will need to read code, trace through it, explain what it does and interpret results in context. You will not need to write code yourself.</p>
+<h3 id="creating-point-geometries-and-projections-task-a">Creating Point
+Geometries and Projections (Task A)</h3>
+<p>You should understand what <code>DSGeo.from_latlon()</code> does:
+given a DataFrame with <code>lon</code> and <code>lat</code> columns, it
+adds a new column called <code>geometry</code> that stores each point as
+a binary-encoded geometric object. This column enables spatial
+operations that plain numeric coordinates cannot support.</p>
+<p>You also need to understand <strong>coordinate reference systems
+(CRS)</strong>. A CRS defines how coordinates on Earth’s curved surface
+are projected onto a flat map. Key points:</p>
+<ul class="incremental">
+<li>Different regions have different appropriate projections. A
+projection designed for France (like EPSG:2154) will produce an
+accurate, familiar-looking map of French data. Using a generic
+unprojected system (WGS 84 / EPSG:4326) instead would show distortion,
+particularly in the shapes and relative spacing of points, because raw
+latitude/longitude treats the curved Earth as if it were flat.</li>
+<li>You do not need to memorize EPSG codes, but you should understand
+<em>why</em> a projection would be preferred over raw latitude and longitude.</li>
+</ul>
+<h3 id="spatial-joins-task-b">Spatial Joins (Task B)</h3>
+<p>You need to understand <code>DSGeo.sjoin()</code>:</p>
+<ul class="incremental">
+<li><strong>Argument order matters.</strong>
+<code>DSGeo.sjoin(metro, state)</code> (points first, polygons second)
+keeps the <em>point</em> geometry in the output and matches each metro
+area to the state containing it, roughly one row per metro area.
+<code>DSGeo.sjoin(state, metro)</code> (polygons first, points second)
+keeps the <em>polygon</em> geometry and produces <em>more rows</em>
+because each state is duplicated for every metro area it contains. This
+is analogous to a one-to-many join.</li>
+<li><strong>Self-joins with predicates.</strong>
+<code>DSGeo.sjoin(state, state, predicate="touches")</code> finds all
+pairs of states sharing a boundary. The result does <em>not</em> have
+exactly 50 rows (one per state). It has one row per <em>pair</em> of
+neighboring states, and each border appears twice (California touches
+Oregon <em>and</em> Oregon touches California), so the row count depends
+on the total number of shared borders in the country.</li>
+</ul>
+<h3 id="area-unit-conversion-and-choropleth-maps-task-c">Area, Unit
+Conversion, and Choropleth Maps (Task C)</h3>
+<p>You should understand:</p>
+<ul class="incremental">
+<li><code>DSGeo.add_area(state, crs=5069)</code> computes each polygon’s
+area using a projected CRS. The result is in <strong>square
+meters</strong> (the default unit). To get square kilometers, you divide
+by 1,000,000.</li>
+<li><strong>Choropleth maps</strong> color regions by a variable’s
+value. The key interpretive pitfall: large geographic regions (like
+Alaska or Montana) dominate the viewer’s attention simply because they
+take up more visual space. This makes choropleths misleading for raw
+counts like total population, a huge but sparsely populated state would
+appear visually dominant. Variables that are <em>rates</em> or
+<em>densities</em> (like population per square kilometer) avoid this
+distortion because they are already normalized by area.</li>
+</ul>
+<h3 id="fractional-years-vs.-date-objects-task-d">Fractional Years
+vs. Date Objects (Task D)</h3>
+<p>You should be able to compare these two approaches for plotting data
+over time:</p>
+<ul class="incremental">
+<li><strong>Fractional year</strong>
+(<code>year + (month - 1) / 12 + (day - 1) / (12 * 31)</code>): converts
+a date into an ordinary number. Advantage: works regardless of whether
+the data is sorted or has missing values, and can be plugged directly
+into models or calculations. Disadvantage: the x-axis labels are decimal
+numbers (like 2023.48), which are not human-readable dates.</li>
+<li><strong>Date objects</strong>
+(<code>pl.date(c.year, c.month, c.day)</code>): creates a proper
+<code>Date</code> column. Advantage: plotnine automatically produces
+readable date labels on the axis. Also unlocks the <code>.dt</code>
+namespace for component extraction. For example, we need a Data column fro extracting the day of the week. Disadvantage: requires properly formatted date data.</li>
+</ul>
+<h3 id="window-functions-.shift-and-.over-task-e">Window Functions:
+<code>.shift()</code> and <code>.over()</code> (Task E)</h3>
+<p>You need to understand:</p>
+<ul class="incremental">
+<li><strong>What <code>.shift(n)</code> does</strong>: shifts all values
+in a column by <code>n</code> rows. <code>.shift(1)</code> gives the
+<em>previous</em> row’s value. <code>.shift(2)</code> gives the value
+from <em>two rows back</em>.</li>
+<li><strong>The boundary-crossing bug</strong>: without
+<code>.over()</code>, <code>.shift()</code> operates on the entire
+DataFrame. If data is sorted by page then datetime, the first row of
+page “Beta” will incorrectly pull its <code>shift(1)</code> value from
+the <em>last row</em> of the previous page “Alpha.” This produces a
+meaningless <code>size_diff</code>. If we use <code>.over</code>, the shift will correctly produces <code>null</code> values at the boundaries.</li>
+<li><strong>Application to Wikipedia</strong>: Using the code
+<code>c.size.shift(2).over(c.page)</code> applied to the page edit data retrieves the page size from <em>two edits ago</em> within the same page. If the current size equals the size from two edits ago, it means the middle edit was likely undone. The page was changed and then changed back, which is a reversion.</li>
+</ul>
+<h3 id="filtering-edge-lists-with-semi-joins">Filtering Edge Lists with
+Semi Joins and Centrality Measures (Task F)</h3>
+<p>You need to understand the two-step semi join pattern for restricting
+a citation network to a subset of nodes:</p>
+<ul class="incremental">
+<li>The table with the original edgues should have <code>doc_id</code> and <code>doc_id2</code>. We need to keep only edges where <em>both</em> endpoints. We can do this with a combination of two semijoins</li>
+<li><strong>Why both are necessary</strong>: if you only do the first,
+you retain edges that point <em>out</em> to cases not in your subset.
+Those external cases would then appear as nodes in the network even
+though they don’t belong to the filtered topic.</li>
+</ul>
+<p></p>
+<p>You should also understand the difference between the following two metrics well enough to interpret a specific scenario:</p>
+<ul class="incremental">
+<li><strong>Degree</strong>: a simple count of how many edges a node has
+(i.e., how many direct neighbors).</li>
+<li><strong>Betweenness centrality</strong>: measures how often a node
+lies on the <em>shortest path</em> between other pairs of nodes.</li>
+</ul>
+<p></p>
+<p>The key insight for the exam: a node with <strong>low degree but very
+high betweenness</strong> is a <strong>bridge</strong>. It doesn’t have
+many direct connections, but it sits at a critical juncture between
+different parts of the network. Without it, other nodes would need many
+more hops to reach each other. In the Supreme Court context, such a case
+might be the key precedent linking two otherwise separate lines of legal
+reasoning.</p>
 
   </div>
 
