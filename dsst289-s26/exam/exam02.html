@@ -38,7 +38,81 @@
     </ol>
     <p></p>
     <p>Many questions will require putting multiple functions together in a method chain. All can be done with at most three methods and three graphics commands. Your code should follow the class formatting rules of putting parantheses around the whole block, starting with the DataFrame, and having each method on its own line. You should be familiar with the other formatting rules regarding spacing and names, but these will not be graded on the exam.</p>
+    <h3>Practice Exam Questions and Answers</h3>
+    <p>1. Compute the average runtime of the films by year. Include a count of the number of films in each year in the output table.</p>
+<pre>
+(
+    movie
+    .group_by(c.year)
+    .agg(
+        avg_runtime = c.runtime.mean(),
+        count = pl.len()
+    )
+)
+</pre>
+  <p>2. Create a scatterplot where the points are years, where the x-axis gives the average rating, the y-axis the average gross (amount of money it made) and all the points are in the color "yellow".</p>
+<pre>
+(
+    movie
+    .group_by(c.year)
+    .agg(
+       avg_rating = c.rating.mean(),
+       avg_gross = c.gross.mean()
+    )
+    .pipe(ggplot, aes("avg_rating", "avg_gross"))
+    + geom_point(color = "yellow")
+)
+</pre>
+  <p>3. Pretend there exists a column called <code>budget</code>. Create a scatterplot of all the films with budget on the x-axis and gross on the y-axis. Have both axes on a logarithmic scale.</p>
+<pre>
+(
+    movie
+    .pipe(ggplot, aes("budget", "gross"))
+    + geom_point()
+    + scale_x_log10()
+    + scale_y_log10()
+)
+</pre>
+  <p>4. Create a boxplot showing the mpa code on the x-axis and the runtime on the y-axis, but only use data from 1985 and after.</p>
+<pre>
+(
+   movie
+   .filter(c.year >= 1985)
+   .pipe(ggplot, aes("mpa", "runtime"))
+   + geom_boxplot()
+)
+</pre>
+  <p>5. Join the genre table to the movies data, and count the number of movies in each genre. Hint: need to join on year and title.</p>
+<pre>
+# This is the better approach because year + title are the primary
+# key in movie and foreign key in genre, so we join genre on the
+# left and movie on the right.
+(
+    genre
+    .join(movie, on=[c.year, c.title])
+    .group_by(c.genre)
+    .agg(count = pl.len())
+)
 
+# This is also fine, will run without an error, and will get full
+# credit on the exam.
+(
+    movie
+    .join(genre, on=[c.year, c.title])
+    .group_by(c.genre)
+    .agg(count = pl.len())
+)
+</pre>
+  <p>6. Create a text plot with the films from the year of your birth, with rating on the x-axis and gross on the y-axis and the label given by the film title.</p>
+<pre>
+(
+    movie
+    .filter(c.year == 1985)
+    .pipe(ggplot, aes("rating", "gross"))
+    + geom_text(aes(label="title"))
+)
+</pre>
+    </ol>
   </div>
 
   <script src="js/site.js"></script>
