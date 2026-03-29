@@ -27,7 +27,163 @@
         </b>
       </span>
     </p>
-    <p>...</p>
+<p>For this exam you will be given 20 terms selected from the following list of 40. You will be asked to write a short definition in your own words. Your definitions do not need to match these word-for-word, but they should demonstrate that you understand the concept.</p>
+<hr />
+<h3 id="chapter-11-supervised-learning">Chapter 11 — Supervised
+Learning</h3>
+<p><strong>Supervised learning</strong> A collection of methods that
+learn patterns from labeled data, where the correct answers are known,
+in order to make predictions on new, unseen observations.</p>
+<p><strong>Mean squared error (MSE)</strong> A measure of prediction
+accuracy for regression that computes the average of the squared
+differences between predicted and actual values.</p>
+<p><strong>Error rate</strong> A measure of prediction accuracy for
+classification that gives the proportion of predictions that are
+incorrect.</p>
+<p><strong>Overfitting</strong> When a model fits the training data too
+closely, capturing noise specific to that sample rather than true
+underlying patterns, leading to poor performance on new data.</p>
+<p><strong>Training set / testing set</strong> Two subsets of the data:
+the training set is used to fit the model and the testing set is used to
+evaluate performance on data the model has not seen.</p>
+<p><strong>Linear regression (in a predictive context)</strong> A model
+that predicts a numeric response as a weighted sum of predictor
+variables. In the predictive context, the focus is on accuracy of
+predictions rather than significance of coefficients.</p>
+<p><strong>Lasso regression (LASSO)</strong> A regularization method
+that adds a penalty proportional to the sum of the absolute values of
+the coefficients. It can shrink some coefficients exactly to zero,
+performing variable selection.</p>
+<p><strong>Ridge regression</strong> A regularization method that adds a
+penalty proportional to the sum of the squared coefficients. It shrinks
+coefficients toward zero but never exactly to zero, keeping all
+predictors in the model.</p>
+<p><strong>Elastic net</strong> A regularization method that combines
+both the lasso (absolute value) and ridge (squared) penalties,
+controlled by a mixing parameter (l1_ratio).</p>
+<p><strong>Logistic regression (for classification)</strong> A
+classification method that models the probability of an observation
+belonging to each class and assigns it to the most probable class.</p>
+<p><strong>Multinomial regression</strong> A
+classification method that extends logistic regression to the case where we have more than two classes.</p>
+<p><strong>Confusion matrix</strong> A table showing the detailed
+breakdown of predictions versus actual classes: rows represent actual
+classes, columns represent predicted classes, with the diagonal showing
+correct predictions.</p>
+<hr />
+<h3 id="chapter-12-unsupervised-learning">Chapter 12 — Unsupervised
+Learning</h3>
+<p><strong>Unsupervised learning</strong> Methods for extracting
+structure from data when no target variable or labeled outcomes exist.
+Includes dimensionality reduction and clustering.</p>
+<p><strong>Dimensionality reduction</strong> Techniques that compress
+high-dimensional data into a smaller number of dimensions while
+preserving essential structure, making visualization and analysis more
+manageable.</p>
+<p><strong>Principal Component Analysis (PCA)</strong> A linear
+dimensionality reduction method that finds new variables (principal
+components) as weighted combinations of the original variables, each
+capturing the maximum possible variance while being uncorrelated with
+the others.</p>
+<p><strong>UMAP (Uniform Manifold Approximation and Projection)</strong>
+A nonlinear dimensionality reduction technique that preserves both local
+and global structure in data by constructing a neighborhood graph in
+high dimensions and finding a low-dimensional layout that preserves
+those relationships.</p>
+<p><strong>K-means clustering</strong> An algorithm that partitions
+observations into exactly k clusters, where each cluster is represented
+by its centroid (the mean of assigned points). Iteratively assigns
+points to the nearest centroid and updates centroids.</p>
+<hr />
+<h3 id="chapter-13-deep-learning">Chapter 13 — Deep Learning</h3>
+<p><strong>Deep learning</strong> An approach that builds models with
+multiple layers of intermediate representations (hidden layers) between
+input and output, allowing the model to learn complex, abstract patterns
+in data.</p>
+<p><strong>Hidden layer / hidden state</strong> An intermediate layer of
+computed values in a neural network that is not directly observed in the
+data. Each hidden unit computes a weighted combination of its inputs
+followed by an activation function.</p>
+<p><strong>Activation function</strong> A nonlinear function applied
+after the linear combination in each hidden unit. Without it, stacking
+layers would just produce another linear combination. Introduces the
+nonlinearity that gives neural networks their power.</p>
+<p><strong>Dense (fully connected) layer</strong> A layer where every
+input is connected to every output through a learned weight. The basic
+building block of feedforward neural networks.</p>
+<p><strong>Gradient descent</strong> An optimization technique that
+iteratively updates parameters by moving in the direction opposite the
+gradient (derivative) of the loss function, scaled by a learning rate.</p>
+<p><strong>Learning rate (η)</strong> A positive number that controls
+the step size in gradient descent. Too small means slow convergence; too
+large causes the optimization to overshoot and oscillate.</p>
+<p><strong>Momentum</strong> A modification to gradient descent that
+accumulates a velocity term based on past gradients, helping the
+optimizer move faster in consistent directions and dampen oscillations.</p>
+<p><strong>Stochastic gradient descent (SGD)</strong> A variant of
+gradient descent that updates parameters using small random batches of
+training data rather than the entire dataset, making each step faster
+and introducing noise that can help escape local minima.</p>
+<hr />
+<h3 id="chapter-14-cnns-and-word-embeddings">Chapter 14 — CNNs and Word
+Embeddings</h3>
+<p><strong>Convolutional Neural Network (CNN)</strong> A neural network
+architecture that uses convolutional layers to exploit spatial structure
+in data (like images), detecting local patterns regardless of their
+position.</p>
+<p><strong>Convolutional layer</strong> A layer that applies small
+filters (kernels) that slide across the input, computing weighted sums
+at each position. Uses weight sharing so the same filter detects a
+pattern wherever it appears.</p>
+<p><strong>Filter / kernel</strong> A small grid of learnable weights
+(e.g., 3×3) in a convolutional layer that detects a specific local
+pattern. Multiple filters are applied simultaneously to detect different
+features.</p>
+<p><strong>Weight sharing</strong> The principle in CNNs that the same
+filter weights are applied at every spatial position, dramatically
+reducing the number of parameters and allowing pattern detection
+regardless of position.</p>
+<p><strong>One-hot encoding (for words)</strong> Representing each word
+as a sparse vector of length V (vocabulary size) with a single 1 at the
+word’s position and 0s everywhere else. Simple but inefficient and
+captures no semantic relationships.</p>
+<p><strong>Word embedding</strong> A dense, low-dimensional vector
+representation of a word that captures semantic meaning. Words with
+similar meanings have similar vectors.</p>
+<p><strong>Cosine similarity</strong> A measure of how similar two
+vectors are based on the angle between them. Values near 1 indicate high
+similarity; values near 0 indicate the vectors are unrelated.</p>
+<p><strong>Dropout</strong> A regularization technique that randomly
+sets a fraction of values to zero during training, forcing the network
+to learn redundant representations and reducing overfitting.</p>
+<hr />
+<h3 id="chapter-15-transfer-learning">Chapter 15 — Transfer
+Learning</h3>
+<p><strong>Transfer learning</strong> The practice of taking a model
+trained on one task and reusing its learned representations for a
+different task, dramatically reducing the data and computation needed.</p>
+<p><strong>Embedding (in the transfer learning context)</strong> A
+fixed-length numeric vector extracted from a pre-trained model’s
+internal layers that serves as a compact representation of an input
+(image or text). Similar inputs produce similar embeddings.</p>
+<p><strong>Vision Transformer (ViT)</strong> A deep learning model for
+images that divides an image into patches, treats each patch as a token
+(similar to words in text), and processes them through transformer
+layers.</p>
+<p><strong>Zero-shot learning</strong> A classification approach that
+assigns labels to data without any task-specific training examples, by
+leveraging a model that connects images and text in a shared embedding
+space.</p>
+<p><strong>SigLIP (Sigmoid Language-Image Pre-training)</strong> A
+multimodal model that learns to match images with text descriptions by
+embedding both into the same space, enabling zero-shot image
+classification.</p>
+<p><strong>Dot product (for similarity)</strong> A way to measure how
+aligned two embedding vectors are. Higher dot products indicate greater
+similarity between the two inputs.</p>
+<p><strong>Fine-tuning</strong> Allowing a pre-trained model’s weights
+to be updated during training on a new task, adapting its
+representations to the specific domain.</p>
 
   </div>
 
