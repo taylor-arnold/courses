@@ -27,6 +27,147 @@
         </b>
       </span>
     </p>
+<p>For this exam you will be given 16 terms selected from the following list. You will be asked to write a short definition in your own words. Your definitions do not need to match these word-for-word, but they should demonstrate that you understand the concept.</p>
+
+<hr />
+<h3 id="chapter-5-collecting-data">Chapter 5 — Collecting Data</h3>
+<p><strong>Unit of observation</strong> The entity that each row in a
+table represents. Can be a simple value (such as a day or a person) or a
+combination of values (such as day × plant).</p>
+<p><strong>Data schema</strong> The overall design decisions about how
+to organize data, including which tables to create, what columns each
+table contains, and how variables are formatted.</p>
+<p><strong>Primary key</strong> One or more columns that uniquely
+identify each row in a table.</p>
+<p><strong>Foreign key</strong> A column in one table that references
+the primary key of another table, establishing a link between the two
+tables.</p>
+<p><strong>Atomic cells</strong> The principle that each cell in a
+dataset should contain only a single value — not, for example, multiple
+values separated by commas.</p>
+<p><strong>CSV (comma-separated values)</strong> A plain-text file
+format for tabular data in which columns are separated by commas and
+each row is on its own line. Stores only a single table and contains no
+formatting information.</p>
+<p><strong>Data dictionary</strong> A document that describes each table
+and variable in a dataset, including variable names, measurement units,
+expected values or categories, and any decisions made during data
+collection.</p>
+<p><strong>Synthetic key</strong> An artificially created unique
+identifier (such as a UUID) used as a primary key when no natural key
+exists or when a multi-column key needs to be simplified to a single
+column.</p>
+<hr />
+<h3 id="chapter-10-inference">Chapter 10 — Inference</h3>
+<p><strong>Mean (average)</strong> The sum of all values divided by the
+number of observations. Represents the balance point of the data and
+uses every observation in the calculation.</p>
+<p><strong>Median</strong> The middle value when observations are
+arranged from smallest to largest. Not influenced by extreme values,
+making it more robust to outliers than the mean.</p>
+<p><strong>Quantile</strong> For a proportion p between 0 and 1, the
+p-th quantile is the value below which a fraction p of the observations
+fall. The median is the special case where p = 0.5.</p>
+<p><strong>Variance</strong> A measure of spread computed by averaging
+the squared differences between each observation and the mean. Expressed
+in squared units of the original variable.</p>
+<p><strong>Standard deviation</strong> The square root of the variance,
+returning the measure of spread to the original units of the data.
+Measures the typical distance of observations from the mean.</p>
+<p><strong>Population</strong> The entire group of individuals or
+observations we are interested in studying.</p>
+<p><strong>Sample</strong> A subset of the population that we actually
+measure and analyze.</p>
+<p><strong>Point estimate</strong> A single best-guess value for an
+unknown population parameter, computed from sample data.</p>
+<p><strong>Confidence interval</strong> A range of values used to
+estimate a population parameter, reported with a confidence level
+(commonly 95%). The method produces intervals that contain the true
+value in the stated percentage of repeated experiments.</p>
+<p><strong>Null hypothesis (H₀)</strong> A statement about the data
+(typically that there is no effect or no difference) that we test to see
+whether there is strong evidence against it.</p>
+<p><strong>P-value</strong> The probability of obtaining results at
+least as extreme as those observed, assuming the null hypothesis is
+true. A small p-value provides evidence against the null hypothesis.</p>
+<p><strong>One-sample t-test</strong> A hypothesis test that assesses
+whether the mean of a single population equals a hypothesized value,
+using the sample mean, sample standard deviation, and sample size.</p>
+<p><strong>Two-sample t-test</strong> A hypothesis test that compares
+the means of two groups, assessing whether the observed difference in
+sample means is large relative to what random sampling variation would
+produce.</p>
+<p><strong>ANOVA (analysis of variance)</strong> A method for comparing
+the means of three or more groups simultaneously. Tests the null
+hypothesis that all group means are equal by comparing between-group
+variability to within-group variability.</p>
+<p><strong>Chi-squared test</strong> A test of association between two
+categorical variables. Compares observed counts in a contingency table
+to the counts expected under independence.</p>
+<p><strong>Contingency table</strong> A table showing the counts of
+observations for each combination of categories of two categorical
+variables.</p>
+<p><strong>G-test (log-likelihood ratio test)</strong> An alternative to
+the chi-squared test for contingency tables that uses a different
+formula based on the likelihood ratio. Gives similar results to the
+chi-squared test for large samples.</p>
+<p><strong>Ordinary least squares (OLS)</strong> A method for fitting a
+linear regression model by finding the intercept and slope(s) that
+minimize the sum of squared residuals (vertical distances from data
+points to the fitted line).</p>
+<p><strong>Simple linear regression</strong> A model describing the
+relationship between one numeric predictor and one numeric response as a
+straight line: y = α + βx + ε.</p>
+<p><strong>Residual</strong> The difference between an observed value
+and the value predicted by the model. The sum of squared residuals is
+what OLS minimizes.</p>
+<p><strong>Multiple (multivariate) regression</strong> An extension of
+linear regression that includes two or more predictor variables: y = α +
+β₁x₁ + β₂x₂ + … + βₖxₖ + ε. Each coefficient represents the effect of
+that predictor holding all others constant.</p>
+<p><strong>Logistic regression</strong> A regression model for a binary
+(two-category) response variable that uses the logistic function to
+transform a linear combination of predictors into a probability between
+0 and 1.</p>
+<p><strong>Logistic function</strong> The function logistic(x) = 1 / (1
++ e⁻ˣ), which maps any real number to a value between 0 and 1. Used in
+logistic regression to convert linear predictions into
+probabilities.</p>
+<p><strong>Correlation vs. causation</strong> Statistical inference
+establishes evidence of association between variables, not causation.
+Determining causation requires a controlled experiment with random
+assignment to groups.</p>
+<hr />
+<h3 id="chapter-11-supervised-learning">Chapter 11 — Supervised
+Learning</h3>
+<p><strong>Supervised learning</strong> A collection of methods that
+learn patterns from labeled data (where the correct answers are known)
+in order to make predictions on new, unseen observations.</p>
+<p><strong>Regression (predictive task)</strong> A type of predictive
+task where the variable being predicted is numeric (continuous).</p>
+<p><strong>Classification (predictive task)</strong> A type of
+predictive task where the variable being predicted is categorical
+(discrete classes or groups).</p>
+<p><strong>Overfitting</strong> When a model fits the training data too
+closely, capturing noise specific to that sample rather than true
+underlying patterns, leading to poor performance on new data.</p>
+<p><strong>Regularization</strong> A technique that adds a penalty term
+to the optimization objective to discourage extreme coefficient values,
+reducing overfitting and often improving predictions on new data.</p>
+<p><strong>Confusion matrix</strong> A table showing the breakdown of
+predictions versus actual classes: rows represent actual classes,
+columns represent predicted classes, with the diagonal showing correct
+predictions.</p>
+
+<h3 id="chapter-15-transfer-learning">Chapter 15 — Transfer
+Learning</h3>
+<p><strong>Transfer learning</strong> The practice of taking a model
+trained on one task and reusing its learned representations for a
+different task, dramatically reducing the data and computation needed.</p>
+<p><strong>Embedding (in the transfer learning context)</strong> A
+fixed-length numeric vector extracted from a pre-trained model’s
+internal layers that serves as a compact representation of an input
+(image or text). Similar inputs produce similar embeddings.</p>
 
   </div>
 
