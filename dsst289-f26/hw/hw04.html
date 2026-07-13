@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html lang="en">
+ <head>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>DSST289: Introduction to Data Science</title>
+
+  <meta name="description" content="title">
+  <meta name="author" content="Taylor Arnold">
+  <meta charset="UTF-8">
+
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/fonts.css">
+  <link rel="stylesheet" href="../css/site.css">
+ </head>
+
+ <body>
+  <div class="container">
+    <h1>Homework 04</h1>
+    <p style="padding: 0 1em 1em 1em; font-size: 0.9em">
+      <span style="padding-right: 0.5em">
+        <b>
+          <a href="../index.html">[← back]</a>
+        </b>
+      </span>
+    </p>
+    <p>
+      As in the previous homework, assume you have a dataset loaded into Python called <code>students</code>, with columns named <code>name</code>, <code>major</code>, <code>year</code>, and <code>gpa</code>. Hand write the following, writing each one as its own chain of methods that follows the formatting conventions from the reading.
+    </p>
+    <ol>
+      <li>The code that changes the name of the column <code>gpa</code> to <code>grade_point_average</code>.</li>
+      <li>The code that returns exactly one row for each major in the dataset.</li>
+      <li>The code that adds a new column named <code>gpa_100</code> holding each student's GPA on a 100-point scale (that is, the GPA divided by 4 and multiplied by 100), keeping all of the other columns as they are.</li>
+      <li>The code that adds a new column named <code>honors</code> that is equal to 1 for students with a GPA of at least 3.5 and 0 for everyone else.</li>
+      <li>Finally, in a sentence or two of your own words, explain what the <code>.pipe</code> method does and why we would want it when we already have a chain of methods.</li>
+    </ol>
+  </div>
+
+  <script src="../js/site.js"></script>
+ </body>
+</html>

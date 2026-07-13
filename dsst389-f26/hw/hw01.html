@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<html lang="en">
+ <head>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>DSST389: Advanced Data Science</title>
+
+  <meta name="description" content="title">
+  <meta name="author" content="Taylor Arnold">
+  <meta charset="UTF-8">
+
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/fonts.css">
+  <link rel="stylesheet" href="../css/site.css">
+ </head>
+
+ <body>
+  <div class="container">
+    <h1>Homework 01</h1>
+    <p style="padding: 0 1em 1em 1em; font-size: 0.9em">
+      <span style="padding-right: 0.5em">
+        <b>
+          <a href="../index.html">[← back]</a>
+        </b>
+      </span>
+    </p>
+    <p>
+      The reading uses <code>metro</code>, a dataset with one row for each metropolitan statistical area in the United States and columns for population, economic indicators, and the coordinates <code>lon</code> and <code>lat</code>. On a sheet of paper, hand write answers to the following. These ask what the methods do and what they let you find out, so a few sentences apiece is enough. Bring them to class and we will use them to start the discussion.
+    </p>
+    <ol>
+      <li>The reading plots <code>lat</code> against <code>lon</code> with <code>geom_point</code> and then says that the plot works but has problems. State the two objections it raises, say which one is about the accuracy of the picture and which is about what a reader can do with it, and give a question about American metro areas that the projected map answers but the first plot does not.</li>
+      <li>Running <code>metro.geo.points_from_xy("lon", "lat")</code> tells you nothing new about any metro area. The same locations go in and come back out, written as text with a <code>_crs</code> column attached. Say what the table can do afterwards that it could not do before, and name two questions you can ask of a geometry that you cannot ask of two numeric columns.</li>
+      <li>Explain what the number 4326 records, and why the string <code>POINT (-86.8 32.4)</code> on its own does not identify a place on Earth. Then suppose a classmate sends you a table of hospital locations that has a <code>geometry</code> column, no <code>_crs</code> column, and coordinates in the hundreds of thousands. Say what has probably happened, and what goes wrong if you treat those coordinates as longitude and latitude.</li>
+      <li>The reading says a projection can preserve shape, or area, or distance, but not all of them at once. Give an analysis of <code>metro</code> that comes out wrong if you work in EPSG:4326, and describe the error: which metro areas are affected most, and are their distances too large or too small? Then give an analysis of the same data for which the choice of CRS makes no difference.</li>
+      <li>Web Mercator (EPSG:3857) is behind Google Maps and most of the other maps you have looked at on a screen, and it is why Greenland looks bigger than Africa. Explain in your own words how that distortion arises. Then say why the web adopted a projection with such a well-known flaw, and describe what you would expect to see if someone computed the land area of every metro area after calling <code>.geo.to_crs(3857)</code>.</li>
+      <li>The interactive map from <code>metro.geo.explore(tooltip=["name"])</code> and the static map from <code>ggplot(metro.geo.to_crs(5069)).geom_map()</code> draw the same points. Name something about the dataset that you would notice on the interactive map and miss on the static one, and something that the static map shows better. Say which of the two you would put in a paper, and why.</li>
+      <li>A metropolitan area covers many square miles and, in the larger cases, millions of people, and this dataset gives each one a single point. Somebody made that decision before the data reached you. Say what it costs, then give one question about metro areas that the dataset can still answer honestly and one for which the single point would quietly mislead you.</li>
+    </ol>
+  </div>
+
+  <script src="../js/site.js"></script>
+ </body>
+</html>

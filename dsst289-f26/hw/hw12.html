@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html lang="en">
+ <head>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>DSST289: Introduction to Data Science</title>
+
+  <meta name="description" content="title">
+  <meta name="author" content="Taylor Arnold">
+  <meta charset="UTF-8">
+
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/fonts.css">
+  <link rel="stylesheet" href="../css/site.css">
+ </head>
+
+ <body>
+  <div class="container">
+    <h1>Homework 12</h1>
+    <p style="padding: 0 1em 1em 1em; font-size: 0.9em">
+      <span style="padding-right: 0.5em">
+        <b>
+          <a href="../index.html">[← back]</a>
+        </b>
+      </span>
+    </p>
+    <p>
+      Assume you have a dataset loaded into Python called <code>students</code>, with one row for each student in the class and columns named <code>name</code>, <code>major</code>, <code>year</code>, <code>gpa</code>, and <code>study_hours</code>. Hand write the following.
+    </p>
+    <ol>
+      <li>The code that produces a bar plot of the number of students in each major, letting plotnine do the counting for you, with the bars running horizontally and ordered from the most common major to the least.</li>
+      <li>The code that produces the same plot, but where you compute the counts yourself before any of the plotting code, followed by a sentence explaining the difference between the two geometries you used in parts (1) and (2) and how you decide which one a given task calls for.</li>
+      <li>The code that produces a histogram of <code>study_hours</code>, choosing a sensible width for the bins, along with a sentence explaining what the height of a single bar of your histogram tells us.</li>
+      <li>The code that produces a boxplot of the GPAs in each major, with the majors ordered by their GPA, followed by the <code>.group_by</code> and <code>.agg</code> code that would compute by hand the three numbers that make up each box.</li>
+      <li>The code that produces a scatter plot of <code>study_hours</code> and <code>gpa</code> with a straight line of best fit drawn through the points and no confidence band around it.</li>
+    </ol>
+  </div>
+
+  <script src="../js/site.js"></script>
+ </body>
+</html>

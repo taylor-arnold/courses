@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<html lang="en">
+ <head>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>DSST289: Introduction to Data Science</title>
+
+  <meta name="description" content="title">
+  <meta name="author" content="Taylor Arnold">
+  <meta charset="UTF-8">
+
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/fonts.css">
+  <link rel="stylesheet" href="../css/site.css">
+ </head>
+
+ <body>
+  <div class="container">
+    <h1>Homework 21</h1>
+    <p style="padding: 0 1em 1em 1em; font-size: 0.9em">
+      <span style="padding-right: 0.5em">
+        <b>
+          <a href="../index.html">[← back]</a>
+        </b>
+      </span>
+    </p>
+    <p>
+      Due at <b>Project Workshop II</b>, the last class before presentations. Your collection window closed on Sunday and the weather table is posted. This homework is where you find out whether the dataset you spent two weeks making actually holds together. Export every table, load them into Python, and run the checks below. Bring the code and its output to class, along with the files themselves; the class period is yours to work on the analysis with me in the room.
+    </p>
+    <ol>
+      <li>Load every one of your tables with <code>pl.read_csv</code>. Print the schema of each one and check the type of every column against the data dictionary you wrote in Homework 17. Note every column whose type is not what you expected, and say what went wrong.</li>
+      <li>For each table, run the primary key check: compare <code>.n_unique()</code> on the key against <code>len()</code> of the table. Report which tables pass. For any that fail, find the duplicated rows and explain how they got there.</li>
+      <li>For each foreign key in <code>hours</code>, run an anti-join against the table it points to. Every one of these should come back empty. Report any that do not, and say what a row appearing here tells you about your data.</li>
+      <li>Count how many of the 336 hours of the window are actually present in your <code>hours</code> table, and how many are missing. Then group the missing hours by hour of the day and make a plot of the result. Look at it and say honestly what it shows about when you fail to record.</li>
+      <li>Join the provided <code>weather</code> table to your <code>hours</code> table. Say whether the row count changed, and explain why an inner join was or was not the right choice here.</li>
+      <li>Make one plot that takes a first look at each of your research questions, using at least one of the numeric measures you invented. Do not polish them. Bring them to class and we will talk about what to do next.</li>
+      <li>Finally, a list of every problem the checks above turned up. Collection is over, so you cannot fix any of it by collecting more; you can only decide what to do about it. For each problem, say how you will handle it in the analysis, and write the sentence that will go in your documentation admitting to it.</li>
+    </ol>
+  </div>
+
+  <script src="../js/site.js"></script>
+ </body>
+</html>

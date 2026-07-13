@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+
+<html lang="en">
+ <head>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>DSST389: Advanced Data Science</title>
+
+  <meta name="description" content="title">
+  <meta name="author" content="Taylor Arnold">
+  <meta charset="UTF-8"> 
+
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/fonts.css">
+  <link rel="stylesheet" href="css/site.css">
+ </head>
+
+ <body>
+  <div class="container">
+    <h1>DSST389: Advanced Data Science</h1>
+    <p style="padding: 0 1em 1em 1em; font-size: 0.9em">
+      <span style="padding-right: 0.5em">
+        <b>
+          <a href="extra/dsst389-syllabus.pdf" target="_blank" rel="noopener noreferrer">[syllabus]</a>
+        </b>
+      </span>
+      <span style="padding-right: 0.5em">
+        <b>
+          <a href="exam/project.html">[project]</a>
+        </b>
+      </span>
+      <span style="padding-right: 0.5em">
+        <b>
+          <a href="extra/dan.html">[dan]</a>
+        </b>
+      </span>
+      <span style="padding-right: 0.5em">
+        <b>
+          <a href="https://taylor-arnold.github.io/fds2/" target="_blank" rel="noopener noreferrer">[book]</a>
+        </b>
+      </span>
+      <span style="padding-right: 0.5em">
+        <b>
+          <a href="https://taylorarnold.org/" target="_blank" rel="noopener noreferrer">[me]</a>
+        </b>
+      </span>
+      <span style="padding-right: 0.5em">
+        <b>
+          <a href="https://docs.google.com/presentation/d/1IHKK5V22yAZudXAbFuQxvtH02mL04J6WHZ1JXEyyWwo/edit?usp=sharing" target="_blank" rel="noopener noreferrer">[slides]</a>
+        </b>
+      </span>
+      <span style="padding-right: 0.5em">
+        <b>
+          <a href="https://urichmond.zoom.us/j/8464145594?pwd=eWU1RkNjYUp2bXFQTlN3bUtKWWI2Zz09" target="_blank" rel="noopener noreferrer">[zoom]</a>
+        </b>
+      </span>
+      <span style="padding-right: 0.5em">
+        <b>
+          <a href="https://forms.gle/nud2DC3CW8gW5tni6" target="_blank" rel="noopener noreferrer">[form]</a>
+        </b>
+      </span>
+    </p>
+    <p>Below are the topics associated with each class. Study guides for the exams will be posted below at least one week ahead of time. The dates of the external talks, of which you must attend two, are given at the bottom of this page.</p>
+
+    <p>The <a href="exam/project.html"><b>final project</b></a> is launched in class on October 14th. You will define a population of 75 to 250 Wikipedia pages, collect it yourself through the APIs, document it, and analyze it with the temporal, textual, and network methods from the second half of the course. Read the project description before <a href="hw/hw14.html">Homework 14</a>, which is a two-week assignment due at Workshop I on October 28th. Start thinking about your population early: it is locked at the workshop and everything else follows from it. Presentations run from November 30th, and the corpus, the notebooks, and the datasheet are all due on December 7th.</p>
+
+    <table border="1">
+      <tr>
+        <th>Date</th>
+        <th>Topic</th>
+        <th>Reading</th>
+        <th>Homework</th>
+        <th>Notebook</th>
+      </tr>
+      <tr>
+        <td>
+          <b>2026-08-24</b>
+        </td>
+        <td>
+          Course Introduction
+        </td>
+        <td>
+          &mdash;
+        </td>
+        <td>
+          &mdash;
+        </td>
+        <td>
+          &mdash;
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>2026-08-26</b>
+        </td>
+        <td>
+          Review: Polars + Plotnine
+        </td>
+        <td>
+          &mdash;
+        </td>
+        <td>
+          &mdash;
+        </td>
+        <td>
+          &mdash;
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>2026-08-31</b>
+        </td>
+        <td>
+          Spatial Points + CRS
+        </td>
+        <td>
+          <a href="https://taylor-arnold.github.io/fds2/11_spatial_data.html" target="_blank" rel="noopener noreferrer">11.1&ndash;11.5</a>
+        </td>
+        <td>
+          <a href="hw/hw01.html">Homework01</a>
+        </td>
+        <td>
+          &mdash;
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>2026-09-02</b>
+        </td>
+        <td>
+          Spatial Polygons
+        </td>
+        <td>
+          <a href="https://taylor-arnold.github.io/fds2/11_spatial_data.html#spatial-polygons" target="_blank" rel="noopener noreferrer">11.6&ndash;11.8</a>
+        </td>
+        <td>
+          <a href="hw/hw02.html">Homework02</a>
+        </td>
+        <td>
+          &mdash;
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>2026-09-07</b>
+        </td>
+        <td>
+          Spatial Joins
+        </td>
+        <td>
+          <a href="https://taylor-arnold.github.io/fds2/11_spatial_data.html#spatial-joins" target="_blank" rel="noopener noreferrer">11.9&ndash;11.10</a>
+        </td>
+        <td>
+          <a href="hw/hw03.html">Homework03</a>
+        </td>
+        <td>
+          &mdash;
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>2026-09-09</b>
+        </td>
+        <td>
+          Spatial Metrics
+        </td>
+        <td>
+          <a href="https://taylor-arnold.github.io/fds2/11_spatial_data.html#buffers" target="_blank" rel="noopener noreferrer">11.11&ndash;11.15</a>
+        </td>
+        <td>
+          <a href="hw/hw04.html">Homework04</a>
+        </td>
+        <td>
+          &mdash;
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>2026-09-14</b>
+        </td>
+        <td colspan="4" class="td-blue">
+          <a href="exam/exam01.html">[Exam I]</a>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>2026-09-16</b>
+        </td>
+        <td>
+          Data APIs
+        </td>
+        <td>
+          <a href="https://taylor-arnold.github.io/fds2/12_apis.html" target="_blank" rel="noopener noreferrer">12.1&ndash;12.9</a>
+        </td>
+        <td>
+          <a href="hw/hw05.html">Homework05</a>
+        </td>
+        <td>
+          &mdash;
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>2026-09-21</b>
+        </td>
+        <td>
+          MediaWiki
+        </td>
+        <td>
+          <a href="https://taylor-arnold.github.io/fds2/12_apis.html#links-between-pages" target="_blank" rel="noopener noreferrer">12.10&ndash;12.17</a>
+        </td>
+        <td>
+          <a href="hw/hw06.html">Homework06</a>
+        </td>
+        <td>
+          &mdash;
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>2026-09-23</b>
+        </td>
+        <td>
+          Dates + Datetimes
+        </td>
+        <td>
+          <a href="https://taylor-arnold.github.io/fds2/13_temporal_data.html" target="_blank" rel="noopener noreferrer">13.1&ndash;13.6</a>
+        </td>
+        <td>
+          <a href="hw/hw07.html">Homework07</a>
+        </td>
+        <td>
+          &mdash;
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>2026-09-28</b>
+        </td>
+        <td colspan="4" class="td-grey">
+          [No Class]
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>2026-09-30</b>
+        </td>
+        <td>
+          Time + Window Functions
+        </td>
+        <td>
+          <a href="https://taylor-arnold.github.io/fds2/13_temporal_data.html#truncating-dates" target="_blank" rel="noopener noreferrer">13.7&ndash;13.12</a>
+        </td>
+        <td>
+          <a href="hw/hw08.html">Homework08</a>
+        </td>
+        <td>
+          &mdash;
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>2026-10-05</b>
+        </td>
+        <td>
+          Textual Data: Annotations
+        </td>
+        <td>
+          <a href="https://taylor-arnold.github.io/fds2/14_text_annotations.html" target="_blank" rel="noopener noreferrer">14.1&ndash;14.4</a>
+        </td>
+        <td>
+          <a href="hw/hw09.html">Homework09</a>
+        </td>
+        <td>
+          &mdash;
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>2026-10-07</b>
+        </td>
+        <td>
+          Text Metrics
+        </td>
+        <td>
+          <a href="https://taylor-arnold.github.io/fds2/14_text_annotations.html#n-grams-and-collocations" target="_blank" rel="noopener noreferrer">14.5&ndash;14.10</a>
+        </td>
+        <td>
+          <a href="hw/hw10.html">Homework10</a>
+        </td>
+        <td>
+          &mdash;
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>2026-10-12</b>
+        </td>
+        <td colspan="4" class="td-grey">
+          [No Class: Fall Break]
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>2026-10-14</b>
+        </td>
+        <td>
+          TF-IDF &mdash; <a href="exam/project.html">[Project Launched]</a>
+        </td>
+        <td>
+          <a href="https://taylor-arnold.github.io/fds2/15_text_vectors.html" target="_blank" rel="noopener noreferrer">15.1&ndash;15.3</a>
+        </td>
+        <td>
+          <a href="hw/hw11.html">Homework11</a>
+        </td>
+        <td>
+          &mdash;
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>2026-10-19</b>
+        </td>
+        <td>
+          Documents as Vectors
+        </td>
+        <td>
+          <a href="https://taylor-arnold.github.io/fds2/15_text_vectors.html#documents-as-vectors" target="_blank" rel="noopener noreferrer">15.4&ndash;15.5</a>
+          </td>
+        <td>
+          <a href="hw/hw12.html">Homework12</a>
+        </td>
+        <td>
+          &mdash;
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>2026-10-21</b>
+        </td>
+        <td>
+          Across Languages
+        </td>
+        <td>
+          <a href="https://taylor-arnold.github.io/fds2/15_text_vectors.html#across-languages" target="_blank" rel="noopener noreferrer">15.6&ndash;15.7</a>
+        </td>
+        <td>
+          <a href="hw/hw13.html">Homework13</a>
+        </td>
+        <td>
+          &mdash;
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>2026-10-26</b>
+        </td>
+        <td colspan="4" class="td-blue">
+          <a href="exam/exam02.html">[Exam II]</a>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>2026-10-28</b>
+        </td>
+        <td colspan="4" class="td-green">
+          <a href="exam/project.html">[Project Workshop I]</a> &mdash; <a href="hw/hw14.html">Homework14</a>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>2026-11-02</b>
+        </td>
+        <td>
+          Network Metrics
+        </td>
+        <td>
+          <a href="https://taylor-arnold.github.io/fds2/16_network_data.html" target="_blank" rel="noopener noreferrer">16.1&ndash;16.5</a>
+        </td>
+        <td>
+          <a href="hw/hw15.html">Homework15</a>
+        </td>
+        <td>
+          &mdash;
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>2026-11-04</b>
+        </td>
+        <td>
+          Network Types
+        </td>
+        <td>
+          <a href="https://taylor-arnold.github.io/fds2/16_network_data.html#co-citation-networks" target="_blank" rel="noopener noreferrer">16.6&ndash;16.10</a>
+        </td>
+        <td>
+          <a href="hw/hw16.html">Homework16</a>
+        </td>
+        <td>
+          &mdash;
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>2026-11-09</b>
+        </td>
+        <td>
+          Images as Arrays
+        </td>
+        <td>
+          <a href="https://taylor-arnold.github.io/fds2/17_image_data.html" target="_blank" rel="noopener noreferrer">17.1&ndash;17.6</a>
+        </td>
+        <td>
+          <a href="hw/hw17.html">Homework17</a>
+        </td>
+        <td>
+          &mdash;
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>2026-11-11</b>
+        </td>
+        <td>
+          Images as Vectors
+        </td>
+        <td>
+          <a href="https://taylor-arnold.github.io/fds2/17_image_data.html#transfer-learning" target="_blank" rel="noopener noreferrer">17.7&ndash;17.9</a>
+        </td>
+        <td>
+          <a href="hw/hw18.html">Homework18</a>
+        </td>
+        <td>
+          &mdash;
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>2026-11-16</b>
+        </td>
+        <td colspan="4" class="td-blue">
+          <a href="exam/exam03.html">[Exam III]</a>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>2026-11-18</b>
+        </td>
+        <td colspan="4" class="td-green">
+          <a href="exam/project.html">[Project Workshop II]</a> &mdash; <a href="hw/hw19.html">Homework19</a>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>2026-11-23</b>
+        </td>
+        <td colspan="4" class="td-grey">
+          [No Class: Thanksgiving Break]
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>2026-11-25</b>
+        </td>
+        <td colspan="4" class="td-grey">
+          [No Class: Thanksgiving Break]
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>2026-11-30</b>
+        </td>
+        <td colspan="4" class="td-blue">
+          <a href="exam/project.html">[Project Presentations]</a>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>2026-12-02</b>
+        </td>
+        <td colspan="4" class="td-blue">
+          <a href="exam/project.html">[Project Presentations]</a>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>2026-12-07</b>
+        </td>
+        <td colspan="4" class="td-blue">
+          <a href="exam/project.html">[Project Presentations]</a>
+        </td>
+      </tr>
+    </table>
+
+    <p style="padding-top: 22px">Below are the scheduled external talks. As decribed in the syllabus, please attend at least two of these as part of the course requirements. At some point after the talk, fill out the <a href="https://forms.gle/Rymu9pHmo2uUznqJA"><b>talk attendence form</b></a>.</p>
+
+    <ul>
+      <li>T.B.D.</li>
+    </ul>
+
+
+    <div style="height:200px"></div>
+  </div>
+
+  <script src="js/site.js"></script>
+ </body>
+</html>

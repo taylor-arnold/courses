@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html lang="en">
+ <head>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>DSST289: Introduction to Data Science</title>
+
+  <meta name="description" content="title">
+  <meta name="author" content="Taylor Arnold">
+  <meta charset="UTF-8">
+
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/fonts.css">
+  <link rel="stylesheet" href="../css/site.css">
+ </head>
+
+ <body>
+  <div class="container">
+    <h1>Homework 20</h1>
+    <p style="padding: 0 1em 1em 1em; font-size: 0.9em">
+      <span style="padding-right: 0.5em">
+        <b>
+          <a href="../index.html">[← back]</a>
+        </b>
+      </span>
+    </p>
+    <p>
+      Assume you have two datasets loaded into Python. The first, <code>semesters</code>, has one row for each student in each semester they have been enrolled, with columns named <code>name</code>, <code>semester</code>, and <code>gpa</code>. The second, <code>students</code>, has one row for each student, with columns named <code>name</code>, <code>major</code>, <code>year</code>, <code>gpa</code>, and <code>languages</code>, the last of which holds all of the languages a student speaks packed into a single cell as text, separated by the character <code>|</code>, as in <code>"en|fr|es"</code>. Hand write the following.
+    </p>
+    <ol>
+      <li>The code that reshapes <code>semesters</code> into a table with one row for each semester and one column for each student, holding their GPA. Then write the code that turns the result back into a table with one row for each student in each semester.</li>
+      <li>A sentence naming the unit of observation of each of those two tables, and a question about the data that would be easier to answer with the wide one than with the long one.</li>
+      <li>Suppose you have only the wide table and you want to draw a line plot of GPA over time with one line per student. Explain in a sentence or two why you cannot do this directly, and then write the code that reshapes the data and draws the plot.</li>
+      <li>The code that turns <code>students</code> into a table with one row for each student and each language they speak, followed by the code that reports how many students in the class speak each language.</li>
+      <li>A short explanation, in your own words, of why we can pivot a table and then unpivot it back without losing anything, but cannot undo an aggregation the same way, and of what this implies about the shape in which we should store a dataset that we plan to keep for a long time.</li>
+    </ol>
+  </div>
+
+  <script src="../js/site.js"></script>
+ </body>
+</html>

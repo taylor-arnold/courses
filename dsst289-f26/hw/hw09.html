@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html lang="en">
+ <head>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>DSST289: Introduction to Data Science</title>
+
+  <meta name="description" content="title">
+  <meta name="author" content="Taylor Arnold">
+  <meta charset="UTF-8">
+
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/fonts.css">
+  <link rel="stylesheet" href="../css/site.css">
+ </head>
+
+ <body>
+  <div class="container">
+    <h1>Homework 09</h1>
+    <p style="padding: 0 1em 1em 1em; font-size: 0.9em">
+      <span style="padding-right: 0.5em">
+        <b>
+          <a href="../index.html">[← back]</a>
+        </b>
+      </span>
+    </p>
+    <p>
+      As in the previous homework, assume you have a dataset loaded into Python called <code>students</code>, with columns named <code>name</code>, <code>major</code>, <code>year</code>, <code>gpa</code>, and <code>study_hours</code>. Some students have not yet been assigned a GPA, so that column contains missing values. Hand write the following.
+    </p>
+    <ol>
+      <li>The code that returns a table with one row for each major, giving both the number of students in that major and the number of those students who actually have a GPA recorded, followed by a sentence explaining why it is worth knowing the difference before trusting an average GPA.</li>
+      <li>The code that returns the number of distinct majors represented in the class.</li>
+      <li>The code that summarizes the entire dataset in a single row, giving the total number of study hours, the average GPA, and the number of students, along with a sentence explaining why we cannot use <code>.agg</code> to do this.</li>
+      <li>The code that returns a table with one row for each major, giving the smallest GPA, the largest GPA, the median GPA, and the correlation between study hours and GPA within that major.</li>
+      <li>Finally, in a sentence or two of your own words, explain what it means to say that aggregation <em>reduces</em> rows, and give an example of a question about these students that aggregation therefore cannot answer.</li>
+    </ol>
+  </div>
+
+  <script src="../js/site.js"></script>
+ </body>
+</html>

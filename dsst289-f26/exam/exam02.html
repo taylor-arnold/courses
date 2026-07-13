@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+
+<html lang="en">
+ <head>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>DSST289: Introduction to Data Science</title>
+
+  <meta name="description" content="title">
+  <meta name="author" content="Taylor Arnold">
+  <meta charset="UTF-8">
+
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/fonts.css">
+  <link rel="stylesheet" href="../css/site.css">
+ </head>
+
+ <body>
+  <div class="container">
+    <h1>Exam II Study Guide</h1>
+    <p style="padding: 0 1em 1em 1em; font-size: 0.9em">
+      <span style="padding-right: 0.5em">
+        <b>
+          <a href="../index.html">[← back]</a>
+        </b>
+      </span>
+    </p>
+    <p>The second exam consists of 15 questions. All involve hand-writing short code blocks concerning the RVA flights dataset <code>rva</code>, which has one row for each flight leaving or arriving at Richmond International Airport, with the columns <code>year</code>, <code>month</code>, <code>day</code>, <code>dep_time</code>, <code>sched_dep_time</code>, <code>dep_delay</code>, <code>arr_time</code>, <code>sched_arr_time</code>, <code>arr_delay</code>, <code>carrier</code>, <code>flight</code>, <code>tailnum</code>, <code>origin</code>, <code>dest</code>, <code>air_time</code>, and <code>distance</code>. It is very similar in style to Exam I. You should generally be comfortable with the material in <a href="https://taylor-arnold.github.io/fds2/04_graphics.html" target="_blank" rel="noopener noreferrer">Chapter 4</a>, <a href="https://taylor-arnold.github.io/fds2/05_group.html" target="_blank" rel="noopener noreferrer">Chapter 5</a>, and <a href="https://taylor-arnold.github.io/fds2/06_window.html" target="_blank" rel="noopener noreferrer">Chapter 6</a>. However, only those items mentioned below, along with <u>everything listed on Exam I</u>, will be required for this exam.</p>
+    <ol>
+      <li>Building a plot by piping a dataset into <code>ggplot</code> with <code>.pipe(ggplot, aes(...))</code> and then adding geometries as further methods in the chain.</li>
+      <li>Creating a scatterplot with <code>geom_point</code>, which may have a variable or a fixed color or size.</li>
+      <li>Adding text to a plot with <code>geom_text</code>, which may have a variable or a fixed color or size. No need to build in nudging (it is not possible without seeing the full dataset to get the scale correct anyway).</li>
+      <li>Creating a line plot with <code>geom_line</code>, most often with a unit of time on the horizontal axis, and with an optional color aesthetic to draw one line per group.</li>
+      <li>Creating a bar plot with <code>geom_col</code> from a numeric column you have already computed, together with <code>coord_flip</code> to run the bars horizontally.</li>
+      <li>Knowing where a fixed aesthetic goes (outside of <code>aes</code>, but inside the geometry) versus a variable aesthetic (inside a call to <code>aes</code>), and being able to explain the difference.</li>
+      <li>Using <code>.group_by</code> along with <code>.agg</code> to summarize one or more variables with <code>.mean</code>, <code>.median</code>, <code>.min</code>, <code>.max</code>, <code>.sum</code>, <code>.first</code>, or <code>.last</code>. You should also be able to add a count by including <code>pl.len()</code>, and to return the groups in a predictable order with <code>maintain_order=True</code>.</li>
+      <li>Grouping by more than one column at a time.</li>
+      <li>Aggregating an expression rather than a bare column, such as counting the flights delayed more than thirty minutes with <code>(c.dep_delay > 30).sum()</code>.</li>
+      <li>Knowing the difference between <code>pl.len()</code>, <code>.count()</code>, and <code>.n_unique()</code>, and being able to say which one a given question calls for.</li>
+      <li>Summarizing an entire dataset in a single row using the aggregation syntax inside <code>.select</code>, and explaining why <code>.agg</code> cannot be used for this.</li>
+      <li>Using <code>.group_by</code> to apply <code>.head</code> or <code>.tail</code> to select a certain number of rows from each group, after an appropriate <code>.sort</code>.</li>
+      <li>Using <code>.over</code> inside of <code>.with_columns</code> to attach a group-level number to every row, and inside of <code>.filter</code> to compare each row against its own group.</li>
+      <li>Using the ordered methods <code>.shift</code>, <code>.rank</code>, and <code>.cum_sum</code>, including scoping them to a group with <code>.over</code>, and knowing why the <code>.sort</code> that comes before them matters.</li>
+      <li>Smoothing a column with <code>.rolling_mean(window_size=&lt;int&gt;)</code>, and saying which rows come back as missing values and why.</li>
+      <li>Deciding whether a given question is answered by <code>.group_by</code> with <code>.agg</code> or by <code>.over</code>, and explaining the choice in a sentence.</li>
+      <li>We will not have histograms, boxplots, density plots, bar plots that do their own counting, lines of best fit, scales, facets, or labels on this exam. Those all come from Chapter 7 and will appear on Exam III.</li>
+    </ol>
+    <p></p>
+    <p>Many questions will require putting multiple functions together in a method chain. All can be done with at most three data methods and three graphics methods. Your code should follow the class formatting rules of putting parentheses around the whole block, starting with the DataFrame, and having each method on its own line. You should be familiar with the other formatting rules regarding spacing and names, but these will not be graded on the exam.</p>
+
+    <h3>Practice Exam Questions and Answers</h3>
+    <p>The questions below use the <code>movie</code> dataset from the first study guide, which has one row for each film with the columns <code>year</code>, <code>title</code>, <code>mpa</code>, <code>runtime</code>, <code>gross</code>, <code>rating_count</code>, <code>rating</code>, and <code>metacritic</code>.</p>
+
+    <p>1. Compute the average runtime of the films by year. Include a count of the number of films in each year in the output table.</p>
+<pre>
+(
+    movie
+    .group_by(c.year, maintain_order=True)
+    .agg(
+        avg_runtime = c.runtime.mean(),
+        count = pl.len()
+    )
+)</pre>
+
+    <p>2. Create a scatterplot where the points are years, where the x-axis gives the average rating, the y-axis the average gross (amount of money it made), and all the points are in the color "yellow".</p>
+<pre>
+(
+    movie
+    .group_by(c.year)
+    .agg(
+        avg_rating = c.rating.mean(),
+        avg_gross = c.gross.mean()
+    )
+    .pipe(ggplot, aes(c.avg_rating, c.avg_gross))
+    .geom_point(color="yellow")
+)</pre>
+
+    <p>3. Create a text plot with the films from the year of your birth, with rating on the x-axis and gross on the y-axis, and the label given by the film title.</p>
+<pre>
+(
+    movie
+    .filter(c.year == 1985)
+    .pipe(ggplot, aes(c.rating, c.gross))
+    .geom_text(aes(label=c.title))
+)</pre>
+
+    <p>4. Create a line plot showing how the average gross of a film has changed over time, with one line for each MPA rating.</p>
+<pre>
+(
+    movie
+    .group_by(c.year, c.mpa)
+    .agg(avg_gross = c.gross.mean())
+    .sort(c.year)
+    .pipe(ggplot, aes(c.year, c.avg_gross))
+    .geom_line(aes(color=c.mpa))
+)</pre>
+
+    <p>5. Create a horizontal bar plot showing the number of films with each MPA rating.</p>
+<pre>
+(
+    movie
+    .group_by(c.mpa)
+    .agg(count = pl.len())
+    .pipe(ggplot, aes(c.mpa, c.count))
+    .geom_col()
+    .coord_flip()
+)</pre>
+
+    <p>6. For each MPA rating, count the number of films that have a rating above 8, without adding any new columns to the dataset first.</p>
+<pre>
+(
+    movie
+    .group_by(c.mpa, maintain_order=True)
+    .agg(
+        n_great = (c.rating > 8).sum()
+    )
+)</pre>
+
+    <p>7. Return the single highest-rated film in each year.</p>
+<pre>
+(
+    movie
+    .sort(c.rating, descending=True)
+    .group_by(c.year)
+    .head(n=1)
+)</pre>
+
+    <p>8. Summarize the whole dataset in a single row, giving the total gross of every film, the average rating, and the number of films.</p>
+<pre>
+# We cannot use .agg here, because in Polars .agg always belongs to a
+# .group_by. The same aggregation syntax inside .select collapses the
+# entire frame to a single row.
+(
+    movie
+    .select(
+        gross_total = c.gross.sum(),
+        avg_rating = c.rating.mean(),
+        n = pl.len()
+    )
+)</pre>
+
+    <p>9. Add a column to the data giving each film's rating minus the average rating of all the films released in the same year, keeping every film in the result.</p>
+<pre>
+(
+    movie
+    .with_columns(
+        rating_diff = c.rating - c.rating.mean().over(c.year)
+    )
+)</pre>
+
+    <p>10. Keep only the films whose gross is above the median gross of the films released in the same year, without adding any new columns to the dataset.</p>
+<pre>
+(
+    movie
+    .filter(c.gross > c.gross.median().over(c.year))
+)</pre>
+
+    <p>11. Add a column giving each film's rank by gross within its own year, with a rank of one going to the film that made the most money.</p>
+<pre>
+(
+    movie
+    .with_columns(
+        gross_rank = c.gross.rank(descending=True).over(c.year)
+    )
+)</pre>
+
+    <p>12. Compute the average gross of the films in each year, and then add a column giving the change in that average from the previous year.</p>
+<pre>
+(
+    movie
+    .group_by(c.year)
+    .agg(avg_gross = c.gross.mean())
+    .sort(c.year)
+    .with_columns(
+        change = c.avg_gross - c.avg_gross.shift(1)
+    )
+)</pre>
+
+    <p>13. Sort the films from the highest gross to the lowest and compute, for each film, the percentage of all the money made by every film in the dataset that is accounted for by that film and everyone above it.</p>
+<pre>
+# Note the two sums doing different jobs: .cum_sum() is a running total
+# that changes on every row, while .sum() is the fixed total of the
+# whole column.
+(
+    movie
+    .sort(c.gross, descending=True)
+    .select(
+        c.title,
+        c.gross,
+        cum_share = c.gross.cum_sum() / c.gross.sum() * 100
+    )
+)</pre>
+
+    <p>14. Compute the average rating of the films in each year, and then add a smoothed version of it, given by the average of that year and the four years before it. Which rows come back as missing values?</p>
+<pre>
+# The first four rows are null: they do not yet have a full window of
+# five years behind them.
+(
+    movie
+    .group_by(c.year)
+    .agg(avg_rating = c.rating.mean())
+    .sort(c.year)
+    .with_columns(
+        smooth = c.avg_rating.rolling_mean(window_size=5)
+    )
+)</pre>
+
+  </div>
+
+  <script src="../js/site.js"></script>
+ </body>
+</html>

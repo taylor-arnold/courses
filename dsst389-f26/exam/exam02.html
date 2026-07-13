@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+
+<html lang="en">
+ <head>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>DSST389: Advanced Data Science</title>
+
+  <meta name="description" content="title">
+  <meta name="author" content="Taylor Arnold">
+  <meta charset="UTF-8">
+
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/fonts.css">
+  <link rel="stylesheet" href="../css/site.css">
+ </head>
+
+ <body>
+  <div class="container">
+    <h1>Exam II Study Guide</h1>
+    <p style="padding: 0 1em 1em 1em; font-size: 0.9em">
+      <span style="padding-right: 0.5em">
+        <b>
+          <a href="../index.html">[← back]</a>
+        </b>
+      </span>
+      <span style="padding-right: 0.5em">
+        <b>
+          <a href="exam02-reference.pdf" target="_blank" rel="noopener noreferrer">[reference sheet]</a>
+        </b>
+      </span>
+    </p>
+
+    <p>The second exam is 75 minutes. It has six tasks, labeled A through F, with fifteen questions spread across them. It works exactly like the first exam: every task gives you a small dataset &mdash; a printed table, a JSON response, a handful of tokens &mdash; together with the code that runs on it, and your job is to say what comes out. You are given the code and the data and asked for the result.</p>
+
+    <p><b>You do not need to memorize any function names, arguments, or API parameters.</b> The <a href="exam02-reference.pdf" target="_blank" rel="noopener noreferrer">reference sheet</a> will be attached to your exam. It runs to two pages this time, because the unit covers four chapters, and it lists every method and every formula you could possibly need. Bring a calculator; several questions ask for a logarithm or a square root.</p>
+
+    <p>The exam covers <a href="https://taylor-arnold.github.io/fds2/12_apis.html" target="_blank" rel="noopener noreferrer">Chapter 12</a>, <a href="https://taylor-arnold.github.io/fds2/13_temporal_data.html" target="_blank" rel="noopener noreferrer">Chapter 13</a>, <a href="https://taylor-arnold.github.io/fds2/14_text_annotations.html" target="_blank" rel="noopener noreferrer">Chapter 14</a>, and <a href="https://taylor-arnold.github.io/fds2/15_text_vectors.html" target="_blank" rel="noopener noreferrer">Chapter 15</a>, along with Homeworks 5 through 13. Questions come in the same five forms as last time:</p>
+
+    <ul>
+      <li><b>Fill in the output.</b> A small table and a code block; write the table that comes back, or a named column of it, or just the number of rows.</li>
+      <li><b>Compute by hand.</b> A TF-IDF score, a PMI, an angle, a duration, a row count. Exact numbers, with units.</li>
+      <li><b>Find the trap.</b> Code that almost answers the question asked, containing one of the errors we have discussed all unit. Circle the offending line and say what the output shows instead.</li>
+      <li><b>Choose the code.</b> Several candidate blocks, one of which produces the stated result.</li>
+      <li><b>One sentence, with an anchor.</b> A short interpretation, always paired with something checkable: name the row that proves it, or the number that would change.</li>
+    </ul>
+
+    <h3>What You Need To Be Able To Do</h3>
+
+    <p>Only the following will be needed for the exam.</p>
+
+    <p><b>Collecting a corpus from an API.</b></p>
+    <ol>
+      <li>Given a JSON response printed as a nested block, and the loop that flattens it, writing out the rows that come back.</li>
+      <li>Given a <code>normalized</code> block, a <code>redirects</code> block, and a list of typed titles, giving the resolved title and the <code>page_id</code> of each, including the null of a title that matches no article.</li>
+      <li>Given a status code &mdash; 200, 404, 429, or 500 &mdash; saying what it means, whether it belongs in the cache, and what the collection loop does when it arrives.</li>
+      <li>Given a per-request limit and a number of results, saying how many requests the pagination loop makes and what tells it to stop.</li>
+      <li>Naming the rows that a collection step drops silently, saying what the resulting table looks like, and giving the check that would have caught it.</li>
+      <li>Saying what <code>page_id</code> can do that <code>doc_id</code> cannot and what <code>doc_id</code> can do that <code>page_id</code> cannot, and which of the two is the primary key.</li>
+      <li>Saying what the raw layer and the processed layer of the pipeline each hold, and which one you would need to rebuild the other.</li>
+    </ol>
+
+    <p><b>Dates, datetimes, and time zones.</b></p>
+    <ol start="8">
+      <li>Given <code>year</code>, <code>month</code>, and <code>day</code> columns, writing the call that builds a real date, and saying what type comes back.</li>
+      <li>Given a UTC timestamp and a target zone, giving the converted reading, and saying which of <code>replace_time_zone</code> and <code>convert_time_zone</code> states a claim about the data and which performs a calculation on it.</li>
+      <li>Given a table of timestamps, filling in a count of events per day in UTC and in a named zone, and naming the rows that land on a different day in the two.</li>
+      <li>Given a duration, converting it into hours or days, and saying what the <code>total_*</code> methods do to the part that does not divide evenly.</li>
+      <li>Given a date and a truncation unit, giving the truncated value, and saying what truncation buys you that the exact second does not.</li>
+    </ol>
+
+    <p><b>Ordered data and window functions.</b></p>
+    <ol start="13">
+      <li>Given a sorted table, filling in the column that <code>shift</code>, <code>diff</code>, or a rolling function produces, nulls included.</li>
+      <li>Saying what <code>.over()</code> protects you from, and giving the exact rows that go wrong without it.</li>
+      <li>Given a column of article sizes, identifying the reversions and counting them, and saying how the rule can be fooled in both directions.</li>
+      <li>Saying why a window defined as a count of rows is wrong on unevenly spaced data, and naming the method that fixes it.</li>
+      <li>Given two tables and a <code>join_asof</code>, filling in the joined column, naming any row matched to a stale record, and saying what <code>backward</code>, <code>forward</code>, and <code>nearest</code> each do to it.</li>
+      <li>Given a <code>join_where</code> condition, listing every pair it returns and naming the rows it returns nothing for.</li>
+    </ol>
+
+    <p><b>Annotating text.</b></p>
+    <ol start="19">
+      <li>Given a sentence, writing out the <code>tid</code>, <code>token</code>, <code>lemma</code>, and <code>upos</code> columns, and pointing at every row where the lemma differs from the token.</li>
+      <li>Given an annotation table, filling in the bigram column and counting the bigrams, and saying which adjacent pairs of words do <i>not</i> become bigrams and why.</li>
+      <li>Given word counts and a bigram count, computing the PMI, comparing it against the raw frequency, and saying what the minimum-count filter is protecting you from.</li>
+      <li>Given tokens with <code>ent_type</code> and <code>ent_iob</code>, assigning the <code>entity_id</code> that the cumulative sum produces and reassembling the text of each entity.</li>
+      <li>Given <code>dep</code> and <code>head_idx</code>, naming the root of a sentence, and filling in the output of a subject-verb or adjective-noun join.</li>
+      <li>Given an annotation table, computing the mean sentence length, the type-token ratio, and the mean word length, and saying what a ranking of documents by any of them is really a ranking of.</li>
+    </ol>
+
+    <p><b>Documents as vectors.</b></p>
+    <ol start="25">
+      <li>Given a small corpus, writing out the term-frequency matrix, giving the document frequency of each term, and counting the zeros.</li>
+      <li>Given a term frequency and a document frequency, computing a TF-IDF score with the smoothed formula on the reference sheet.</li>
+      <li>Given <code>min_df</code> and <code>max_df</code> as proportions, saying exactly which terms survive the filter.</li>
+      <li>Given document vectors, computing both the Euclidean and the angle distance, saying which of the two is right for text and why the other one fails.</li>
+      <li>Saying what the zeros of a document vector are, and what a term appearing in every document does to a distance.</li>
+    </ol>
+
+    <p>We will not have writing <code>requests</code> code from scratch, recalling any MediaWiki parameter name (<code>prop</code>, <code>cmtitle</code>, <code>rvprop</code>, and the rest are given in the question or on the reference sheet), reciting the list of dependency labels or entity types, predicting what spaCy would do to a sentence you have not been shown (the annotation table is always handed to you as data), the internals of UMAP, the <code>formatversion=2</code> response shape, writing a format string for an unusual date layout, or any time zone conversion that crosses a daylight-saving boundary.</p>
+
+    <h3>Practice Exam Questions and Answers</h3>
+
+    <p>The questions below use a small corpus of three authors. The <code>authors</code> table is the spine:</p>
+
+    <table border="1">
+      <tr><th>page_id</th><th>doc_id</th></tr>
+      <tr><td>101</td><td>Ada Kerr</td></tr>
+      <tr><td>102</td><td>Bram Vale</td></tr>
+      <tr><td>103</td><td>Cleo Nash</td></tr>
+    </table>
+
+    <h3>Task A. Collecting the Corpus</h3>
+
+    <p>You send one request to the Action API, asking for the titles <code>ada_kerr</code> and <code>Bram Vail</code> with <code>redirects=1</code>. Here is the response, in full.</p>
+
+<pre>
+{
+  "continue": {"plcontinue": "101|0|Bath", "continue": "||"},
+  "query": {
+    "normalized": [
+      {"from": "ada_kerr", "to": "Ada kerr"}
+    ],
+    "redirects": [
+      {"from": "Ada kerr", "to": "Ada Kerr"}
+    ],
+    "pages": {
+      "101": {
+        "pageid": 101,
+        "title": "Ada Kerr",
+        "length": 24500,
+        "touched": "2025-02-18T03:05:00Z"
+      },
+      "-1": {
+        "ns": 0,
+        "title": "Bram Vail",
+        "missing": ""
+      }
+    }
+  }
+}
+</pre>
+
+    <p><b>1.</b> The <code>resolve_titles</code> function builds a dictionary called <code>followed</code> out of the <code>normalized</code> and <code>redirects</code> blocks, then walks each title through it until it stops changing. Fill in the table it returns.</p>
+
+<pre>
+doc_id       resolved     page_id
+ada_kerr     Ada Kerr         101
+Bram Vail    Bram Vail       null
+
+`ada_kerr` takes TWO hops, not one. `followed` holds both substitutions:
+
+    {"ada_kerr": "Ada kerr", "Ada kerr": "Ada Kerr"}
+
+and the while loop applies them in turn: ada_kerr -> Ada kerr -> Ada Kerr,
+where it stops because "Ada Kerr" is not a key. The two hops are two different
+kinds of fix. NORMALIZATION is mechanical: MediaWiki turns the underscore into
+a space and capitalizes the first character, and only the first, which is why
+the intermediate title is the odd-looking "Ada kerr". The REDIRECT is a real
+pointer page, put there by an editor, that forwards "Ada kerr" to "Ada Kerr".
+This is why the loop is a `while` and not an `if`.
+
+`Bram Vail` is a typo and matches nothing. It appears in `pages` under the
+placeholder key "-1", carrying a `missing` flag and no `pageid` at all, so the
+lookup `pages.get(final, {}).get("pageid")` returns None.
+</pre>
+
+    <p><b>2.</b> Suppose you had looked the titles up without following the map: taking the <code>pages</code> block and keying it by title, then reading off the page ID for each title in your list. Say what you would get for each of the two authors, and say why the failure is worse than an error.</p>
+
+<pre>
+Both come back with nothing. `pages` is keyed by the FINAL title, "Ada Kerr",
+so a lookup of "ada_kerr" misses, and "Bram Vail" has no pageid to find. Both
+authors drop out of the corpus.
+
+It is worse than an error because nothing announces it. The code runs, the
+table is built, and it is simply two rows shorter than the list you started
+from. Ada Kerr is a real author with a real article, and she is gone for a
+reason that has nothing to do with her: an underscore. You would find out by
+comparing the row count of the resolved table against the length of your list,
+which is the check that `resolve_titles` makes possible and a bare lookup does
+not.
+</pre>
+
+    <p><b>3.</b> The response above is not the whole story: it carries a <code>continue</code> block. Suppose Ada Kerr's article has 1,200 links and the server returns at most 500 per request. Say how many requests the pagination loop makes, and say exactly what makes it stop.</p>
+
+<pre>
+THREE requests, returning 500, 500, and 200 links.
+
+The loop is `while True`, and it breaks on the ABSENCE of a key:
+
+    if "continue" not in data:
+        break
+    params.update(data["continue"])
+
+The first two responses carry a `continue` block, whose values are merged back
+into the parameters so the next request picks up where the last one left off.
+The third response returns the final 200 links and omits the block entirely,
+and that omission, rather than any count of links or requests, is what ends the
+loop. The code never needs to know that there are 1,200 links.
+</pre>
+
+    <p><b>4.</b> You now collect the daily page views for all three authors from the REST endpoint. Cleo Nash's page is new and has no view data, so the server answers her request with a 404. The loop is the one from the chapter, with <code>if response.status_code == 404: continue</code>. Say how many authors appear in the resulting <code>views</code> table, say what the 404 is doing in <code>allowable_codes</code>, and name the check that tells you an author went missing.</p>
+
+<pre>
+TWO authors: Ada Kerr and Bram Vale. Cleo Nash is not in the table at all,
+because the `continue` statement skips her before any row is appended. She is
+not there with zero views; she is not there at all, and no error was raised.
+
+This is the same failure you met on the first exam, wearing different clothes.
+There, an inner `sjoin` silently dropped the metro area that fell in no state.
+Here, a 404 silently drops the author with no page views. In both cases the
+table that comes back is perfectly well-formed and quietly short, and in both
+cases an absent row and a zero look identical while only the zero is a fact
+about the world.
+
+The 404 is in `allowable_codes` because it is a STABLE ANSWER, not a failure.
+Cleo Nash has no view data today and will have none tomorrow, so the response
+is worth remembering; caching it means the rerun never touches the network. A
+429 or a 500, by contrast, says the server was busy or broken, which is a
+condition that may well have passed by the next run, so those are left uncached
+and can be retried.
+
+The check is a row count: `len(authors)` is 3 and
+`views["doc_id"].n_unique()` is 2. Compare what you went in with against what
+came out, every time.
+</pre>
+
+    <h3>Task B. Dates and Time Zones</h3>
+
+    <p>The <code>revisions</code> table holds the recent edits to two of the three pages. Every timestamp is in <b>UTC</b>, as Wikipedia reports them, and the column has already been parsed with <code>.str.to_datetime()</code>.</p>
+
+    <table border="1">
+      <tr><th>doc_id</th><th>timestamp</th><th>user</th><th>size</th></tr>
+      <tr><td>Ada Kerr</td><td>2025-02-10 14:20:00</td><td>rho</td><td>4000</td></tr>
+      <tr><td>Ada Kerr</td><td>2025-02-11 03:40:00</td><td>sig</td><td>4600</td></tr>
+      <tr><td>Ada Kerr</td><td>2025-02-11 09:15:00</td><td>rho</td><td>4000</td></tr>
+      <tr><td>Ada Kerr</td><td>2025-02-18 03:05:00</td><td>tau</td><td>5200</td></tr>
+      <tr><td>Bram Vale</td><td>2025-02-10 23:30:00</td><td>sig</td><td>7000</td></tr>
+      <tr><td>Bram Vale</td><td>2025-02-11 01:30:00</td><td>rho</td><td>6400</td></tr>
+      <tr><td>Bram Vale</td><td>2025-02-12 15:30:00</td><td>sig</td><td>7000</td></tr>
+    </table>
+
+    <p>New York is five hours behind UTC on all of these dates.</p>
+
+<pre>
+(
+    revisions
+    .with_columns(day = c.timestamp.dt.date())
+    .group_by(c.day)
+    .agg(n = pl.len())
+    .sort(c.day)
+)
+</pre>
+
+    <p><b>5.</b> Fill in the output. Then rewrite the first line to count the edits by the day they happened <i>in New York</i>, fill that in too, and name every row that lands on a different day in the two tables.</p>
+
+<pre>
+In UTC:                        In New York:
+
+day           n                day           n
+2025-02-10    2                2025-02-10    4
+2025-02-11    3                2025-02-11    1
+2025-02-12    1                2025-02-12    1
+2025-02-18    1                2025-02-17    1
+
+The line becomes:
+
+    day = (
+        c.timestamp
+        .dt.replace_time_zone("UTC")
+        .dt.convert_time_zone("America/New_York")
+        .dt.date()
+    )
+
+THREE rows change day, and all three are edits made in the small hours of the
+UTC morning, which are the previous evening in New York:
+
+    Ada Kerr  02-11 03:40 UTC -> 02-10 22:40 EST
+    Ada Kerr  02-18 03:05 UTC -> 02-17 22:05 EST
+    Bram Vale 02-11 01:30 UTC -> 02-10 20:30 EST
+
+Both tables have seven edits and four days, and almost everything else about
+them agrees, which is what makes this dangerous. But the busiest day is not the
+same day: it is the 11th in UTC, with three edits, and the 10th in New York,
+with four. And the 18th does not appear in the New York table at all; the 17th
+does, a day on which nothing whatever happened in UTC. A sentence like "the
+page was busiest on the 11th" is a claim about a time zone, not about the world,
+and the data cannot tell you which zone the reader has in mind.
+</pre>
+
+    <p><b>6.</b> A classmate writes <code>c.timestamp.dt.convert_time_zone("America/New_York")</code>, with no <code>replace_time_zone</code> in front of it. On this data the answer is correct. Say why it is correct here, why that is the problem rather than the reassurance, and say what the mirror-image mistake is.</p>
+
+<pre>
+It is correct here because converting a NAIVE datetime silently assumes it was
+UTC to begin with, and our timestamps really are UTC. The assumption happens to
+be true, so the right numbers come out and nothing warns anyone.
+
+That is exactly the problem. The assumption is now invisible: it lives in the
+behavior of the library rather than in the code, where nobody can read it,
+check it, or notice when it stops holding. Point the same line at a column of
+naive LOCAL timestamps from some other source, and it will shift every one of
+them by the offset from UTC, silently, and the code will look no different.
+Writing `.dt.replace_time_zone("UTC")` first costs one line and turns a hidden
+assumption into a statement a reader can disagree with.
+
+The mirror-image mistake is calling `replace_time_zone` on a column that is
+already AWARE. That overwrites the label while leaving the clock reading alone,
+which MOVES THE INSTANT by however many hours separate the two zones. The two
+methods look alike and do opposite things:
+
+    replace_time_zone  states what the reading always meant  (a claim)
+    convert_time_zone  restates a known instant in a new zone (a calculation)
+</pre>
+
+    <h3>Task C. Window Functions on Time</h3>
+
+<pre>
+(
+    revisions
+    .sort(c.doc_id, c.timestamp)
+    .with_columns(
+        size_diff = c.size.diff().over(c.doc_id),
+        is_reversion = c.size == c.size.shift(2).over(c.doc_id)
+    )
+)
+</pre>
+
+    <p><b>7.</b> Fill in both new columns for all seven rows. Then say how many rows survive <code>.filter(c.is_reversion)</code>, and be careful about the rows at the top of each group.</p>
+
+<pre>
+doc_id      timestamp             size   size_diff   is_reversion
+Ada Kerr    2025-02-10 14:20:00   4000        null           null
+Ada Kerr    2025-02-11 03:40:00   4600        +600           null
+Ada Kerr    2025-02-11 09:15:00   4000        -600           true
+Ada Kerr    2025-02-18 03:05:00   5200       +1200          false
+Bram Vale   2025-02-10 23:30:00   7000        null           null
+Bram Vale   2025-02-11 01:30:00   6400        -600           null
+Bram Vale   2025-02-12 15:30:00   7000        +600           true
+
+TWO rows survive the filter.
+
+The `is_reversion` column is not false at the top of each group, it is NULL.
+`shift(2)` has nothing to reach back to for the first two rows of an author, so
+it returns null, and `size == null` is null rather than false: a comparison
+against an unknown value is unknown, not untrue. `.filter()` keeps only rows
+that are true, so the nulls are dropped along with the false, and the answer
+comes out right. But it comes out right by accident, and if you had written
+`.filter(~c.is_reversion)` expecting the non-reversions, you would have gotten
+one row, not five.
+
+`.over(c.doc_id)` is what keeps Bram Vale's first edit from reaching back into
+Ada Kerr's last one. Without it, `diff()` runs straight across the boundary and
+gives Bram's first row a size_diff of 7000 - 5200 = +1800, an edit that never
+happened, made by nobody, between two different articles.
+</pre>
+
+    <p><b>8.</b> Now compute the gap between consecutive edits, <code>since_last = c.timestamp - c.timestamp.shift(1).over(c.doc_id)</code>. Write out Ada Kerr's three gaps. Then give her mean gap three ways: as a duration, as <code>c.since_last.dt.total_hours().mean()</code>, and as <code>c.since_last.dt.total_days().mean()</code>. The three do not agree. Explain.</p>
+
+<pre>
+Ada Kerr's gaps:
+
+    02-10 14:20 -> 02-11 03:40      13h 20m
+    02-11 03:40 -> 02-11 09:15       5h 35m
+    02-11 09:15 -> 02-18 03:05    6d 17h 50m
+
+The true mean is (13h20m + 5h35m + 161h50m) / 3 = 180h 45m / 3 = 60h 15m, or
+2d 12h 15m. That is what `c.since_last.mean()` returns, because a Duration
+averages exactly.
+
+    c.since_last.mean()                    2d 12h 15m   (= 60.25 hours)
+    c.since_last.dt.total_hours().mean()   59.67
+    c.since_last.dt.total_days().mean()     2.0
+
+The `total_*` methods TRUNCATE TOWARD ZERO, and they do it to each value
+BEFORE the mean, not after. In hours the three gaps become 13, 5, and 161,
+throwing away 20m, 35m, and 50m, so the mean lands at 179/3 = 59.67 instead of
+60.25. The error is small but it is not random: truncation only ever rounds
+down, so the number is biased low, and it always will be.
+
+In days it is a catastrophe. The three gaps become 0, 0, and 6. Both of the
+short gaps are annihilated, and the mean of 2.0 days is really the mean of one
+gap and two zeros. The rule is that the unit has to be FINER than the intervals
+you are measuring. If your gaps are hours, do not ask for days.
+</pre>
+
+    <p><b>9.</b> You want to smooth the article size over time. A classmate writes <code>c.size.rolling_mean(window_size=3)</code>. Circle what is wrong with it on this data, and write the line that fixes it.</p>
+
+<pre>
+`rolling_mean` defines its window as a COUNT OF ROWS, which assumes the rows
+are evenly spaced in time. Ada Kerr's are not: her second and third edits are
+5h 35m apart, and her third and fourth are nearly SEVEN DAYS apart. A three-row
+window over that series averages a single morning in one place and a whole week
+in another. The window is measured in the wrong units, and the number it
+produces means something different in every row.
+
+The fix is the time-aware version, which takes the timestamp column as `by` and
+a duration string as the window:
+
+    size_smooth = c.size.rolling_mean_by(by=c.timestamp, window_size="30d")
+
+Note also that the classmate's line is missing `.over(c.doc_id)`. Every ordered
+function needs it, and a rolling mean is no exception: without it the window
+slides straight out of Ada Kerr's article and into Bram Vale's.
+</pre>
+
+    <h3>Task D. Joining on Time</h3>
+
+    <p>The <code>page_views</code> table records the daily views of each page. Note that it stops on the 12th.</p>
+
+    <table border="1">
+      <tr><th>doc_id</th><th>year</th><th>month</th><th>day</th><th>views</th></tr>
+      <tr><td>Ada Kerr</td><td>2025</td><td>2</td><td>10</td><td>300</td></tr>
+      <tr><td>Ada Kerr</td><td>2025</td><td>2</td><td>11</td><td>500</td></tr>
+      <tr><td>Ada Kerr</td><td>2025</td><td>2</td><td>12</td><td>250</td></tr>
+      <tr><td>Bram Vale</td><td>2025</td><td>2</td><td>10</td><td>800</td></tr>
+      <tr><td>Bram Vale</td><td>2025</td><td>2</td><td>11</td><td>900</td></tr>
+      <tr><td>Bram Vale</td><td>2025</td><td>2</td><td>12</td><td>700</td></tr>
+    </table>
+
+<pre>
+views_daily = (
+    page_views
+    .select(
+        c.doc_id,
+        moment = pl.date(c.year, c.month, c.day).cast(pl.Datetime),
+        views = c.views
+    )
+    .sort(c.moment)
+)
+
+(
+    revisions
+    .sort(c.timestamp)
+    .join_asof(
+        views_daily,
+        left_on="timestamp",
+        right_on="moment",
+        by="doc_id",
+        strategy="backward"
+    )
+)
+</pre>
+
+    <p><b>10.</b> Fill in the <code>views</code> column of the output, for all seven edits. Exactly one of the seven is not the view count for the day the edit was made. Name it, say what the join did instead of returning null, and say what <code>by="doc_id"</code> is doing.</p>
+
+<pre>
+doc_id      timestamp             size   views
+Ada Kerr    2025-02-10 14:20:00   4000     300
+Bram Vale   2025-02-10 23:30:00   7000     800
+Bram Vale   2025-02-11 01:30:00   6400     900
+Ada Kerr    2025-02-11 03:40:00   4600     500
+Ada Kerr    2025-02-11 09:15:00   4000     500
+Bram Vale   2025-02-12 15:30:00   7000     700
+Ada Kerr    2025-02-18 03:05:00   5200     250   <-- STALE
+
+The bad row is Ada Kerr's edit of 18 February. The page view table stops on the
+12th, so there is no record for the 18th. A `backward` asof join does not
+notice or care: it takes the most recent record AT OR BEFORE the edit, and the
+most recent record it can find is the 12th, six days earlier. So the edit is
+labeled with 250 views, and 250 is not a fact about the 18th of February.
+
+This is the failure mode of every asof join. It NEVER RETURNS NULL for want of
+a nearby match, because "nearest at or before" has no notion of how far back is
+too far. It will reach back a day, a week, or a decade with the same silence,
+and the stale value is indistinguishable from a real one once it is in the
+column. If you want the join to admit defeat, you have to say so, with the
+`tolerance` argument.
+
+`by="doc_id"` demands an exact match on the author before the nearest-in-time
+search begins, so Ada Kerr's edits are matched against Ada Kerr's traffic and
+nobody else's. Without it, her 18 February edit would take whichever view
+record was closest in time, which is Bram Vale's 700. It is doing the same job
+that `.over()` does for a window function: stopping an ordered operation from
+running across the boundary between one group and the next.
+</pre>
+
+    <p><b>11.</b> You want to know whether edits follow attention. Say what <code>strategy="nearest"</code> would do to this table, giving the rows that change, and say why it would wreck the question. Then say what <code>strategy="forward"</code> would do to the last row.</p>
+
+<pre>
+Two rows change, and both change into a number from the FUTURE:
+
+    Ada Kerr  02-10 14:20    300 -> 500    (the 11th's count)
+    Bram Vale 02-10 23:30    800 -> 900    (the 11th's count)
+
+An edit made at 14:20 on the 10th is nine hours and forty minutes from midnight
+on the 11th and fourteen hours and twenty minutes from midnight on the 10th, so
+"nearest" picks the 11th. It is not wrong about the arithmetic. It is wrong
+about the world.
+
+The question was whether edits follow attention: whether a page being read
+today makes it more likely to be edited today. `nearest` answers it by handing
+each edit the readership of the day AFTER it, and so builds the correlation you
+were trying to test directly into the data. You would find that edits are
+followed by attention, which is a different claim, and you would find it
+whether or not it was true. When one variable is supposed to explain another,
+the join must never be allowed to reach forward in time.
+
+`strategy="forward"` would give the last row NULL. It matches each edit to the
+next view record at or after it, and Ada Kerr has no view record after 18
+February. It is the only one of the three strategies that admits it has nothing
+to offer, which is worth noticing: `backward` handed the same row a six-day-old
+number without comment.
+</pre>
+
+    <p>The <code>meta</code> table gives each author's dates. It has a fourth author, from much later.</p>
+
+    <table border="1">
+      <tr><th>doc_id</th><th>born</th><th>died</th></tr>
+      <tr><td>Ada Kerr</td><td>1810</td><td>1865</td></tr>
+      <tr><td>Bram Vale</td><td>1840</td><td>1902</td></tr>
+      <tr><td>Cleo Nash</td><td>1860</td><td>1931</td></tr>
+      <tr><td>Dov Pike</td><td>1935</td><td>1990</td></tr>
+    </table>
+
+<pre>
+(
+    meta
+    .join_where(
+        meta,
+        (c.born &lt;= c.born_right)
+        &amp; (c.died &gt; c.born_right)
+        &amp; (c.doc_id != c.doc_id_right)
+    )
+)
+</pre>
+
+    <p><b>12.</b> List every row this returns. Then say why each overlapping pair appears once rather than twice, and name the author who appears nowhere.</p>
+
+<pre>
+THREE rows:
+
+doc_id       born   died   doc_id_right   born_right
+Ada Kerr     1810   1865   Bram Vale            1840
+Ada Kerr     1810   1865   Cleo Nash            1860
+Bram Vale    1840   1902   Cleo Nash            1860
+
+Each pair appears once because the condition is ASYMMETRIC. It asks that the
+left author be born no later than the right one, so of the two ways to write
+any pair, only the one with the earlier-born author on the left survives.
+Compare this with the `touches` self-join on the first exam, where every shared
+border came back twice: there the predicate was symmetric, and it had to be,
+because a border seen from Ash is the same border seen from Birch. Here, "was
+alive when the other was born" is a claim about a direction in time.
+
+DOV PIKE appears nowhere, on either side. He was born in 1935, after all three
+of the others were born, so he never satisfies `born <= born_right` as a left
+row. And he was born four years after Cleo Nash died, so no earlier author was
+still alive to satisfy `died > born_right` against him as a right row. He
+simply does not overlap with anyone.
+
+That near-miss, Cleo Nash dying in 1931 and Dov Pike born in 1935, is the whole
+point of the corpus. Spread 75 authors over eight centuries and the overlap
+table is sparse and legible, and a gap of four years is visible in it. Run the
+same code on the 376 Victorians, all born within a few decades of one another,
+and almost everyone overlaps almost everyone: the table comes back with
+thousands of rows, and it says nothing at all.
+</pre>
+
+    <h3>Task E. Annotations</h3>
+
+    <p>Below is the annotation table that <code>DSText.process</code> produced for the Ada Kerr page, which is two sentences long. Take it as given; it is the data, not a prediction you are being asked to make.</p>
+
+    <p><i>Sentence 1:</i> Ada Kerr published a Gothic novel in 1847. &nbsp;&nbsp; <i>Sentence 2:</i> The novelist admired Bram Vale.</p>
+
+    <table border="1">
+      <tr><th>sid</th><th>tid</th><th>token</th><th>lemma</th><th>upos</th><th>is_alpha</th><th>dep</th><th>head_idx</th><th>ent_type</th><th>ent_iob</th></tr>
+      <tr><td>1</td><td>1</td><td>Ada</td><td>Ada</td><td>PROPN</td><td>true</td><td>compound</td><td>2</td><td>PERSON</td><td>B</td></tr>
+      <tr><td>1</td><td>2</td><td>Kerr</td><td>Kerr</td><td>PROPN</td><td>true</td><td>nsubj</td><td>3</td><td>PERSON</td><td>I</td></tr>
+      <tr><td>1</td><td>3</td><td>published</td><td>publish</td><td>VERB</td><td>true</td><td>ROOT</td><td>3</td><td></td><td>O</td></tr>
+      <tr><td>1</td><td>4</td><td>a</td><td>a</td><td>DET</td><td>true</td><td>det</td><td>6</td><td></td><td>O</td></tr>
+      <tr><td>1</td><td>5</td><td>Gothic</td><td>gothic</td><td>ADJ</td><td>true</td><td>amod</td><td>6</td><td></td><td>O</td></tr>
+      <tr><td>1</td><td>6</td><td>novel</td><td>novel</td><td>NOUN</td><td>true</td><td>dobj</td><td>3</td><td></td><td>O</td></tr>
+      <tr><td>1</td><td>7</td><td>in</td><td>in</td><td>ADP</td><td>true</td><td>prep</td><td>3</td><td></td><td>O</td></tr>
+      <tr><td>1</td><td>8</td><td>1847</td><td>1847</td><td>NUM</td><td><b>false</b></td><td>pobj</td><td>7</td><td>DATE</td><td>B</td></tr>
+      <tr><td>1</td><td>9</td><td>.</td><td>.</td><td>PUNCT</td><td><b>false</b></td><td>punct</td><td>3</td><td></td><td>O</td></tr>
+      <tr><td>2</td><td>1</td><td>The</td><td>the</td><td>DET</td><td>true</td><td>det</td><td>2</td><td></td><td>O</td></tr>
+      <tr><td>2</td><td>2</td><td>novelist</td><td>novelist</td><td>NOUN</td><td>true</td><td>nsubj</td><td>3</td><td></td><td>O</td></tr>
+      <tr><td>2</td><td>3</td><td>admired</td><td>admire</td><td>VERB</td><td>true</td><td>ROOT</td><td>3</td><td></td><td>O</td></tr>
+      <tr><td>2</td><td>4</td><td>Bram</td><td>Bram</td><td>PROPN</td><td>true</td><td>compound</td><td>5</td><td>PERSON</td><td>B</td></tr>
+      <tr><td>2</td><td>5</td><td>Vale</td><td>Vale</td><td>PROPN</td><td>true</td><td>dobj</td><td>3</td><td>PERSON</td><td>I</td></tr>
+      <tr><td>2</td><td>6</td><td>.</td><td>.</td><td>PUNCT</td><td><b>false</b></td><td>punct</td><td>3</td><td></td><td>O</td></tr>
+    </table>
+
+<pre>
+bigrams = (
+    anno
+    .filter(c.is_alpha)
+    .with_columns(
+        next_token = c.lemma.shift(-1).over([c.doc_id, c.sid]),
+        next_is_alpha = c.is_alpha.shift(-1).over([c.doc_id, c.sid])
+    )
+    .filter(c.next_is_alpha)
+    .with_columns(bigram = c.lemma + " " + c.next_token)
+)
+</pre>
+
+    <p><b>13.</b> How many bigrams come back? Write them all out. Then say why <code>in 1847</code> is not among them, and why <code>publish</code> appears where the text says <i>published</i>.</p>
+
+<pre>
+TEN bigrams, six from the first sentence and four from the second:
+
+    Ada Kerr        the novelist
+    Kerr publish    novelist admire
+    publish a       admire Bram
+    a gothic        Bram Vale
+    gothic novel
+    novel in
+
+`in 1847` is not a bigram because 1847 IS NOT ALPHABETIC. `.filter(c.is_alpha)`
+runs first and removes it, along with both periods, so by the time the shift
+happens the last surviving token of sentence one is `in`, and `in` has nothing
+after it to pair with. Notice what this leaves behind: `novel in`, a bigram
+that is pure grammatical residue. Filtering to alphabetic tokens does not just
+drop the numbers, it silently CLOSES THE GAP where they were and pairs their
+neighbors with each other.
+
+`publish` appears because the bigram is built from `lemma`, not `token`. That
+is usually what you want, since it collapses "published", "publishes", and
+"publishing" into one countable thing, but it means the bigram column does not
+contain any string that literally occurs in the text.
+</pre>
+
+    <p><b>14.</b> A classmate writes <code>.over([c.doc_id])</code> in both places, dropping <code>c.sid</code>. Say how many bigrams they get, and write out the one that is wrong.</p>
+
+<pre>
+ELEVEN. The extra one is:
+
+    in the
+
+There is no such phrase on the page. It is manufactured out of the last word of
+sentence one and the first word of sentence two, which sit next to each other
+in the TABLE but not in the TEXT. Grouping by document alone lets `shift(-1)`
+run straight across the sentence boundary, and it will do this once per
+sentence break: on a real Wikipedia article with four hundred sentences, this
+line quietly invents four hundred bigrams, every one of them a period in
+disguise.
+
+They are worse than noise, because they are systematic. The last word of an
+English sentence and the first word of the next are not a random pair, so these
+phantom bigrams have their own skewed distribution, and they will show up in a
+PMI ranking looking exactly like collocations.
+</pre>
+
+    <p>Here is a token strip from the Bram Vale page, with only the entity columns shown.</p>
+
+    <table border="1">
+      <tr><th>tid</th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td></tr>
+      <tr><th>token</th><td>Bram</td><td>Vale</td><td>,</td><td>Cleo</td><td>Nash</td><td>,</td><td>and</td><td>Ada</td><td>Kerr</td><td>met</td><td>in</td><td>Bath</td><td>.</td></tr>
+      <tr><th>ent_type</th><td>PERSON</td><td>PERSON</td><td></td><td>PERSON</td><td>PERSON</td><td></td><td></td><td>PERSON</td><td>PERSON</td><td></td><td></td><td>GPE</td><td></td></tr>
+      <tr><th>ent_iob</th><td>B</td><td>I</td><td>O</td><td>B</td><td>I</td><td>O</td><td>O</td><td>B</td><td>I</td><td>O</td><td>O</td><td>B</td><td>O</td></tr>
+    </table>
+
+<pre>
+entities = (
+    anno
+    .filter(c.ent_type != "")
+    .with_columns(new_entity = c.ent_iob == "B")
+    .with_columns(entity_id = c.new_entity.cum_sum().over([c.doc_id]))
+    .group_by([c.doc_id, c.entity_id, c.ent_type])
+    .agg(entity_text = c.token.str.join(" "))
+)
+</pre>
+
+    <p><b>15.</b> Write out the <code>entity_id</code> that the cumulative sum assigns to each surviving token, then the entity text of each group. Then say what would come back if the code had grouped runs of consecutive tokens sharing the same <code>ent_type</code> instead, and explain what the <code>B</code> tag is for.</p>
+
+<pre>
+The filter removes every token whose ent_type is empty, leaving seven:
+
+    token       Bram  Vale  Cleo  Nash  Ada  Kerr  Bath
+    ent_iob        B     I     B     I    B     I     B
+    new_entity  true false  true false true false  true
+    entity_id      1     1     2     2    3     3     4
+
+Four entities:
+
+    1   PERSON   Bram Vale
+    2   PERSON   Cleo Nash
+    3   PERSON   Ada Kerr
+    4   GPE      Bath
+
+Grouping runs of the same ent_type instead gives TWO:
+
+    PERSON   Bram Vale Cleo Nash Ada Kerr
+    GPE      Bath
+
+Three people collapse into one six-word person who does not exist.
+
+This is what the B tag is for, and this is why it cannot be inferred from
+ent_type. In the original text the three names are separated by commas and an
+"and" -- but those tokens have no entity type, so THE FILTER ALREADY THREW THEM
+AWAY. By the time the grouping runs, the six name tokens are adjacent and
+indistinguishable from a single long entity. Nothing left in the table can tell
+you where one person ends and the next begins except the B, which is precisely
+the information the model recorded there. Note also that the cumulative sum is
+`.over([c.doc_id])` alone, not over sid: entity numbering runs continuously
+through the whole document rather than restarting each sentence.
+</pre>
+
+<pre>
+verbs = (
+    anno
+    .filter(c.upos == "VERB")
+    .select(c.doc_id, c.sid, verb_idx = c.tid, verb = c.lemma)
+)
+
+(
+    anno
+    .filter(c.dep == "nsubj")
+    .select(c.doc_id, c.sid, subject = c.lemma, verb_idx = c.head_idx)
+    .join(verbs, on=[c.doc_id, c.sid, c.verb_idx])
+)
+</pre>
+
+    <p><b>16.</b> Fill in the output. Then say what happens if <code>c.sid</code> is dropped from the join key, giving the exact rows that come back. Finally, name the root of each sentence and say what its <code>head_idx</code> points at.</p>
+
+<pre>
+Two rows:
+
+    subject     verb
+    Kerr        publish
+    novelist    admire
+
+Drop `c.sid` from the key and you get FOUR:
+
+    subject     verb
+    Kerr        publish
+    Kerr        admire      <-- invented
+    novelist    publish     <-- invented
+    novelist    admire
+
+The verb of sentence one sits at tid 3, and so does the verb of sentence two.
+`head_idx` is numbered WITHIN THE SENTENCE, so "3" is not an address until you
+say which sentence you are in. Join on the number alone and every subject
+pointing at token 3 matches every verb sitting at token 3, anywhere in the
+document. Ada Kerr never admired anything and the novelist never published
+anything, but the table says both, with a straight face.
+
+This is why the wrapper renumbers tokens from the start of each sentence rather
+than the start of the document: it puts `tid` and `head_idx` in the same
+coordinate system, so that matching them is an ordinary join. The price is that
+the sentence id becomes part of the key, and forgetting it does not raise an
+error. It silently multiplies your rows.
+
+The root of each sentence is its main verb: `published` (sid 1, tid 3) and
+`admired` (sid 2, tid 3). The root's head_idx POINTS AT ITSELF, 3 in both cases,
+because the root is the one token in a sentence that depends on nothing else,
+and the wrapper marks that by pointing it at its own index rather than leaving
+it null.
+</pre>
+
+    <p><b>17.</b> Compute the mean sentence length in words, the type-token ratio, and the mean word length for this page. Then say what is wrong with the TTR you just computed.</p>
+
+<pre>
+Sentence length counts alphabetic tokens, so 1847 and the periods do not count:
+
+    sid 1:  7 words     sid 2:  5 words     mean = 6.0
+
+Type-token ratio, over the 12 alphabetic tokens:
+
+    lemmas: Ada Kerr publish a gothic novel in
+            the novelist admire Bram Vale
+
+    n_tokens = 12,  n_types = 12,  TTR = 12 / 12 = 1.00
+
+Mean word length uses `token`, not `lemma`, and counts characters:
+
+    Ada 3, Kerr 4, published 9, a 1, Gothic 6, novel 5, in 2,
+    The 3, novelist 8, admired 7, Bram 4, Vale 4
+
+    56 characters / 12 tokens = 4.67
+
+The TTR is 1.00, the maximum possible value, and it means NOTHING AT ALL. Not
+one lemma repeats in twelve tokens, which is not a fact about Ada Kerr's
+vocabulary, it is a fact about twelve being a small number. Any twelve-token
+document would score near 1.00, and any ten-thousand-token document is
+guaranteed not to, because "the" will have come round again long before the
+end.
+
+TTR falls as a document grows, always, and so a ranking of the 75 pages by TTR
+is substantially a ranking of the 75 pages by SHORTNESS. Fixing this means
+computing the ratio on a fixed-size sample of tokens from each document, so
+that every page is measured over the same length.
+
+And there is a second problem underneath the first, which no sampling repairs.
+These are Wikipedia articles. "Chaucer's page has the longest sentences" is a
+claim about the prose style of the Wikipedians who wrote about Chaucer, and
+Chaucer had no hand in it.
+</pre>
+
+    <h3>Task F. TF-IDF and Document Vectors</h3>
+
+    <p>A corpus of four documents. Each has already been lemmatized and filtered to alphabetic tokens, so what you see is what <code>compute_tfidf</code> sees.</p>
+
+<pre>
+Doc 1:   the  poet   write  poem
+Doc 2:   the  poet   write  novel
+Doc 3:   the  novel  sell   well
+Doc 4:   the  poem   sell   well
+</pre>
+
+    <p><b>18.</b> Write out the term-frequency matrix, one row per document and one column per distinct term. Underneath it, give the document frequency of each term. Then count the zeros, and say what that fraction would look like for the 75 Wikipedia pages.</p>
+
+<pre>
+         the   poet   write   poem   novel   sell   well
+Doc 1      1      1       1      1       0      0      0
+Doc 2      1      1       1      0       1      0      0
+Doc 3      1      0       0      0       1      1      1
+Doc 4      1      0       0      1       0      1      1
+
+    df     4      2       2      2       2      2      2
+
+The matrix is 4 x 7 = 28 cells, of which 16 are non-zero (every document has
+four distinct terms) and 12 ARE ZERO: 43% of the matrix.
+
+On the real corpus the fraction is not 43% but something like 99%. The
+vocabulary of 75 Wikipedia biographies runs to tens of thousands of lemmas, and
+any single page uses a few thousand of them at most. Nearly every cell is zero,
+which is what "sparse" means and why the wrapper keeps the table in LONG format,
+with one row per non-zero pair, rather than materializing a wide matrix that
+would be almost entirely empty.
+</pre>
+
+    <p><b>19.</b> Using the smoothed formula from the reference sheet, compute the TF-IDF score of <code>the</code>, <code>poet</code>, <code>write</code>, and <code>poem</code> in Doc 1. Rank them. Then say what <code>max_df=0.5</code> would do, and be careful about the boundary.</p>
+
+<pre>
+Every document has 4 tokens, so tf_norm = 1/4 = 0.25 for every term present.
+With N = 4:
+
+    the      df = 4    idf = ln(5/5) + 1 = 0 + 1     = 1.000
+    poet     df = 2    idf = ln(5/3) + 1 = 0.511 + 1 = 1.511
+    write    df = 2    idf = 1.511
+    poem     df = 2    idf = 1.511
+
+    tfidf = tf_norm x idf
+
+    poet    0.25 x 1.511 = 0.378
+    write   0.25 x 1.511 = 0.378
+    poem    0.25 x 1.511 = 0.378
+    the     0.25 x 1.000 = 0.250
+
+The three content words tie at 0.378 and `the` comes last at 0.250. The ranking
+does describe the phrase: the words that distinguish Doc 1 from the others beat
+the word that does not.
+
+But look at what `the` scored. It appears in ALL FOUR documents, and its TF-IDF
+is still 0.250, comfortably above zero and above every term it does not
+contain. THE SMOOTHING DID THAT. Because the formula is ln((N+1)/(df+1)) + 1,
+the trailing +1 puts a floor under the idf: a term in every single document
+gets ln(1) + 1 = 1, not 0. An unsmoothed log(N/df) would have given it exactly
+zero and removed it from the vectors for free. The version we use does not, so
+it CANNOT act as an automatic stop word list, and that job falls to max_df.
+
+max_df=0.5 keeps terms whose df_prop is <= 0.5. Here df_prop is 4/4 = 1.0 for
+`the` and 2/4 = 0.5 for everything else. So `the` is dropped and the other six
+are all KEPT: the comparison is `<=`, and they sit exactly on the boundary.
+This is worth being careful about, because a term in exactly half the documents
+survives max_df=0.5, which is not what the name suggests.
+</pre>
+
+    <p><b>20.</b> Take a vocabulary of three terms, in the order (<code>poem</code>, <code>novel</code>, <code>city</code>), and three documents with the TF-IDF vectors below. Compute the Euclidean distance and the angle distance from A to B and from A to C. The two measures disagree about A's nearest neighbor. Say which is right, and say what B is.</p>
+
+<pre>
+A = (4, 0, 3)        B = (20, 0, 15)        C = (0, 5, 0)
+</pre>
+
+<pre>
+Lengths first: ||A|| = sqrt(16 + 9) = 5, ||B|| = sqrt(400 + 225) = 25,
+||C|| = 5.
+
+EUCLIDEAN
+    A to B:  B - A = (16, 0, 12),  sqrt(256 + 144) = sqrt(400) = 20
+    A to C:  A - C = (4, -5, 3),   sqrt(16 + 25 + 9) = sqrt(50) = 7.07
+
+    Euclidean says C is A's nearest neighbor, by a wide margin.
+
+ANGLE
+    A . B = 4(20) + 0 + 3(15) = 80 + 45 = 125
+    cos = 125 / (5 x 25) = 125 / 125 = 1
+    angle = arccos(1) = 0 radians
+
+    A . C = 0 + 0 + 0 = 0
+    cos = 0 / (5 x 5) = 0
+    angle = arccos(0) = pi/2 = 1.571 radians
+
+    Angle says B is A's nearest neighbor, at a distance of exactly ZERO, and
+    that C is as far away as it is possible to get.
+
+THE ANGLE IS RIGHT, and B is the reason. B = 5A, exactly: the same three terms
+in the same proportions, five times as much of everything. B is what A's page
+would look like if a Wikipedian expanded it fivefold without changing what it
+was about. Whatever "similar document" means, that is it, and the angle
+distance of 0 says so.
+
+Euclidean distance says B is the farthest thing in the corpus, and it says so
+only because B is LONGER. That is what makes it the wrong tool for text: a long
+page and a short page on the same subject sit far apart simply because the long
+page's counts are bigger, and length differences swamp the vocabulary
+differences you are actually asking about.
+
+C, meanwhile, shares NOT ONE TERM with A: the dot product is zero and the angle
+is the full right angle. Since TF-IDF scores are never negative, no two
+documents can ever be more than pi/2 apart, so 1.571 is not just a big number,
+it is the ceiling.
+</pre>
+
+    <p><b>21.</b> Say what the zeros in these vectors are. Then answer this: a term that appears in every document takes up a dimension, so does it move two documents apart or not? Give the number.</p>
+
+<pre>
+A zero means the document does not contain the term. That is all it means, and
+it is worth saying plainly, because it is the one thing TF-IDF is certain about.
+Every zero of the term-frequency matrix is still a zero in the TF-IDF matrix,
+since the weighting only ever MULTIPLIES a count by an idf, and zero times
+anything is zero. Weighting can change how loudly a document says a word; it
+can never make it say a word it never said.
+
+The rest is the sparse embedding: most of the entries are zero, because any one
+page uses a small slice of the corpus vocabulary.
+
+Now the term in every document. The tempting answer is that its idf is zero, so
+it drops out. THAT IS FALSE FOR THE FORMULA WE USE. With df = N the smoothed
+idf is ln((N+1)/(N+1)) + 1 = 1, as `the` demonstrated above with a score of
+0.250. The term keeps its dimension and keeps a non-zero coordinate in every
+document, so it pulls all of them toward a common direction and makes every
+pair of documents look somewhat more alike than they are.
+
+It would drop out under the unsmoothed idf, log(N/df) = log(1) = 0. It does not
+drop out here. What removes it is max_df, and that is exactly why the chapter
+calls max_df an automatic stop word list: the smoothing declines to do the job,
+so the filter has to.
+</pre>
+
+    <div style="height:200px"></div>
+  </div>
+
+  <script src="../js/site.js"></script>
+ </body>
+</html>

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+
+<html lang="en">
+ <head>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>DSST289: Introduction to Data Science</title>
+
+  <meta name="description" content="title">
+  <meta name="author" content="Taylor Arnold">
+  <meta charset="UTF-8">
+
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/fonts.css">
+  <link rel="stylesheet" href="../css/site.css">
+ </head>
+
+ <body>
+  <div class="container">
+    <h1>Exam III Study Guide</h1>
+    <p style="padding: 0 1em 1em 1em; font-size: 0.9em">
+      <span style="padding-right: 0.5em">
+        <b>
+          <a href="../index.html">[← back]</a>
+        </b>
+      </span>
+    </p>
+    <p>The third exam has two parts. The first part consists of 15 questions in the same style as the first two exams: hand-written code blocks concerning the RVA flights datasets. The second part consists of 8 short definitions. You should generally be comfortable with the material in <a href="https://taylor-arnold.github.io/fds2/07_graphics_ii.html" target="_blank" rel="noopener noreferrer">Chapter 7</a>, <a href="https://taylor-arnold.github.io/fds2/08_combine.html" target="_blank" rel="noopener noreferrer">Chapter 8</a>, <a href="https://taylor-arnold.github.io/fds2/09_restructure.html" target="_blank" rel="noopener noreferrer">Chapter 9</a>, and <a href="https://taylor-arnold.github.io/fds2/10_collect.html" target="_blank" rel="noopener noreferrer">Chapter 10</a>. However, only those items mentioned below, along with <u>everything listed on Exams I and II</u>, will be required for this exam.</p>
+
+    <h3>Part I: Code</h3>
+    <p>The code questions all concern the four RVA flights tables. The first, <code>rva</code>, has one row for each flight, with the columns <code>year</code>, <code>month</code>, <code>day</code>, <code>dep_delay</code>, <code>arr_delay</code>, <code>carrier</code>, <code>flight</code>, <code>tailnum</code>, <code>origin</code>, <code>dest</code>, <code>air_time</code>, and <code>distance</code>. The second, <code>airport</code>, has one row for each airport, with the columns <code>faa</code>, <code>name</code>, <code>lat</code>, <code>lon</code>, <code>alt</code>, and <code>tzone</code>. The third, <code>airline</code>, has one row for each airline, with the columns <code>carrier</code> and <code>name</code>. The fourth, <code>plane</code>, has one row for each aircraft, with the columns <code>tailnum</code>, <code>year</code>, <code>manufacturer</code>, <code>model</code>, <code>engines</code>, and <code>seats</code>.</p>
+    <ol>
+      <li>Building a bar plot with <code>geom_bar</code>, which counts the rows in each category for you, and with <code>geom_col</code>, which draws a number you have already computed. You should be able to say which one a given task calls for and why.</li>
+      <li>Ordering the categories of a plot with <code>reorder</code> inside an aesthetic, and forcing a numeric column to be treated as a category with <code>factor</code>.</li>
+      <li>Building a histogram with <code>geom_histogram</code>, setting either <code>binwidth</code> or <code>bins</code>, and being able to say what the height of a single bar means. You should also know <code>geom_density</code> and its <code>adjust</code> option.</li>
+      <li>Building a boxplot with <code>geom_boxplot</code>, and writing the <code>.group_by</code> and <code>.agg</code> code that computes by hand the three numbers that make up each box.</li>
+      <li>Adding a line of best fit with <code>geom_smooth(method="lm", se=False)</code>.</li>
+      <li>Flipping the axes of a plot with <code>coord_flip</code>.</li>
+      <li>Changing the scale of a plot by adding <code>scale_x_log10</code>, <code>scale_y_log10</code>, <code>scale_color_cmap_d</code>, or <code>scale_size_area</code>. You should also know how to assign a specific color to each category with <code>scale_color_manual</code>, and how to pin the start of an axis with the <code>limits</code> option of <code>scale_x_continuous</code> or <code>scale_y_continuous</code>. You do not need to know how to set the breaks manually.</li>
+      <li>Splitting a plot into a grid of small panels with <code>facet_wrap</code>.</li>
+      <li>Labeling a plot with <code>labs</code>, including the <code>x</code>, <code>y</code>, <code>color</code>, <code>title</code>, <code>subtitle</code>, and <code>caption</code> arguments.</li>
+      <li>Identifying the primary key of a table and the foreign keys that point to it, and checking whether a column really is a primary key by comparing <code>.n_unique()</code> against <code>len()</code>.</li>
+      <li>Combining two datasets using <code>.join</code>, where the key may have multiple columns (<code>on=[c.key1, c.key2]</code>) or different names in the two tables (<code>left_on</code> and <code>right_on</code>). You should be able to say which table belongs on the left and why, and to use <code>suffix</code> when joining the same table twice.</li>
+      <li>Changing the type of a join with <code>how="left"</code>, and saying what an inner join does with rows that have no match.</li>
+      <li>Using the filtering joins <code>how="semi"</code> and <code>how="anti"</code>, and saying what a row returned by an anti-join tells you about your data.</li>
+      <li>Reshaping a table with <code>.pivot(index=, on=, values=)</code> and <code>.unpivot(index=, variable_name=, value_name=)</code>, and explaining why plotnine usually needs the long version.</li>
+      <li>Splitting a packed cell with <code>.str.split</code> and unraveling the result with <code>.explode</code>.</li>
+      <li>We will not have <code>.join_asof</code> or <code>.join_where</code> on this exam.</li>
+    </ol>
+    <p></p>
+    <p>Many questions will require putting multiple functions together in a method chain. All can be done with at most three data methods and three graphics methods. Your code should follow the class formatting rules of putting parentheses around the whole block, starting with the DataFrame, and having each method on its own line.</p>
+
+    <h3>Part II: Definitions</h3>
+    <p>For the second part of the exam you will be given 8 terms selected from the list below. You will be asked to write a short definition in your own words. Your definitions do not need to match these word-for-word, but they should demonstrate that you understand the concept.</p>
+
+    <p><strong>Unit of observation</strong> The entity that each row in a table represents. Can be a simple value (such as a day or a plant) or a combination of values (such as day &times; plant).</p>
+    <p><strong>Tidy data</strong> A table in which every variable is a single column, every observation is a single row, and every table holds a single unit of observation. Tidiness is a property of a table relative to a chosen unit of observation, not a property of the values themselves.</p>
+    <p><strong>Primary key</strong> One or more columns that uniquely and minimally identify each row in a table.</p>
+    <p><strong>Foreign key</strong> A primary key from one table that appears in another table, establishing a link between the two. The difference between primary and foreign is which table the key appears in, not the information itself.</p>
+    <p><strong>Relation</strong> The connection between two tables created by matching the primary key of one against the foreign key of another. This is where the term <i>relational database</i> comes from.</p>
+    <p><strong>Inner join</strong> The default join, which keeps only the rows whose key has a match in both tables. Rows without a match are dropped from the result.</p>
+    <p><strong>Left join</strong> A join that keeps every row of the left table, filling in <code>null</code> values for the columns of the right table wherever the key has no match.</p>
+    <p><strong>Semi-join</strong> A filtering join that keeps only the rows of the left table that have a match in the right table, without adding any of the right table's columns.</p>
+    <p><strong>Anti-join</strong> A filtering join that keeps only the rows of the left table that have <i>no</i> match in the right table. Useful for finding keys that do not exist where you expected them to.</p>
+    <p><strong>Aggregation as row reduction</strong> Every aggregation collapses the many rows of a group into exactly one row. The individual rows are gone from the result, which is why a pivot can be undone and an aggregation cannot.</p>
+    <p><strong>Pivot and unpivot</strong> Two methods that reshape a table between a long layout and a wide one. They are round trips: no values are created or destroyed, only rearranged.</p>
+    <p><strong>Explode</strong> A method that unravels a column of lists so that each element gets its own row, duplicating the other columns. Typically used after <code>.str.split</code> has broken a packed cell into parts.</p>
+    <p><strong>Atomic cells</strong> The principle that each cell in a dataset should contain only a single value &mdash; not, for example, multiple values separated by commas.</p>
+    <p><strong>Data schema</strong> The overall design decisions about how to organize data, including which tables to create, what columns each table contains, and how variables are formatted.</p>
+    <p><strong>Prefer longer to wider</strong> The guideline that, when choosing between a long and a wide layout for storing data, the long one is the better default: it is easier to extend, easier to check, and there is usually only one long format rather than several possible wide ones.</p>
+    <p><strong>CSV (comma-separated values)</strong> A plain-text file format for tabular data in which columns are separated by commas and each row is on its own line. Stores only a single table and contains no formatting information.</p>
+    <p><strong>Data dictionary</strong> A document that describes each table and variable in a dataset, including variable names, measurement units, expected values or categories, the relationships between the tables, and any decisions made during data collection.</p>
+    <p><strong>Synthetic key</strong> An artificially created unique identifier (such as a UUID) used as a primary key when no natural key exists, or when a multi-column key needs to be simplified to a single column.</p>
+    <p><strong>Statistical geometry</strong> A geometry that runs a grouped computation over the data before drawing anything, so that the objects in the finished plot correspond to that computation rather than to individual rows. Bar plots, histograms, boxplots, and lines of best fit are all examples.</p>
+    <p><strong>Scale</strong> The part of the grammar of graphics that describes how an aesthetic is turned into something you can see: which colors go with which categories, where the axis starts and stops, and where the tick marks and grid lines fall.</p>
+
+    <h3>Practice Exam Questions and Answers</h3>
+    <p>The questions below use the <code>movie</code> dataset from the earlier study guides, with columns <code>year</code>, <code>title</code>, <code>mpa</code>, <code>runtime</code>, <code>gross</code>, <code>rating_count</code>, and <code>rating</code>. They also use a second table, <code>people</code>, with one row for each person who worked on a film and the columns <code>year</code>, <code>title</code>, <code>role</code> (either "director" or "starring"), <code>person</code>, and <code>gender</code>.</p>
+
+    <p>1. Create a horizontal bar plot of the number of films with each MPA rating, letting plotnine do the counting for you, with the bars ordered from the most common rating to the least.</p>
+<pre>
+(
+    movie
+    .pipe(ggplot, aes("reorder(mpa, mpa, len)"))
+    .geom_bar()
+    .coord_flip()
+)</pre>
+
+    <p>2. Create a histogram of the runtimes of the films, using a bin width of ten minutes. What does the height of a single bar tell us?</p>
+<pre>
+# The height of the bar spanning 90 to 100 is the number of films in the
+# dataset whose runtime falls between 90 and 100 minutes.
+(
+    movie
+    .pipe(ggplot, aes(c.runtime))
+    .geom_histogram(binwidth=10, boundary=0)
+)</pre>
+
+    <p>3. Create a boxplot showing the rating of the films for each MPA rating, with the categories ordered by rating and the boxes running horizontally. Then write the code that computes by hand the three numbers that make up each box.</p>
+<pre>
+(
+    movie
+    .pipe(ggplot, aes("reorder(mpa, rating)", c.rating))
+    .geom_boxplot()
+    .coord_flip()
+)
+
+(
+    movie
+    .group_by(c.mpa)
+    .agg(
+        q25 = c.rating.quantile(0.25),
+        q50 = c.rating.quantile(0.50),
+        q75 = c.rating.quantile(0.75)
+    )
+)</pre>
+
+    <p>4. Create a scatterplot of the number of ratings on the x-axis and the gross on the y-axis, with both axes on a logarithmic scale and a straight line of best fit drawn through the points with no confidence band around it.</p>
+<pre>
+(
+    movie
+    .pipe(ggplot, aes(c.rating_count, c.gross))
+    .geom_point()
+    .geom_smooth(method="lm", se=False)
+    .scale_x_log10()
+    .scale_y_log10()
+)</pre>
+
+    <p>5. Create a scatterplot of rating against gross, split into a grid of small panels, one for each MPA rating, with the points colored by MPA rating and the legend hidden. Then add a full set of labels to it.</p>
+<pre>
+(
+    movie
+    .pipe(ggplot, aes(c.rating, c.gross))
+    .geom_point(aes(color=c.mpa), show_legend=False)
+    .facet_wrap("mpa")
+    .labs(
+        x="Average viewer rating",
+        y="Gross (millions of dollars)",
+        title="Ratings and box office by MPA rating",
+        caption="Data from IMDb"
+    )
+)</pre>
+
+    <p>6. Join the <code>people</code> table to the movies data and count the number of films directed by each person. Hint: you need to join on both year and title.</p>
+<pre>
+# This is the better approach, because year and title together are the
+# primary key of movie and a foreign key in people, so we put people on
+# the left and movie on the right.
+(
+    people
+    .filter(c.role == "director")
+    .join(movie, on=[c.year, c.title])
+    .group_by(c.person)
+    .agg(count = pl.len())
+)</pre>
+
+    <p>7. A colleague sends you a new version of the <code>movie</code> table and you are not sure it has only one row per film. Write the single line of code that would tell you, before you join anything, whether <code>title</code> on its own is a genuine primary key of that table. What happens to the join in question 6 if it is not, and why does Python not warn you?</p>
+<pre>
+movie.select(c.title).n_unique() == len(movie)
+
+# If it comes back False, a title with two rows will match every row of
+# people twice, so the join silently produces extra, duplicated rows.
+# Nothing raises an error: Polars did exactly what we asked, which is to
+# match every row of the left table against every matching row of the
+# right table, however many there are. The row count is the only place
+# the problem shows up, which is why we check the key beforehand.</pre>
+
+    <p>8. Return the rows of <code>people</code> whose film does not appear anywhere in the <code>movie</code> table at all. Then keep only the films that have at least one person listed for them, without adding any new columns.</p>
+<pre>
+(
+    people
+    .join(movie, on=[c.year, c.title], how="anti")
+)
+
+(
+    movie
+    .join(people, on=[c.year, c.title], how="semi")
+)</pre>
+
+    <p>9. Add the gross of each film to the <code>people</code> table, keeping every person in the result even when the film is missing from the <code>movie</code> table.</p>
+<pre>
+(
+    people
+    .join(movie.select(c.year, c.title, c.gross), on=[c.year, c.title], how="left")
+)</pre>
+
+    <p>10. Compute the number of films with each MPA rating in each year, and then reshape the result so that there is one row for each year and one column for each MPA rating.</p>
+<pre>
+(
+    movie
+    .group_by(c.year, c.mpa)
+    .agg(count = pl.len())
+    .pivot(index=c.year, on=c.mpa, values=c.count)
+    .fill_null(0)
+)</pre>
+
+    <p>11. Starting from the wide table in question 10, suppose you want to draw a line plot of the number of films over time, with one line per MPA rating. Explain why you cannot do this directly, and then write the code that reshapes the data and draws the plot.</p>
+<pre>
+# There is no mpa column in the wide table to map to the color
+# aesthetic. Each MPA rating is a column name rather than a value of a
+# variable, and plotnine has no way of knowing that those column names
+# all belong to the same underlying variable. Unpivoting puts the MPA
+# rating back into the data as a column.
+(
+    movie_wide
+    .unpivot(index=c.year, variable_name=c.mpa, value_name=c.count)
+    .pipe(ggplot, aes(c.year, c.count, color=c.mpa))
+    .geom_line()
+)</pre>
+
+    <p>12. Pretend there exists a column in <code>movie</code> called <code>genres</code>, holding all of the genres of a film packed into a single cell as text and separated by the character <code>|</code>, as in "Drama|Romance". Write the code that turns the data into a table with one row for each film and each of its genres, and then report how many films fall into each genre.</p>
+<pre>
+(
+    movie
+    .with_columns(
+        genre = c.genres.str.split("|")
+    )
+    .explode(c.genre)
+    .group_by(c.genre)
+    .agg(count = pl.len())
+)</pre>
+
+  </div>
+
+  <script src="../js/site.js"></script>
+ </body>
+</html>

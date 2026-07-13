@@ -1,0 +1,284 @@
+\documentclass[11pt, a4paper]{article}
+
+\usepackage{fontspec}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\usepackage[normalem]{ulem}
+\usepackage{multicol}
+\usepackage{enumitem}
+\usepackage{amsmath}
+
+\geometry{
+  top=2cm,
+  bottom=2cm,
+  left=2cm,
+  right=2cm,
+  marginparsep=4pt,
+  marginparwidth=1cm
+}
+
+\renewcommand{\headrulewidth}{0pt}
+\pagestyle{fancyplain}
+\fancyhf{}
+\lfoot{}
+\rfoot{}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+
+\usepackage{xunicode}
+\defaultfontfeatures{Mapping=tex-text}
+
+\setlist[itemize]{leftmargin=1.4em, itemsep=0pt, topsep=1pt, parsep=0pt}
+
+\newcommand{\code}[1]{\texttt{#1}}
+
+\begin{document}
+
+\footnotesize
+\sloppy
+
+\begin{center}
+\normalsize\textbf{DSST389: Exam II --- Reference Sheet}
+\end{center}
+
+\smallskip
+
+\textit{This sheet is attached to your exam. You do not need to memorize any of it.}
+
+\smallskip
+
+\textbf{HTTP requests.}
+A request needs an endpoint, a dictionary of parameters, and a \code{User-Agent} header.
+The response carries a status code and, usually, JSON.
+
+\begin{itemize}
+  \item \code{session.get(url, params=params, headers=headers)} --- send the request.
+  \item \code{response.status\_code} \quad \code{response.json()} \quad
+        \code{response.raise\_for\_status()}
+  \item \textbf{200} success. \quad \textbf{404} not found: a stable answer, worth caching.
+        \quad \textbf{429} rate limited: wait and retry. \quad \textbf{5xx} server error:
+        retry. Only 200 and 404 go in the cache.
+\end{itemize}
+
+\smallskip
+
+\textbf{Pagination.}
+A response holds at most a fixed number of results. If more remain, it carries a
+\code{continue} block, whose values are merged into the parameters of the next request.
+The loop stops when the block is \textit{absent}.
+
+\begin{verbatim}
+while True:
+    data = polite_get(base_url, params).json()
+    ...                                    # collect rows from this response
+    if "continue" not in data:
+        break
+    params.update(data["continue"])
+\end{verbatim}
+
+\smallskip
+
+\textbf{Titles, redirects, and identifiers.}
+Passing \code{redirects=1} makes the server report every substitution it applied.
+\code{normalized} fixes mechanical issues (underscores, the first letter's case);
+\code{redirects} follows a real pointer page. They \textit{chain}, so a title is walked
+through the map until it stops changing. A title matching no article appears in
+\code{pages} under a negative key with a \code{missing} flag and no \code{pageid}.
+
+\begin{itemize}
+  \item \code{page\_id} --- the stable key. Survives a page being renamed. Primary key.
+  \item \code{doc\_id} --- the readable key. The article title. Unique within the corpus,
+        but not stable across renames.
+  \item \code{rev\_id} --- names one immutable version of one page, forever.
+  \item \textbf{Raw layer}: the requests cache, the exact bytes the server sent.
+        \textbf{Processed layer}: the tidy Parquet tables. The second can always be rebuilt
+        from the first, without touching the network.
+\end{itemize}
+
+\smallskip
+
+\textbf{Dates and datetimes.}
+
+\begin{itemize}
+  \item \code{pl.date(year, month, day)} --- build a \code{Date} from three columns.
+        \code{pl.datetime(y, m, d, h, m, s)} builds a \code{Datetime}.
+  \item \code{c.col.str.to\_datetime()} --- parse a string. Needs no format string if the
+        text is ISO-8601 (\code{YYYY-MM-DD HH:MM:SS}); otherwise pass one, e.g.
+        \code{"\%Y-\%m-\%dT\%H:\%M:\%SZ"}.
+  \item Components: \code{.dt.year()}, \code{.dt.month()}, \code{.dt.day()},
+        \code{.dt.hour()}, \code{.dt.ordinal\_day()}, \code{.dt.quarter()},
+        \code{.dt.date()}, and \code{.dt.weekday()} (Monday = 1, Sunday = 7).
+  \item \code{.dt.truncate("1h")} --- round \textit{down} to a unit, turning a timestamp into
+        a bin you can group by. \code{.dt.round()} rounds to the nearest instead.
+        Durations: \code{"1h"}, \code{"1d"}, \code{"30d"}, \code{"1mo"}.
+  \item \code{.scale\_x\_date(date\_breaks="1 month", date\_labels="\%Y-\%m")} and
+        \code{.scale\_x\_datetime(...)} label a time axis.
+\end{itemize}
+
+\smallskip
+
+\textbf{Time zones.}
+A datetime is either \textit{naive} (no zone) or \textit{aware} (tagged with one). The two
+methods below look alike and do opposite things.
+
+\begin{itemize}
+  \item \code{.dt.replace\_time\_zone("UTC")} --- \textbf{attaches} a zone to a naive
+        datetime. The clock reading does not change. This is a \textit{claim} about what the
+        data always meant. Calling it on an already-aware column moves the instant.
+  \item \code{.dt.convert\_time\_zone("America/New\_York")} --- \textbf{re-expresses} an aware
+        datetime in another zone. The clock reading \textit{does} change. This is a
+        \textit{calculation}. Calling it on a naive column silently assumes UTC.
+  \item Wikipedia reports every revision timestamp in UTC. Attach, then convert.
+\end{itemize}
+
+\smallskip
+
+\textbf{Durations.}
+Subtracting two datetimes gives a \code{Duration}. Durations average exactly.
+
+\begin{itemize}
+  \item \code{.dt.total\_hours()} \quad \code{.dt.total\_days()} \quad
+        \code{.dt.total\_minutes()} \quad \code{.dt.total\_seconds()}
+  \item These \textbf{truncate toward zero}, and they do it to each value \textit{before} any
+        aggregation. A gap of 5h 35m becomes 5 hours, or 0 days. Choose a unit finer than the
+        intervals you are measuring.
+\end{itemize}
+
+\textbf{Window functions.}
+An ordered function needs a \code{.sort()} in front of it to say what ``previous'' means, and
+an \code{.over()} to stop it running across the boundary between one group and the next.
+
+\begin{itemize}
+  \item \code{c.size.shift(1).over(c.doc\_id)} --- the value one row back, within each group.
+        \code{shift(-1)} looks forward; \code{shift(2)} reaches back two.
+  \item \code{c.size.diff().over(c.doc\_id)} --- shorthand for \code{c.size - c.size.shift(1)}.
+        The first row of each group is \code{null}.
+  \item \code{c.size.rolling\_mean(window\_size=3)} --- a window of \textbf{three rows}. Only
+        correct if rows are evenly spaced.
+  \item \code{c.size.rolling\_mean\_by(by=c.timestamp, window\_size="30d")} --- a window of
+        \textbf{thirty days}, however many rows that is. Use this whenever observations are
+        unevenly spaced in time. Also \code{rolling\_sum\_by}, \code{rolling\_max\_by},
+        \code{rolling\_std\_by}.
+  \item A comparison against \code{null} is \code{null}, not \code{False}, and
+        \code{.filter()} keeps only rows that are \code{True}.
+\end{itemize}
+
+\smallskip
+
+\textbf{Joins on time.}
+
+\begin{verbatim}
+df.join_asof(other, left_on="timestamp", right_on="moment", by="doc_id",
+             strategy="backward", tolerance=None)
+\end{verbatim}
+
+\begin{itemize}
+  \item Matches each left row to the \textit{nearest} right row rather than an equal one. Both
+        tables must be sorted on the join key. \code{by=} forces an exact match on a group
+        first, playing the same role that \code{.over()} plays for a window function.
+  \item \code{strategy}: \code{"backward"} (the default) takes the most recent record at or
+        before; \code{"forward"} takes the next at or after; \code{"nearest"} takes whichever
+        is closer, and so can reach into the future. An asof join does not return \code{null}
+        for want of a \textit{nearby} match, however far it has to reach; \code{tolerance}
+        caps the distance.
+  \item \code{df.join\_where(other, expr, ...)} --- keep every pair of rows satisfying a
+        filter expression. Columns of the right table carry a \code{\_right} suffix.
+\end{itemize}
+
+\smallskip
+
+\textbf{The annotation table.}
+\code{DSText.process(docs, nlp)} returns one row per token. The primary key is
+\code{doc\_id}, \code{sid}, \code{tid} together.
+
+\begin{itemize}
+  \item \code{sid} sentence number; \code{tid} token number \textbf{within the sentence};
+        \code{token} the text; \code{token\_with\_ws} the text plus trailing whitespace;
+        \code{lemma} the normalized form (lowercased, singular, infinitive).
+  \item \code{upos} the part of speech: \code{NOUN}, \code{VERB}, \code{ADJ}, \code{ADV},
+        \code{PROPN}, \code{DET}, \code{ADP}, \code{NUM}, \code{PUNCT}. \code{tag} is the
+        fine-grained, English-specific version.
+  \item \code{is\_alpha}, \code{is\_stop}, \code{is\_punct} --- Boolean flags. A number such as
+        \code{1847} is \textit{not} alphabetic.
+  \item \code{dep} the grammatical relation (\code{nsubj}, \code{dobj}, \code{amod},
+        \code{det}, \code{prep}, \code{pobj}, \code{compound}, \code{ROOT});
+        \code{head\_idx} the \code{tid} of the token it depends on, in the same
+        sentence-level coordinate system as \code{tid}. The root points at itself.
+  \item \code{ent\_type} the entity type (\code{PERSON}, \code{ORG}, \code{GPE},
+        \code{DATE}, \code{WORK\_OF\_ART}), empty if none; \code{ent\_iob} is \code{B} at the
+        first token of an entity, \code{I} inside one, \code{O} outside any.
+  \item \code{DSText.kwic(anno, keyword, max\_num=10, window=5)} --- print a keyword-in-context
+        display. Prints; does not return a table.
+\end{itemize}
+
+\smallskip
+
+\textbf{N-grams and collocations.}
+Build a bigram by shifting the lemma column up one within each sentence, then pairing.
+
+\begin{verbatim}
+next_token = c.lemma.shift(-1).over([c.doc_id, c.sid])
+bigram     = c.lemma + " " + c.next_token
+\end{verbatim}
+
+Pointwise mutual information compares a bigram's frequency against what independence would
+predict. $P(w)$ is a word's count over the total number of words; $P(w_1, w_2)$ is the
+bigram's count over the total number of bigrams. Filter to bigrams occurring at least five
+times before ranking, or the top of the list fills with pairs of rare words that happened to
+co-occur once.
+
+\begin{equation*}
+\text{PMI}(w_1, w_2) \;=\; \log_2 \frac{P(w_1, w_2)}{P(w_1) \cdot P(w_2)}
+\end{equation*}
+
+\smallskip
+
+\textbf{TF-IDF.}
+\code{DSText.compute\_tfidf(anno, min\_df=0.0, max\_df=1.0)} returns one row per non-zero
+(document, lemma) pair. It keeps only alphabetic tokens.
+
+\begin{itemize}
+  \item \code{tf\_norm} is the term's share of the tokens \textit{in its document}, not a raw
+        count. \code{df} is the number of documents containing the term, and $N$ is the total
+        number of documents.
+  \item \code{min\_df} and \code{max\_df} are \textbf{proportions} in $[0, 1]$, compared with
+        \code{<=} and \code{>=}. \code{max\_df=0.5} drops terms in \textit{more than} half the
+        documents; a term in exactly half survives. Because the smoothed idf below never
+        reaches zero, \code{max\_df} is what removes ubiquitous vocabulary.
+\end{itemize}
+
+\begin{equation*}
+\text{tfidf} \;=\; \text{tf} \times \left( \log\!\left( \frac{N + 1}{\text{df} + 1} \right) + 1 \right)
+\end{equation*}
+
+The log is natural. The trailing $+1$ puts a floor under the idf: a term appearing in
+\textit{every} document gets $\log(1) + 1 = 1$, not $0$, and so keeps a non-zero score.
+
+\smallskip
+
+\textbf{Documents as vectors.}
+Each document is a point whose coordinates are its TF-IDF scores, one axis per term; most are
+zero, a \textit{sparse} embedding. Euclidean distance is poor here, because a long document
+sits far from the origin and length swamps vocabulary. Measure the \textbf{angle} instead,
+which ignores length. Scores are never negative, so the angle runs from $0$ (identical
+proportions) to $\pi/2 \approx 1.571$ (no shared vocabulary).
+
+\begin{equation*}
+d(\mathbf{x}_a, \mathbf{x}_b) \;=\; \arccos\!\left( \frac{\mathbf{x}_a \cdot \mathbf{x}_b}{\lVert \mathbf{x}_a \rVert \, \lVert \mathbf{x}_b \rVert} \right)
+\end{equation*}
+
+\begin{itemize}
+  \item \code{DSText.compute\_distances(anno, min\_df=0.0, max\_df=1.0)} --- the angle distance
+        for every pair. Each unordered pair appears \textit{once}, with \code{doc\_id}
+        alphabetically before \code{doc\_id2}.
+  \item \code{anno.pipe(umap\_text, doc\_id=c.doc\_id, term\_id=c.lemma, n\_components=2)}
+        followed by \code{.predict(full=True)} --- project the corpus down to two dimensions,
+        returned as the columns \code{dr0} and \code{dr1}, one row per document. Takes
+        \code{min\_df} and \code{max\_df} as well.
+  \item Two corpora in different languages have different vocabularies, so their vectors live
+        in different spaces and cannot be compared directly. Their \textit{structure} can be.
+\end{itemize}
+
+\end{document}

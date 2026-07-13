@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html lang="en">
+ <head>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>DSST289: Introduction to Data Science</title>
+
+  <meta name="description" content="title">
+  <meta name="author" content="Taylor Arnold">
+  <meta charset="UTF-8">
+
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/fonts.css">
+  <link rel="stylesheet" href="../css/site.css">
+ </head>
+
+ <body>
+  <div class="container">
+    <h1>Homework 05</h1>
+    <p style="padding: 0 1em 1em 1em; font-size: 0.9em">
+      <span style="padding-right: 0.5em">
+        <b>
+          <a href="../index.html">[← back]</a>
+        </b>
+      </span>
+    </p>
+    <p>
+      Assume you have a dataset loaded into Python called <code>students</code>, with columns named <code>name</code>, <code>major</code>, <code>year</code>, <code>gpa</code>, and <code>exam</code>. Hand write the following.
+    </p>
+    <ol>
+      <li>The four core data types described in the reading, along with the column of <code>students</code> that you would expect to have each type.</li>
+      <li>The <code>exam</code> column was read in as a string because one student who missed the test has a score recorded as "absent". Write the code that adds a new column named <code>exam_score</code> holding the exam scores as integers, with anything that cannot be converted to a number turned into a missing value. Then write a second version that also replaces the missing values with a zero, and add a sentence explaining why doing this would be a bad idea if we intend to compute the average exam score.</li>
+      <li>A short explanation of the difference between a <code>null</code> and a <code>NaN</code>, with an example of code that would produce each.</li>
+      <li>The code that adds a new column holding each student's name in uppercase.</li>
+      <li>A short explanation, in your own words, of what an <em>expression</em> is and why the same expression <code>c.gpa > 3.5</code> can be handed to both <code>.filter()</code> and <code>.select()</code>.</li>
+    </ol>
+  </div>
+
+  <script src="../js/site.js"></script>
+ </body>
+</html>

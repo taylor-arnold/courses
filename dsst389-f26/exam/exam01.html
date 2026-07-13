@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+
+<html lang="en">
+ <head>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>DSST389: Advanced Data Science</title>
+
+  <meta name="description" content="title">
+  <meta name="author" content="Taylor Arnold">
+  <meta charset="UTF-8">
+
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/fonts.css">
+  <link rel="stylesheet" href="../css/site.css">
+ </head>
+
+ <body>
+  <div class="container">
+    <h1>Exam I Study Guide</h1>
+    <p style="padding: 0 1em 1em 1em; font-size: 0.9em">
+      <span style="padding-right: 0.5em">
+        <b>
+          <a href="../index.html">[← back]</a>
+        </b>
+      </span>
+      <span style="padding-right: 0.5em">
+        <b>
+          <a href="exam01-reference.pdf" target="_blank" rel="noopener noreferrer">[reference sheet]</a>
+        </b>
+      </span>
+    </p>
+
+    <p>The first exam is 75 minutes. It has six tasks, labeled A through F, with fifteen questions spread across them. Every task gives you a small dataset &mdash; a printed table, a map drawn to scale, or both &mdash; together with the code that runs on it. Your job is to say what comes out. This is the reverse of what you did in DSST289: there you were given a result and asked to write the code, and here you are given the code and the data and asked for the result.</p>
+
+    <p><b>You do not need to memorize any function names or arguments.</b> The <a href="exam01-reference.pdf" target="_blank" rel="noopener noreferrer">reference sheet</a> will be attached to your exam. It lists every method you could possibly need, with its arguments and defaults. This is the point: the code in this course is specific to a domain and is not worth committing to memory, while knowing <i>which</i> operation a question calls for, and what it does to your data, is the entire skill. The exam tests the second thing and hands you the first. Bring a calculator and a pencil; you will be drawing on the map.</p>
+
+    <p>The exam covers <a href="https://taylor-arnold.github.io/fds2/11_spatial_data.html" target="_blank" rel="noopener noreferrer">Chapter 11</a> and the material in Homeworks 1 through 4. Questions come in five forms:</p>
+
+    <ul>
+      <li><b>Fill in the output.</b> A small table and a code block; write the table that comes back, or a named column of it, or just the number of rows.</li>
+      <li><b>Compute by hand.</b> An area, a distance, a centroid, a row count. Exact numbers, with units.</li>
+      <li><b>Find the trap.</b> Code that almost answers the question asked, containing one of the errors we have discussed all unit. Circle the offending line and say what the output shows instead.</li>
+      <li><b>Choose the code.</b> Several candidate blocks, one of which produces the stated result.</li>
+      <li><b>One sentence, with an anchor.</b> A short interpretation, always paired with something checkable: name the row that proves it, or the number that would change.</li>
+    </ul>
+
+    <h3>What You Need To Be Able To Do</h3>
+
+    <p>Only the following will be needed for the exam.</p>
+
+    <p><b>Geometries and coordinate systems.</b></p>
+    <ol>
+      <li>Given a table with <code>lon</code> and <code>lat</code> columns, name the two columns that <code>points_from_xy</code> adds and write out their exact contents for a given row.</li>
+      <li>Given a geometry string, say whether its coordinates could be longitude and latitude or must come from a projected system, and say what the numbers are measured in either way.</li>
+      <li>Explaining why a WKT string on its own does not identify a place on Earth, and what the <code>_crs</code> column supplies.</li>
+      <li>Given a described analysis, saying whether EPSG:4326 is adequate or whether the data must be projected first, and why. You are never asked to recall an EPSG code; the codes and their purposes are on the reference sheet.</li>
+      <li>Saying what unit an area or a distance comes back in for a given CRS, and converting between square meters and square kilometers.</li>
+    </ol>
+
+    <p><b>Polygons and metrics.</b></p>
+    <ol start="6">
+      <li>Given a map drawn to scale, computing the area of a polygon in both square meters and square kilometers.</li>
+      <li>Given a map, computing a centroid, and identifying a geometry whose centroid falls outside of itself.</li>
+      <li>Saying which of <code>centroid</code>, <code>area</code>, <code>buffer</code>, and <code>x</code> replace the <code>geometry</code> column and which append a new column of ordinary numbers.</li>
+      <li>Given a choropleth of a count, saying why it misleads, and writing the line that turns the count into a rate.</li>
+    </ol>
+
+    <p><b>Spatial joins.</b></p>
+    <ol start="10">
+      <li>Given a map of points and polygons, filling in the output of <code>sjoin</code>: the number of rows, which rows are matched to which, and which table's geometry survives.</li>
+      <li>Saying what changes when the two tables are swapped, and which of the two orders a given question calls for.</li>
+      <li>Identifying the rows that a spatial join silently drops, and saying how you would find out that it happened.</li>
+      <li>Given a map, listing every pair of polygons satisfying a named predicate (<code>touches</code>, <code>intersects</code>, <code>within</code>, <code>contains</code>), and counting the rows of a self-join.</li>
+      <li>Given a buffer distance, saying which polygons a buffered point reaches, and saying what the distance is measured in.</li>
+      <li>Given <code>sjoin_nearest</code>, computing the nearest neighbor and the distance for a named row, and saying what <code>exclusive=True</code> protects you from.</li>
+    </ol>
+
+    <p><b>Changing the geometries.</b></p>
+    <ol start="16">
+      <li>Given a grouping column, filling in the output of <code>dissolve</code>: the number of rows, the aggregated columns, and whether each merged geometry is a Polygon or a MultiPolygon.</li>
+      <li>Saying which aggregation functions are legitimate for a given column and which produce a number that is quietly wrong.</li>
+      <li>Given <code>explode</code>, saying how many rows come back, naming the columns that are now false, and saying what recomputes them.</li>
+      <li>Saying why <code>simplify</code> is for display rather than analysis, and naming the join it can break.</li>
+    </ol>
+
+    <p>We will not have reading GeoJSON by hand, writing WKT for anything more complicated than a point, the internals of R-trees, the <code>crosses</code> and <code>overlaps</code> predicates, <code>explore</code> beyond knowing what it is for, or any EPSG code that is not on the reference sheet.</p>
+
+    <h3>Practice Exam Questions and Answers</h3>
+
+    <p>The questions below use two tables. <code>metro</code> has one row for each metro area, with the columns <code>name</code>, <code>pop</code> (population, in thousands), and <code>geometry</code>. <code>state</code> has one row for each state, with the columns <code>name</code>, <code>abb</code>, <code>side</code>, and <code>geometry</code>. Both are in EPSG:5069, whose unit is the meter. The map is drawn to scale; its axes are labeled in <b>kilometers</b> for legibility.</p>
+
+    <p>
+    <svg viewBox="0 0 700 490" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:700px; height:auto; display:block; margin:1em auto;" font-family="sans-serif">
+      <g stroke="#ddd" stroke-width="1">
+        <line x1="60" y1="40" x2="660" y2="40"/><line x1="60" y1="90" x2="660" y2="90"/>
+        <line x1="60" y1="140" x2="660" y2="140"/><line x1="60" y1="190" x2="660" y2="190"/>
+        <line x1="60" y1="240" x2="660" y2="240"/><line x1="60" y1="290" x2="660" y2="290"/>
+        <line x1="60" y1="340" x2="660" y2="340"/><line x1="60" y1="390" x2="660" y2="390"/>
+        <line x1="60" y1="440" x2="660" y2="440"/>
+        <line x1="60" y1="40" x2="60" y2="440"/><line x1="110" y1="40" x2="110" y2="440"/>
+        <line x1="160" y1="40" x2="160" y2="440"/><line x1="210" y1="40" x2="210" y2="440"/>
+        <line x1="260" y1="40" x2="260" y2="440"/><line x1="310" y1="40" x2="310" y2="440"/>
+        <line x1="360" y1="40" x2="360" y2="440"/><line x1="410" y1="40" x2="410" y2="440"/>
+        <line x1="460" y1="40" x2="460" y2="440"/><line x1="510" y1="40" x2="510" y2="440"/>
+        <line x1="560" y1="40" x2="560" y2="440"/><line x1="610" y1="40" x2="610" y2="440"/>
+        <line x1="660" y1="40" x2="660" y2="440"/>
+      </g>
+
+      <g fill="#e8e8e8" stroke="#222" stroke-width="2.5">
+        <rect x="60"  y="240" width="200" height="200"/>
+        <rect x="260" y="240" width="200" height="200"/>
+        <rect x="60"  y="40"  width="400" height="200"/>
+        <rect x="510" y="340" width="150" height="100"/>
+        <rect x="510" y="140" width="150" height="100"/>
+      </g>
+
+      <g font-size="15" font-weight="bold" fill="#222" text-anchor="middle">
+        <text x="225" y="420">Ash</text>
+        <text x="420" y="420">Birch</text>
+        <text x="120" y="72">Cedar</text>
+        <text x="622" y="420">Dune</text>
+        <text x="585" y="196">Elm</text>
+      </g>
+
+      <g fill="#222">
+        <circle cx="120" cy="360" r="5"/><circle cx="180" cy="280" r="5"/>
+        <circle cx="340" cy="320" r="5"/><circle cx="360" cy="140" r="5"/>
+        <circle cx="560" cy="365" r="5"/><circle cx="480" cy="90"  r="5"/>
+      </g>
+      <g font-size="13" fill="#222">
+        <text x="130" y="365">Alder</text>
+        <text x="190" y="285">Hollis</text>
+        <text x="350" y="325">Juno</text>
+        <text x="370" y="145">Kester</text>
+        <text x="570" y="370">Lark</text>
+        <text x="490" y="95">Marsh</text>
+      </g>
+
+      <g stroke="#222" stroke-width="1.5" fill="none">
+        <line x1="60" y1="440" x2="670" y2="440"/>
+        <line x1="60" y1="440" x2="60"  y2="32"/>
+        <line x1="60"  y1="440" x2="60"  y2="447"/><line x1="160" y1="440" x2="160" y2="447"/>
+        <line x1="260" y1="440" x2="260" y2="447"/><line x1="360" y1="440" x2="360" y2="447"/>
+        <line x1="460" y1="440" x2="460" y2="447"/><line x1="560" y1="440" x2="560" y2="447"/>
+        <line x1="660" y1="440" x2="660" y2="447"/>
+        <line x1="60" y1="440" x2="53" y2="440"/><line x1="60" y1="340" x2="53" y2="340"/>
+        <line x1="60" y1="240" x2="53" y2="240"/><line x1="60" y1="140" x2="53" y2="140"/>
+        <line x1="60" y1="40"  x2="53" y2="40"/>
+      </g>
+      <g font-size="12" fill="#222" text-anchor="middle">
+        <text x="60"  y="463">0</text><text x="160" y="463">100</text>
+        <text x="260" y="463">200</text><text x="360" y="463">300</text>
+        <text x="460" y="463">400</text><text x="560" y="463">500</text>
+        <text x="660" y="463">600</text>
+        <text x="360" y="483" font-size="11">kilometers</text>
+      </g>
+      <g font-size="12" fill="#222" text-anchor="end">
+        <text x="48" y="445">0</text><text x="48" y="345">100</text>
+        <text x="48" y="245">200</text><text x="48" y="145">300</text>
+        <text x="48" y="45">400</text>
+      </g>
+    </svg>
+    </p>
+
+    <p>The <code>pop</code> column of <code>metro</code> is as follows. The <code>side</code> column of <code>state</code> is <code>"West"</code> for Ash, Birch, and Cedar, and <code>"East"</code> for Dune and Elm.</p>
+
+    <table border="1">
+      <tr><th>name</th><th>pop</th><th>name</th><th>pop</th><th>name</th><th>pop</th></tr>
+      <tr><td>Alder</td><td>900</td><td>Juno</td><td>2400</td><td>Lark</td><td>1100</td></tr>
+      <tr><td>Hollis</td><td>1500</td><td>Kester</td><td>600</td><td>Marsh</td><td>800</td></tr>
+    </table>
+
+    <h3>Task A. Building Geometries</h3>
+
+<pre>
+metro = pl.read_csv("data/metro.csv")
+metro = metro.geo.points_from_xy("lon", "lat")
+</pre>
+
+    <p><b>1.</b> Name the two columns that the second line adds, and give the exact contents of each for a metro area whose <code>lon</code> is -77.4 and whose <code>lat</code> is 37.5.</p>
+
+<pre>
+A column `geometry` holding POINT (-77.4 37.5), and a column `_crs` holding
+4326. The first records where the point is; the second records what system
+those two numbers are expressed in.
+</pre>
+
+    <p><b>2.</b> Three of the four geometry strings below cannot be in EPSG:4326. Circle the one that can, and say in one sentence what the other three are most likely measured in.</p>
+
+<pre>
+POINT (1573000 1892000)     POINT (-2100000 550000)
+POINT (-77.4 37.5)          POINT (312450 4187600)
+</pre>
+
+<pre>
+POINT (-77.4 37.5). Longitude runs from -180 to 180 and latitude from -90 to
+90, so the other three, whose coordinates run into the hundreds of thousands
+and the millions, must be projected coordinates measured in meters.
+</pre>
+
+    <p><b>3.</b> Explain in one sentence why <code>POINT (-86.8 32.4)</code>, on its own, does not identify a place on Earth.</p>
+
+<pre>
+Because two numbers are not a location until you say what they are coordinates
+*in*. The same pair names a spot in Alabama under EPSG:4326 and a completely
+different spot, or no spot at all, under a projected system. The `_crs` column
+supplies the missing half of the statement.
+</pre>
+
+    <h3>Task B. Area</h3>
+
+<pre>
+state = funs.read_file("data/state.geojson")
+state = state.geo.area
+state.select(c.name, c.area)
+</pre>
+
+    <p><b>4.</b> This code does not do what it appears to do. Circle the line that causes the problem, say what the values in the <code>area</code> column are measured in, and write the one line that fixes it.</p>
+
+<pre>
+The offending line is `state = state.geo.area`, but only because of what is
+missing before it: the table is still in EPSG:4326 as it came off the disk, so
+the areas come back in SQUARED DEGREES, a unit that means nothing and that
+varies with latitude. The values are not merely in the wrong unit; they are not
+even proportional to the true areas. The fix is to project first:
+
+state = state.geo.to_crs(5069)
+
+Nothing raises an error, which is the point. You get a column of
+plausible-looking numbers and no warning at all.
+</pre>
+
+    <p><b>5.</b> After your fix, fill in the <code>area</code> column for all five states, in square kilometers. Then say what number the <code>area</code> column actually holds for Cedar, given that the code returns the CRS unit rather than the one you just used.</p>
+
+<pre>
+Ash 40,000; Birch 40,000; Cedar 80,000; Dune 15,000; Elm 15,000 square
+kilometers. The `area` column itself is in square meters, so Cedar's value is
+8.0e10. To get square kilometers you divide by 1,000,000.
+</pre>
+
+    <p><b>6.</b> You want a choropleth of population density rather than of total population. Write the single <code>with_columns</code> line that creates the density column, being careful about units, and say in one sentence which state the total-population map would have made look most important for the wrong reason.</p>
+
+<pre>
+state.with_columns(dens = c.pop / (c.area / 1_000_000))
+
+Cedar, which is twice the area of any other state and would dominate the page
+under any color scale, while holding only Kester's 600.
+</pre>
+
+    <h3>Task C. Spatial Joins</h3>
+
+<pre>
+(
+    metro
+    .geo.sjoin(state)
+    .group_by(c.name_right)
+    .agg(n = pl.len(), pop = c.pop.sum())
+)
+</pre>
+
+    <p><b>7.</b> Fill in the output table. The rows may come back in any order.</p>
+
+<pre>
+name_right    n     pop
+Ash           2    2400
+Birch         1    2400
+Cedar         1     600
+Dune          1    1100
+</pre>
+
+    <p><b>8.</b> The <code>pop</code> column of <code>metro</code> sums to 7300, but the <code>pop</code> column of this output sums to 6500. Say where the missing 800 went, name the metro area responsible, and say what property of <code>sjoin</code> let it disappear without an error.</p>
+
+<pre>
+It went to Marsh, at (420, 350), which falls in the gap between Cedar and Elm
+and is therefore inside no state at all. `sjoin` is an INNER join by default: a
+left row with no match is dropped, silently, and the only place the loss shows
+up is in a total that no longer adds up. This is why you check the row count of
+a spatial join against the row count you went in with.
+</pre>
+
+    <p><b>9.</b> Exactly one state is absent from the output. Name it, say why it is absent, and say in one sentence why a reader of this table alone cannot tell the difference between a state with no metro areas and a state that was dropped for some other reason.</p>
+
+<pre>
+Elm, because it contains no metro areas, so it never matched anything and the
+inner join dropped it. From this table alone you cannot tell that apart from
+Elm having been lost to a CRS mismatch, a broken geometry, or a typo in a name,
+because in every one of those cases Elm is simply not there. An absent row and
+a zero look identical, and only a zero is a fact about the world.
+</pre>
+
+    <p><b>10.</b> Now suppose the first two lines were replaced with <code>state.geo.sjoin(metro)</code>. How many rows does that call return, what kind of geometry is in the output, and which single row of <code>metro</code> is missing from it?</p>
+
+<pre>
+Five rows. The geometry is the POLYGONS, because `sjoin` keeps the geometry of
+the left table and the states are now on the left. Marsh is still missing, for
+the same reason as before, but Elm is now present, matched against nothing.
+Note that both orders return five rows here, and they are not the same five:
+swapping the tables changes which side gets dropped.
+</pre>
+
+    <h3>Task D. Predicates and Buffers</h3>
+
+<pre>
+state.geo.sjoin(state, predicate="touches")
+</pre>
+
+    <p><b>11.</b> How many rows does this return? List the pairs. Then name the two states that do not appear in the output at all, and say what that tells you about them.</p>
+
+<pre>
+Six rows: (Ash, Birch), (Birch, Ash), (Ash, Cedar), (Cedar, Ash), (Birch,
+Cedar), (Cedar, Birch). Three shared borders, each appearing twice, because the
+join matches every state against every other state and a border seen from Ash
+is the same border seen from Birch.
+
+Dune and Elm appear nowhere: they touch nothing, neither each other (the gap
+from y = 100 to y = 200 separates them) nor the western block.
+</pre>
+
+<pre>
+(
+    metro
+    .filter(c.name == "Juno")
+    .geo.buffer(100_000)
+    .geo.sjoin(state)
+)
+</pre>
+
+    <p><b>12.</b> How many rows does this return, and which states are they? Draw the buffer on the map. Then say why the argument is <code>100_000</code> rather than <code>100</code>, and what the geometry column of the output holds.</p>
+
+<pre>
+Three rows: Ash, Birch, and Cedar. Juno sits at (280, 120), which is 80 km from
+Ash's eastern edge at x = 200 and 80 km from Cedar's southern edge at y = 200,
+so a 100 km disc reaches into both, on top of the Birch that contains it.
+Dune's nearest edge is 170 km away and does not make it.
+
+The argument is 100_000 because the buffer is measured in the units of the
+current CRS, and EPSG:5069 is in meters. The geometry column holds the DISC,
+not the point: `buffer` replaces the geometry rather than appending a column.
+</pre>
+
+    <p><b>13.</b> Suppose you ran the same buffer on the data before projecting it, while it was still in EPSG:4326. Say what <code>100_000</code> would then be asking for, and what the subsequent <code>sjoin</code> would return.</p>
+
+<pre>
+A disc 100,000 DEGREES in radius, which is some 250 times the circumference of
+the Earth. The buffer would swallow every state, so the sjoin would return all
+five, and the answer would look like a finding rather than a mistake.
+</pre>
+
+    <h3>Task E. Nearest Neighbors</h3>
+
+<pre>
+metro.geo.sjoin_nearest(metro, exclusive=True, distance_col="distance")
+</pre>
+
+    <p><b>14.</b> How many rows does this return? Give the nearest neighbor and the exact value of <code>distance</code> for Alder and for Kester.</p>
+
+<pre>
+Six rows, one for each row of the left table.
+
+Alder's nearest neighbor is Hollis, at distance = 100,000. (A 60 km and 80 km
+offset, so 100 km, and the column is in meters.)
+
+Kester's is Marsh, at distance = 130,000. (120 km and 50 km, so 130 km.)
+
+Note that Marsh, which the containment join threw away, is the nearest neighbor
+of a metro that the join kept: being in no state does not make it absent from
+the data.
+</pre>
+
+    <p><b>15.</b> Say what <code>exclusive=True</code> is protecting you from, and give the exact <code>distance</code> column that would come back without it.</p>
+
+<pre>
+It stops each metro area from matching itself. Since `metro` is being joined to
+`metro`, every row is its own closest feature at a distance of exactly zero, so
+without it the distance column comes back as six zeros and every row is matched
+to itself.
+</pre>
+
+    <h3>Task F. Dissolve and Explode</h3>
+
+<pre>
+region = state.geo.dissolve(by="side", aggfunc={"area": "sum"})
+</pre>
+
+    <p><b>16.</b> Fill in the output, giving the <code>area</code> column in square kilometers. Then say which of the two merged geometries is a Polygon and which is a MultiPolygon, and describe the exact shape of the West geometry.</p>
+
+<pre>
+side     area
+West   160,000
+East    30,000
+
+West is a POLYGON: Ash, Birch, and Cedar are contiguous, and dissolving them
+erases the internal borders to leave a single 400 km by 400 km square, whose
+area, 160,000 km^2, is exactly the sum of its parts.
+
+East is a MULTIPOLYGON: Dune and Elm do not touch, so there is no way to merge
+them into one connected shape, and the geometry keeps them as two separate
+pieces under a single row.
+</pre>
+
+    <p><b>17.</b> Calling <code>region.geo.centroid</code> puts the center of the East region at <code>POINT (525000 150000)</code>. Mark it on the map. Say what is remarkable about where it falls, and say in one sentence what that should make you cautious about if you were using centroids to stand in for regions.</p>
+
+<pre>
+It falls at (525, 150), in the empty gap between Dune and Elm, outside the East
+region entirely. Since the two parts have equal areas, the centroid is just the
+midpoint of their two centers, and the midpoint of a shape with a hole in the
+middle need not lie in the shape.
+
+A centroid is a convenient single point to stand in for a region, but it is not
+guaranteed to be a point OF that region, so any analysis that treats it as one
+(what is the nearest hospital to this region? which county is this region in?)
+can return an answer about a place the region does not occupy.
+</pre>
+
+    <p><b>18.</b> Calling <code>region.geo.explode()</code> on the result gives back a table with how many rows? Write out the <code>area</code> column of that table, say which of its values are now false, and give the single call that repairs them.</p>
+
+<pre>
+Three rows: West is a single Polygon and stays one row, while East is a
+MultiPolygon of two parts and becomes two. The area column comes back as
+160,000, 30,000, and 30,000.
+
+The first is still true. The two East values are now FALSE, because `explode`
+copies the region-level column onto every part, and neither part is 30,000
+km^2: each is 15,000. Chaining `.geo.area` recomputes the column from the
+geometry each row actually has.
+
+region.geo.explode().geo.area
+</pre>
+
+    <p><b>19.</b> Summing is the right aggregation for <code>area</code>. Say in one sentence why the same <code>aggfunc</code> would produce a wrong number for a median household income column, even though both columns are just numbers.</p>
+
+<pre>
+Because area is EXTENSIVE and income is not. Two states put together really do
+have the sum of their areas, but they do not have the sum of their median
+incomes, and the sum of two medians is not a quantity that means anything at
+all. The aggregation would still run and still produce a number, which is
+exactly the danger.
+</pre>
+
+    <div style="height:200px"></div>
+  </div>
+
+  <script src="../js/site.js"></script>
+ </body>
+</html>

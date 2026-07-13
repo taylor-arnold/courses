@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<html lang="en">
+ <head>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>DSST389: Advanced Data Science</title>
+
+  <meta name="description" content="title">
+  <meta name="author" content="Taylor Arnold">
+  <meta charset="UTF-8">
+
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/fonts.css">
+  <link rel="stylesheet" href="../css/site.css">
+ </head>
+
+ <body>
+  <div class="container">
+    <h1>Homework 15</h1>
+    <p style="padding: 0 1em 1em 1em; font-size: 0.9em">
+      <span style="padding-right: 0.5em">
+        <b>
+          <a href="../index.html">[← back]</a>
+        </b>
+      </span>
+    </p>
+    <p>
+      The first three questions use the small undirected network given by the edge list below. Draw it on your paper first, then compute the metrics by hand. Put the nodes wherever they look clearest; the drawing is a tool, not an answer.
+    </p>
+    <p style="padding-left: 2em">
+      <code>A–B, A–C, B–C, C–D, D–E, E–F, E–G, F–G</code>
+    </p>
+    <ol>
+      <li>Draw the network and write the degree of every node. Say how many components it has. Then rank the nodes by degree and say which node your drawing makes look important that the degree ranking does not.</li>
+      <li>Compute the shortest-path distance from A to every other node, and from D to every other node. Add up the reciprocals of each set to get the closeness centrality of A and of D. Then find every shortest path that runs between the two triangles and say which node lies on all of them. Betweenness ranks that node first and degree ranks it in a four-way tie for last. Explain what each of the two metrics is measuring such that they can disagree this badly about the same node.</li>
+      <li>Split your drawing into the two clusters that a community detection algorithm would find. Say which cluster node D belongs in, why the answer is not obvious, and what that says about reading cluster labels off a network in general.</li>
+      <li>In the Wikipedia network the reading counts links <i>into</i> each author page rather than out of it, to avoid a bias it names. Say what the bias is. Then say what an edge in this network actually records, given that no author in the corpus ever linked to anyone: someone else built every edge, long after all of them were dead.</li>
+    </ol>
+  </div>
+
+  <script src="../js/site.js"></script>
+ </body>
+</html>

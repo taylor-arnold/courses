@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+
+<html lang="en">
+ <head>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>DSST389: Advanced Data Science</title>
+
+  <meta name="description" content="title">
+  <meta name="author" content="Taylor Arnold">
+  <meta charset="UTF-8">
+
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/fonts.css">
+  <link rel="stylesheet" href="../css/site.css">
+ </head>
+
+ <body>
+  <div class="container">
+    <h1>Final Project: A Corpus of Your Own</h1>
+    <p style="padding: 0 1em 1em 1em; font-size: 0.9em">
+      <span style="padding-right: 0.5em">
+        <b>
+          <a href="../index.html">[← back]</a>
+        </b>
+      </span>
+    </p>
+
+    <p>Since September we have been living inside a corpus somebody else built. Seventy-five British and Irish authors, chosen by a person who is not you, resolved through redirects you did not have to notice, capped at five hundred revisions apiece for reasons that were explained to you rather than decided by you. Every technique in the second half of this course was demonstrated on that corpus. For the final project you build your own, and then run the semester over it.</p>
+
+    <p>You will define a population of Wikipedia pages, collect it through the MediaWiki and Wikimedia REST APIs, document it well enough that someone else could rebuild it, check that it is what you claim it is, and analyze it with the temporal, textual, and network methods from Chapters 13 through 16. The analysis is the visible half of the project. The corpus is the half that decides whether the analysis means anything.</p>
+
+    <p>One thing to fix in your mind before you start, because it is the difference between a good project and a project that quietly lies. A Wikipedia page is not the thing it is about. The revision history of the Emily Brontë article is not a record of Emily Brontë; it is a record of what a few dozen volunteers did to a web page between 2003 and now. A link from one page to another was placed there by an editor in the last twenty years. A page view count measures readers, not importance. Every finding you report is, in the first instance, a finding about Wikipedia, and you will be asked to say what else it might be evidence of, and how confident you are in the leap.</p>
+
+    <h3>The Corpus</h3>
+
+    <p>Your corpus is between <b>75 and 250 article pages</b> from a single Wikipedia language edition, and it is defined by a rule you write down, not by a set of pages you happened to like. Fewer than 75 and the vocabulary is too thin for TF-IDF to have anything to weigh; more than 250 and the collection runs long, the network plot becomes a hairball, and you spend the project waiting on the network instead of thinking.</p>
+
+    <p>There are three defensible ways to enumerate a population, all of them in Chapter 12. You can take the members of one or more <b>categories</b>, which is cheap and reproducible but inherits every quirk of volunteer tagging, including the authors who are simply missing the tag. You can <b>curate a list by hand</b> from an outside source, which gives you full control and forces you through the redirect machinery, because people typing 150 names make mistakes. You can query <b>Wikidata</b> for entities matching structured criteria and resolve the results to pages. Whichever you choose, the rule goes in the manifest, together with what it excludes.</p>
+
+    <p>The population must be <b>coherent</b>, in the sense that the pages are comparable to one another and it makes sense to ask what distinguishes them, and it must <b>divide</b>: you need at least one variable that splits the corpus into two or more groups of reasonable size, or you will have nothing to compare anything to.</p>
+
+    <p>Some populations are traps, and it is easier to say so now than to discover it in the middle of November. Corpora built out of bot-generated stubs (every asteroid, every village in a district, every species in a genus) will hand you two hundred pages of nearly identical text, an empty link network, and revision histories that record a script rather than a community. Corpora drawn from ongoing news events have page view series that are one spike and a flat line. Corpora where half the pages are three sentences long will not support text analysis of any kind. Check the length of a handful of your candidate pages before you commit.</p>
+
+    <p>Here are populations that work, offered as illustrations rather than a menu.</p>
+
+    <table border="1">
+      <tr>
+        <th>Population</th>
+        <th>Why it works</th>
+      </tr>
+      <tr>
+        <td>The 118 chemical elements</td>
+        <td>Exactly in range, dense link network, and every page has an external metadata sheet you can attach (atomic number, year of discovery, discoverer).</td>
+      </tr>
+      <tr>
+        <td>The 133 counties and independent cities of Virginia</td>
+        <td>Divides on region and population; the link network is real; and the census gives you outside metadata that Wikipedia did not.</td>
+      </tr>
+      <tr>
+        <td>Winners of a major prize (Booker, Turing, Pulitzer, Ballon d'Or)</td>
+        <td>Spans decades, so temporal questions have room; and the year of the award is a grouping variable with no Wikipedia in it.</td>
+      </tr>
+      <tr>
+        <td>Every film in a director's or studio's filmography, or the Best Picture nominees</td>
+        <td>Page views respond to anniversaries and streaming releases; the link network connects films through the people who made them.</td>
+      </tr>
+      <tr>
+        <td>The Justices of the Supreme Court, or one country's cabinet ministers since 1945</td>
+        <td>Revision histories respond to news; the link network is dense and directed; appointing president and party come from outside.</td>
+      </tr>
+      <tr>
+        <td>Programming languages, or the video games nominated for a given award</td>
+        <td>Strong link structure, and page views track the actual popularity of the thing, which you can check against a source that is not Wikipedia.</td>
+      </tr>
+    </table>
+
+    <p style="height:0.5em"></p>
+
+    <p>You may pick something not on this list, and most of you should. Bring it to the workshop and defend it.</p>
+
+    <h3>The Tables</h3>
+
+    <p>Your pipeline produces a directory of Parquet files and a manifest, in the two-layer structure of Chapter 12: the requests cache is the raw layer, the tables are the processed layer, and everything in the second can be rebuilt from the first without touching the network. At minimum you collect:</p>
+
+    <p><b>pages</b> &mdash; the spine. One row per page, carrying <code>page_id</code> as the stable key and <code>doc_id</code> as the readable one, exactly as the authors table did. Every other table joins back to this one.</p>
+
+    <p><b>texts</b> &mdash; one row per page, the plain-text extract. This feeds Chapters 14 and 15.</p>
+
+    <p><b>links</b> &mdash; one row per outgoing internal link, in full. The filtered view that keeps only the edges inside your corpus is derived from it, not a substitute for it, because the network chapter may want to revisit that decision.</p>
+
+    <p><b>revisions</b> &mdash; the edit history, with the revision ID, timestamp, user, size, and comment. Cap it at the 500 most recent revisions per page unless your corpus is small enough that the full history is cheap and a question actually needs it. Say which you did and why.</p>
+
+    <p><b>pageviews</b> &mdash; daily views over a fixed window that you state, from the REST API. Some of your pages will have none, and the 404 is an answer, not an error.</p>
+
+    <p><b>langlinks</b> &mdash; which other language editions have this page, and under what title.</p>
+
+    <p><b>Two metadata columns of your own, at minimum, that do not come from the API.</b> The book's author corpus carries <code>born</code>, <code>died</code>, <code>era</code>, and <code>gender</code>, and Chapter 12 is blunt about where they came from: somebody compiled them by hand, and a reader who wants to check them has to check them against something other than Wikipedia. Do the same. Take them from a reference work, a database, an official record, or your own coding of each page, and record in the manifest where each one came from and how you resolved the ambiguous cases. Without them, every variable you can group by is one Wikipedia chose for you, and the project can only ever tell you what Wikipedia already thinks.</p>
+
+    <p>Collect politely: a real user agent, a cache, requests in series, and a pause between the ones that actually go over the network. You are one of about twenty-five people pointing a script at the same servers this month.</p>
+
+    <h3>Checks</h3>
+
+    <p>Before any analysis, prove that the corpus is what you say it is. This is <a href="../hw/hw19.html">Homework 19</a>, and it is due at Workshop II.</p>
+
+    <ul>
+      <li><code>page_id</code> is unique in the spine, and so is <code>doc_id</code>.</li>
+      <li>Every title in your source list resolved. Redirects are logged with the title you asked for and the title you got. Titles that resolved to nothing are named, one by one, and explained.</li>
+      <li>Every foreign key resolves: no row of <code>texts</code>, <code>links</code>, <code>revisions</code>, <code>pageviews</code>, or <code>langlinks</code> points at a page that is not in the spine.</li>
+      <li>The pages with no page view data are named, and you know why.</li>
+      <li>The shortest texts in the corpus are named, with their lengths. If a quarter of your pages are stubs, you have a different project than you think you do, and the time to find out is now.</li>
+      <li>The manifest states the population rule, the retrieval date, the page view window, the revision cap, the row counts of every table, and the provenance of each hand-added column.</li>
+    </ul>
+
+    <h3>The Analysis</h3>
+
+    <p>Four to six findings that answer research questions you posed in the proposal. Every finding gets a claim, the evidence, and one sentence saying what it is evidence <i>of</i> &mdash; a fact about the world, a fact about how Wikipedia is written, or something you cannot tell apart with the data you have. That third answer is a real finding and will be graded as one, as long as you say what you would have had to collect to separate them.</p>
+
+    <p>Across the notebook, and explicitly labeled where they appear, you must have:</p>
+
+    <ol>
+      <li>At least one finding from the <b>revision histories</b> and at least one from the <b>page views</b>, using the temporal tools of Chapter 13: a real date or datetime type, and at least one truncation, rolling window, or window function over time.</li>
+      <li>At least one finding from the <b>annotation table</b> of Chapter 14: parts of speech, named entities, n-grams, keyword in context, or a complexity metric.</li>
+      <li>At least one finding from the <b>document vectors</b> of Chapter 15: TF-IDF terms that distinguish your documents, and a distance or a UMAP projection of the collection with something interpretable said about its structure.</li>
+      <li>At least one <b>network</b>, from Chapter 16, with the node and the edge defined in a sentence and defended in another. The internal link network is the obvious one; co-citation, directed, distance, and nearest-neighbor networks are all available from tables you already have. Report at least one centrality measure or clustering, and plot it.</li>
+      <li>At least one finding that <b>joins two of these layers</b>. This is the one the book's corpus cannot give you and yours can. Do the pages that sit at the center of the link network get read more? Do the pages that were edited most in 2025 look different in vocabulary from the ones nobody touched? Does the group that your hand-coded variable splits out cluster in the UMAP projection, or does it not? Does the number of language editions a page appears in have anything to do with anything else you measured?</li>
+    </ol>
+
+    <p>At least six plots, using at least four different geometries, of which at least one is faceted and at least one is fully labeled with <code>labs</code>.</p>
+
+    <p>If you want the harder version of the project, re-collect the text of your corpus from a second language edition using the titles in your <code>langlinks</code> table, run the pipeline of Chapter 15 over it, and compare the structure of the two collections. The vectors are not comparable to each other and the reasons why are in Homework 13. Say what you are actually comparing when you put the two projections side by side.</p>
+
+    <h3>The Datasheet</h3>
+
+    <p>One page, written for somebody who has your Parquet files and none of your memories. What population does this corpus claim to represent, and by what rule. Who is in it who should not be, and who is missing. What was retrieved, from which endpoints, on what date, and what would change if it were retrieved again tomorrow. Which columns came from an API and which came from you, and how you decided the cases where you had to decide. What the corpus cannot be used for. What you would collect differently if you started over.</p>
+
+    <p>The name comes from the practice of publishing a <a href="https://arxiv.org/abs/1803.09010" target="_blank" rel="noopener noreferrer">datasheet</a> alongside a dataset, in the way that an electronic component ships with a sheet stating its tolerances. Yours is a page of prose, not a form, and it is the deliverable that will still be worth something in five years.</p>
+
+    <h3>Deliverables</h3>
+    <ol>
+      <li><b>Proposal</b> (<a href="../hw/hw14.html">Homework 14</a>, due at Workshop I). The population and the rule that defines it, how you will enumerate it, roughly how many pages it holds, the two-or-more metadata columns you will add by hand and where they will come from, and three or four research questions with the tables each one needs. At the workshop you will trade proposals with a partner whose job is to break your population definition: to name a page that your rule lets in and should not, and one that it keeps out and should not. Populations are locked at the end of that class.</li>
+      <li><b>The collection notebook</b>. The pipeline, start to finish, from the population rule to the Parquet files. It must run.</li>
+      <li><b>The corpus</b>. The Parquet tables, the manifest, and the requests cache.</li>
+      <li><b>Checks</b> (<a href="../hw/hw19.html">Homework 19</a>, due at Workshop II). Everything in the section above, plus a first pass at each research question, however rough.</li>
+      <li><b>The analysis notebook</b> (due December 7th). Four to six findings, meeting the requirements above.</li>
+      <li><b>The datasheet</b> (due December 7th). One page.</li>
+      <li><b>Presentation</b>. Six to eight minutes, on one of the three presentation days: your population and how you defined it, one network plot, one temporal plot, one thing you learned about your subject, one thing you learned about Wikipedia, and one thing that went wrong. The talk comes before the notebook is due, which means it is a checkpoint rather than a victory lap. Bring the finding you are least sure about and let the room argue with it.</li>
+    </ol>
+
+    <h3>Grading</h3>
+    <ul>
+      <li>Proposal and population definition &mdash; 15%</li>
+      <li>The corpus, the pipeline, and the checks &mdash; 30%</li>
+      <li>Analysis notebook &mdash; 35%</li>
+      <li>Datasheet &mdash; 10%</li>
+      <li>Presentation &mdash; 10%</li>
+    </ul>
+
+    <p>The corpus is graded on the care of its definition and the honesty of its documentation, not on how exciting its subject is. A modest population, cleanly enumerated, fully keyed, and frankly described, beats an ambitious one whose foreign keys do not resolve and whose manifest cannot say where half the columns came from.</p>
+
+    <h3>Schedule</h3>
+    <table border="1">
+      <tr>
+        <th>Date</th>
+        <th>What happens</th>
+      </tr>
+      <tr>
+        <td><b>2026-10-14</b></td>
+        <td>Project launched in class, and <a href="../hw/hw14.html">Homework 14</a> assigned: the population, the rule, the metadata, the questions. You have two weeks for it. Nothing in it depends on Exam II, and nothing in it should be done the night before the workshop.</td>
+      </tr>
+      <tr>
+        <td><b>2026-10-28</b></td>
+        <td><b>Workshop I.</b> <a href="../hw/hw14.html">Homework 14</a> due. You will trade proposals with a partner, who will try to break your population definition. Populations are locked at the end of class, and collection begins that afternoon.</td>
+      </tr>
+      <tr>
+        <td><b>2026-11-04</b></td>
+        <td>The network chapter is finished in class, which is the last method your analysis needs. Your corpus should be collected by now and your checks should be running.</td>
+      </tr>
+      <tr>
+        <td><b>2026-11-18</b></td>
+        <td><b>Workshop II.</b> <a href="../hw/hw19.html">Homework 19</a> due: the finished corpus, the manifest, the checks, and a first look at every research question. The class period is yours to work on the analysis.</td>
+      </tr>
+      <tr>
+        <td><b>2026-11-30</b></td>
+        <td>Presentations begin, and continue on December 2nd and December 7th. You present what you have; the writing is not due yet.</td>
+      </tr>
+      <tr>
+        <td><b>2026-12-07</b></td>
+        <td>Everything else due: the corpus, the collection notebook, the analysis notebook, and the datasheet.</td>
+      </tr>
+    </table>
+
+    <p>Two pieces of slack are built into that calendar on purpose, and you should use them. The proposal is a two-week homework because choosing a population well is the part of this project that most repays being slept on, and because the week before the workshop is the week of Exam II. And the written work is due a week after the presentations begin, rather than on the same morning, because a talk is a good way to find out what your argument actually is. Present what you have, listen to what the room says about it, and let that change the notebook. Nobody is expected to stand up on the thirtieth with a finished project.</p>
+
+    <div style="height:100px"></div>
+  </div>
+
+  <script src="../js/site.js"></script>
+ </body>
+</html>

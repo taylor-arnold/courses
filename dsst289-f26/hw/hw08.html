@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html lang="en">
+ <head>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>DSST289: Introduction to Data Science</title>
+
+  <meta name="description" content="title">
+  <meta name="author" content="Taylor Arnold">
+  <meta charset="UTF-8">
+
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/fonts.css">
+  <link rel="stylesheet" href="../css/site.css">
+ </head>
+
+ <body>
+  <div class="container">
+    <h1>Homework 08</h1>
+    <p style="padding: 0 1em 1em 1em; font-size: 0.9em">
+      <span style="padding-right: 0.5em">
+        <b>
+          <a href="../index.html">[← back]</a>
+        </b>
+      </span>
+    </p>
+    <p>
+      Assume you have a dataset loaded into Python called <code>students</code>, with columns named <code>name</code>, <code>major</code>, <code>year</code>, <code>gpa</code>, and <code>study_hours</code>. Hand write the following, writing each one as its own chain of methods that follows the formatting conventions from the reading.
+    </p>
+    <ol>
+      <li>The code that returns the single student with the highest GPA in each major.</li>
+      <li>The code that returns a table with one row for each major, giving the average GPA of the students in that major and the number of students in that major, with the rows coming back in a predictable order.</li>
+      <li>The code that returns a table with one row for each combination of major and year, giving the average number of study hours for the students in that group.</li>
+      <li>The code that returns a table with one row for each major, giving the number of students in that major with a GPA above 3.5, <em>without</em> adding any new columns to the dataset first.</li>
+      <li>Finally, in a sentence or two of your own words, describe what Polars gives you back if you call <code>.group_by</code> and then stop, and explain why there is nothing in Polars that corresponds to "ungrouping" a dataset.</li>
+    </ol>
+  </div>
+
+  <script src="../js/site.js"></script>
+ </body>
+</html>

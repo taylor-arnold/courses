@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html lang="en">
+ <head>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>DSST289: Introduction to Data Science</title>
+
+  <meta name="description" content="title">
+  <meta name="author" content="Taylor Arnold">
+  <meta charset="UTF-8">
+
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/fonts.css">
+  <link rel="stylesheet" href="../css/site.css">
+ </head>
+
+ <body>
+  <div class="container">
+    <h1>Homework 07</h1>
+    <p style="padding: 0 1em 1em 1em; font-size: 0.9em">
+      <span style="padding-right: 0.5em">
+        <b>
+          <a href="../index.html">[← back]</a>
+        </b>
+      </span>
+    </p>
+    <p>
+      Assume you have three datasets loaded into Python. The first, <code>students</code>, has one row for each student in the class, with columns named <code>name</code>, <code>major</code>, <code>year</code>, <code>gpa</code>, and <code>study_hours</code>. The second, <code>semesters</code>, has one row for each student in each semester they have been enrolled, with columns named <code>name</code>, <code>semester</code>, and <code>gpa</code>. The third, <code>majors</code>, has one row for each major, with columns named <code>major</code> and <code>n_students</code>. Hand write the following.
+    </p>
+    <ol>
+      <li>The code that produces a scatter plot of <code>study_hours</code> and <code>gpa</code> in which the color of each point is determined by the student's major.</li>
+      <li>The code that produces the same scatter plot with every point drawn in a single fixed color of your choosing, followed by a sentence explaining why the color is written in a different place in parts (1) and (2).</li>
+      <li>The code that produces a scatter plot of <code>study_hours</code> and <code>gpa</code> in which all of the points are drawn faintly, and only the History majors are additionally labelled on the plot with the student's name, in a color of your choosing and in a smaller font nudged slightly above the point.</li>
+      <li>The code that uses <code>semesters</code> to produce a line plot showing how each student's GPA has changed over time, with one line per student.</li>
+      <li>The code that uses <code>majors</code> to produce a bar plot of the number of students in each major, with the bars running horizontally.</li>
+    </ol>
+  </div>
+
+  <script src="../js/site.js"></script>
+ </body>
+</html>

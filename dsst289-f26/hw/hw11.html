@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html lang="en">
+ <head>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>DSST289: Introduction to Data Science</title>
+
+  <meta name="description" content="title">
+  <meta name="author" content="Taylor Arnold">
+  <meta charset="UTF-8">
+
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/fonts.css">
+  <link rel="stylesheet" href="../css/site.css">
+ </head>
+
+ <body>
+  <div class="container">
+    <h1>Homework 11</h1>
+    <p style="padding: 0 1em 1em 1em; font-size: 0.9em">
+      <span style="padding-right: 0.5em">
+        <b>
+          <a href="../index.html">[← back]</a>
+        </b>
+      </span>
+    </p>
+    <p>
+      As in the previous homework, assume you have two datasets loaded into Python: <code>students</code>, with one row for each student and columns named <code>name</code>, <code>major</code>, <code>year</code>, <code>gpa</code>, and <code>study_hours</code>; and <code>semesters</code>, with one row for each student in each semester they have been enrolled and columns named <code>name</code>, <code>semester</code>, and <code>gpa</code>. Hand write the following.
+    </p>
+    <ol>
+      <li>The code that adds a column to <code>students</code> giving each student's rank by GPA within their own major, with a rank of one going to the highest GPA in the major.</li>
+      <li>The code that sorts the students from the most study hours to the fewest and computes, for each student, the percentage of the class's total study hours accounted for by that student and everyone above them, followed by a sentence explaining the different jobs done by the two sums in your expression.</li>
+      <li>The code that adds a column to <code>semesters</code> holding a smoothed version of each student's GPA, computed as the average of that semester and the two before it, along with a sentence saying which rows come back as missing values and why.</li>
+      <li>For each of the two questions below, say whether you would answer it with <code>.group_by</code> and <code>.agg</code> or with <code>.over</code>, explain why in a sentence, and write the code: (a) which major has the highest average GPA, and (b) which students have a GPA above the average for their own major.</li>
+      <li>The code that uses <code>semesters</code> to draw a line plot, one line per student, showing how each student's GPA compares over time to the average GPA of every student in that same semester.</li>
+    </ol>
+  </div>
+
+  <script src="../js/site.js"></script>
+ </body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html lang="en">
+ <head>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>DSST289: Introduction to Data Science</title>
+
+  <meta name="description" content="title">
+  <meta name="author" content="Taylor Arnold">
+  <meta charset="UTF-8">
+
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/fonts.css">
+  <link rel="stylesheet" href="../css/site.css">
+ </head>
+
+ <body>
+  <div class="container">
+    <h1>Homework 18</h1>
+    <p style="padding: 0 1em 1em 1em; font-size: 0.9em">
+      <span style="padding-right: 0.5em">
+        <b>
+          <a href="../index.html">[← back]</a>
+        </b>
+      </span>
+    </p>
+    <p>
+      Assume you have three datasets loaded into Python. The first, <code>students</code>, has one row for each student in the class, with columns named <code>name</code>, <code>major</code>, <code>year</code>, <code>gpa</code>, and <code>study_hours</code>. The second, <code>majors</code>, has one row for each major offered by the university, with columns named <code>major</code>, <code>department</code>, and <code>n_faculty</code>. The third, <code>roommates</code>, has one row for each pair of students who live together, with columns named <code>name</code> and <code>roommate</code>, both of which hold student names. Hand write the following.
+    </p>
+    <ol>
+      <li>A primary key for each of the three datasets, along with a foreign key in <code>roommates</code> and the table whose primary key it refers to.</li>
+      <li>The code that adds each student's department to the <code>students</code> dataset, along with a sentence explaining which of the two tables you put on the left of the join and why.</li>
+      <li>Suppose that a few students have declared a major that does not appear in the <code>majors</code> table at all. Describe what the code you wrote in part (2) does with those students, and then write a second version of the code that keeps every student in the result no matter what.</li>
+      <li>The code that adds two columns to the <code>roommates</code> dataset, one giving the GPA of the student named in <code>name</code> and one giving the GPA of the student named in <code>roommate</code>, with the two columns clearly distinguished from each other.</li>
+      <li>The code that returns the rows of <code>roommates</code> whose <code>name</code> has no match at all in <code>students</code>, along with a sentence about what such a row would tell you about your data, followed by the code that keeps only the students who have a roommate listed, without adding any new columns to <code>students</code>.</li>
+    </ol>
+  </div>
+
+  <script src="../js/site.js"></script>
+ </body>
+</html>

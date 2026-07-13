@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<html lang="en">
+ <head>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>DSST389: Advanced Data Science</title>
+
+  <meta name="description" content="title">
+  <meta name="author" content="Taylor Arnold">
+  <meta charset="UTF-8">
+
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/fonts.css">
+  <link rel="stylesheet" href="../css/site.css">
+ </head>
+
+ <body>
+  <div class="container">
+    <h1>Homework 02</h1>
+    <p style="padding: 0 1em 1em 1em; font-size: 0.9em">
+      <span style="padding-right: 0.5em">
+        <b>
+          <a href="../index.html">[← back]</a>
+        </b>
+      </span>
+    </p>
+    <p>
+      The reading loads <code>state</code> from a GeoJSON file. It has fifty rows, one per state, and only three columns of attributes: <code>name</code>, <code>abb</code>, and <code>fips</code>. Everything else in the table is geometry. On a sheet of paper, hand write answers to the following. As last time, these ask what the methods do and what they let you find out, so a few sentences apiece is enough.
+    </p>
+    <ol>
+      <li>The reading says that the effect of projection is much more noticeable with polygons than with points. The projection moves both by the same rule, so explain why the distortion is easier to see in the state boundaries than in the metro locations from the last reading. Then say what <code>geom_map</code> has to know about the <code>geometry</code> column that <code>geom_point</code> does not.</li>
+      <li>Centroids and areas are computed only after the states are projected, because in raw longitude and latitude they come back as numbers in squared degrees. Say what is actually wrong with those numbers, and whether they are wrong in a way that a person reading the output would notice. Then name a state whose centroid falls outside its own borders, and say what that fact should make you cautious about if you were using centroids to stand in for states.</li>
+      <li>The reading warns that choropleth maps are easy to misread because large regions take up more of the page than small ones. Its own first choropleth colors the states by their area. Say what a reader learns from that map that they could not have gotten from the plain outline map above it. Then, since <code>state</code> arrives with no data attached other than names and codes, name a variable you would want to join onto it, and say whether it should be a count or a rate and why.</li>
+      <li>All fifty states in this file are stored as MultiPolygons, including landlocked ones like Colorado that have a single unbroken border. Say why a file format would store a one-part shape as a multi-part geometry anyway. Then say which of the metrics in the reading still make sense if the rows held LineStrings, such as rivers or interstates, instead of polygons.</li>
+    </ol>
+  </div>
+
+  <script src="../js/site.js"></script>
+ </body>
+</html>

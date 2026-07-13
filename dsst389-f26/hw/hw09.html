@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<html lang="en">
+ <head>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>DSST389: Advanced Data Science</title>
+
+  <meta name="description" content="title">
+  <meta name="author" content="Taylor Arnold">
+  <meta charset="UTF-8">
+
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/fonts.css">
+  <link rel="stylesheet" href="../css/site.css">
+ </head>
+
+ <body>
+  <div class="container">
+    <h1>Homework 09</h1>
+    <p style="padding: 0 1em 1em 1em; font-size: 0.9em">
+      <span style="padding-right: 0.5em">
+        <b>
+          <a href="../index.html">[← back]</a>
+        </b>
+      </span>
+    </p>
+    <p>
+      This reading runs the 75 author pages through spaCy and turns them into a table with one row per token. The first two questions ask you to build a small piece of that table by hand, for the single sentence below. You will not get every cell right, and that is part of the point.
+    </p>
+    <p style="padding-left: 2em">
+      <i>In 1847, Charlotte Brontë published Jane Eyre under the name Currer Bell.</i>
+    </p>
+    <ol>
+      <li>Write out the annotation table for this sentence with four columns: <code>tid</code>, <code>token</code>, <code>lemma</code>, and <code>upos</code>. Number the tokens from one. Say how many rows you ended up with, and why that number is not the number of words in the sentence. Then point out every row where the lemma differs from the token, and say what rule produced the difference.</li>
+      <li>Add two more columns to your table, <code>ent_type</code> and <code>ent_iob</code>, filling in the entity type where you think spaCy will find one and marking each token B, I, or O. Two spans here are genuinely hard, and "Jane Eyre" is the harder of them: say what two labels the model might reasonably give it and why. Then say what happens downstream, in the entity counts later in the reading, if the model picks the one you did not expect. These columns are predictions from a statistical model rather than facts about the sentence, and this question is about what that costs you.</li>
+      <li>The primary key of the annotation table is <code>doc_id</code>, <code>sid</code>, and <code>tid</code> together. The wrapper renumbers each token from the start of its sentence rather than from the start of the document, even though spaCy hands it a document-wide index. Say what that renumbering buys, given that <code>head_idx</code> has to be compared against <code>tid</code> later. Then say why the table keeps both <code>token</code> and <code>token_with_ws</code> when reading down either one tells you roughly the same thing.</li>
+      <li>The most common nouns in the corpus split into two groups: words like "year" and "family" that would top the list for a biography of anyone, and words like "poem" and "poet" that belong to these subjects in particular. The reading makes a sharper claim about the frequent adjectives, that words like "more" and "other" say more about the people writing the pages than about the authors. Say what an author's top-adjective list is actually a measurement of. Then say why raw counts keep pushing generic words to the top no matter which part of speech you filter to.</li>
+    </ol>
+  </div>
+
+  <script src="../js/site.js"></script>
+ </body>
+</html>

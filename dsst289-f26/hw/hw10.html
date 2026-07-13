@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html lang="en">
+ <head>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>DSST289: Introduction to Data Science</title>
+
+  <meta name="description" content="title">
+  <meta name="author" content="Taylor Arnold">
+  <meta charset="UTF-8">
+
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/fonts.css">
+  <link rel="stylesheet" href="../css/site.css">
+ </head>
+
+ <body>
+  <div class="container">
+    <h1>Homework 10</h1>
+    <p style="padding: 0 1em 1em 1em; font-size: 0.9em">
+      <span style="padding-right: 0.5em">
+        <b>
+          <a href="../index.html">[← back]</a>
+        </b>
+      </span>
+    </p>
+    <p>
+      Assume you have two datasets loaded into Python. The first, <code>students</code>, has one row for each student in the class, with columns named <code>name</code>, <code>major</code>, <code>year</code>, <code>gpa</code>, and <code>study_hours</code>. The second, <code>semesters</code>, has one row for each student in each semester they have been enrolled, with columns named <code>name</code>, <code>semester</code> (a number counting up from one), and <code>gpa</code>. Hand write the following, writing each one as its own chain of methods that follows the formatting conventions from the reading.
+    </p>
+    <ol>
+      <li>The code that adds a column to <code>students</code> giving each student's study hours as a percentage of all of the study hours put in by the students in their major, keeping every student in the result.</li>
+      <li>The code that adds a column to <code>students</code> holding the average GPA of the student's major, followed by a sentence describing how the shape of this result differs from the table you would get by computing the same averages with <code>.group_by</code> and <code>.agg</code>.</li>
+      <li>The code that keeps only the students whose GPA is above the median GPA of their own major, without adding any new columns to the dataset.</li>
+      <li>The code that adds a column to <code>semesters</code> giving the change in each student's GPA from the previous semester, along with a sentence explaining what would go wrong if you left the <code>.over()</code> off, and a sentence explaining which rows of the result come back as missing values and why.</li>
+      <li>A few students have a semester with no GPA recorded. Write the code that replaces each of those missing values with that student's most recent previously recorded GPA.</li>
+    </ol>
+  </div>
+
+  <script src="../js/site.js"></script>
+ </body>
+</html>

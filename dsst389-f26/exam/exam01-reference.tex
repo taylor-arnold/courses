@@ -1,0 +1,159 @@
+\documentclass[11pt, a4paper]{article}
+
+\usepackage{fontspec}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\usepackage[normalem]{ulem}
+\usepackage{multicol}
+\usepackage{enumitem}
+
+\geometry{
+  top=2cm,
+  bottom=2cm,
+  left=2cm,
+  right=2cm,
+  marginparsep=4pt,
+  marginparwidth=1cm
+}
+
+\renewcommand{\headrulewidth}{0pt}
+\pagestyle{fancyplain}
+\fancyhf{}
+\lfoot{}
+\rfoot{}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+
+\usepackage{xunicode}
+\defaultfontfeatures{Mapping=tex-text}
+
+\setlist[itemize]{leftmargin=1.4em, itemsep=0pt, topsep=1pt, parsep=0pt}
+
+\newcommand{\code}[1]{\texttt{#1}}
+
+\begin{document}
+
+\small
+
+\begin{center}
+\normalsize\textbf{DSST389: Exam I --- Reference Sheet}
+\end{center}
+
+\smallskip
+
+\textit{This sheet is attached to your exam. You do not need to memorize any of it.}
+
+\smallskip
+
+\textbf{Setup.}
+Importing \code{funs} registers a namespace called \code{geo} on every Polars DataFrame.
+Geometries are stored as Well-Known Text (WKT) in a column named \code{geometry}; the
+coordinate system is recorded in a column named \code{\_crs}.
+
+\smallskip
+
+\textbf{Reading and building geometries.}
+
+\begin{itemize}
+  \item \code{funs.read\_file(path)} --- read a GeoJSON, Shapefile, or GeoPackage into a
+        Polars DataFrame with the geometries converted to WKT.
+  \item \code{df.geo.points\_from\_xy(x="lon", y="lat", crs=4326)} --- build a point
+        \code{geometry} column from two coordinate columns and record the CRS.
+  \item \code{df.geo.to\_crs(code)} --- reproject the geometries into the given EPSG code.
+  \item \code{df.geo.explore(column=None, tooltip=["name"])} --- interactive map.
+\end{itemize}
+
+\smallskip
+
+\textbf{Metrics.}
+Some of these are properties and take no parentheses. A property that returns
+\textbf{geometries} overwrites the \code{geometry} column; one that returns \textbf{numbers}
+appends a new column named after itself.
+
+\begin{itemize}
+  \item \code{df.geo.centroid} --- \textit{property.} Replaces each geometry with its
+        center point.
+  \item \code{df.geo.area} --- \textit{property.} Appends a column \code{area}, in squared
+        CRS units.
+  \item \code{df.geo.x} \quad \code{df.geo.y} --- \textit{properties.} Append a column
+        \code{x} or \code{y} holding a point's coordinate.
+  \item \code{df.geo.buffer(distance)} --- replaces each geometry with the region within
+        \code{distance} of it, measured in CRS units. A point becomes a disc.
+  \item \code{df.geo.count\_coordinates()} --- appends a column \code{count\_coordinates}
+        giving the number of vertices in each geometry.
+\end{itemize}
+
+\smallskip
+
+\textbf{Spatial joins.}
+Both tables must be in the same CRS. The output keeps the geometry of the \textbf{left}
+table. Columns whose names appear in both tables get \code{\_left} and \code{\_right}
+suffixes, and an \code{index\_right} column is added. The join is an \textbf{inner} join:
+left rows with no match are dropped, without an error.
+
+\begin{itemize}
+  \item \code{df.geo.sjoin(other, predicate="intersects")}
+  \item \code{df.geo.sjoin\_nearest(other, exclusive=False, distance\_col=None)} --- matches
+        each left row to the closest right row. \code{exclusive=True} forbids a row from
+        matching itself; \code{distance\_col} names a column to hold the distance, in CRS
+        units.
+  \item Predicates: \code{intersects} (share any space, including a boundary),
+        \code{contains} (the first fully encloses the second), \code{within} (the first is
+        fully enclosed by the second), \code{touches} (share a boundary but no interior).
+\end{itemize}
+
+\smallskip
+
+\textbf{Changing the geometries.}
+
+\begin{itemize}
+  \item \code{df.geo.dissolve(by="col", aggfunc=\{"area":"sum"\})} --- the spatial
+        counterpart of \code{group\_by} and \code{agg}. Merges the geometries within each
+        group into one and erases the internal boundaries. The group key comes back as an
+        ordinary column.
+  \item \code{df.geo.explode()} --- one row per part of a multi-part geometry. The other
+        columns are copied onto every part.
+  \item \code{df.geo.simplify(tolerance)} --- drops vertices, keeping the boundary within
+        \code{tolerance} of its original position, in CRS units. Each geometry is
+        simplified independently, so shared borders can develop gaps: simplify for display,
+        not for analysis.
+\end{itemize}
+
+\smallskip
+
+\textbf{Plotting.}
+\code{geom\_map} draws the \code{geometry} column and takes \code{fill}, \code{color}, and
+\code{alpha} as either fixed values or aesthetics. \code{coord\_fixed} keeps one unit on the
+x-axis the same length as one unit on the y-axis.
+
+\begin{verbatim}
+(
+    ggplot(state, aes(fill=c.area))
+    .geom_map(color="white")
+    .coord_fixed()
+)
+\end{verbatim}
+
+\smallskip
+
+\textbf{Coordinate reference systems.}
+Areas and distances come back in the units of the current CRS. In a meter-based CRS an area
+is in square meters, and $1 \textrm{ km}^2 = 1{,}000{,}000 \textrm{ m}^2$.
+
+\smallskip
+
+\sloppy
+\begin{itemize}
+  \item \textbf{EPSG:4326}, WGS 84 --- longitude and latitude, in \textbf{degrees}. GPS,
+        raw data, and the default of \code{points\_from\_xy}. Never for areas or distances.
+  \item \textbf{EPSG:5069}, NAD83 Conus Albers --- equal-area, contiguous United States.
+        Units: \textbf{meters}.
+  \item \textbf{EPSG:3857}, Web Mercator --- screen maps and Google Maps. Badly distorts
+        area.
+  \item \textbf{EPSG:32618}, UTM Zone 18N --- the US East Coast. Units: meters.
+\end{itemize}
+\fussy
+
+\end{document}

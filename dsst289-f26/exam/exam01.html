@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+
+<html lang="en">
+ <head>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>DSST289: Introduction to Data Science</title>
+
+  <meta name="description" content="title">
+  <meta name="author" content="Taylor Arnold">
+  <meta charset="UTF-8">
+
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/fonts.css">
+  <link rel="stylesheet" href="../css/site.css">
+ </head>
+
+ <body>
+  <div class="container">
+    <h1>Exam I Study Guide</h1>
+    <p style="padding: 0 1em 1em 1em; font-size: 0.9em">
+      <span style="padding-right: 0.5em">
+        <b>
+          <a href="../index.html">[← back]</a>
+        </b>
+      </span>
+    </p>
+    <p>The first exam consists of 15 questions. All involve hand-writing short code blocks concerning the <code>food</code> dataset, which has one row for each food item and columns including <code>item</code>, <code>food_group</code>, <code>calories</code>, <code>total_fat</code>, <code>sat_fat</code>, <code>cholesterol</code>, <code>sodium</code>, <code>carbs</code>, <code>fiber</code>, <code>sugar</code>, <code>protein</code>, <code>iron</code>, <code>vitamin_a</code>, <code>vitamin_c</code>, and <code>color</code>. You should generally be comfortable with the material in <a href="https://taylor-arnold.github.io/fds2/01_intro.html" target="_blank" rel="noopener noreferrer">Chapter 1</a>, <a href="https://taylor-arnold.github.io/fds2/02_organize.html" target="_blank" rel="noopener noreferrer">Chapter 2</a>, and <a href="https://taylor-arnold.github.io/fds2/03_types.html" target="_blank" rel="noopener noreferrer">Chapter 3</a>, but only the following will be needed for the exam:</p>
+    <ol>
+      <li>Reading a dataset into Python with <code>pl.read_csv</code>, and identifying the observations and variables of a table.</li>
+      <li>Using <code>.sort</code> to sort the data by one or more columns, in ascending or descending order.</li>
+      <li>Selecting a certain number of rows using <code>.head</code> or <code>.tail</code>.</li>
+      <li>Using <code>.select</code> to choose a subset of the columns, or <code>.drop</code> to remove them.</li>
+      <li>Selecting rows using <code>.filter</code> based on a numeric variable being less than, less than or equal to, equal to, greater than or equal to, or greater than a fixed value.</li>
+      <li>Selecting rows using <code>.filter</code> based on a string variable being equal to a specific value.</li>
+      <li>Selecting rows using <code>.filter</code> and <code>.is_in</code> to select rows where a string column is in a set of values.</li>
+      <li>Combining two or more conditions inside <code>.filter</code> with the <code>&amp;</code> (and) and <code>|</code> (or) operators, wrapping each condition in its own set of parentheses.</li>
+      <li>Using <code>.with_columns</code> to create a new variable based on arithmetic manipulation of two or more other columns.</li>
+      <li>Using <code>.with_columns</code> to create a new variable based on applying a mathematical method (such as the logarithm; I will give you the name of the method) to one of the columns.</li>
+      <li>Using <code>.rename</code> to change the name of a column, and <code>.unique</code> to return one row for each value of a column.</li>
+      <li>Using <code>pl.when().then().otherwise()</code> inside of <code>.with_columns</code> to build an indicator variable from a condition.</li>
+      <li>Naming the four core data types (<code>str</code>, <code>i64</code>, <code>f64</code>, and <code>bool</code>) and saying which one you would expect a given column to have.</li>
+      <li>Using <code>.cast</code> to convert a column to another type, including the use of <code>strict=False</code> when some values cannot be converted.</li>
+      <li>Handling missing values with <code>.drop_nulls</code>, <code>.fill_null</code>, and <code>.is_null</code>, and explaining the difference between a <code>null</code> and a <code>NaN</code>.</li>
+      <li>Applying a string method (such as <code>.str.to_uppercase</code>; I will give you the name of the method) to a text column.</li>
+      <li>Explaining, in a sentence or two, what an expression is and what it means for a method such as <code>.filter</code> to act as a context for it.</li>
+    </ol>
+    <p></p>
+    <p>Many questions will require putting multiple functions together in a method chain. All can be done with at most three methods. Your code should follow the class formatting rules of putting parentheses around the whole block, starting with the DataFrame, and having each method on its own line. You should be familiar with the other formatting rules regarding spacing and names, but these will not be graded on the exam.</p>
+
+    <h3>Practice Exam Questions and Answers</h3>
+    <p>The questions below use a different dataset, <code>movie</code>, which has one row for each film with the columns <code>year</code>, <code>title</code>, <code>mpa</code>, <code>runtime</code> (in minutes), <code>gross</code> (in millions of dollars), <code>rating_count</code>, <code>rating</code>, and <code>metacritic</code>. The skills are exactly the ones you will need for the <code>food</code> data on the exam.</p>
+
+    <p>1. Return the five films with the highest rating.</p>
+<pre>
+(
+    movie
+    .sort(c.rating, descending=True)
+    .head(n=5)
+)</pre>
+
+    <p>2. Select only the films that are rated "R" and that run longer than two hours.</p>
+<pre>
+(
+    movie
+    .filter((c.mpa == "R") &amp; (c.runtime > 120))
+)</pre>
+
+    <p>3. Keep only the films whose MPA rating is "G", "PG", or "PG-13", and return just the title and the MPA rating.</p>
+<pre>
+(
+    movie
+    .filter(c.mpa.is_in(["G", "PG", "PG-13"]))
+    .select(c.title, c.mpa)
+)</pre>
+
+    <p>4. Create a new column giving the amount of money each film made per minute of its runtime.</p>
+<pre>
+(
+    movie
+    .with_columns(
+        gross_per_min = c.gross / c.runtime
+    )
+)</pre>
+
+    <p>5. Create a new column holding the base-ten logarithm of the number of ratings, and then sort the films from the largest value of this new column to the smallest.</p>
+<pre>
+(
+    movie
+    .with_columns(
+        log_count = c.rating_count.log10()
+    )
+    .sort(c.log_count, descending=True)
+)</pre>
+
+    <p>6. Return one row for each distinct MPA rating in the data.</p>
+<pre>
+(
+    movie
+    .unique(subset=["mpa"])
+)</pre>
+
+    <p>7. Change the name of the column <code>gross</code> to <code>gross_millions</code>.</p>
+<pre>
+(
+    movie
+    .rename({"gross": "gross_millions"})
+)</pre>
+
+    <p>8. Create a new column named <code>blockbuster</code> that is equal to 1 for films that made more than 200 million dollars and 0 for every other film.</p>
+<pre>
+(
+    movie
+    .with_columns(
+        blockbuster = pl.when(c.gross > 200).then(1).otherwise(0)
+    )
+)</pre>
+
+    <p>9. Pretend that the <code>metacritic</code> column was read into Python as a string, because the films that were never reviewed have their score recorded as "n/a". Create a column named <code>meta_num</code> holding the score as an integer, with anything that cannot be converted turned into a missing value.</p>
+<pre>
+(
+    movie
+    .with_columns(
+        meta_num = c.metacritic.cast(pl.Int64, strict=False)
+    )
+)</pre>
+
+    <p>10. Create a new column holding the title of each film in uppercase letters, keeping all of the other columns as they are.</p>
+<pre>
+(
+    movie
+    .with_columns(
+        title_upper = c.title.str.to_uppercase()
+    )
+)</pre>
+
+    <p>11. What is printed if you type <code>c.rating > 8</code> into a cell on its own, with no DataFrame anywhere in sight?</p>
+<pre>
+Not a column of True and False values, and not an error. Polars prints a
+description of an expression: a recipe that says "take the column named
+rating and compare each value to 8." No data is attached to it, because
+`c.rating > 8` does not know that `movie` exists. The expression only
+produces values once it is handed to a context, such as `.filter()`,
+which keeps the rows where it comes out True, or `.select()`, which
+returns the True and False values themselves as a new bool column.</pre>
+
+  </div>
+
+  <script src="../js/site.js"></script>
+ </body>
+</html>
