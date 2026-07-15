@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+
+<html lang="en">
+ <head>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>DSST289: Live Poll</title>
+
+  <meta name="description" content="Live poll results">
+  <meta name="author" content="Taylor Arnold">
+  <meta charset="UTF-8">
+
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/fonts.css">
+  <link rel="stylesheet" href="../css/site.css">
+  <link rel="stylesheet" href="poll.css">
+ </head>
+
+ <body>
+  <div class="container">
+    <h1>Live Poll Results</h1>
+
+    <div class="poll-question-picker">
+      <label for="question-select">Question</label>
+      <select id="question-select" class="poll-select"></select>
+    </div>
+
+    <div id="question-display" class="poll-question-text"></div>
+
+    <div class="poll-controls">
+      <button id="pull-btn" class="poll-btn poll-btn-primary">Pull results</button>
+      <button id="reset-btn" class="poll-btn poll-btn-secondary">Reset window</button>
+    </div>
+
+    <p class="poll-status" id="poll-status">
+      Showing responses since <strong id="since-time">the beginning</strong>.
+      <span id="last-pulled"></span>
+    </p>
+
+    <div id="poll-chart-wrap">
+      <div id="poll-empty" class="poll-empty" hidden>No responses yet in this window.</div>
+      <div id="poll-chart" class="poll-chart" role="img" aria-label="Percentage of responses by option"></div>
+    </div>
+
+    <table id="poll-table" class="poll-table" hidden>
+      <thead>
+        <tr>
+          <th>Option</th>
+          <th>Responses</th>
+          <th>Percentage</th>
+        </tr>
+      </thead>
+      <tbody id="poll-table-body"></tbody>
+    </table>
+  </div>
+
+  <script src="poll.js"></script>
+ </body>
+</html>

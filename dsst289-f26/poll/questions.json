@@ -1,0 +1,12 @@
+[
+  {
+    "id": "q1-hdi-expression",
+    "question": "Based on the chapter's standard setup, what exactly is the expression c.hdi > 0.9 before it is passed to a DataFrame method?",
+    "options": [
+      { "letter": "A", "text": "A recipe or rule that Polars will evaluate row by row once it is handed to a method." },
+      { "letter": "B", "text": "A filtered DataFrame containing only the rows where the HDI is greater than 0.9." },
+      { "letter": "C", "text": "A single boolean value (True or False) that evaluates the entire column at once." },
+      { "letter": "D", "text": "A syntax error, because columns must be referenced using bracket notation like country['hdi']." }
+    ]
+  }
+]
