@@ -36,6 +36,37 @@
       <li>Two different calls to the <code>round</code> function that round 2.71828 to two digits, one using positional arguments and one using named arguments.</li>
       <li>Three variable names that follow the conventions described in the reading and two that do not, with a short note about what is wrong with each of the second set.</li>
     </ol>
+
+    <h3>Solutions</h3>
+    <p>1. Store your age in years, then use that variable to work out your age in days.</p>
+<pre>
+age_years = 21
+age_days = age_years * 365</pre>
+
+    <p>2. The import lines that start almost every script this semester.</p>
+<pre>
+import polars as pl
+
+from funs import *
+from plotnine import *
+from polars import col as c</pre>
+
+    <p>3. Round 2.71828 to two digits two ways, once with positional arguments and once with named arguments.</p>
+<pre>
+round(2.71828, 2)
+round(number=2.71828, ndigits=2)</pre>
+
+    <p>4. Since you choose your own names, there are many valid answers. A good response gives three names that use only lowercase letters, underscores, and numbers, that start with a letter or an underscore, and that avoid capital letters, along with two that break one of those rules and a note on the problem. One example:</p>
+<pre>
+Follow the conventions:
+    age_years
+    total_calories
+    _count
+
+Break the conventions:
+    2nd_score   (starts with a number, which is not allowed)
+    TotalScore  (uses capital letters; the reading recommends only
+                 lowercase letters and underscores)</pre>
   </div>
 
   <script src="../js/site.js"></script>

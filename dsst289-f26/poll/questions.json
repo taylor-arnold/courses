@@ -1,12 +1,13 @@
 [
   {
-    "id": "q1-hdi-expression",
-    "question": "Based on the chapter's standard setup, what exactly is the expression c.hdi > 0.9 before it is passed to a DataFrame method?",
+    "id": "q01-01",
+    "question": "Q01.01: The call round(number=3.14159, ndigits=2) passes its inputs as named arguments. How does its result compare to round(3.14159, 2)?",
     "options": [
-      { "letter": "A", "text": "A recipe or rule that Polars will evaluate row by row once it is handed to a method." },
-      { "letter": "B", "text": "A filtered DataFrame containing only the rows where the HDI is greater than 0.9." },
-      { "letter": "C", "text": "A single boolean value (True or False) that evaluates the entire column at once." },
-      { "letter": "D", "text": "A syntax error, because columns must be referenced using bracket notation like country['hdi']." }
-    ]
+      { "letter": "A", "text": "The named version raises an error because round does not accept keyword arguments." },
+      { "letter": "B", "text": "They return the same value, since named arguments identify each input by name instead of by position." },
+      { "letter": "C", "text": "The named version rounds to a different number of digits because naming the inputs reorders them." },
+      { "letter": "D", "text": "They differ because named arguments always round to the nearest integer." }
+    ],
+    "correct": "B"
   }
 ]

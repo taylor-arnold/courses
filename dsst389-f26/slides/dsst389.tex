@@ -1,0 +1,77 @@
+% !TEX program = xelatex
+\documentclass[8pt,aspectratio=169]{beamer}
+
+\usepackage{tatalk}
+\addbibresource{references.bib}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{DSST389: Advanced Data Science}
+
+\author{Taylor Arnold}
+\email{tarnold2@richmond.edu}
+\institute{University of Richmond}
+
+\date{Fall 2026}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\customtitleframe
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{outlineframe}{Outline}
+  \rmitem{Overview}
+  \rmdim{1 Introduction}
+  \rmdim{2 Organizing Data I}
+  \rmdim{3 Data Types}
+  \rmdim{4 Visualizing Data I}
+  \rmdim{5 Grouping and Aggregating}
+  \rmdim{6 Window Functions}
+  \rmdim{7 Visualizaing Data II}
+  \rmdim{8 Combining Tables}
+  \rmdim{9 Restructuring Data}
+  \rmdim{10 Collecting Data}
+\end{outlineframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\framesection{Overview}
+\begin{rightframe}{Introduction}
+\splitcols{%
+
+Sample text. \footcite{arnoldSitcom}
+
+}{%
+  \imgcaption{images/paper.png}{Front page our CHR paper, with the initial results.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\framesection{Overview}
+\begin{frame}[fragile]{Code Example}
+\begin{splitcode}{%
+
+Code slides use a wider right column so a full 72-character line of
+code fits without overflowing.
+
+The left column is for narration.
+
+}
+\begin{lstlisting}[language=Python]
+import polars as pl
+from plotnine import ggplot, aes
+from polars import col as c
+
+import funs
+
+country = pl.read_csv("data/countries.csv")
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\framesection{}
+\begin{frame}[allowframebreaks]{References}
+  \printbibliography[heading=none]
+\end{frame}
+
+\end{document}

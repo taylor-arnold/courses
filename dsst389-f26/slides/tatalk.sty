@@ -1,0 +1,374 @@
+\ProvidesPackage{bfitalk}[2026/03/09 BFI Talk Beamer Style]
+
+% ── Fonts ──────────────────────────────────────────────────────────────────
+\usepackage{fontspec}
+\setmainfont{Hoefler Text}[Ligatures=TeX]
+\setsansfont{Helvetica Neue}[
+  Ligatures=TeX,
+  BoldFont=* Bold,
+  ItalicFont=* Italic,
+  BoldItalicFont=* Bold Italic,
+]
+
+% ── Packages ───────────────────────────────────────────────────────────────
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage[backend=biber,style=authoryear,notetype=foot+end]{biblatex}
+\usepackage{ragged2e}
+
+% ── Colours ────────────────────────────────────────────────────────────────
+\definecolor{main}{RGB}{177, 98, 133}
+\definecolor{maindark}{RGB}{133, 66, 95}
+\definecolor{maingrey}{RGB}{167, 83, 119}
+\definecolor{highlight}{RGB}{83, 161, 167}
+\definecolor{captiongrey}{RGB}{160, 160, 160}
+
+% ── Beamer chrome ──────────────────────────────────────────────────────────
+\usetheme{default}
+\usecolortheme{default}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{headline}{}
+\setbeamertemplate{footline}{}
+\setbeamertemplate{frametitle continuation}{}
+\setbeamercolor{background canvas}{bg=white}
+\setbeamercolor{normal text}{fg=black}
+\setbeamercolor{frametitle}{fg=maindark}
+\setbeamercolor{itemize item}{fg=black}
+\setbeamerfont{frametitle}{family=\rmfamily, series=\bfseries, size=\Large}
+\setbeamertemplate{itemize item}{\raise0.8pt\hbox{\tiny$\bullet$}}
+\setbeamertemplate{itemize subitem}{--}
+\addtobeamertemplate{itemize begin}{\vspace{-0.6em}}{}
+\addtobeamertemplate{itemize end}{}{\vspace{-0.4em}}
+\addtobeamertemplate{enumerate begin}{\vspace{-0.6em}}{}
+\addtobeamertemplate{enumerate end}{}{\vspace{-0.4em}}
+
+% ── Bibliography ───────────────────────────────────────────────────────────
+\setbeamertemplate{bibliography item}{}
+\setbeamercolor{bibliography entry author}{fg=black}
+\setbeamercolor{bibliography entry title}{fg=black}
+\setbeamercolor{bibliography entry location}{fg=black}
+\setbeamercolor{bibliography entry note}{fg=black}
+\setbeamerfont{bibliography entry author}{size=\small}
+\setbeamerfont{bibliography entry title}{size=\small}
+\setbeamerfont{bibliography entry location}{size=\small}
+\setbeamerfont{bibliography entry note}{size=\small}
+
+% ── Logo path ──────────────────────────────────────────────────────────────
+\newcommand{\logofile}{logo/logo_alpha.png}
+
+% ── Email command ──────────────────────────────────────────────────────────
+\newcommand{\myemail}{}
+\newcommand{\email}[1]{\renewcommand{\myemail}{#1}}
+
+% ── Footnote styling ───────────────────────────────────────────────────────
+\renewcommand{\footnoterule}{\kern-3pt\hrule width 5cm height 0.2pt\kern 2.6pt}
+\renewcommand{\thempfootnote}{\arabic{mpfootnote}}
+\makeatletter
+\let\@mpfootnotetext\beamer@framefootnotetext
+\makeatother
+\setbeamerfont{footnote}{size=\tiny}
+\setbeamercolor{footnote}{fg=maingrey}
+\setbeamercolor{footnote mark}{fg=maingrey}
+
+% ── Default footline: page number bottom-right ─────────────────────────────
+\setbeamertemplate{footline}{%
+  \begin{tikzpicture}[remember picture, overlay]
+    \node[anchor=south east, inner sep=0pt,
+          font=\scriptsize\color{maingrey}]
+      at ([xshift=-3mm, yshift=3mm]current page.south east)
+      {\insertframenumber/\inserttotalframenumber};
+  \end{tikzpicture}%
+}
+
+% ── Section label + frametitle template ────────────────────────────────────
+\newcommand{\framesectionlabel}{}
+\newcommand{\framesection}[1]{\renewcommand{\framesectionlabel}{#1}}
+
+\setbeamertemplate{frametitle}{%
+  \vskip0pt
+  \begin{tikzpicture}[remember picture, overlay]
+    \node[anchor=north west, inner sep=0pt]
+      at ([xshift=6mm, yshift=-5mm]current page.north west)
+      {\includegraphics[height=11mm]{\logofile}};
+    \node[anchor=south west, inner sep=0pt,
+          font=\sffamily\mdseries\small\color{maingrey}]
+      at ([xshift=22mm, yshift=-9mm]current page.north west)
+      {\framesectionlabel};
+    \node[anchor=north west, inner sep=0pt,
+          text width=130mm,
+          font=\rmfamily\mdseries\Large\color{maindark}]
+      at ([xshift=22mm, yshift=-11mm]current page.north west)
+      {\insertframetitle};
+    \draw[main, line width=0.4pt]
+      (current page.north west) -- (current page.north east);
+  \end{tikzpicture}
+  \vskip28pt
+}
+
+% ============================================================
+%  SLIDE WRAPPERS
+% ============================================================
+
+% ── (1) Title slide ────────────────────────────────────────────────────────
+%
+%  Usage: \customtitleframe
+%
+\newcommand{\customtitleframe}{%
+  {%  extra group so [plain] + footline override don't leak
+  \setbeamertemplate{footline}{}%
+  \begin{frame}[plain]
+  \begin{tikzpicture}[remember picture, overlay]
+    % diagonal coloured panel (right ~35%)
+    \fill[main]
+      ([xshift=-40mm]current page.north east)
+      -- (current page.north east)
+      -- (current page.south east)
+      -- ([xshift=-80mm]current page.south east)
+      -- cycle;
+    % thin border around slide
+    \draw[main, line width=0.4pt]
+      (current page.south west) rectangle (current page.north east);
+    % title
+    \node[anchor=north west, text width=80mm, inner sep=0pt,
+          font=\rmfamily\fontsize{14}{20}\selectfont]
+      at ([xshift=10mm, yshift=-15mm]current page.north west)
+      {\selectfont\color{maindark}\inserttitle};
+    % author / institute / email / date block
+    \node[anchor=north west, text width=90mm, inner sep=0pt]
+      at ([xshift=10mm, yshift=-45mm]current page.north west)
+      {%
+        {\rmfamily\bfseries\normalsize\color{black}\insertauthor}\\[2pt]
+        {\rmfamily\normalsize\color{black}\insertinstitute}\\[2pt]
+        {\rmfamily\normalsize\color{highlight}\href{mailto:\myemail}{\myemail}}%
+        \\[14pt]
+        {\rmfamily\normalsize\color{black}\insertdate}%
+      };
+    % logo + lab name on coloured panel
+    \node[anchor=south east, inner sep=0pt]
+      at ([xshift=-3mm, yshift=14mm]current page.south east)
+      {%
+        \includegraphics[height=20mm]{\logofile}%
+        \hspace{0pt}%
+        \raisebox{10mm}{%
+          \begin{minipage}[c]{36mm}
+            \raggedright
+            {\rmfamily\fontsize{14}{20}\selectfont\color{white}%
+             Course Notes}
+          \end{minipage}%
+        }%
+      };
+    % page number (white, over panel)
+    \node[anchor=south east, inner sep=0pt,
+          font=\scriptsize\color{white}]
+      at ([xshift=-3mm, yshift=3mm]current page.south east)
+      {\insertframenumber/\inserttotalframenumber};
+  \end{tikzpicture}
+  \end{frame}
+  }%
+}
+
+% ── (2) Outline / section-divider slide ────────────────────────────────────
+%
+%  Usage:
+%    \begin{outlineframe}{Outline}
+%      \rmitem{1 Active section}
+%      \rmdim{2 Inactive section}
+%    \end{outlineframe}
+%
+\newenvironment{outlineframe}[1]{%
+  \begingroup
+  \setbeamertemplate{footline}{}%
+  \setbeamercolor{background canvas}{bg=main}%
+  \begin{frame}[plain]
+  \begin{tikzpicture}[remember picture, overlay]
+    \fill[main]
+      (current page.north west) rectangle (current page.south east);
+    \node[anchor=north west, inner sep=0pt]
+      at ([xshift=6mm, yshift=-5mm]current page.north west)
+      {\includegraphics[height=11mm]{\logofile}};
+    \node[anchor=north west, inner sep=0pt,
+          text width=130mm,
+          font=\rmfamily\mdseries\Large\selectfont\color{white}]
+      at ([xshift=22mm, yshift=-11mm]current page.north west)
+      {#1};
+    \node[anchor=south east, inner sep=0pt,
+          font=\scriptsize\color{white}]
+      at ([xshift=-3mm, yshift=3mm]current page.south east)
+      {\insertframenumber/\inserttotalframenumber};
+  \end{tikzpicture}
+  \vskip32pt
+}{%
+  \end{frame}
+  \endgroup
+}
+
+% Highlighted outline item (white arrow)
+\newcommand{\rmitem}[1]{%
+  {\color{white}\raisebox{1.2pt}{$\blacktriangleright$}\hspace{8pt}%
+   {\sffamily\normalsize #1}\par\vskip6pt}}
+
+% Dimmed outline item (muted arrow)
+\newcommand{\rmdim}[1]{%
+  {\color{maingrey}\raisebox{1.2pt}{$\blacktriangleright$}\hspace{8pt}%
+   {\sffamily\normalsize #1}\par\vskip6pt}}
+
+% ── (3a) Text + right-column content slide ─────────────────────────────────
+%
+%  Usage:
+%    \begin{rightframe}{Frame Title}
+%      \splitcols{
+%        Left-column text (paragraphs, lists, etc.)
+%      }{
+%        Right-column content (image, table, etc.)
+%      }
+%    \end{rightframe}
+%
+%  \splitcols sets up the two-column layout. All column environments are
+%  self-contained within the macro to avoid beamer frame-scanning conflicts.
+%
+\newenvironment{rightframe}[1]{%
+  \begingroup
+  \begin{frame}%
+  \frametitle{#1}%
+}{%
+  \end{frame}%
+  \endgroup
+}
+
+% Two-column split for use inside rightframe (or any content frame).
+% #1 = left column content, #2 = right column content.
+\newcommand{\splitcols}[2]{%
+  \begin{columns}[c]%
+  \begin{column}{0.55\textwidth}%
+    \setlength{\parindent}{0em}%
+    \setlength{\parskip}{1em}%
+    \setlength{\abovedisplayskip}{0.4em}%
+    \setlength{\belowdisplayskip}{0.4em}%
+    \setlength{\abovedisplayshortskip}{0pt}%
+    \setlength{\belowdisplayshortskip}{0.4em}%
+    \justifying\vskip-22pt%
+    #1%
+  \end{column}%
+  \begin{column}{0.42\textwidth}%
+    \setlength{\parskip}{0pt}%
+    \centering
+    #2%
+  \end{column}%
+  \end{columns}%
+}
+
+% Image with caption for use in the right column of \splitcols.
+% Usage: \imgcaption[width]{imagefile}{caption text}
+% width defaults to 0.92 (fraction of \linewidth)
+\newcommand{\imgcaption}[3][0.92]{%
+  \includegraphics[width=#1\linewidth]{#2}\\[3pt]%
+  \begin{minipage}{0.9\linewidth}%
+    \setlength{\parskip}{0pt}%
+    \fontsize{4.5}{5.5}\selectfont%
+    \setlength{\baselineskip}{5.5pt}%
+    \color{captiongrey}%
+    #3%
+  \end{minipage}%
+}
+
+% ── (3a-code) Text + right-column CODE slide ───────────────────────────────
+%
+%  Because code needs to be read literally (verbatim), a code slide must use a
+%  [fragile] frame and the listing cannot be passed as a macro argument.  Use
+%  the \begin{splitcode}{left text} ... \end{splitcode} environment: the left
+%  column text is the argument, the code listing goes in the body.
+%
+%  Usage:
+%    \begin{frame}[fragile]{Frame Title}
+%      \begin{splitcode}{Left-column text (paragraphs, lists, etc.)}
+%        \begin{lstlisting}
+%        ... your code, up to ~72 columns wide ...
+%        \end{lstlisting}
+%      \end{splitcode}
+%    \end{frame}
+%
+%  The code column is wider (0.64\textwidth) and the font small enough that a
+%  72-character line fits without overflowing.
+%
+\newfontfamily\codefont{Menlo}[Scale=1.0]
+
+\lstdefinestyle{tacode}{%
+  basicstyle=\codefont\fontsize{5.6}{6.9}\selectfont\color{black},%
+  columns=fullflexible,%
+  keepspaces=true,%
+  showstringspaces=false,%
+  breaklines=false,%
+  frame=none,%
+  xleftmargin=0pt,%
+  xrightmargin=0pt,%
+  aboveskip=0pt,%
+  belowskip=0pt,%
+  commentstyle=\color{highlight}\itshape,%
+  keywordstyle=\color{maindark}\bfseries,%
+  stringstyle=\color{main},%
+  comment=[l]{\#},%
+  morekeywords={library,function,TRUE,FALSE,NA,NULL,if,else,for,in},%
+}
+\lstset{style=tacode}
+
+% Two-column split for a fragile CODE frame.  #1 = left column text; the
+% listing (lstlisting) goes in the environment body → right column.
+\newenvironment{splitcode}[1]{%
+  \begin{columns}[c]%
+  \begin{column}{0.32\textwidth}%
+    \setlength{\parindent}{0em}%
+    \setlength{\parskip}{1em}%
+    \justifying\vskip-22pt%
+    #1%
+  \end{column}%
+  \begin{column}{0.64\textwidth}%
+    \setlength{\parskip}{0pt}%
+    \raggedright
+}{%
+  \end{column}%
+  \end{columns}%
+}
+
+% ── (3b) Full-width content slide ──────────────────────────────────────────
+%
+%  Usage:
+%    \begin{fullframe}{Frame Title}
+%      \includegraphics[width=\textwidth]{...}
+%    \end{fullframe}
+%
+\newenvironment{fullframe}[1]{%
+  \begingroup
+  \begin{frame}%
+  \frametitle{#1}%
+  \vskip-15pt%
+}{%
+  \end{frame}%
+  \endgroup
+}
+
+% ── (3c) Text-only content slide ───────────────────────────────────────────
+%
+%  Usage:
+%    \begin{textframe}{Frame Title}
+%      Paragraph text, lists, etc.
+%    \end{textframe}
+%
+\newenvironment{textframe}[1]{%
+  \begingroup
+  \begin{frame}%
+  \frametitle{#1}%
+  \setlength{\parindent}{0em}%
+  \setlength{\parskip}{1em}%
+  \setlength{\abovedisplayskip}{0.4em}%
+  \setlength{\belowdisplayskip}{0.4em}%
+  \setlength{\abovedisplayshortskip}{0pt}%
+  \setlength{\belowdisplayshortskip}{0.4em}%
+  \justifying\vskip-15pt%
+}{%
+  \end{frame}%
+  \endgroup
+}

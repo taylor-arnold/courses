@@ -1,0 +1,13 @@
+[
+  {
+    "id": "q11-01",
+    "question": "Q11.01: A student runs metro = metro.geo.points_from_xy(\"lon\", \"lat\"). Besides filling in the geometry column, what does this call do that building the strings by hand with pl.format(\"POINT ({} {})\", c.lon, c.lat) does not?",
+    "options": [
+      { "letter": "A", "text": "It records the coordinate system in a _crs column, defaulting to EPSG:4326." },
+      { "letter": "B", "text": "It reprojects the points into the Albers equal-area system, EPSG:5069." },
+      { "letter": "C", "text": "It sorts the rows by longitude so the map draws from west to east." },
+      { "letter": "D", "text": "It drops the original lon and lat columns once the points are built." }
+    ],
+    "correct": "A"
+  }
+]

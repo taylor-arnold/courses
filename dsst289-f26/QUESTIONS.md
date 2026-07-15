@@ -1,0 +1,172 @@
+# Generating Poll Questions
+
+This file tells an agent how to write multiple-choice poll questions and append
+them to `poll/questions.json`. These are the live in-class questions the
+instructor selects from the poll dropdown; each one tests understanding of a
+specific idea from the course notes. The prompt will name **which chapters or
+sections** to draw from and **how many** questions to generate.
+
+## Inputs and resources
+
+- **The question file**, `poll/questions.json`. This is a JSON array of question
+  objects. Read the whole file first: you need the existing entries to match
+  their format and to continue the per-chapter numbering (see "Numbering"
+  below). Preserve the file's existing indentation (two spaces).
+
+- **The course notes.** The readings are the source of truth for every concept,
+  method name, and piece of terminology a question tests. They are local `.qmd`
+  files in `~/gh/fds2`, one per chapter, numbered to match the chapter:
+
+  | Chapter | File |
+  |---------|------|
+  | 01 | `~/gh/fds2/01_intro.qmd` |
+  | 02 | `~/gh/fds2/02_organize.qmd` |
+  | 03 | `~/gh/fds2/03_types.qmd` |
+  | 04 | `~/gh/fds2/04_graphics.qmd` |
+  | 05 | `~/gh/fds2/05_group.qmd` |
+  | 06 | `~/gh/fds2/06_window.qmd` |
+  | 07 | `~/gh/fds2/07_graphics_ii.qmd` |
+  | 08 | `~/gh/fds2/08_combine.qmd` |
+  | 09 | `~/gh/fds2/09_restructure.qmd` |
+  | 10 | `~/gh/fds2/10_collect.qmd` |
+  | 11 | `~/gh/fds2/11_spatial_data.qmd` |
+  | 12 | `~/gh/fds2/12_apis.qmd` |
+  | 13 | `~/gh/fds2/13_temporal_data.qmd` |
+  | 14 | `~/gh/fds2/14_text_annotations.qmd` |
+  | 15 | `~/gh/fds2/15_text_vectors.qmd` |
+  | 16 | `~/gh/fds2/16_network_data.qmd` |
+  | 17 | `~/gh/fds2/17_image_data.qmd` |
+
+  Read the relevant chapter (or the specific sections the prompt names) in full
+  before writing. Base each question on something actually stated in the notes;
+  do not invent conventions or method names from memory. This course uses a
+  specific Polars/plotnine dialect (see "Code conventions" below).
+
+- **The `ta-humanizer` skill.** Run the prose you write — question stems and
+  option text — through it before finalizing (see "Humanize the prose").
+
+## What to produce
+
+Append the new question objects to the **end** of the JSON array in
+`poll/questions.json`, keeping it valid JSON. Do not modify or reorder the
+existing entries. Each question object has this shape:
+
+```json
+{
+  "id": "q03-12",
+  "question": "Q03.12: What does c.name.str.len_chars() return for each row?",
+  "options": [
+    { "letter": "A", "text": "The number of characters in the string." },
+    { "letter": "B", "text": "The string converted to uppercase." },
+    { "letter": "C", "text": "The number of words in the string." },
+    { "letter": "D", "text": "A syntax error, because len must be a function call." }
+  ],
+  "correct": "A"
+}
+```
+
+Field by field:
+
+- **`question`** — the prompt shown to students. It **must** start with the
+  question code: the letter `Q`, the two-digit zero-padded chapter number, a
+  period, and the two-digit zero-padded question number, then `: ` and the
+  question text. So question 12 for chapter 3 starts with `Q03.12: `; question 4
+  for chapter 11 starts with `Q11.04: `. The code is what lets the instructor
+  find questions in order from the dropdown.
+- **`options`** — **exactly four** options, lettered `A`, `B`, `C`, `D` in that
+  order. Each is an object with a `letter` and a `text`.
+- **`correct`** — the `letter` of the single correct option (`"A"`, `"B"`,
+  `"C"`, or `"D"`). Every question has exactly one correct answer.
+- **`id`** — a short unique slug. Use the lowercased code with a hyphen:
+  `Q03.12` → `"q03-12"`. Confirm the id does not already appear in the file.
+
+## Numbering
+
+Question numbers run **per chapter** and never repeat within a chapter. Before
+adding questions for a chapter, scan `questions.json` for existing `QNN.` codes
+in that chapter and continue from the highest one. If chapter 3 already has
+`Q03.01` through `Q03.11`, your first new chapter-3 question is `Q03.12`. If a
+chapter has no questions yet, start at `01`.
+
+When the prompt asks for several questions across one chapter, number them
+consecutively. When it spans multiple chapters, number each chapter's questions
+independently against that chapter's existing codes.
+
+Note: some older entries may predate this scheme and lack a `QNN.MM` prefix or a
+`correct` field. Leave them as they are; just don't collide with any codes they
+do use.
+
+## Writing good questions
+
+Each question tests one idea from the notes. Aim for the level of the existing
+questions: they probe genuine understanding (what an expression *is*, what a
+method *returns*, why an approach works), not trivia or memorized syntax.
+
+- **One clearly correct answer.** The correct option must be defensible straight
+  from the reading. The other three are distractors.
+- **Plausible distractors.** Good wrong answers reflect real misconceptions a
+  student might hold — confusing a lazy expression with an eager value, mixing up
+  two similar methods, assuming pandas-style bracket indexing, expecting a filter
+  to return a scalar. Avoid throwaway options no one would pick.
+- **Vary the correct letter.** Do not make `A` correct every time; spread the
+  correct answer across A–D over a set of questions.
+- **Self-contained stems.** A student reading the question live should have
+  everything they need. If a question refers to code, put the code inline in the
+  stem (e.g. `c.hdi > 0.9`) rather than assuming an external snippet.
+- **Match the notes' vocabulary.** Use the same terms the chapter uses
+  (DataFrame, expression, method chain, aesthetic, geometry, etc.).
+- **Keep options parallel and comparable** in length and grammar so the answer
+  isn't given away by one option being oddly long or oddly phrased.
+
+## Code conventions
+
+When a question includes code — in the stem or in an option — follow the exact
+dialect used in the notes. **Do not run any code**; you are writing reference
+questions, not executing them.
+
+- Assume the standard setup is already loaded:
+
+  ```python
+  import polars as pl
+  from plotnine import ggplot, aes
+  from polars import col as c
+  import funs
+  ```
+
+- Use **Polars**, never pandas. Reference columns with the `c.` prefix
+  (`c.calories`, `c.food_group`).
+- Method-chain style: the pipeline is wrapped in parentheses, starts with the
+  DataFrame, and puts each method on its own line.
+- For plots, use the notes' plotnine style, which pipes into `ggplot` and adds
+  geometries as chained methods (`.geom_point(...)`), not `ggplot(...) + geom_point()`.
+- Use the datasets and column names as they appear in the chapter you are
+  drawing from.
+
+Because option and question text live inside JSON strings, escape as JSON
+requires: use `\"` for a literal double quote, and `\\` for a backslash. Keep
+each option on one line.
+
+## Humanize the prose
+
+The question stems and option text should read as if a person wrote them. Before
+finalizing, run the natural-language text through the **`ta-humanizer`** skill
+and apply its fixes. Keep it plain and direct, matching the voice of the notes
+and the existing questions. Code fragments are exempt — humanize only the prose.
+
+## Checklist before finishing
+
+- [ ] Read the named chapters/sections in `~/gh/fds2` in full.
+- [ ] Read `questions.json` and continued per-chapter numbering from the highest
+      existing `QNN.MM` code.
+- [ ] Produced the number of questions the prompt asked for.
+- [ ] Every question starts with its `QNN.MM: ` code and has a matching `id`.
+- [ ] Every question has exactly four options lettered A–D and one `correct`
+      letter.
+- [ ] Correct answers are defensible from the notes; distractors are plausible;
+      the correct letter varies across the set.
+- [ ] Any code follows the Polars/plotnine dialect and is verified against the
+      `.qmd`, not guessed.
+- [ ] The file is still valid JSON, existing entries untouched, indentation
+      preserved.
+- [ ] Prose has been run through `ta-humanizer`.
+- [ ] No code was executed.
