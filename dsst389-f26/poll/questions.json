@@ -1,13 +1,13 @@
 [
   {
-    "id": "q11-01",
-    "question": "Q11.01: A student runs metro = metro.geo.points_from_xy(\"lon\", \"lat\"). Besides filling in the geometry column, what does this call do that building the strings by hand with pl.format(\"POINT ({} {})\", c.lon, c.lat) does not?",
+    "id": "q01-01",
+    "question": "Q01.01: The call round(number=3.14159, ndigits=2) passes its inputs as named arguments. How does its result compare to round(3.14159, 2)?",
     "options": [
-      { "letter": "A", "text": "It records the coordinate system in a _crs column, defaulting to EPSG:4326." },
-      { "letter": "B", "text": "It reprojects the points into the Albers equal-area system, EPSG:5069." },
-      { "letter": "C", "text": "It sorts the rows by longitude so the map draws from west to east." },
-      { "letter": "D", "text": "It drops the original lon and lat columns once the points are built." }
+      { "letter": "A", "text": "The named version raises an error because round does not accept keyword arguments." },
+      { "letter": "B", "text": "They return the same value, since named arguments identify each input by name instead of by position." },
+      { "letter": "C", "text": "The named version rounds to a different number of digits because naming the inputs reorders them." },
+      { "letter": "D", "text": "They differ because named arguments always round to the nearest integer." }
     ],
-    "correct": "A"
+    "correct": "B"
   }
 ]

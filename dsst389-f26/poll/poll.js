@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  var CSV_URL = "https://docs.google.com/spreadsheets/d/185UqVcq_12NqUmrI4HVtsDVwLs59BihzJh-PWIMCiCI/export?format=csv&gid=733069958";
+  var CSV_URL = "https://docs.google.com/spreadsheets/d/13q8RiVyZ-pYP6HOpjmI2jpW5LK-pENGzy_WDXTrfAHg/export?format=csv&gid=1911672727";
   var QUESTIONS_URL = "questions.json";
   var RESET_STORAGE_KEY = "poll-reset-timestamp";
 
@@ -101,16 +101,32 @@
     return 0;
   }
 
-  // Google Forms writes timestamps in the form's locale, e.g. French
-  // "15/07/2026 10:05:15" (DD/MM/YYYY). new Date() assumes MM/DD/YYYY and
-  // silently returns Invalid Date whenever the day is > 12, so that format
-  // needs to be parsed explicitly rather than handed to the Date constructor.
-  function parseSheetTimestamp(value) {
+  var TIMESTAMP_RE = /^(\d{1,2})\/(\d{1,2})\/(\d{4})[ ,T]+(\d{1,2}):(\d{2})(?::(\d{2}))?$/;
+
+  // Google Forms writes timestamps in the form's locale, and the slash-separated
+  // component order (DD/MM/YYYY vs MM/DD/YYYY) depends on that locale rather
+  // than being fixed. new Date() assumes MM/DD/YYYY and silently returns
+  // Invalid Date whenever the day is > 12, so we scan the column for a row
+  // where one component is unambiguously > 12 to infer the real order before
+  // parsing, instead of hardcoding one locale's format.
+  function detectDateOrder(values) {
+    for (var i = 0; i < values.length; i++) {
+      var m = values[i] && values[i].trim().match(TIMESTAMP_RE);
+      if (!m) continue;
+      var first = parseInt(m[1], 10);
+      var second = parseInt(m[2], 10);
+      if (first > 12) return "DMY";
+      if (second > 12) return "MDY";
+    }
+    return null;
+  }
+
+  function parseSheetTimestamp(value, order) {
     if (!value) return null;
-    var m = value.trim().match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})[ ,T]+(\d{1,2}):(\d{2})(?::(\d{2}))?$/);
+    var m = value.trim().match(TIMESTAMP_RE);
     if (m) {
-      var day = parseInt(m[1], 10);
-      var month = parseInt(m[2], 10);
+      var day = order === "DMY" ? parseInt(m[1], 10) : parseInt(m[2], 10);
+      var month = order === "DMY" ? parseInt(m[2], 10) : parseInt(m[1], 10);
       var year = parseInt(m[3], 10);
       var hour = parseInt(m[4], 10);
       var minute = parseInt(m[5], 10);
@@ -271,6 +287,7 @@
         }
 
         var resetTime = getResetTime();
+        var dateOrder = detectDateOrder(dataRows.map(function (row) { return row[timestampCol]; })) || "MDY";
 
         var counts = {};
         currentQuestion.options.forEach(function (opt) { counts[opt.letter] = 0; });
@@ -280,7 +297,7 @@
           if (!letter || !(letter in counts)) return;
 
           if (resetTime) {
-            var ts = parseSheetTimestamp(row[timestampCol]);
+            var ts = parseSheetTimestamp(row[timestampCol], dateOrder);
             if (!ts || ts <= resetTime) return;
           }
 
