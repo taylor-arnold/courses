@@ -28,117 +28,15 @@
       </span>
     </p>
     <p>
-      The reading uses <code>metro</code>, a dataset with one row for each metropolitan statistical area in the United States and columns for population, economic indicators, and the coordinates <code>lon</code> and <code>lat</code>. On a sheet of paper, hand write answers to the following. These ask what the methods do and what they let you find out, so a few sentences apiece is enough. Bring them to class and we will use them to start the discussion.
+      The reading uses <code>metro</code>, a dataset with one row for each metropolitan statistical area in the United States and columns for population, economic indicators, and the coordinates <code>lon</code> and <code>lat</code>. On a sheet of paper, hand write answers to the following and bring them to class.
     </p>
     <ol>
-      <li>The reading plots <code>lat</code> against <code>lon</code> with <code>geom_point</code> and then says that the plot works but has problems. State the two objections it raises, say which one is about the accuracy of the picture and which is about what a reader can do with it, and give a question about American metro areas that the projected map answers but the first plot does not.</li>
-      <li>Running <code>metro.geo.points_from_xy("lon", "lat")</code> tells you nothing new about any metro area. The same locations go in and come back out, written as text with a <code>_crs</code> column attached. Say what the table can do afterwards that it could not do before, and name two questions you can ask of a geometry that you cannot ask of two numeric columns.</li>
-      <li>Explain what the number 4326 records, and why the string <code>POINT (-86.8 32.4)</code> on its own does not identify a place on Earth. Then suppose a classmate sends you a table of hospital locations that has a <code>geometry</code> column, no <code>_crs</code> column, and coordinates in the hundreds of thousands. Say what has probably happened, and what goes wrong if you treat those coordinates as longitude and latitude.</li>
-      <li>The reading says a projection can preserve shape, or area, or distance, but not all of them at once. Give an analysis of <code>metro</code> that comes out wrong if you work in EPSG:4326, and describe the error: which metro areas are affected most, and are their distances too large or too small? Then give an analysis of the same data for which the choice of CRS makes no difference.</li>
-      <li>Web Mercator (EPSG:3857) is behind Google Maps and most of the other maps you have looked at on a screen, and it is why Greenland looks bigger than Africa. Explain in your own words how that distortion arises. Then say why the web adopted a projection with such a well-known flaw, and describe what you would expect to see if someone computed the land area of every metro area after calling <code>.geo.to_crs(3857)</code>.</li>
-      <li>The interactive map from <code>metro.geo.explore(tooltip=["name"])</code> and the static map from <code>ggplot(metro.geo.to_crs(5069)).geom_map()</code> draw the same points. Name something about the dataset that you would notice on the interactive map and miss on the static one, and something that the static map shows better. Say which of the two you would put in a paper, and why.</li>
-      <li>A metropolitan area covers many square miles and, in the larger cases, millions of people, and this dataset gives each one a single point. Somebody made that decision before the data reached you. Say what it costs, then give one question about metro areas that the dataset can still answer honestly and one for which the single point would quietly mislead you.</li>
+      <li>State the two objections the reading raises to plotting raw <code>lat</code> against <code>lon</code>, and say which one is about accuracy and which is about use.</li>
+      <li>Explain what the number 4326 records, and why the string <code>POINT (-86.8 32.4)</code> on its own does not identify a place on Earth.</li>
+      <li>Give one analysis of <code>metro</code> that comes out wrong if you work in EPSG:4326, and say whether its distances come out too large or too small.</li>
+      <li>Explain in your own words why Web Mercator (EPSG:3857) makes Greenland look bigger than Africa.</li>
+      <li>Name one question about metro areas that the single-point simplification can still answer honestly, and one for which it would quietly mislead you.</li>
     </ol>
-
-    <h3>Solutions</h3>
-    <p>These are discussion questions, so there is no single required wording. What follows is the substance each answer should reach, drawn from the reading; where a question asks for your own judgment or example, that is marked.</p>
-
-    <p>1. The two objections to the raw <code>lon</code>/<code>lat</code> scatter, which is about accuracy and which about use, and a question the projected map answers that the scatter does not.</p>
-<pre>
-The first objection is about accuracy. The plot treats longitude and latitude
-as flat Cartesian coordinates when they actually mark positions on a curved
-surface, and the distortion grows toward the north, where a degree of longitude
-covers less ground than it does near the equator. The second is about use: the
-plot gives the reader nothing to orient by, no coastlines and no state borders,
-so each point is a dot floating in blank space. A question the projected map
-(5069) can answer but the scatter cannot is where metros cluster most densely.
-In the raw plot the northern metros are stretched apart from east to west, which
-exaggerates how far apart they really are; the equal-area projection puts the
-spacing back, so you can compare density across regions and trust what you see.</pre>
-
-    <p>2. What the table can do after <code>points_from_xy</code>, and two questions you can ask of a geometry but not of two numeric columns.</p>
-<pre>
-Nothing about the locations changes, but the two numbers are now a geometry that
-the geo namespace can act on. The table can be reprojected with to_crs, drawn
-with geom_map, and handed to spatial operations like distances, areas, joins,
-and buffers, none of which will read a pair of plain lon and lat columns. Two
-questions you can put to a geometry but not to two numeric columns: which state
-polygon contains a given metro, and which other metro is nearest to it and how
-far away in meters. Both are about how one location sits in relation to others,
-and an unlabeled pair of numbers sits in relation to nothing.</pre>
-
-    <p>3. What <code>4326</code> records, why <code>POINT (-86.8 32.4)</code> alone is not a place, and the classmate's hospital table with a <code>geometry</code> column but no <code>_crs</code>.</p>
-<pre>
-4326 is the EPSG code for WGS 84, the standard longitude and latitude system
-measured in degrees; it records which system the two numbers are written in.
-POINT (-86.8 32.4) on its own is just that pair of numbers, and a pair of numbers
-is not a place until you say what they are coordinates in. The same pair lands in
-Alabama under 4326 and somewhere else, or nowhere, under a projected system, and
-the _crs column is what supplies the missing half. Your classmate's coordinates
-in the hundreds of thousands cannot be degrees, since longitude only runs from
--180 to 180 and latitude from -90 to 90, so they are almost certainly projected
-coordinates in meters and the _crs that would have said so was dropped. Read them
-as longitude and latitude and every hospital lands far off the map, nowhere near
-the real surface of the Earth; worse, without the _crs you cannot reproject them
-back, because you no longer know which projection they started in.</pre>
-
-    <p>4. An analysis of <code>metro</code> that comes out wrong in EPSG:4326 (which metros are most affected, and are the distances too large or too small), and an analysis for which the CRS makes no difference.</p>
-<pre>
-Distances between metro areas come out wrong if you compute them from raw lon
-and lat as though a degree were the same length everywhere. A degree of longitude
-is about 111 km at the equator but only about 85 km near 40 degrees latitude, so
-the error is worst for the northern metros: their east-west separations, measured
-in degrees, count as larger than the ground distance really is. An analysis that
-never touches the geometry is unaffected. Ranking the metros by population,
-counting how many there are, or checking whether population tracks an economic
-indicator gives the same answer in any CRS, because those columns are ordinary
-numbers that never ask where the points sit.</pre>
-
-    <p>5. How the Web Mercator (EPSG:3857) distortion arises, why the web adopted it anyway, and what computing the land area of every metro after <code>.geo.to_crs(3857)</code> would give.</p>
-<pre>
-Web Mercator holds shapes and angles true by stretching the map more and more as
-you move away from the equator, and the stretch applies in every direction, so a
-region near the poles is blown up on all sides. Greenland sits far north and is
-inflated enormously, while Africa straddles the equator and stays close to its
-true size, which is why Greenland looks the bigger of the two even though Africa
-is about fourteen times its area. The web took it up anyway because it is
-conformal and easy to work with: north is always up, streets meet at the right
-angles, and the same square tiles line up at every zoom level, which is exactly
-what a map for finding your way needs. The area error does not matter when you
-are following a street. As for computing the land area of each metro after
-to_crs(3857): the metros are single points, and a point encloses no area, so
-every value comes back as zero. Had they been region polygons instead, Web
-Mercator would report each area too large, and worst for the metros farthest
-north.</pre>
-
-    <p>6. Something the interactive <code>explore</code> map shows that the static <code>to_crs(5069)</code> map misses, something the static shows better, and which of the two belongs in a paper.</p>
-<pre>
-On the interactive map you can hover to read a metro's name, zoom in, and see
-each point sitting on a real basemap of coastlines and labels, so you can tell
-which metro a given dot is and where it falls in actual geography. The static
-map, a bare field of points, hides all of that. What the static map shows better
-is the whole pattern at once: in a single fixed, equal-area frame you can compare
-how tightly metros cluster from one region to the next without anyone having to
-zoom, and every reader sees the same picture. For a paper I would use the static
-map. It prints and can be reproduced exactly, and the reader sees the frame you
-chose rather than wandering off around the country, which an interactive map
-cannot go on a page to do anyway. That last choice is a judgment call, but that
-is the case for it.</pre>
-
-    <p>7. What the single-point simplification costs, one question <code>metro</code> can still answer honestly, and one for which the single point would quietly mislead.</p>
-<pre>
-Collapsing a metro area to a single point throws away its size, its shape, and
-the way its people are spread across it. The point is usually a center that
-belongs to no one neighborhood and can sit some distance from where most
-residents actually live. The dataset can still answer honestly, at the scale of
-the whole country, questions like where the metros are relative to one another
-and which parts of the country they cluster in; the center is a fair stand-in
-when the distances involved are far larger than any single metro. It would
-quietly mislead you on anything at the scale of the metro's own footprint. Ask
-how far a metro is from the coast, or how many people live within ten kilometers
-of its point, or whether two neighboring metros overlap, and the single point
-answers with false confidence, treating a region tens of kilometers wide as a
-pinprick.</pre>
   </div>
 
   <script src="../js/site.js"></script>

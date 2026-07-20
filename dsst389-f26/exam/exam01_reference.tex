@@ -68,33 +68,28 @@ coordinate system is recorded in a column named \code{\_crs}.
 \smallskip
 
 \textbf{Metrics.}
-Some of these are properties and take no parentheses. A property that returns
-\textbf{geometries} overwrites the \code{geometry} column; one that returns \textbf{numbers}
-appends a new column named after itself.
+Some of these are properties and take no parentheses; others are methods and take arguments.
 
 \begin{itemize}
-  \item \code{df.geo.centroid} --- \textit{property.} Replaces each geometry with its
-        center point.
-  \item \code{df.geo.area} --- \textit{property.} Appends a column \code{area}, in squared
+  \item \code{df.geo.centroid} --- \textit{property.} The center point of each geometry.
+  \item \code{df.geo.area} --- \textit{property.} The area of each geometry, in squared
         CRS units.
-  \item \code{df.geo.x} \quad \code{df.geo.y} --- \textit{properties.} Append a column
-        \code{x} or \code{y} holding a point's coordinate.
-  \item \code{df.geo.buffer(distance)} --- replaces each geometry with the region within
-        \code{distance} of it, measured in CRS units. A point becomes a disc.
-  \item \code{df.geo.count\_coordinates()} --- appends a column \code{count\_coordinates}
-        giving the number of vertices in each geometry.
+  \item \code{df.geo.x} \quad \code{df.geo.y} --- \textit{properties.} The \code{x}- or
+        \code{y}-coordinate of a point.
+  \item \code{df.geo.buffer(distance)} --- the region within \code{distance} of each
+        geometry, measured in CRS units. A point becomes a disc.
+  \item \code{df.geo.count\_coordinates()} --- the number of vertices in each geometry.
 \end{itemize}
 
 \smallskip
 
 \textbf{Spatial joins.}
-Both tables must be in the same CRS. The output keeps the geometry of the \textbf{left}
-table. Columns whose names appear in both tables get \code{\_left} and \code{\_right}
-suffixes, and an \code{index\_right} column is added. The join is an \textbf{inner} join:
-left rows with no match are dropped, without an error.
+Both tables must be in the same CRS. Columns whose names appear in both tables get
+\code{\_left} and \code{\_right} suffixes, and an \code{index\_right} column is added.
 
 \begin{itemize}
-  \item \code{df.geo.sjoin(other, predicate="intersects")}
+  \item \code{df.geo.sjoin(other, predicate="intersects")} --- join rows whose geometries
+        satisfy the predicate.
   \item \code{df.geo.sjoin\_nearest(other, exclusive=False, distance\_col=None)} --- matches
         each left row to the closest right row. \code{exclusive=True} forbids a row from
         matching itself; \code{distance\_col} names a column to hold the distance, in CRS
@@ -110,15 +105,12 @@ left rows with no match are dropped, without an error.
 
 \begin{itemize}
   \item \code{df.geo.dissolve(by="col", aggfunc=\{"area":"sum"\})} --- the spatial
-        counterpart of \code{group\_by} and \code{agg}. Merges the geometries within each
-        group into one and erases the internal boundaries. The group key comes back as an
-        ordinary column.
-  \item \code{df.geo.explode()} --- one row per part of a multi-part geometry. The other
-        columns are copied onto every part.
+        counterpart of \code{group\_by} and \code{agg}: merges the geometries within each
+        group into one. The group key comes back as an ordinary column.
+  \item \code{df.geo.explode()} --- splits each multi-part geometry into one row per part.
   \item \code{df.geo.simplify(tolerance)} --- drops vertices, keeping the boundary within
         \code{tolerance} of its original position, in CRS units. Each geometry is
-        simplified independently, so shared borders can develop gaps: simplify for display,
-        not for analysis.
+        simplified independently.
 \end{itemize}
 
 \smallskip

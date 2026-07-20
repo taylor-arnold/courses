@@ -35,10 +35,11 @@
         <p style="padding-left: 2em">
           <code>[[[255, 0, 0], [0, 0, 255]],<br>&nbsp;[[0, 255, 0], [255, 255, 255]]]</code>
         </p>
-        Give the shape of the array and name the color of each of the four pixels. Then compute the mean pixel value of the whole image, which is the brightness the reading would record for it. Say how many numbers you averaged over, and note the trap that catches most people reading this array for the first time.</li>
-      <li>Take a pixel whose RGB values, scaled to the range 0 to 1, are R = 0.2, G = 0.6, B = 0.4. Compute M, m, and the chroma C, then compute the hue, saturation, and value using the formulas in the reading. Now do the same for a pixel with R = G = B = 0.5. Say what happens to the hue formula for the second pixel and why the answer is not meaningful. Then explain why <code>compute_colors</code> has to look at saturation and value, and not only hue, before it can call a pixel red or yellow.</li>
-      <li>The darkest images in the collection turn out to be the ones with black backgrounds, and the brightest are the ones with white backgrounds. Say what the <code>brightness</code> column is therefore a measurement of. The reading then reports that peacock photographs are the darkest of the ten species. Say what that finding is a fact about, and what it is not a fact about.</li>
-      <li>The images with the most yellow pixels include a lot of hummingbirds photographed against yellow-green foliage. Given that, say what would go wrong if you used the color proportion columns as features to predict a bird's species. Then name one thing these simple pixel features are genuinely good for, since the reading is not arguing that they are useless.</li>
+        Give the shape of the array, name the color of each of the four pixels, and compute the mean pixel value of the whole image.</li>
+      <li>For a pixel whose RGB values scaled to 0 to 1 are R = 0.2, G = 0.6, B = 0.4, compute M, m, the chroma C, and then the hue, saturation, and value using the formulas in the reading.</li>
+      <li>Say what happens to the hue formula for a pixel with R = G = B = 0.5, and why the answer is not meaningful.</li>
+      <li>Given that the darkest images have black backgrounds and the brightest have white ones, say what the <code>brightness</code> column is actually a measurement of.</li>
+      <li>The images with the most yellow pixels are largely hummingbirds shot against yellow-green foliage, so say what would go wrong if you used the color-proportion columns to predict a bird's species.</li>
     </ol>
   </div>
 

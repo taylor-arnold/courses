@@ -34,10 +34,11 @@
       <code>A–B, A–C, B–C, C–D, D–E, E–F, E–G, F–G</code>
     </p>
     <ol>
-      <li>Draw the network and write the degree of every node. Say how many components it has. Then rank the nodes by degree and say which node your drawing makes look important that the degree ranking does not.</li>
-      <li>Compute the shortest-path distance from A to every other node, and from D to every other node. Add up the reciprocals of each set to get the closeness centrality of A and of D. Then find every shortest path that runs between the two triangles and say which node lies on all of them. Betweenness ranks that node first and degree ranks it in a four-way tie for last. Explain what each of the two metrics is measuring such that they can disagree this badly about the same node.</li>
-      <li>Split your drawing into the two clusters that a community detection algorithm would find. Say which cluster node D belongs in, why the answer is not obvious, and what that says about reading cluster labels off a network in general.</li>
-      <li>In the Wikipedia network the reading counts links <i>into</i> each author page rather than out of it, to avoid a bias it names. Say what the bias is. Then say what an edge in this network actually records, given that no author in the corpus ever linked to anyone: someone else built every edge, long after all of them were dead.</li>
+      <li>Draw the network, write the degree of every node, and say how many components it has.</li>
+      <li>Compute the closeness centrality of A and of D from their shortest-path distances to every other node.</li>
+      <li>Find the node that lies on every shortest path between the two triangles, and explain how betweenness can rank it first while its degree is among the lowest in the network.</li>
+      <li>Split your drawing into two clusters and say which cluster node D belongs in and why the answer is not obvious.</li>
+      <li>Say what an edge in the Wikipedia network actually records, given that no author in the corpus ever linked to anyone.</li>
     </ol>
   </div>
 

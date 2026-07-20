@@ -30,7 +30,7 @@
 
     <p>Since September we have been living inside a corpus somebody else built. Seventy-five British and Irish authors, chosen by a person who is not you, resolved through redirects you did not have to notice, capped at five hundred revisions apiece for reasons that were explained to you rather than decided by you. Every technique in the second half of this course was demonstrated on that corpus. For the final project you build your own, and then run the semester over it.</p>
 
-    <p>You will define a population of Wikipedia pages, collect it through the MediaWiki and Wikimedia REST APIs, document it well enough that someone else could rebuild it, check that it is what you claim it is, and analyze it with the temporal, textual, and network methods from Chapters 13 through 16. The analysis is the visible half of the project. The corpus is the half that decides whether the analysis means anything.</p>
+    <p>You will define a population of Wikipedia pages, collect it through the MediaWiki and Wikimedia REST APIs, document it well enough that someone else could rebuild it, and analyze it with the temporal, textual, and network methods from Chapters 13 through 16. The analysis is the visible half of the project. The corpus is the half that decides whether the analysis means anything.</p>
 
     <p>One thing to fix in your mind before you start, because it is the difference between a good project and a project that quietly lies. A Wikipedia page is not the thing it is about. The revision history of the Emily Brontë article is not a record of Emily Brontë; it is a record of what a few dozen volunteers did to a web page between 2003 and now. A link from one page to another was placed there by an editor in the last twenty years. A page view count measures readers, not importance. Every finding you report is, in the first instance, a finding about Wikipedia, and you will be asked to say what else it might be evidence of, and how confident you are in the leap.</p>
 
@@ -101,22 +101,9 @@
 
     <p>Collect politely: a real user agent, a cache, requests in series, and a pause between the ones that actually go over the network. You are one of about twenty-five people pointing a script at the same servers this month.</p>
 
-    <h3>Checks</h3>
-
-    <p>Before any analysis, prove that the corpus is what you say it is. This is <a href="../hw/hw49.html">Homework 49</a>, and it is due at Workshop II.</p>
-
-    <ul>
-      <li><code>page_id</code> is unique in the spine, and so is <code>doc_id</code>.</li>
-      <li>Every title in your source list resolved. Redirects are logged with the title you asked for and the title you got. Titles that resolved to nothing are named, one by one, and explained.</li>
-      <li>Every foreign key resolves: no row of <code>texts</code>, <code>links</code>, <code>revisions</code>, <code>pageviews</code>, or <code>langlinks</code> points at a page that is not in the spine.</li>
-      <li>The pages with no page view data are named, and you know why.</li>
-      <li>The shortest texts in the corpus are named, with their lengths. If a quarter of your pages are stubs, you have a different project than you think you do, and the time to find out is now.</li>
-      <li>The manifest states the population rule, the retrieval date, the page view window, the revision cap, the row counts of every table, and the provenance of each hand-added column.</li>
-    </ul>
-
     <h3>The Analysis</h3>
 
-    <p>Four to six findings that answer research questions you posed in the proposal. Every finding gets a claim, the evidence, and one sentence saying what it is evidence <i>of</i> &mdash; a fact about the world, a fact about how Wikipedia is written, or something you cannot tell apart with the data you have. That third answer is a real finding and will be graded as one, as long as you say what you would have had to collect to separate them.</p>
+    <p>Six or more findings that answer research questions you posed in the proposal. Every finding gets a claim, the evidence, and one sentence saying what it is evidence <i>of</i> &mdash; a fact about the world, a fact about how Wikipedia is written, or something you cannot tell apart with the data you have. That third answer is a real finding and will be graded as one, as long as you say what you would have had to collect to separate them.</p>
 
     <p>Across the notebook, and explicitly labeled where they appear, you must have:</p>
 
@@ -130,8 +117,6 @@
 
     <p>At least six plots, using at least four different geometries, of which at least one is faceted and at least one is fully labeled with <code>labs</code>.</p>
 
-    <p>If you want the harder version of the project, re-collect the text of your corpus from a second language edition using the titles in your <code>langlinks</code> table, run the pipeline of Chapter 15 over it, and compare the structure of the two collections. The vectors are not comparable to each other and the reasons why are in Homework 43. Say what you are actually comparing when you put the two projections side by side.</p>
-
     <h3>The Datasheet</h3>
 
     <p>One page, written for somebody who has your Parquet files and none of your memories. What population does this corpus claim to represent, and by what rule. Who is in it who should not be, and who is missing. What was retrieved, from which endpoints, on what date, and what would change if it were retrieved again tomorrow. Which columns came from an API and which came from you, and how you decided the cases where you had to decide. What the corpus cannot be used for. What you would collect differently if you started over.</p>
@@ -140,25 +125,43 @@
 
     <h3>Deliverables</h3>
     <ol>
-      <li><b>Proposal</b> (<a href="../hw/hw44.html">Homework 44</a>, due at Workshop I). The population and the rule that defines it, how you will enumerate it, roughly how many pages it holds, the two-or-more metadata columns you will add by hand and where they will come from, and three or four research questions with the tables each one needs. At the workshop you will trade proposals with a partner whose job is to break your population definition: to name a page that your rule lets in and should not, and one that it keeps out and should not. Populations are locked at the end of that class.</li>
-      <li><b>The collection notebook</b>. The pipeline, start to finish, from the population rule to the Parquet files. It must run.</li>
+      <li><b>Proposal</b> (<a href="../hw/hw44.html">Homework 44</a>, due at Workshop I). The population and the rule that defines it, how you will enumerate it, roughly how many pages it holds, the two-or-more metadata columns you will add by hand and where they will come from, and three or four research questions with the tables each one needs, typed up as a single document. At the workshop you will trade proposals with a partner whose job is to break your population definition: to name a page that your rule lets in and should not, and one that it keeps out and should not. Populations are locked at the end of that class.</li>
+      <li><b>The collection notebook</b>. The pipeline, start to finish, from the population rule to the Parquet files. It must run. Do it in Colab and hand it in as a <code>.py</code> file (File &rarr; Download &rarr; Download .py).</li>
       <li><b>The corpus</b>. The Parquet tables, the manifest, and the requests cache.</li>
-      <li><b>Checks</b> (<a href="../hw/hw49.html">Homework 49</a>, due at Workshop II). Everything in the section above, plus a first pass at each research question, however rough.</li>
-      <li><b>The analysis notebook</b> (due December 7th). Four to six findings, meeting the requirements above.</li>
-      <li><b>The datasheet</b> (due December 7th). One page.</li>
-      <li><b>Presentation</b>. Six to eight minutes, on one of the three presentation days: your population and how you defined it, one network plot, one temporal plot, one thing you learned about your subject, one thing you learned about Wikipedia, and one thing that went wrong. The talk comes before the notebook is due, which means it is a checkpoint rather than a victory lap. Bring the finding you are least sure about and let the room argue with it.</li>
+      <li><b>The analysis notebook</b>. Six or more findings, meeting the requirements above. Like the collection notebook, hand it in as a <code>.py</code> file downloaded from Colab.</li>
+      <li><b>The datasheet</b>. One page, typed.</li>
+      <li><b>Presentation</b>. A pre-recorded video of six to eight minutes. There are no slides required and it does not need to be formal, but it should really walk us through what you found: your population and how you defined it, one network plot, one temporal plot, and a clear account of your main findings &mdash; what you learned about your subject, what you learned about Wikipedia, and how confident you are in telling those two apart. See <a href="#submitting">Submitting Your Work</a> for how to record and hand it in.</li>
     </ol>
 
     <h3>Grading</h3>
     <ul>
       <li>Proposal and population definition &mdash; 15%</li>
-      <li>The corpus, the pipeline, and the checks &mdash; 30%</li>
+      <li>The corpus and the pipeline &mdash; 30%</li>
       <li>Analysis notebook &mdash; 35%</li>
       <li>Datasheet &mdash; 10%</li>
       <li>Presentation &mdash; 10%</li>
     </ul>
 
     <p>The corpus is graded on the care of its definition and the honesty of its documentation, not on how exciting its subject is. A modest population, cleanly enumerated, fully keyed, and frankly described, beats an ambitious one whose foreign keys do not resolve and whose manifest cannot say where half the columns came from.</p>
+
+    <h3 id="submitting">Submitting Your Work</h3>
+    <p>Everything is due by <b>noon on Monday, December 7th</b>, turned in through the shared <b>Box</b> folder. There are no live presentations, and we do not meet that day. Submit:</p>
+    <ul>
+      <li>The <b>proposal</b> (<a href="../hw/hw44.html">Homework 44</a>) and the <b>datasheet</b> &mdash; two typed documents.</li>
+      <li>The <b>corpus</b> &mdash; the Parquet tables, the manifest, and the requests cache.</li>
+      <li>The <b>collection notebook</b> and the <b>analysis notebook</b>, each downloaded from Colab as a <code>.py</code> file.</li>
+      <li>The <b>presentation video</b>.</li>
+    </ul>
+
+    <h4>Recording the presentation</h4>
+    <p>Record with Zoom, which you already have through the university and have used all semester. You do not need anyone else in the meeting.</p>
+    <ol>
+      <li>Start a new Zoom meeting on your own, and share your screen when you want to show a plot.</li>
+      <li>Click <b>Record</b>, and choose &ldquo;Record on this Computer&rdquo;.</li>
+      <li>Walk us through your population, your plots, and your findings, for six to eight minutes.</li>
+      <li>Click <b>Stop Recording</b>, then end the meeting. Zoom writes out an <code>.mp4</code> video file once the meeting closes.</li>
+      <li>Upload that <code>.mp4</code> to the Box folder.</li>
+    </ol>
 
     <h3>Schedule</h3>
     <table border="1">
@@ -176,23 +179,27 @@
       </tr>
       <tr>
         <td><b>2026-11-04</b></td>
-        <td>The network chapter is finished in class, which is the last method your analysis needs. Your corpus should be collected by now and your checks should be running.</td>
+        <td>The network chapter is finished in class, which is the last method your analysis needs. Your corpus should be collected by now.</td>
       </tr>
       <tr>
         <td><b>2026-11-18</b></td>
-        <td><b>Workshop II.</b> <a href="../hw/hw49.html">Homework 49</a> due: the finished corpus, the manifest, the checks, and a first look at every research question. The class period is yours to work on the analysis.</td>
+        <td><b>Workshop II.</b> <a href="../hw/hw49.html">Homework 49</a> due: your finished dataset, collected and ready to load. The class period is yours to work on the analysis, with me in the room.</td>
       </tr>
       <tr>
         <td><b>2026-11-30</b></td>
-        <td>Presentations begin, and continue on December 2nd and December 7th. You present what you have; the writing is not due yet.</td>
+        <td>Open office hours on Zoom during class time. Optional: bring any final questions.</td>
+      </tr>
+      <tr>
+        <td><b>2026-12-02</b></td>
+        <td>Open office hours on Zoom during class time. Optional: bring any final questions.</td>
       </tr>
       <tr>
         <td><b>2026-12-07</b></td>
-        <td>Everything else due: the corpus, the collection notebook, the analysis notebook, and the datasheet.</td>
+        <td><b>Everything due at noon.</b> No class meeting. Submit through Box: the proposal, the corpus, both notebooks, the datasheet, and the presentation video.</td>
       </tr>
     </table>
 
-    <p>Two pieces of slack are built into that calendar on purpose, and you should use them. The proposal is a two-week homework because choosing a population well is the part of this project that most repays being slept on, and because the week before the workshop is the week of Exam II. And the written work is due a week after the presentations begin, rather than on the same morning, because a talk is a good way to find out what your argument actually is. Present what you have, listen to what the room says about it, and let that change the notebook. Nobody is expected to stand up on the thirtieth with a finished project.</p>
+    <p>One piece of slack is built into that calendar on purpose, and you should use it. The proposal is a two-week homework because choosing a population well is the part of this project that most repays being slept on, and because the week before the workshop is the week of Exam II. Everything else comes together at the end: the corpus, both notebooks, the datasheet, and the recorded presentation are all due at noon on December 7th. The two class meetings before that are open office hours rather than presentation days, so bring whatever is still giving you trouble.</p>
 
     <div style="height:100px"></div>
   </div>

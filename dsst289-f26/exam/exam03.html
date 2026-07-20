@@ -27,13 +27,12 @@
         </b>
       </span>
     </p>
-    <p>The third exam has two parts. The first part consists of 15 questions in the same style as the first two exams: hand-written code blocks concerning the RVA flights datasets. The second part consists of 8 short definitions. You should generally be comfortable with the material in <a href="https://taylor-arnold.github.io/fds2/07_graphics_ii.html" target="_blank" rel="noopener noreferrer">Chapter 7</a>, <a href="https://taylor-arnold.github.io/fds2/08_combine.html" target="_blank" rel="noopener noreferrer">Chapter 8</a>, <a href="https://taylor-arnold.github.io/fds2/09_restructure.html" target="_blank" rel="noopener noreferrer">Chapter 9</a>, and <a href="https://taylor-arnold.github.io/fds2/10_collect.html" target="_blank" rel="noopener noreferrer">Chapter 10</a>. However, only those items mentioned below, along with <u>everything listed on Exams I and II</u>, will be required for this exam.</p>
+    <p>The third exam consists of 15 questions in the same style as the first two exams: hand-written code blocks, this time concerning the four RVA flights tables described below. You should generally be comfortable with the material in <a href="https://taylor-arnold.github.io/fds2/book/07_graphics_ii.html" target="_blank" rel="noopener noreferrer">Chapter 7</a>, <a href="https://taylor-arnold.github.io/fds2/book/08_combine.html" target="_blank" rel="noopener noreferrer">Chapter 8</a>, <a href="https://taylor-arnold.github.io/fds2/book/09_restructure.html" target="_blank" rel="noopener noreferrer">Chapter 9</a>, and <a href="https://taylor-arnold.github.io/fds2/book/10_collect.html" target="_blank" rel="noopener noreferrer">Chapter 10</a>. However, only those items mentioned below, along with <u>everything listed on Exams I and II</u>, will be required for this exam.</p>
 
-    <h3>Part I: Code</h3>
-    <p>The code questions all concern the four RVA flights tables. The first, <code>rva</code>, has one row for each flight, with the columns <code>year</code>, <code>month</code>, <code>day</code>, <code>dep_delay</code>, <code>arr_delay</code>, <code>carrier</code>, <code>flight</code>, <code>tailnum</code>, <code>origin</code>, <code>dest</code>, <code>air_time</code>, and <code>distance</code>. The second, <code>airport</code>, has one row for each airport, with the columns <code>faa</code>, <code>name</code>, <code>lat</code>, <code>lon</code>, <code>alt</code>, and <code>tzone</code>. The third, <code>airline</code>, has one row for each airline, with the columns <code>carrier</code> and <code>name</code>. The fourth, <code>plane</code>, has one row for each aircraft, with the columns <code>tailnum</code>, <code>year</code>, <code>manufacturer</code>, <code>model</code>, <code>engines</code>, and <code>seats</code>.</p>
+    <p>The questions all concern the four RVA flights tables. The first, <code>rva</code>, has one row for each flight, with the columns <code>year</code>, <code>month</code>, <code>day</code>, <code>dep_time</code>, <code>sched_dep_time</code>, <code>dep_delay</code>, <code>arr_time</code>, <code>sched_arr_time</code>, <code>arr_delay</code>, <code>carrier</code>, <code>flight</code>, <code>tailnum</code>, <code>origin</code>, <code>dest</code>, <code>air_time</code>, and <code>distance</code>. The second, <code>airport</code>, has one row for each airport, with the columns <code>faa</code>, <code>name</code>, <code>lat</code>, <code>lon</code>, <code>alt</code>, and <code>tzone</code>. The third, <code>airline</code>, has one row for each airline, with the columns <code>carrier</code> and <code>name</code>. The fourth, <code>plane</code>, has one row for each aircraft, with the columns <code>tailnum</code>, <code>year</code>, <code>manufacturer</code>, <code>model</code>, <code>engines</code>, and <code>seats</code>.</p>
     <ol>
       <li>Building a bar plot with <code>geom_bar</code>, which counts the rows in each category for you, and with <code>geom_col</code>, which draws a number you have already computed. You should be able to say which one a given task calls for and why.</li>
-      <li>Ordering the categories of a plot with <code>reorder</code> inside an aesthetic, and forcing a numeric column to be treated as a category with <code>factor</code>.</li>
+      <li>Ordering the categories of a plot by sorting the data before piping it into plotnine, including sorting by a window aggregate such as <code>.sort(pl.len().over(c.col))</code> or a median <code>.over</code> the category, and treating a numeric column as a category by casting it to a string with <code>.cast(pl.String)</code>.</li>
       <li>Building a histogram with <code>geom_histogram</code>, setting either <code>binwidth</code> or <code>bins</code>, and being able to say what the height of a single bar means. You should also know <code>geom_density</code> and its <code>adjust</code> option.</li>
       <li>Building a boxplot with <code>geom_boxplot</code>, and writing the <code>.group_by</code> and <code>.agg</code> code that computes by hand the three numbers that make up each box.</li>
       <li>Adding a line of best fit with <code>geom_smooth(method="lm", se=False)</code>.</li>
@@ -52,38 +51,15 @@
     <p></p>
     <p>Many questions will require putting multiple functions together in a method chain. All can be done with at most three data methods and three graphics methods. Your code should follow the class formatting rules of putting parentheses around the whole block, starting with the DataFrame, and having each method on its own line.</p>
 
-    <h3>Part II: Definitions</h3>
-    <p>For the second part of the exam you will be given 8 terms selected from the list below. You will be asked to write a short definition in your own words. Your definitions do not need to match these word-for-word, but they should demonstrate that you understand the concept.</p>
-
-    <p><strong>Unit of observation</strong> The entity that each row in a table represents. Can be a simple value (such as a day or a plant) or a combination of values (such as day &times; plant).</p>
-    <p><strong>Tidy data</strong> A table in which every variable is a single column, every observation is a single row, and every table holds a single unit of observation. Tidiness is a property of a table relative to a chosen unit of observation, not a property of the values themselves.</p>
-    <p><strong>Primary key</strong> One or more columns that uniquely and minimally identify each row in a table.</p>
-    <p><strong>Foreign key</strong> A primary key from one table that appears in another table, establishing a link between the two. The difference between primary and foreign is which table the key appears in, not the information itself.</p>
-    <p><strong>Relation</strong> The connection between two tables created by matching the primary key of one against the foreign key of another. This is where the term <i>relational database</i> comes from.</p>
-    <p><strong>Inner join</strong> The default join, which keeps only the rows whose key has a match in both tables. Rows without a match are dropped from the result.</p>
-    <p><strong>Left join</strong> A join that keeps every row of the left table, filling in <code>null</code> values for the columns of the right table wherever the key has no match.</p>
-    <p><strong>Semi-join</strong> A filtering join that keeps only the rows of the left table that have a match in the right table, without adding any of the right table's columns.</p>
-    <p><strong>Anti-join</strong> A filtering join that keeps only the rows of the left table that have <i>no</i> match in the right table. Useful for finding keys that do not exist where you expected them to.</p>
-    <p><strong>Aggregation as row reduction</strong> Every aggregation collapses the many rows of a group into exactly one row. The individual rows are gone from the result, which is why a pivot can be undone and an aggregation cannot.</p>
-    <p><strong>Pivot and unpivot</strong> Two methods that reshape a table between a long layout and a wide one. They are round trips: no values are created or destroyed, only rearranged.</p>
-    <p><strong>Explode</strong> A method that unravels a column of lists so that each element gets its own row, duplicating the other columns. Typically used after <code>.str.split</code> has broken a packed cell into parts.</p>
-    <p><strong>Atomic cells</strong> The principle that each cell in a dataset should contain only a single value &mdash; not, for example, multiple values separated by commas.</p>
-    <p><strong>Data schema</strong> The overall design decisions about how to organize data, including which tables to create, what columns each table contains, and how variables are formatted.</p>
-    <p><strong>Prefer longer to wider</strong> The guideline that, when choosing between a long and a wide layout for storing data, the long one is the better default: it is easier to extend, easier to check, and there is usually only one long format rather than several possible wide ones.</p>
-    <p><strong>CSV (comma-separated values)</strong> A plain-text file format for tabular data in which columns are separated by commas and each row is on its own line. Stores only a single table and contains no formatting information.</p>
-    <p><strong>Data dictionary</strong> A document that describes each table and variable in a dataset, including variable names, measurement units, expected values or categories, the relationships between the tables, and any decisions made during data collection.</p>
-    <p><strong>Synthetic key</strong> An artificially created unique identifier (such as a UUID) used as a primary key when no natural key exists, or when a multi-column key needs to be simplified to a single column.</p>
-    <p><strong>Statistical geometry</strong> A geometry that runs a grouped computation over the data before drawing anything, so that the objects in the finished plot correspond to that computation rather than to individual rows. Bar plots, histograms, boxplots, and lines of best fit are all examples.</p>
-    <p><strong>Scale</strong> The part of the grammar of graphics that describes how an aesthetic is turned into something you can see: which colors go with which categories, where the axis starts and stops, and where the tick marks and grid lines fall.</p>
-
     <h3>Practice Exam Questions and Answers</h3>
-    <p>The questions below use the <code>movie</code> dataset from the earlier study guides, with columns <code>year</code>, <code>title</code>, <code>mpa</code>, <code>runtime</code>, <code>gross</code>, <code>rating_count</code>, and <code>rating</code>. They also use a second table, <code>people</code>, with one row for each person who worked on a film and the columns <code>year</code>, <code>title</code>, <code>role</code> (either "director" or "starring"), <code>person</code>, and <code>gender</code>.</p>
+    <p>The questions below use the <code>movie</code> dataset from the earlier study guides, with columns <code>year</code>, <code>title</code>, <code>mpa</code>, <code>runtime</code>, <code>gross</code>, <code>rating_count</code>, <code>rating</code>, and <code>metacritic</code>. They also use a second table, <code>people</code>, with one row for each person who worked on a film and the columns <code>year</code>, <code>title</code>, <code>role</code> (either "director" or "starring"), <code>person</code>, and <code>gender</code>.</p>
 
     <p>1. Create a horizontal bar plot of the number of films with each MPA rating, letting plotnine do the counting for you, with the bars ordered from the most common rating to the least.</p>
 <pre>
 (
     movie
-    .pipe(ggplot, aes("reorder(mpa, mpa, len)"))
+    .sort(pl.len().over(c.mpa), descending=True)
+    .pipe(ggplot, aes(c.mpa))
     .geom_bar()
     .coord_flip()
 )</pre>
@@ -102,7 +78,8 @@
 <pre>
 (
     movie
-    .pipe(ggplot, aes("reorder(mpa, rating)", c.rating))
+    .sort(c.rating.median().over(c.mpa))
+    .pipe(ggplot, aes(c.mpa, c.rating))
     .geom_boxplot()
     .coord_flip()
 )

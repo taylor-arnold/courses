@@ -28,13 +28,14 @@
       </span>
     </p>
     <p>
-      This reading starts building the Wikipedia corpus that the next several chapters all analyze. The population is the set of articles tagged with two categories, <code>Category:Victorian novelists</code> and <code>Category:19th-century Irish novelists</code>, which comes out to 376 authors. On a sheet of paper, hand write answers to the following. A few sentences apiece is enough.
+      This reading starts building the Wikipedia corpus that the next several chapters all analyze. The population is the set of articles tagged with two categories, <code>Category:Victorian novelists</code> and <code>Category:19th-century Irish novelists</code>, which comes out to 376 authors. On a sheet of paper, hand write answers to the following.
     </p>
     <ol>
-      <li>The cache is set up to store responses with status code 200 and 404, but not 429 or 500. Explain what makes a 404 worth remembering and a 429 worth forgetting. Then say what the reading means by calling the cache file the raw layer of the pipeline, and what you would still be able to do six months from now if you kept only that file and deleted every table built from it.</li>
-      <li>The corpus is defined by Wikipedia's category tags, and the reading admits two problems with that: the tags are applied by volunteer editors, and only direct members are collected. Describe the kind of author who ends up missing from this corpus, and say whether the omissions are likely to be random. Then suppose you count the authors and find that most of them are men. Say how much of that you could attribute to who was publishing novels in the nineteenth century and how much to who gets tagged on Wikipedia today, and say whether this corpus can tell the two apart.</li>
-      <li>Every table in the corpus carries both <code>page_id</code> and <code>doc_id</code>, and the reading insists that neither one is redundant. Say what each identifier can do that the other cannot, and which of the two is the primary key. Then say why a title that resolves to no article at all should be looked at rather than dropped, and give the three different things such a title might be telling you.</li>
-      <li>The API hands back JSON nested several levels deep and keyed by numeric page ID, and every table in the chapter is built by a loop that picks out a few fields and throws away the rest. Say why a server would return data in that shape when nobody analyzing it wants it that way. Then say what makes it safe to discard fields while flattening here, and what would make it unsafe somewhere else.</li>
+      <li>Explain what makes a 404 response worth caching and a 429 worth forgetting.</li>
+      <li>Describe the kind of author who ends up missing from a corpus defined by Wikipedia category tags, and say whether the omissions are likely to be random.</li>
+      <li>Say what <code>page_id</code> and <code>doc_id</code> each can do that the other cannot, and which of the two is the primary key.</li>
+      <li>Say why a title that resolves to no article at all should be looked at rather than dropped.</li>
+      <li>Say what makes it safe to discard fields while flattening the API's nested JSON here.</li>
     </ol>
   </div>
 

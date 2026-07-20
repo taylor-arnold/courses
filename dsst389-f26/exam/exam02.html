@@ -33,11 +33,11 @@
       </span>
     </p>
 
-    <p>The second exam is 75 minutes. It has six tasks, labeled A through F, with fifteen questions spread across them. It works exactly like the first exam: every task gives you a small dataset &mdash; a printed table, a JSON response, a handful of tokens &mdash; together with the code that runs on it, and your job is to say what comes out. You are given the code and the data and asked for the result.</p>
+    <p>The second exam is 75 minutes. It has five tasks, labeled A through E, with twelve questions spread across them. It works exactly like the first exam: every task gives you a small dataset &mdash; a printed table, a handful of tokens &mdash; together with the code that runs on it, and your job is to say what comes out. You are given the code and the data and asked for the result.</p>
 
-    <p><b>You do not need to memorize any function names, arguments, or API parameters.</b> The <a href="exam02_reference.pdf" target="_blank" rel="noopener noreferrer">reference sheet</a> will be attached to your exam. It runs to two pages this time, because the unit covers four chapters, and it lists every method and every formula you could possibly need. Bring a calculator; several questions ask for a logarithm or a square root.</p>
+    <p><b>You do not need to memorize any function names or arguments.</b> The <a href="exam02_reference.pdf" target="_blank" rel="noopener noreferrer">reference sheet</a> will be attached to your exam, and it lists every method and every formula you could possibly need. Bring a calculator; several questions ask for a logarithm or a square root.</p>
 
-    <p>The exam covers <a href="https://taylor-arnold.github.io/fds2/12_apis.html" target="_blank" rel="noopener noreferrer">Chapter 12</a>, <a href="https://taylor-arnold.github.io/fds2/13_temporal_data.html" target="_blank" rel="noopener noreferrer">Chapter 13</a>, <a href="https://taylor-arnold.github.io/fds2/14_text_annotations.html" target="_blank" rel="noopener noreferrer">Chapter 14</a>, and <a href="https://taylor-arnold.github.io/fds2/15_text_vectors.html" target="_blank" rel="noopener noreferrer">Chapter 15</a>, along with Homeworks 5 through 13. Questions come in the same five forms as last time:</p>
+    <p>The exam covers <a href="https://taylor-arnold.github.io/fds2/book/13_temporal_data.html" target="_blank" rel="noopener noreferrer">Chapter 13</a>, <a href="https://taylor-arnold.github.io/fds2/book/14_text_annotations.html" target="_blank" rel="noopener noreferrer">Chapter 14</a>, and <a href="https://taylor-arnold.github.io/fds2/book/15_text_vectors.html" target="_blank" rel="noopener noreferrer">Chapter 15</a>, along with Homeworks 35 through 43. Chapter 12 (Data APIs) is deliberately not tested here: the API work is hard to assess on paper, and it is exercised directly in the final project, which relies on it heavily. Questions come in the same five forms as last time:</p>
 
     <ul>
       <li><b>Fill in the output.</b> A small table and a code block; write the table that comes back, or a named column of it, or just the number of rows.</li>
@@ -51,184 +51,55 @@
 
     <p>Only the following will be needed for the exam.</p>
 
-    <p><b>Collecting a corpus from an API.</b></p>
-    <ol>
-      <li>Given a JSON response printed as a nested block, and the loop that flattens it, writing out the rows that come back.</li>
-      <li>Given a <code>normalized</code> block, a <code>redirects</code> block, and a list of typed titles, giving the resolved title and the <code>page_id</code> of each, including the null of a title that matches no article.</li>
-      <li>Given a status code &mdash; 200, 404, 429, or 500 &mdash; saying what it means, whether it belongs in the cache, and what the collection loop does when it arrives.</li>
-      <li>Given a per-request limit and a number of results, saying how many requests the pagination loop makes and what tells it to stop.</li>
-      <li>Naming the rows that a collection step drops silently, saying what the resulting table looks like, and giving the check that would have caught it.</li>
-      <li>Saying what <code>page_id</code> can do that <code>doc_id</code> cannot and what <code>doc_id</code> can do that <code>page_id</code> cannot, and which of the two is the primary key.</li>
-      <li>Saying what the raw layer and the processed layer of the pipeline each hold, and which one you would need to rebuild the other.</li>
-    </ol>
-
     <p><b>Dates, datetimes, and time zones.</b></p>
-    <ol start="8">
-      <li>Given <code>year</code>, <code>month</code>, and <code>day</code> columns, writing the call that builds a real date, and saying what type comes back.</li>
+    <ol>
+      <li>Given <code>year</code>, <code>month</code>, and <code>day</code> columns, writing the call that builds a real date.</li>
       <li>Given a UTC timestamp and a target zone, giving the converted reading, and saying which of <code>replace_time_zone</code> and <code>convert_time_zone</code> states a claim about the data and which performs a calculation on it.</li>
       <li>Given a table of timestamps, filling in a count of events per day in UTC and in a named zone, and naming the rows that land on a different day in the two.</li>
-      <li>Given a duration, converting it into hours or days, and saying what the <code>total_*</code> methods do to the part that does not divide evenly.</li>
-      <li>Given a date and a truncation unit, giving the truncated value, and saying what truncation buys you that the exact second does not.</li>
+      <li>Given a duration, converting it into hours or days.</li>
+      <li>Given a date and a truncation unit, giving the truncated value.</li>
     </ol>
 
     <p><b>Ordered data and window functions.</b></p>
-    <ol start="13">
+    <ol start="6">
       <li>Given a sorted table, filling in the column that <code>shift</code>, <code>diff</code>, or a rolling function produces, nulls included.</li>
-      <li>Saying what <code>.over()</code> protects you from, and giving the exact rows that go wrong without it.</li>
-      <li>Given a column of article sizes, identifying the reversions and counting them, and saying how the rule can be fooled in both directions.</li>
-      <li>Saying why a window defined as a count of rows is wrong on unevenly spaced data, and naming the method that fixes it.</li>
-      <li>Given two tables and a <code>join_asof</code>, filling in the joined column, naming any row matched to a stale record, and saying what <code>backward</code>, <code>forward</code>, and <code>nearest</code> each do to it.</li>
+      <li>Given a column of article sizes, identifying the reversions and counting them.</li>
+      <li>Given two tables and a <code>join_asof</code>, filling in the joined column, naming any row matched to a stale record.</li>
       <li>Given a <code>join_where</code> condition, listing every pair it returns and naming the rows it returns nothing for.</li>
     </ol>
 
     <p><b>Annotating text.</b></p>
-    <ol start="19">
+    <ol start="10">
       <li>Given a sentence, writing out the <code>tid</code>, <code>token</code>, <code>lemma</code>, and <code>upos</code> columns, and pointing at every row where the lemma differs from the token.</li>
-      <li>Given an annotation table, filling in the bigram column and counting the bigrams, and saying which adjacent pairs of words do <i>not</i> become bigrams and why.</li>
-      <li>Given word counts and a bigram count, computing the PMI, comparing it against the raw frequency, and saying what the minimum-count filter is protecting you from.</li>
+      <li>Given an annotation table, filling in the bigram column and counting the bigrams.</li>
+      <li>Given word counts and a bigram count, computing the PMI, comparing it against the raw frequency.</li>
       <li>Given tokens with <code>ent_type</code> and <code>ent_iob</code>, assigning the <code>entity_id</code> that the cumulative sum produces and reassembling the text of each entity.</li>
       <li>Given <code>dep</code> and <code>head_idx</code>, naming the root of a sentence, and filling in the output of a subject-verb or adjective-noun join.</li>
-      <li>Given an annotation table, computing the mean sentence length, the type-token ratio, and the mean word length, and saying what a ranking of documents by any of them is really a ranking of.</li>
+      <li>Given an annotation table, computing the mean sentence length, the type-token ratio, and the mean word length.</li>
     </ol>
 
     <p><b>Documents as vectors.</b></p>
-    <ol start="25">
+    <ol start="16">
       <li>Given a small corpus, writing out the term-frequency matrix, giving the document frequency of each term, and counting the zeros.</li>
       <li>Given a term frequency and a document frequency, computing a TF-IDF score with the smoothed formula on the reference sheet.</li>
-      <li>Given <code>min_df</code> and <code>max_df</code> as proportions, saying exactly which terms survive the filter.</li>
-      <li>Given document vectors, computing both the Euclidean and the angle distance, saying which of the two is right for text and why the other one fails.</li>
-      <li>Saying what the zeros of a document vector are, and what a term appearing in every document does to a distance.</li>
+      <li>Given <code>min_df</code> and <code>max_df</code> as proportions, listing exactly which terms survive the filter.</li>
+      <li>Given document vectors, computing both the Euclidean and the angle distance.</li>
     </ol>
 
-    <p>We will not have writing <code>requests</code> code from scratch, recalling any MediaWiki parameter name (<code>prop</code>, <code>cmtitle</code>, <code>rvprop</code>, and the rest are given in the question or on the reference sheet), reciting the list of dependency labels or entity types, predicting what spaCy would do to a sentence you have not been shown (the annotation table is always handed to you as data), the internals of UMAP, the <code>formatversion=2</code> response shape, writing a format string for an unusual date layout, or any time zone conversion that crosses a daylight-saving boundary.</p>
+    <p>We will not have reciting the list of dependency labels or entity types, predicting what spaCy would do to a sentence you have not been shown (the annotation table is always handed to you as data), the internals of UMAP, writing a format string for an unusual date layout, or any time zone conversion that crosses a daylight-saving boundary.</p>
 
     <h3>Practice Exam Questions and Answers</h3>
 
-    <p>The questions below use a small corpus of three authors. The <code>authors</code> table is the spine:</p>
+    <p>The questions below use a small corpus of three authors, identified by <code>doc_id</code>:</p>
 
     <table border="1">
-      <tr><th>page_id</th><th>doc_id</th></tr>
-      <tr><td>101</td><td>Ada Kerr</td></tr>
-      <tr><td>102</td><td>Bram Vale</td></tr>
-      <tr><td>103</td><td>Cleo Nash</td></tr>
+      <tr><th>doc_id</th></tr>
+      <tr><td>Ada Kerr</td></tr>
+      <tr><td>Bram Vale</td></tr>
+      <tr><td>Cleo Nash</td></tr>
     </table>
 
-    <h3>Task A. Collecting the Corpus</h3>
-
-    <p>You send one request to the Action API, asking for the titles <code>ada_kerr</code> and <code>Bram Vail</code> with <code>redirects=1</code>. Here is the response, in full.</p>
-
-<pre>
-{
-  "continue": {"plcontinue": "101|0|Bath", "continue": "||"},
-  "query": {
-    "normalized": [
-      {"from": "ada_kerr", "to": "Ada kerr"}
-    ],
-    "redirects": [
-      {"from": "Ada kerr", "to": "Ada Kerr"}
-    ],
-    "pages": {
-      "101": {
-        "pageid": 101,
-        "title": "Ada Kerr",
-        "length": 24500,
-        "touched": "2025-02-18T03:05:00Z"
-      },
-      "-1": {
-        "ns": 0,
-        "title": "Bram Vail",
-        "missing": ""
-      }
-    }
-  }
-}
-</pre>
-
-    <p><b>1.</b> The <code>resolve_titles</code> function builds a dictionary called <code>followed</code> out of the <code>normalized</code> and <code>redirects</code> blocks, then walks each title through it until it stops changing. Fill in the table it returns.</p>
-
-<pre>
-doc_id       resolved     page_id
-ada_kerr     Ada Kerr         101
-Bram Vail    Bram Vail       null
-
-`ada_kerr` takes TWO hops, not one. `followed` holds both substitutions:
-
-    {"ada_kerr": "Ada kerr", "Ada kerr": "Ada Kerr"}
-
-and the while loop applies them in turn: ada_kerr -> Ada kerr -> Ada Kerr,
-where it stops because "Ada Kerr" is not a key. The two hops are two different
-kinds of fix. NORMALIZATION is mechanical: MediaWiki turns the underscore into
-a space and capitalizes the first character, and only the first, which is why
-the intermediate title is the odd-looking "Ada kerr". The REDIRECT is a real
-pointer page, put there by an editor, that forwards "Ada kerr" to "Ada Kerr".
-This is why the loop is a `while` and not an `if`.
-
-`Bram Vail` is a typo and matches nothing. It appears in `pages` under the
-placeholder key "-1", carrying a `missing` flag and no `pageid` at all, so the
-lookup `pages.get(final, {}).get("pageid")` returns None.
-</pre>
-
-    <p><b>2.</b> Suppose you had looked the titles up without following the map: taking the <code>pages</code> block and keying it by title, then reading off the page ID for each title in your list. Say what you would get for each of the two authors, and say why the failure is worse than an error.</p>
-
-<pre>
-Both come back with nothing. `pages` is keyed by the FINAL title, "Ada Kerr",
-so a lookup of "ada_kerr" misses, and "Bram Vail" has no pageid to find. Both
-authors drop out of the corpus.
-
-It is worse than an error because nothing announces it. The code runs, the
-table is built, and it is simply two rows shorter than the list you started
-from. Ada Kerr is a real author with a real article, and she is gone for a
-reason that has nothing to do with her: an underscore. You would find out by
-comparing the row count of the resolved table against the length of your list,
-which is the check that `resolve_titles` makes possible and a bare lookup does
-not.
-</pre>
-
-    <p><b>3.</b> The response above is not the whole story: it carries a <code>continue</code> block. Suppose Ada Kerr's article has 1,200 links and the server returns at most 500 per request. Say how many requests the pagination loop makes, and say exactly what makes it stop.</p>
-
-<pre>
-THREE requests, returning 500, 500, and 200 links.
-
-The loop is `while True`, and it breaks on the ABSENCE of a key:
-
-    if "continue" not in data:
-        break
-    params.update(data["continue"])
-
-The first two responses carry a `continue` block, whose values are merged back
-into the parameters so the next request picks up where the last one left off.
-The third response returns the final 200 links and omits the block entirely,
-and that omission, rather than any count of links or requests, is what ends the
-loop. The code never needs to know that there are 1,200 links.
-</pre>
-
-    <p><b>4.</b> You now collect the daily page views for all three authors from the REST endpoint. Cleo Nash's page is new and has no view data, so the server answers her request with a 404. The loop is the one from the chapter, with <code>if response.status_code == 404: continue</code>. Say how many authors appear in the resulting <code>views</code> table, say what the 404 is doing in <code>allowable_codes</code>, and name the check that tells you an author went missing.</p>
-
-<pre>
-TWO authors: Ada Kerr and Bram Vale. Cleo Nash is not in the table at all,
-because the `continue` statement skips her before any row is appended. She is
-not there with zero views; she is not there at all, and no error was raised.
-
-This is the same failure you met on the first exam, wearing different clothes.
-There, an inner `sjoin` silently dropped the metro area that fell in no state.
-Here, a 404 silently drops the author with no page views. In both cases the
-table that comes back is perfectly well-formed and quietly short, and in both
-cases an absent row and a zero look identical while only the zero is a fact
-about the world.
-
-The 404 is in `allowable_codes` because it is a STABLE ANSWER, not a failure.
-Cleo Nash has no view data today and will have none tomorrow, so the response
-is worth remembering; caching it means the rerun never touches the network. A
-429 or a 500, by contrast, says the server was busy or broken, which is a
-condition that may well have passed by the next run, so those are left uncached
-and can be retried.
-
-The check is a row count: `len(authors)` is 3 and
-`views["doc_id"].n_unique()` is 2. Compare what you went in with against what
-came out, every time.
-</pre>
-
-    <h3>Task B. Dates and Time Zones</h3>
+    <h3>Task A. Dates and Time Zones</h3>
 
     <p>The <code>revisions</code> table holds the recent edits to two of the three pages. Every timestamp is in <b>UTC</b>, as Wikipedia reports them, and the column has already been parsed with <code>.str.to_datetime()</code>.</p>
 
@@ -255,7 +126,7 @@ came out, every time.
 )
 </pre>
 
-    <p><b>5.</b> Fill in the output. Then rewrite the first line to count the edits by the day they happened <i>in New York</i>, fill that in too, and name every row that lands on a different day in the two tables.</p>
+    <p><b>1.</b> Fill in the output. Then rewrite the first line to count the edits by the day they happened <i>in New York</i>, fill that in too, and name every row that lands on a different day in the two tables.</p>
 
 <pre>
 In UTC:                        In New York:
@@ -291,7 +162,7 @@ page was busiest on the 11th" is a claim about a time zone, not about the world,
 and the data cannot tell you which zone the reader has in mind.
 </pre>
 
-    <p><b>6.</b> A classmate writes <code>c.timestamp.dt.convert_time_zone("America/New_York")</code>, with no <code>replace_time_zone</code> in front of it. On this data the answer is correct. Say why it is correct here, why that is the problem rather than the reassurance, and say what the mirror-image mistake is.</p>
+    <p><b>2.</b> A classmate writes <code>c.timestamp.dt.convert_time_zone("America/New_York")</code>, with no <code>replace_time_zone</code> in front of it. On this data the answer is correct. Say why it is correct here, why that is the problem rather than the reassurance, and say what the mirror-image mistake is.</p>
 
 <pre>
 It is correct here because converting a NAIVE datetime silently assumes it was
@@ -315,7 +186,7 @@ methods look alike and do opposite things:
     convert_time_zone  restates a known instant in a new zone (a calculation)
 </pre>
 
-    <h3>Task C. Window Functions on Time</h3>
+    <h3>Task B. Window Functions on Time</h3>
 
 <pre>
 (
@@ -328,7 +199,7 @@ methods look alike and do opposite things:
 )
 </pre>
 
-    <p><b>7.</b> Fill in both new columns for all seven rows. Then say how many rows survive <code>.filter(c.is_reversion)</code>, and be careful about the rows at the top of each group.</p>
+    <p><b>3.</b> Fill in both new columns for all seven rows. Then say how many rows survive <code>.filter(c.is_reversion)</code>, and be careful about the rows at the top of each group.</p>
 
 <pre>
 doc_id      timestamp             size   size_diff   is_reversion
@@ -357,7 +228,7 @@ gives Bram's first row a size_diff of 7000 - 5200 = +1800, an edit that never
 happened, made by nobody, between two different articles.
 </pre>
 
-    <p><b>8.</b> Now compute the gap between consecutive edits, <code>since_last = c.timestamp - c.timestamp.shift(1).over(c.doc_id)</code>. Write out Ada Kerr's three gaps. Then give her mean gap three ways: as a duration, as <code>c.since_last.dt.total_hours().mean()</code>, and as <code>c.since_last.dt.total_days().mean()</code>. The three do not agree. Explain.</p>
+    <p><b>4.</b> Now compute the gap between consecutive edits, <code>since_last = c.timestamp - c.timestamp.shift(1).over(c.doc_id)</code>. Write out Ada Kerr's three gaps. Then give her mean gap three ways: as a duration, as <code>c.since_last.dt.total_hours().mean()</code>, and as <code>c.since_last.dt.total_days().mean()</code>. The three do not agree. Explain.</p>
 
 <pre>
 Ada Kerr's gaps:
@@ -386,7 +257,7 @@ gap and two zeros. The rule is that the unit has to be FINER than the intervals
 you are measuring. If your gaps are hours, do not ask for days.
 </pre>
 
-    <p><b>9.</b> You want to smooth the article size over time. A classmate writes <code>c.size.rolling_mean(window_size=3)</code>. Circle what is wrong with it on this data, and write the line that fixes it.</p>
+    <p><b>5.</b> You want to smooth the article size over time. A classmate writes <code>c.size.rolling_mean(window_size=3)</code>. Circle what is wrong with it on this data, and write the line that fixes it.</p>
 
 <pre>
 `rolling_mean` defines its window as a COUNT OF ROWS, which assumes the rows
@@ -406,7 +277,7 @@ function needs it, and a rolling mean is no exception: without it the window
 slides straight out of Ada Kerr's article and into Bram Vale's.
 </pre>
 
-    <h3>Task D. Joining on Time</h3>
+    <h3>Task C. Joining on Time</h3>
 
     <p>The <code>page_views</code> table records the daily views of each page. Note that it stops on the 12th.</p>
 
@@ -444,7 +315,7 @@ views_daily = (
 )
 </pre>
 
-    <p><b>10.</b> Fill in the <code>views</code> column of the output, for all seven edits. Exactly one of the seven is not the view count for the day the edit was made. Name it, say what the join did instead of returning null, and say what <code>by="doc_id"</code> is doing.</p>
+    <p><b>6.</b> Fill in the <code>views</code> column of the output, for all seven edits. Exactly one of the seven is not the view count for the day the edit was made. Name it, say what the join did instead of returning null, and say what <code>by="doc_id"</code> is doing.</p>
 
 <pre>
 doc_id      timestamp             size   views
@@ -477,7 +348,7 @@ that `.over()` does for a window function: stopping an ordered operation from
 running across the boundary between one group and the next.
 </pre>
 
-    <p><b>11.</b> You want to know whether edits follow attention. Say what <code>strategy="nearest"</code> would do to this table, giving the rows that change, and say why it would wreck the question. Then say what <code>strategy="forward"</code> would do to the last row.</p>
+    <p><b>7.</b> You want to know whether edits follow attention. Say what <code>strategy="nearest"</code> would do to this table, giving the rows that change, and say why it would wreck the question. Then say what <code>strategy="forward"</code> would do to the last row.</p>
 
 <pre>
 Two rows change, and both change into a number from the FUTURE:
@@ -527,7 +398,7 @@ number without comment.
 )
 </pre>
 
-    <p><b>12.</b> List every row this returns. Then say why each overlapping pair appears once rather than twice, and name the author who appears nowhere.</p>
+    <p><b>8.</b> List every row this returns. Then say why each overlapping pair appears once rather than twice, and name the author who appears nowhere.</p>
 
 <pre>
 THREE rows:
@@ -559,13 +430,23 @@ and almost everyone overlaps almost everyone: the table comes back with
 thousands of rows, and it says nothing at all.
 </pre>
 
-    <h3>Task E. Annotations</h3>
+    <h3>Task D. Annotations</h3>
 
     <p>Below is the annotation table that <code>DSText.process</code> produced for the Ada Kerr page, which is two sentences long. Take it as given; it is the data, not a prediction you are being asked to make.</p>
 
     <p><i>Sentence 1:</i> Ada Kerr published a Gothic novel in 1847. &nbsp;&nbsp; <i>Sentence 2:</i> The novelist admired Bram Vale.</p>
 
-    <table border="1">
+    <style>
+      table.tight { width: auto; table-layout: auto; }
+      table.tight th, table.tight td {
+        width: auto !important;
+        white-space: nowrap;
+        padding: 3px 9px;
+      }
+    </style>
+
+    <div style="overflow-x: auto;">
+    <table border="1" class="tight">
       <tr><th>sid</th><th>tid</th><th>token</th><th>lemma</th><th>upos</th><th>is_alpha</th><th>dep</th><th>head_idx</th><th>ent_type</th><th>ent_iob</th></tr>
       <tr><td>1</td><td>1</td><td>Ada</td><td>Ada</td><td>PROPN</td><td>true</td><td>compound</td><td>2</td><td>PERSON</td><td>B</td></tr>
       <tr><td>1</td><td>2</td><td>Kerr</td><td>Kerr</td><td>PROPN</td><td>true</td><td>nsubj</td><td>3</td><td>PERSON</td><td>I</td></tr>
@@ -583,6 +464,7 @@ thousands of rows, and it says nothing at all.
       <tr><td>2</td><td>5</td><td>Vale</td><td>Vale</td><td>PROPN</td><td>true</td><td>dobj</td><td>3</td><td>PERSON</td><td>I</td></tr>
       <tr><td>2</td><td>6</td><td>.</td><td>.</td><td>PUNCT</td><td><b>false</b></td><td>punct</td><td>3</td><td></td><td>O</td></tr>
     </table>
+    </div>
 
 <pre>
 bigrams = (
@@ -597,7 +479,7 @@ bigrams = (
 )
 </pre>
 
-    <p><b>13.</b> How many bigrams come back? Write them all out. Then say why <code>in 1847</code> is not among them, and why <code>publish</code> appears where the text says <i>published</i>.</p>
+    <p><b>9.</b> How many bigrams come back? Write them all out. Then say why <code>in 1847</code> is not among them, and why <code>publish</code> appears where the text says <i>published</i>.</p>
 
 <pre>
 TEN bigrams, six from the first sentence and four from the second:
@@ -623,7 +505,7 @@ is usually what you want, since it collapses "published", "publishes", and
 contain any string that literally occurs in the text.
 </pre>
 
-    <p><b>14.</b> A classmate writes <code>.over([c.doc_id])</code> in both places, dropping <code>c.sid</code>. Say how many bigrams they get, and write out the one that is wrong.</p>
+    <p><b>10.</b> A classmate writes <code>.over([c.doc_id])</code> in both places, dropping <code>c.sid</code>. Say how many bigrams they get, and write out the one that is wrong.</p>
 
 <pre>
 ELEVEN. The extra one is:
@@ -646,12 +528,14 @@ PMI ranking looking exactly like collocations.
 
     <p>Here is a token strip from the Bram Vale page, with only the entity columns shown.</p>
 
-    <table border="1">
+    <div style="overflow-x: auto;">
+    <table border="1" class="tight">
       <tr><th>tid</th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td></tr>
       <tr><th>token</th><td>Bram</td><td>Vale</td><td>,</td><td>Cleo</td><td>Nash</td><td>,</td><td>and</td><td>Ada</td><td>Kerr</td><td>met</td><td>in</td><td>Bath</td><td>.</td></tr>
       <tr><th>ent_type</th><td>PERSON</td><td>PERSON</td><td></td><td>PERSON</td><td>PERSON</td><td></td><td></td><td>PERSON</td><td>PERSON</td><td></td><td></td><td>GPE</td><td></td></tr>
       <tr><th>ent_iob</th><td>B</td><td>I</td><td>O</td><td>B</td><td>I</td><td>O</td><td>O</td><td>B</td><td>I</td><td>O</td><td>O</td><td>B</td><td>O</td></tr>
     </table>
+    </div>
 
 <pre>
 entities = (
@@ -664,7 +548,7 @@ entities = (
 )
 </pre>
 
-    <p><b>15.</b> Write out the <code>entity_id</code> that the cumulative sum assigns to each surviving token, then the entity text of each group. Then say what would come back if the code had grouped runs of consecutive tokens sharing the same <code>ent_type</code> instead, and explain what the <code>B</code> tag is for.</p>
+    <p><b>11.</b> Write out the <code>entity_id</code> that the cumulative sum assigns to each surviving token, then the entity text of each group. Then say what would come back if the code had grouped runs of consecutive tokens sharing the same <code>ent_type</code> instead, and explain what the <code>B</code> tag is for.</p>
 
 <pre>
 The filter removes every token whose ent_type is empty, leaving seven:
@@ -714,7 +598,7 @@ verbs = (
 )
 </pre>
 
-    <p><b>16.</b> Fill in the output. Then say what happens if <code>c.sid</code> is dropped from the join key, giving the exact rows that come back. Finally, name the root of each sentence and say what its <code>head_idx</code> points at.</p>
+    <p><b>12.</b> Fill in the output. Then say what happens if <code>c.sid</code> is dropped from the join key, giving the exact rows that come back. Finally, name the root of each sentence and say what its <code>head_idx</code> points at.</p>
 
 <pre>
 Two rows:
@@ -751,7 +635,7 @@ and the wrapper marks that by pointing it at its own index rather than leaving
 it null.
 </pre>
 
-    <p><b>17.</b> Compute the mean sentence length in words, the type-token ratio, and the mean word length for this page. Then say what is wrong with the TTR you just computed.</p>
+    <p><b>13.</b> Compute the mean sentence length in words, the type-token ratio, and the mean word length for this page. Then say what is wrong with the TTR you just computed.</p>
 
 <pre>
 Sentence length counts alphabetic tokens, so 1847 and the periods do not count:
@@ -790,7 +674,7 @@ claim about the prose style of the Wikipedians who wrote about Chaucer, and
 Chaucer had no hand in it.
 </pre>
 
-    <h3>Task F. TF-IDF and Document Vectors</h3>
+    <h3>Task E. TF-IDF and Document Vectors</h3>
 
     <p>A corpus of four documents. Each has already been lemmatized and filtered to alphabetic tokens, so what you see is what <code>compute_tfidf</code> sees.</p>
 
@@ -801,7 +685,7 @@ Doc 3:   the  novel  sell   well
 Doc 4:   the  poem   sell   well
 </pre>
 
-    <p><b>18.</b> Write out the term-frequency matrix, one row per document and one column per distinct term. Underneath it, give the document frequency of each term. Then count the zeros, and say what that fraction would look like for the 75 Wikipedia pages.</p>
+    <p><b>14.</b> Write out the term-frequency matrix, one row per document and one column per distinct term. Underneath it, give the document frequency of each term. Then count the zeros, and say what that fraction would look like for the 75 Wikipedia pages.</p>
 
 <pre>
          the   poet   write   poem   novel   sell   well
@@ -823,7 +707,7 @@ with one row per non-zero pair, rather than materializing a wide matrix that
 would be almost entirely empty.
 </pre>
 
-    <p><b>19.</b> Using the smoothed formula from the reference sheet, compute the TF-IDF score of <code>the</code>, <code>poet</code>, <code>write</code>, and <code>poem</code> in Doc 1. Rank them. Then say what <code>max_df=0.5</code> would do, and be careful about the boundary.</p>
+    <p><b>15.</b> Using the smoothed formula from the reference sheet, compute the TF-IDF score of <code>the</code>, <code>poet</code>, <code>write</code>, and <code>poem</code> in Doc 1. Rank them. Then say what <code>max_df=0.5</code> would do, and be careful about the boundary.</p>
 
 <pre>
 Every document has 4 tokens, so tf_norm = 1/4 = 0.25 for every term present.
@@ -860,7 +744,7 @@ This is worth being careful about, because a term in exactly half the documents
 survives max_df=0.5, which is not what the name suggests.
 </pre>
 
-    <p><b>20.</b> Take a vocabulary of three terms, in the order (<code>poem</code>, <code>novel</code>, <code>city</code>), and three documents with the TF-IDF vectors below. Compute the Euclidean distance and the angle distance from A to B and from A to C. The two measures disagree about A's nearest neighbor. Say which is right, and say what B is.</p>
+    <p><b>16.</b> Take a vocabulary of three terms, in the order (<code>poem</code>, <code>novel</code>, <code>city</code>), and three documents with the TF-IDF vectors below. Compute the Euclidean distance and the angle distance from A to B and from A to C. The two measures disagree about A's nearest neighbor. Say which is right, and say what B is.</p>
 
 <pre>
 A = (4, 0, 3)        B = (20, 0, 15)        C = (0, 5, 0)
@@ -906,7 +790,7 @@ documents can ever be more than pi/2 apart, so 1.571 is not just a big number,
 it is the ceiling.
 </pre>
 
-    <p><b>21.</b> Say what the zeros in these vectors are. Then answer this: a term that appears in every document takes up a dimension, so does it move two documents apart or not? Give the number.</p>
+    <p><b>17.</b> Say what the zeros in these vectors are. Then answer this: a term that appears in every document takes up a dimension, so does it move two documents apart or not? Give the number.</p>
 
 <pre>
 A zero means the document does not contain the term. That is all it means, and

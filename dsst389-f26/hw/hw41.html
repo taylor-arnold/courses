@@ -37,10 +37,11 @@
       4. add the onion and olive oil to the pan
     </p>
     <ol>
-      <li>Write out the term-frequency matrix for these four phrases: one row per phrase, one column per distinct term, raw counts in the cells. Then, underneath, write the document frequency of each term, meaning the number of phrases it appears in. Say how many cells of your matrix are zero, and what that fraction would look like for the 75 Wikipedia pages instead of four recipe steps.</li>
-      <li>Using the smoothed formula from the reading, compute the TF-IDF score of "chop" in phrase 2, "the" in phrase 2, "garlic" in phrase 2, and "pan" in phrase 4. Rank the terms of phrase 2 by their scores and say whether the ranking describes that phrase well. Notice that "the" appears in all four phrases and still comes out with a score above zero: say why the smoothing does that, and what setting <code>max_df=0.5</code> would have done to it instead.</li>
-      <li>The small matrices in the reading use raw counts, but the code computes <code>tf_norm</code>, the term's share of all tokens in its document. Say which one you would want if you were comparing Chaucer's page, which is long, against a page for a minor novelist that runs three paragraphs, and what goes wrong with the other choice. Then explain why every zero in the term-frequency matrix is still a zero in the TF-IDF matrix, and what that tells you about the kind of thing TF-IDF can and cannot say about a document.</li>
-      <li>The top TF-IDF terms for each author page turn out to be mostly names, places, and titles, where the top raw counts were words like "year" and "work". Say what causes that shift. Then consider that the IDF part of the score depends entirely on what you decided counts as a document. If you split each Wikipedia page into its sections and treated every section as its own document, say what would happen to the score of a word like "poem", and say whether TF-IDF is a property of a word, of a document, or of a collection.</li>
+      <li>Write out the term-frequency matrix for these four phrases, one row per phrase and one column per distinct term, with raw counts in the cells.</li>
+      <li>Using the smoothed formula from the reading, compute the TF-IDF score of "chop", "the", and "garlic" in phrase 2, and rank the terms of phrase 2 by their scores.</li>
+      <li>Say why "the" still comes out with a score above zero, and what setting <code>max_df=0.5</code> would have done to it instead.</li>
+      <li>Say what causes the top TF-IDF terms to be names and places where the top raw counts were words like "year" and "work".</li>
+      <li>Say whether TF-IDF is a property of a word, of a document, or of a collection.</li>
     </ol>
   </div>
 

@@ -28,13 +28,14 @@
       </span>
     </p>
     <p>
-      The data is the corpus of 75 authors from the last chapter. One table has the daily page views for each author in 2025, and the other has the 500 most recent edits to each author's article, timestamped to the second. On a sheet of paper, hand write answers to the following. A few sentences apiece is enough.
+      The data is the corpus of 75 authors from the last chapter. One table has the daily page views for each author in 2025, and the other has the 500 most recent edits to each author's article, timestamped to the second. On a sheet of paper, hand write answers to the following.
     </p>
     <ol>
-      <li>The reading plots Chaucer's page views three times: against the row number, against a fractional year, and against a real date. The row number axis works only because of an assumption that the reading calls hidden. Say what that assumption is and what would make the axis start lying. Then say what the fractional year fixes, what it costs, and what the <code>Date</code> type gives you that neither of the first two can.</li>
-      <li>Chaucer's biggest day of 2025 was 14 February, and the reading explains why. Say what the day-number plot did to that finding. Then look at the weekday averages: the page is read on weekdays and rested on Saturdays. Say what that pattern suggests about who is reading Chaucer, and say what evidence would be needed to actually establish it, since the page view table records no readers, only counts.</li>
-      <li>We collected the 500 most recent edits per page rather than all of them, so the window we observe is a fixed number of events and not a fixed span of years. Emily Brontë's 500 edits reach back to late 2024 and Chaucer's reach back to 2021. Give a comparison between two authors that this quietly ruins, and say what the resulting number would look like to someone who did not know how the data was collected.</li>
-      <li>The revision timestamps come out of the parse naive, and the reading attaches UTC before converting to New York time. It notes that calling <code>.dt.convert_time_zone()</code> on the naive column directly gives the right answer on this data, and that this is what makes it dangerous. Explain why getting the right answer can be the problem. Then say what the mirror-image mistake is, and what it does to a timestamp.</li>
+      <li>Say what hidden assumption makes the row-number axis of the page-view plot work, and what would make it start lying.</li>
+      <li>Say what the <code>Date</code> type gives you that plotting against a row number or a fractional year cannot.</li>
+      <li>The weekday averages suggest a particular kind of reader for Chaucer, so say what evidence would be needed to actually establish that, since the table records only counts and no readers.</li>
+      <li>We collected only the 500 most recent edits per page, so give a comparison between two authors that this quietly ruins.</li>
+      <li>Calling <code>.dt.convert_time_zone()</code> on the naive timestamps gives the right answer on this data anyway, so explain why getting the right answer can be the problem.</li>
     </ol>
   </div>
 

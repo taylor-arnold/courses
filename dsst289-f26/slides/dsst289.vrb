@@ -1,0 +1,21 @@
+\frametitle{Reading Imperfect Files}
+\begin{splitcode}{%
+
+Most files you didn't create won't load cleanly with the defaults. A handful of \texttt{pl.read\_csv()} arguments handle almost every case.
+
+\texttt{separator} and \texttt{encoding} fix the wrong delimiter or garbled characters; \texttt{skip\_rows} drops a title row; \texttt{null\_values} catches placeholder codes like \texttt{"-99"}; \texttt{schema\_overrides} stops a column like a ZIP code from losing its leading zero.
+
+}
+\begin{lstlisting}[language=Python]
+survey = pl.read_csv(
+    "survey_responses.csv",
+    separator=";",
+    encoding="windows-1252",
+    skip_rows=2,
+    null_values=["NA", "N/A", "-99"],
+    schema_overrides={
+        "zip_code": pl.Utf8
+    },
+)
+\end{lstlisting}
+\end{splitcode}

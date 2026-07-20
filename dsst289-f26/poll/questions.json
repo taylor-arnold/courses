@@ -23,7 +23,7 @@
   },
   {
     "id": "gen-03",
-    "question": "How well did you feel about the material from the previous class?",
+    "question": "How comfortable are you with the material from the previous class?",
     "options": [
       { "letter": "A", "text": "Very comfortable." },
       { "letter": "B", "text": "Mostly comfortable, with a few gaps." },
@@ -58,12 +58,12 @@
     "id": "q01-02",
     "question": "Q01.02: After running `mynum = 3 + 5`, what value does the expression `mynum + 1` produce?",
     "options": [
-      { "letter": "A", "text": "An error, because `mynum` holds text rather than a number." },
-      { "letter": "B", "text": "9" },
-      { "letter": "C", "text": "6" },
+      { "letter": "A", "text": "9" },
+      { "letter": "B", "text": "6" },
+      { "letter": "C", "text": "An error, because `mynum` holds text rather than a number." },
       { "letter": "D", "text": "8" }
     ],
-    "correct": "B"
+    "correct": "A"
   },
   {
     "id": "q01-03",
@@ -71,8 +71,8 @@
     "options": [
       { "letter": "A", "text": "`read_csv(pl)`" },
       { "letter": "B", "text": "`pl.read_csv`" },
-      { "letter": "C", "text": "`polars.read_csv`" },
-      { "letter": "D", "text": "`import read_csv`" }
+      { "letter": "C", "text": "`import read_csv`" },
+      { "letter": "D", "text": "`polars.read_csv`" }
     ],
     "correct": "B"
   },
@@ -80,23 +80,23 @@
     "id": "q01-04",
     "question": "Q01.04: Following the chapter's rules and recommendations for naming variables, which of these is a valid name?",
     "options": [
-      { "letter": "A", "text": "`my-value`" },
-      { "letter": "B", "text": "`my_value2`" },
-      { "letter": "C", "text": "`my value`" },
+      { "letter": "A", "text": "`my_value2`" },
+      { "letter": "B", "text": "`my value`" },
+      { "letter": "C", "text": "`my-value`" },
       { "letter": "D", "text": "`2nd_value`" }
     ],
-    "correct": "B"
+    "correct": "A"
   },
   {
     "id": "q01-05",
     "question": "Q01.05: The standard setup includes the lines `import polars as pl`, `from plotnine import ggplot, aes`, `from polars import col as c`, and `import funs`. Which statement about these lines is correct?",
     "options": [
-      { "letter": "A", "text": "`import funs` installs the `funs` module from PyPI before loading it." },
-      { "letter": "B", "text": "`import polars as pl` imports every Polars function so each can be used without the `pl` prefix." },
-      { "letter": "C", "text": "`from plotnine import ggplot, aes` lets you use `ggplot` and `aes` directly, without a `plotnine.` prefix." },
-      { "letter": "D", "text": "`from polars import col as c` makes `read_csv` available as `c.read_csv`." }
+      { "letter": "A", "text": "`import polars as pl` imports every Polars function so each can be used without the `pl` prefix." },
+      { "letter": "B", "text": "`import funs` installs the `funs` module from PyPI before loading it." },
+      { "letter": "C", "text": "`from polars import col as c` makes `read_csv` available as `c.read_csv`." },
+      { "letter": "D", "text": "`from plotnine import ggplot, aes` lets you use `ggplot` and `aes` directly, without a `plotnine.` prefix." }
     ],
-    "correct": "C"
+    "correct": "D"
   },
   {
     "id": "q02-01",
@@ -124,12 +124,12 @@
     "id": "q02-03",
     "question": "Q02.03: The formatting rules ask for spaces around `=` when assigning a variable, but no spaces around `=` when setting a keyword argument. Which line follows both rules?",
     "options": [
-      { "letter": "A", "text": "`geom_text(size = 6)`" },
-      { "letter": "B", "text": "`geom_text(size=6)`" },
-      { "letter": "C", "text": "`total=3 + 5`" },
-      { "letter": "D", "text": "`mynum=8`" }
+      { "letter": "A", "text": "`mynum=8`" },
+      { "letter": "B", "text": "`total=3 + 5`" },
+      { "letter": "C", "text": "`geom_text(size = 6)`" },
+      { "letter": "D", "text": "`geom_text(size=6)`" }
     ],
-    "correct": "B"
+    "correct": "D"
   },
   {
     "id": "q02-04",
@@ -146,12 +146,12 @@
     "id": "q02-05",
     "question": "Q02.05: Which of these lines follows every one of the chapter's formatting conventions?",
     "options": [
-      { "letter": "A", "text": "`country = pl.read_csv('data/countries.csv')`" },
-      { "letter": "B", "text": "`country = pl.read_csv( \"data/countries.csv\" )`" },
-      { "letter": "C", "text": "`country = pl.read_csv(\"data/countries.csv\")`" },
-      { "letter": "D", "text": "`country=pl.read_csv(\"data/countries.csv\")`" }
+      { "letter": "A", "text": "`country = pl.read_csv( \"data/countries.csv\" )`" },
+      { "letter": "B", "text": "`country=pl.read_csv(\"data/countries.csv\")`" },
+      { "letter": "C", "text": "`country = pl.read_csv('data/countries.csv')`" },
+      { "letter": "D", "text": "`country = pl.read_csv(\"data/countries.csv\")`" }
     ],
-    "correct": "C"
+    "correct": "D"
   },
   {
     "id": "q03-01",
@@ -159,8 +159,8 @@
     "options": [
       { "letter": "A", "text": "A single row labeled region." },
       { "letter": "B", "text": "The column named region in the dataset." },
-      { "letter": "C", "text": "The plain text string `\"region\"`." },
-      { "letter": "D", "text": "A function that groups the data by region." }
+      { "letter": "C", "text": "A function that groups the data by region." },
+      { "letter": "D", "text": "The plain text string `\"region\"`." }
     ],
     "correct": "B"
   },
@@ -168,8 +168,8 @@
     "id": "q03-02",
     "question": "Q03.02: Which method reorders the rows of a DataFrame according to one or more columns?",
     "options": [
-      { "letter": "A", "text": "`.head()`" },
-      { "letter": "B", "text": "`.select()`" },
+      { "letter": "A", "text": "`.select()`" },
+      { "letter": "B", "text": "`.head()`" },
       { "letter": "C", "text": "`.sort()`" },
       { "letter": "D", "text": "`.filter()`" }
     ],
@@ -179,23 +179,23 @@
     "id": "q03-03",
     "question": "Q03.03: You want the rows where region equals `\"Europe\"` and hdi is greater than 0.9. Which call does this?",
     "options": [
-      { "letter": "A", "text": "`.filter((c.region == \"Europe\") & (c.hdi > 0.9))`" },
-      { "letter": "B", "text": "`.filter(c.region == \"Europe\" and c.hdi > 0.9)`" },
+      { "letter": "A", "text": "`.filter(c.region == \"Europe\" and c.hdi > 0.9)`" },
+      { "letter": "B", "text": "`.filter((c.region == \"Europe\") & (c.hdi > 0.9))`" },
       { "letter": "C", "text": "`.filter((c.region = \"Europe\") & (c.hdi > 0.9))`" },
       { "letter": "D", "text": "`.select((c.region == \"Europe\") & (c.hdi > 0.9))`" }
     ],
-    "correct": "A"
+    "correct": "B"
   },
   {
     "id": "q03-04",
     "question": "Q03.04: The chapter describes `c.hdi > 0.9` as a recipe rather than a number. What does that mean?",
     "options": [
-      { "letter": "A", "text": "It immediately returns a single True or False summarizing the whole dataset." },
-      { "letter": "B", "text": "It is a per-row comparison that Polars works through one row at a time, returning one True or False for each row." },
-      { "letter": "C", "text": "It raises an error unless it is passed to `.sort()` first." },
+      { "letter": "A", "text": "It raises an error unless it is passed to `.sort()` first." },
+      { "letter": "B", "text": "It immediately returns a single True or False summarizing the whole dataset." },
+      { "letter": "C", "text": "It is a per-row comparison that Polars works through one row at a time, returning one True or False for each row." },
       { "letter": "D", "text": "It returns the count of rows whose hdi is above 0.9." }
     ],
-    "correct": "B"
+    "correct": "C"
   },
   {
     "id": "q03-05",
@@ -223,10 +223,10 @@
     "id": "q04-02",
     "question": "Q04.02: How does `.with_columns()` differ from `.select()`?",
     "options": [
-      { "letter": "A", "text": "They do the same thing; `.with_columns()` is just the older name for `.select()`." },
-      { "letter": "B", "text": "`.with_columns()` returns only the new columns, while `.select()` keeps the whole DataFrame." },
+      { "letter": "A", "text": "`.with_columns()` returns only the new columns, while `.select()` keeps the whole DataFrame." },
+      { "letter": "B", "text": "`.with_columns()` can only overwrite existing columns, while `.select()` can only add new ones." },
       { "letter": "C", "text": "`.with_columns()` keeps the whole DataFrame and attaches the new columns, while `.select()` returns only the columns it is given." },
-      { "letter": "D", "text": "`.with_columns()` can only overwrite existing columns, while `.select()` can only add new ones." }
+      { "letter": "D", "text": "They do the same thing; `.with_columns()` is just the older name for `.select()`." }
     ],
     "correct": "C"
   },
@@ -245,21 +245,21 @@
     "id": "q04-04",
     "question": "Q04.04: In `pl.when(c.lat >= 0).then(\"north\")`, Polars does not use the word `\"north\"` the way you might expect. Why not, and what fixes it?",
     "options": [
-      { "letter": "A", "text": "Polars reads the bare string `\"north\"` as the name of a column and looks for one; wrap it in `pl.lit(\"north\")` to mean the literal word." },
+      { "letter": "A", "text": "Polars allows only numbers inside `.then()`; convert the text with `str()` first." },
       { "letter": "B", "text": "The word must be capitalized as `\"North\"`; casing is the only problem." },
       { "letter": "C", "text": "`.then()` cannot follow `pl.when()` for text; you must use `.rename()` instead." },
-      { "letter": "D", "text": "Polars allows only numbers inside `.then()`; convert the text with `str()` first." }
+      { "letter": "D", "text": "Polars reads the bare string `\"north\"` as the name of a column and looks for one; wrap it in `pl.lit(\"north\")` to mean the literal word." }
     ],
-    "correct": "A"
+    "correct": "D"
   },
   {
     "id": "q04-05",
     "question": "Q04.05: A `zone` column is built with this expression:\n\n```python\n(\n    pl.when(c.lat.abs() < 23.5).then(pl.lit(\"tropical\"))\n    .when(c.lat.abs() < 35).then(pl.lit(\"subtropical\"))\n    .otherwise(pl.lit(\"temperate\"))\n)\n```\n\nA country at latitude 10 satisfies both `c.lat.abs() < 23.5` and `c.lat.abs() < 35`. Which zone does it get, and why?",
     "options": [
       { "letter": "A", "text": "It raises an error, because the two conditions overlap and Polars cannot choose between them." },
-      { "letter": "B", "text": "`\"temperate\"`, because a row matching more than one condition falls through to `.otherwise()`." },
+      { "letter": "B", "text": "`\"subtropical\"`, because when several conditions match, the last matching one wins." },
       { "letter": "C", "text": "`\"tropical\"`, because the conditions are checked in order and the first match wins, so each later `.when()` only sees rows the earlier ones did not already claim." },
-      { "letter": "D", "text": "`\"subtropical\"`, because when several conditions match, the last matching one wins." }
+      { "letter": "D", "text": "`\"temperate\"`, because a row matching more than one condition falls through to `.otherwise()`." }
     ],
     "correct": "C"
   },
@@ -267,23 +267,23 @@
     "id": "q05-01",
     "question": "Q05.01: What type of column do comparison operators such as `>`, `==`, and `!=` always produce?",
     "options": [
-      { "letter": "A", "text": "An integer (`i64`) column of 1s and 0s." },
-      { "letter": "B", "text": "A floating point (`f64`) column." },
-      { "letter": "C", "text": "A Boolean (`bool`) column of True and False values." },
-      { "letter": "D", "text": "A string (`str`) column of the words \"True\" and \"False\"." }
+      { "letter": "A", "text": "A Boolean (`bool`) column of True and False values." },
+      { "letter": "B", "text": "A string (`str`) column of the words \"True\" and \"False\"." },
+      { "letter": "C", "text": "An integer (`i64`) column of 1s and 0s." },
+      { "letter": "D", "text": "A floating point (`f64`) column." }
     ],
-    "correct": "C"
+    "correct": "A"
   },
   {
     "id": "q05-02",
     "question": "Q05.02: Which method converts a column from one data type to another?",
     "options": [
-      { "letter": "A", "text": "`.astype()`" },
-      { "letter": "B", "text": "`.schema()`" },
-      { "letter": "C", "text": "`.cast()`" },
-      { "letter": "D", "text": "`.convert()`" }
+      { "letter": "A", "text": "`.cast()`" },
+      { "letter": "B", "text": "`.convert()`" },
+      { "letter": "C", "text": "`.astype()`" },
+      { "letter": "D", "text": "`.schema()`" }
     ],
-    "correct": "C"
+    "correct": "A"
   },
   {
     "id": "q05-03",
@@ -311,12 +311,12 @@
     "id": "q05-05",
     "question": "Q05.05: The same expression `c.hdi > 0.9` works inside both `.select()` and `.filter()` without any changes. Why?",
     "options": [
-      { "letter": "A", "text": "It is an expression, a description of a computation that is not tied to any one method; each method that receives it is a context that runs it, so `.select()` returns a column of results and `.filter()` keeps the rows where it is True." },
-      { "letter": "B", "text": "Polars rewrites the expression behind the scenes into whatever form each method needs." },
-      { "letter": "C", "text": "`.select()` and `.filter()` are aliases for the same method, so any code that runs in one runs in the other." },
+      { "letter": "A", "text": "`.select()` and `.filter()` are aliases for the same method, so any code that runs in one runs in the other." },
+      { "letter": "B", "text": "It is an expression, a description of a computation that is not tied to any one method; each method that receives it is a context that runs it, so `.select()` returns a column of results and `.filter()` keeps the rows where it is True." },
+      { "letter": "C", "text": "Polars rewrites the expression behind the scenes into whatever form each method needs." },
       { "letter": "D", "text": "The expression stores its result the first time it runs and replays that result in the second method." }
     ],
-    "correct": "A"
+    "correct": "B"
   },
   {
     "id": "q06-01",
@@ -366,20 +366,20 @@
     "id": "q06-05",
     "question": "Q06.05: Consider this pipeline:\n\n```python\n(\n    country\n    .filter(c.region == \"Europe\")\n    .pipe(ggplot, aes(c.hdi, c.happy))\n    .geom_point()\n)\n```\n\nWhat is the role of each part?",
     "options": [
-      { "letter": "A", "text": "`.filter` chooses the rows to plot, `.pipe(ggplot, aes(...))` starts the plot and maps hdi to x and happy to y, and `.geom_point()` adds the layer that draws one point per remaining row." },
-      { "letter": "B", "text": "`.filter` chooses the columns to plot, `.pipe(ggplot, aes(...))` draws the points, and `.geom_point()` sets the axis labels." },
-      { "letter": "C", "text": "`.geom_point()` selects the European rows, while `.filter` sets the color of the points." },
-      { "letter": "D", "text": "`.pipe(ggplot, aes(...))` draws the points, and `.geom_point()` is only there to display the finished plot on screen." }
+      { "letter": "A", "text": "`.pipe(ggplot, aes(...))` draws the points, and `.geom_point()` is only there to display the finished plot on screen." },
+      { "letter": "B", "text": "`.filter` chooses the rows to plot, `.pipe(ggplot, aes(...))` starts the plot and maps hdi to x and happy to y, and `.geom_point()` adds the layer that draws one point per remaining row." },
+      { "letter": "C", "text": "`.filter` chooses the columns to plot, `.pipe(ggplot, aes(...))` draws the points, and `.geom_point()` sets the axis labels." },
+      { "letter": "D", "text": "`.geom_point()` selects the European rows, while `.filter` sets the color of the points." }
     ],
-    "correct": "A"
+    "correct": "B"
   },
   {
     "id": "q07-01",
     "question": "Q07.01: Which geometry draws a line connecting each year's value to the next, and is most common when the x axis measures time?",
     "options": [
-      { "letter": "A", "text": "`geom_point`" },
-      { "letter": "B", "text": "`geom_col`" },
-      { "letter": "C", "text": "`geom_text`" },
+      { "letter": "A", "text": "`geom_col`" },
+      { "letter": "B", "text": "`geom_text`" },
+      { "letter": "C", "text": "`geom_point`" },
       { "letter": "D", "text": "`geom_line`" }
     ],
     "correct": "D"
@@ -399,19 +399,19 @@
     "id": "q07-03",
     "question": "Q07.03: You want every point in a scatter plot to be the same fixed shade of pink. Where does the color setting go?",
     "options": [
-      { "letter": "A", "text": "As `color=c.subregion` inside the `aes()` call." },
-      { "letter": "B", "text": "As `aes(color=\"#F5276C\")` inside `geom_point()`." },
-      { "letter": "C", "text": "As a `color=` argument inside the `.pipe(ggplot, ...)` call." },
-      { "letter": "D", "text": "As `color=\"#F5276C\"` inside `geom_point()` but outside the `aes()` call." }
+      { "letter": "A", "text": "As a `color=` argument inside the `.pipe(ggplot, ...)` call." },
+      { "letter": "B", "text": "As `color=\"#F5276C\"` inside `geom_point()` but outside the `aes()` call." },
+      { "letter": "C", "text": "As `aes(color=\"#F5276C\")` inside `geom_point()`." },
+      { "letter": "D", "text": "As `color=c.subregion` inside the `aes()` call." }
     ],
-    "correct": "D"
+    "correct": "B"
   },
   {
     "id": "q07-04",
     "question": "Q07.04: Before a `geom_col` bar plot, the chapter sorts the rows with `.sort(c.pop)`. Why does this matter?",
     "options": [
-      { "letter": "A", "text": "`geom_col` cannot run unless the data is sorted, so the sort prevents an error." },
-      { "letter": "B", "text": "Sorting removes duplicate categories that would otherwise draw overlapping bars." },
+      { "letter": "A", "text": "Sorting removes duplicate categories that would otherwise draw overlapping bars." },
+      { "letter": "B", "text": "`geom_col` cannot run unless the data is sorted, so the sort prevents an error." },
       { "letter": "C", "text": "The sort changes the population values so the bars end up with comparable heights." },
       { "letter": "D", "text": "A categorical axis takes its order from the order the values appear in the data, so sorting the rows first is what ranks the bars by population." }
     ],
@@ -421,20 +421,20 @@
     "id": "q07-05",
     "question": "Q07.05: In a highlight plot, one layer is written `.geom_point(color=\"#F5276C\", data=country_ne)` while the other geometries have no `data=` argument. What does the `data=` argument do here?",
     "options": [
-      { "letter": "A", "text": "It filters the default dataset down to the rows found in `country_ne` for every layer." },
+      { "letter": "A", "text": "It draws that one layer from `country_ne` instead of the default dataset; the other geometries keep using the dataset piped into `ggplot`." },
       { "letter": "B", "text": "It merges `country_ne` into the default dataset before any geometry is drawn." },
       { "letter": "C", "text": "It replaces the dataset for the whole plot, so every geometry now draws from `country_ne`." },
-      { "letter": "D", "text": "It draws that one layer from `country_ne` instead of the default dataset; the other geometries keep using the dataset piped into `ggplot`." }
+      { "letter": "D", "text": "It filters the default dataset down to the rows found in `country_ne` for every layer." }
     ],
-    "correct": "D"
+    "correct": "A"
   },
   {
     "id": "q08-01",
     "question": "Q08.01: You run `country.group_by(c.region)` with no method after it. What do you get back?",
     "options": [
       { "letter": "A", "text": "The original data with a hidden marker showing the groups." },
-      { "letter": "B", "text": "An error, because `.group_by` must always be given an aggregation." },
-      { "letter": "C", "text": "A DataFrame with one row per region, ready to print." },
+      { "letter": "B", "text": "A DataFrame with one row per region, ready to print." },
+      { "letter": "C", "text": "An error, because `.group_by` must always be given an aggregation." },
       { "letter": "D", "text": "A GroupBy object, not a DataFrame; it is a promise that the next method should run once per group." }
     ],
     "correct": "D"
@@ -465,34 +465,34 @@
     "id": "q08-04",
     "question": "Q08.04: You group by region and run `.agg(hdi_avg = c.hdi.mean())`. Which columns does the resulting DataFrame have?",
     "options": [
-      { "letter": "A", "text": "`hdi_avg` only; the region column is dropped once the grouping is done." },
-      { "letter": "B", "text": "region and `hdi_avg` only; the other original columns are gone." },
-      { "letter": "C", "text": "Every original column, plus a new `hdi_avg` column." },
+      { "letter": "A", "text": "region and `hdi_avg` only; the other original columns are gone." },
+      { "letter": "B", "text": "Every original column, plus a new `hdi_avg` column." },
+      { "letter": "C", "text": "`hdi_avg` only; the region column is dropped once the grouping is done." },
       { "letter": "D", "text": "One column per country, each holding that country's mean HDI." }
     ],
-    "correct": "B"
+    "correct": "A"
   },
   {
     "id": "q08-05",
     "question": "Q08.05: Within each region you want to count the countries whose population exceeds 100. The chapter writes `.agg(n_large = (c.pop > 100).sum())`. Why does this count them?",
     "options": [
-      { "letter": "A", "text": "`(c.pop > 100)` filters the group down to the large countries, and `.sum()` reports how many rows are left." },
+      { "letter": "A", "text": "`c.pop > 100` is a boolean column of True and False per country, and `.sum()` on a boolean column adds up the True values, giving the count in each group." },
       { "letter": "B", "text": "`.sum()` adds up the populations above 100 and then divides by 100 to get a count." },
-      { "letter": "C", "text": "You must first create a large-country column with `.with_columns`; the code as written raises an error." },
-      { "letter": "D", "text": "`c.pop > 100` is a boolean column of True and False per country, and `.sum()` on a boolean column adds up the True values, giving the count in each group." }
+      { "letter": "C", "text": "`(c.pop > 100)` filters the group down to the large countries, and `.sum()` reports how many rows are left." },
+      { "letter": "D", "text": "You must first create a large-country column with `.with_columns`; the code as written raises an error." }
     ],
-    "correct": "D"
+    "correct": "A"
   },
   {
     "id": "q09-01",
     "question": "Q09.01: The chapter says you cannot call `.agg` without a `.group_by` in front of it. How do you summarize the whole dataset into a single row instead?",
     "options": [
-      { "letter": "A", "text": "Use `.select` with the same aggregation expressions; when its expressions are aggregations, `.select` collapses the frame to a single row." },
-      { "letter": "B", "text": "Use `.head(n=1)` after the aggregation expressions." },
-      { "letter": "C", "text": "Call `.agg` on its own; Polars treats the missing `.group_by` as one big group." },
-      { "letter": "D", "text": "Call `.group_by()` with no columns, then `.agg`." }
+      { "letter": "A", "text": "Call `.agg` on its own; Polars treats the missing `.group_by` as one big group." },
+      { "letter": "B", "text": "Use `.select` with the same aggregation expressions; when its expressions are aggregations, `.select` collapses the frame to a single row." },
+      { "letter": "C", "text": "It cannot be done in one chain; compute each summary in a separate call and glue the results together afterwards." },
+      { "letter": "D", "text": "Use `.head(n=1)` after the aggregation expressions." }
     ],
-    "correct": "A"
+    "correct": "B"
   },
   {
     "id": "q09-02",
@@ -509,23 +509,23 @@
     "id": "q09-03",
     "question": "Q09.03: A summary computes `n = pl.len()` and `n_gini = c.gini.count()` for each region. In regions where `n_gini` is smaller than `n`, what does that tell you?",
     "options": [
-      { "letter": "A", "text": "Some countries in that region have no Gini value, because `.count()` counts only the non-missing entries while `pl.len()` counts every row." },
-      { "letter": "B", "text": "The region has fewer countries than Gini values, which should never happen." },
-      { "letter": "C", "text": "Some countries in that region were counted twice by `pl.len()`." },
+      { "letter": "A", "text": "The region has fewer countries than Gini values, which should never happen." },
+      { "letter": "B", "text": "Some countries in that region were counted twice by `pl.len()`." },
+      { "letter": "C", "text": "Some countries in that region have no Gini value, because `.count()` counts only the non-missing entries while `pl.len()` counts every row." },
       { "letter": "D", "text": "`.count()` and `pl.len()` measure the same thing, so the two can never differ." }
     ],
-    "correct": "A"
+    "correct": "C"
   },
   {
     "id": "q09-04",
     "question": "Q09.04: The Gini column holds 100 distinct numbers plus some countries with no value, yet `c.gini.n_unique()` returns 101. Why, and how do you count only the values that are present?",
     "options": [
-      { "letter": "A", "text": "`.n_unique()` treats null as its own distinct value, so it adds one for the missing entries; use `c.gini.drop_nulls().n_unique()` to count only the present values." },
-      { "letter": "B", "text": "`.n_unique()` always adds one for the header row, and there is no way to avoid it." },
-      { "letter": "C", "text": "`.n_unique()` rounds the Gini values, merging some and inventing an extra distinct one." },
-      { "letter": "D", "text": "One of the 100 numbers is stored twice, so `.n_unique()` double-counts it; sorting first fixes the count." }
+      { "letter": "A", "text": "One of the 100 numbers is stored twice, so `.n_unique()` double-counts it; sorting first fixes the count." },
+      { "letter": "B", "text": "`.n_unique()` rounds the Gini values, merging some and inventing an extra distinct one." },
+      { "letter": "C", "text": "`.n_unique()` treats null as its own distinct value, so it adds one for the missing entries; use `c.gini.drop_nulls().n_unique()` to count only the present values." },
+      { "letter": "D", "text": "`.n_unique()` always adds one for the header row, and there is no way to avoid it." }
     ],
-    "correct": "A"
+    "correct": "C"
   },
   {
     "id": "q09-05",
@@ -608,12 +608,12 @@
     "id": "q11-02",
     "question": "Q11.02: You want a result that is the original country table with each region's average HDI written onto every country. Which tool fits?",
     "options": [
-      { "letter": "A", "text": "`over`, because it keeps every original row and writes the group value onto each." },
-      { "letter": "B", "text": "`.head()`, because it takes the top row of each group." },
-      { "letter": "C", "text": "`group_by` and `agg`, because they return one row per region." },
-      { "letter": "D", "text": "`.sort()`, because ordering the rows attaches the averages." }
+      { "letter": "A", "text": "`group_by` and `agg`, because they return one row per region." },
+      { "letter": "B", "text": "`.sort()`, because ordering the rows attaches the averages." },
+      { "letter": "C", "text": "`over`, because it keeps every original row and writes the group value onto each." },
+      { "letter": "D", "text": "`.head()`, because it takes the top row of each group." }
     ],
-    "correct": "A"
+    "correct": "C"
   },
   {
     "id": "q11-03",
@@ -631,11 +631,11 @@
     "question": "Q11.04: With `c.cell.rolling_mean(window_size=5)` on data sorted by year, why are the first four rows null?",
     "options": [
       { "letter": "A", "text": "The first four years have missing subscription counts in the data." },
-      { "letter": "B", "text": "`rolling_mean` always discards the first four rows of any table." },
-      { "letter": "C", "text": "Each value is the average of that year and the four before it, and the first four rows do not yet have a full window of five behind them." },
-      { "letter": "D", "text": "`window_size=5` removes four rows and keeps every fifth one." }
+      { "letter": "B", "text": "Each value is the average of that year and the four before it, and the first four rows do not yet have a full window of five behind them." },
+      { "letter": "C", "text": "`window_size=5` removes four rows and keeps every fifth one." },
+      { "letter": "D", "text": "`rolling_mean` always discards the first four rows of any table." }
     ],
-    "correct": "C"
+    "correct": "B"
   },
   {
     "id": "q11-05",
@@ -653,11 +653,11 @@
     "question": "Q12.01: `geom_bar` and `geom_col` look almost identical. What is the difference?",
     "options": [
       { "letter": "A", "text": "`geom_bar` takes an x and a y you supply, while `geom_col` counts the rows in each category itself." },
-      { "letter": "B", "text": "`geom_bar` takes one categorical aesthetic and counts the rows in each category itself, while `geom_col` takes an x and a y and draws each y value you supply as the bar height." },
-      { "letter": "C", "text": "`geom_bar` works only on numbers and `geom_col` works only on text." },
-      { "letter": "D", "text": "`geom_bar` draws vertical bars and `geom_col` draws horizontal bars; otherwise they are the same." }
+      { "letter": "B", "text": "`geom_bar` works only on numbers and `geom_col` works only on text." },
+      { "letter": "C", "text": "`geom_bar` draws vertical bars and `geom_col` draws horizontal bars; otherwise they are the same." },
+      { "letter": "D", "text": "`geom_bar` takes one categorical aesthetic and counts the rows in each category itself, while `geom_col` takes an x and a y and draws each y value you supply as the bar height." }
     ],
-    "correct": "B"
+    "correct": "D"
   },
   {
     "id": "q12-02",
@@ -674,10 +674,10 @@
     "id": "q12-03",
     "question": "Q12.03: The bars of a count plot come out in a jumbled order. According to the chapter, how do you fix the order?",
     "options": [
-      { "letter": "A", "text": "Add a `sort_axis()` layer to the plot after the geometry." },
-      { "letter": "B", "text": "Nothing is needed; a categorical axis is always sorted alphabetically by default." },
+      { "letter": "A", "text": "Nothing is needed; a categorical axis is always sorted alphabetically by default." },
+      { "letter": "B", "text": "Set the order inside `aes()` with an `order=` argument." },
       { "letter": "C", "text": "Sort the data before it is plotted, because a categorical axis follows the order the values first appear in the data." },
-      { "letter": "D", "text": "Set the order inside `aes()` with an `order=` argument." }
+      { "letter": "D", "text": "Add a `sort_axis()` layer to the plot after the geometry." }
     ],
     "correct": "C"
   },
@@ -685,34 +685,34 @@
     "id": "q12-04",
     "question": "Q12.04: In `.geom_smooth(method=\"lm\", se=False)`, what do the two options do?",
     "options": [
-      { "letter": "A", "text": "`method=\"lm\"` fits a flexible non-linear curve, and `se=False` makes the line thicker." },
+      { "letter": "A", "text": "`method=\"lm\"` fits a straight line of best fit, and `se=False` turns off the confidence band drawn around it." },
       { "letter": "B", "text": "`method=\"lm\"` limits the model to the mean, and `se=False` hides the fitted line." },
-      { "letter": "C", "text": "`method=\"lm\"` sorts the data, and `se=False` sets the standard error to zero in the data." },
-      { "letter": "D", "text": "`method=\"lm\"` fits a straight line of best fit, and `se=False` turns off the confidence band drawn around it." }
+      { "letter": "C", "text": "`method=\"lm\"` fits a flexible non-linear curve, and `se=False` makes the line thicker." },
+      { "letter": "D", "text": "`method=\"lm\"` sorts the data, and `se=False` sets the standard error to zero in the data." }
     ],
-    "correct": "D"
+    "correct": "A"
   },
   {
     "id": "q12-05",
     "question": "Q12.05: To order a boxplot's regions the chapter sorts with `c.hdi.median().over(c.region)`, not a plain `.sort(c.hdi)`. Why does the plain sort give the wrong order?",
     "options": [
-      { "letter": "A", "text": "A plain `.sort(c.hdi)` raises an error because HDI has missing values." },
-      { "letter": "B", "text": "The plain sort orders the regions alphabetically instead of by HDI." },
-      { "letter": "C", "text": "`geom_boxplot` ignores the sort entirely, so only the window version has any effect." },
-      { "letter": "D", "text": "Sorting countries by their own HDI orders each region by whichever country comes first, that is, by the region's lowest HDI, rather than by the middle of its distribution; ordering categories by a group summary means sorting by that summary computed with `.over()`." }
+      { "letter": "A", "text": "Sorting countries by their own HDI orders each region by whichever country comes first, that is, by the region's lowest HDI, rather than by the middle of its distribution; ordering categories by a group summary means sorting by that summary computed with `.over()`." },
+      { "letter": "B", "text": "`geom_boxplot` ignores the sort entirely, so only the window version has any effect." },
+      { "letter": "C", "text": "The plain sort orders the regions alphabetically instead of by HDI." },
+      { "letter": "D", "text": "A plain `.sort(c.hdi)` raises an error because HDI has missing values." }
     ],
-    "correct": "D"
+    "correct": "A"
   },
   {
     "id": "q13-01",
     "question": "Q13.01: By default, when you map color to a categorical column, plotnine uses the viridis palette. Why is it a good default?",
     "options": [
-      { "letter": "A", "text": "It sorts the categories alphabetically as it assigns colors." },
-      { "letter": "B", "text": "It uses the fewest colors possible, always three." },
-      { "letter": "C", "text": "It is friendly to color-blind readers, prints well in black and white, and holds up on a poor projector." },
-      { "letter": "D", "text": "It matches the `theme_minimal` background exactly." }
+      { "letter": "A", "text": "It matches the `theme_minimal` background exactly." },
+      { "letter": "B", "text": "It sorts the categories alphabetically as it assigns colors." },
+      { "letter": "C", "text": "It uses the fewest colors possible, always three." },
+      { "letter": "D", "text": "It is friendly to color-blind readers, prints well in black and white, and holds up on a poor projector." }
     ],
-    "correct": "C"
+    "correct": "D"
   },
   {
     "id": "q13-02",
@@ -740,12 +740,12 @@
     "id": "q13-04",
     "question": "Q13.04: You add a `labs` layer but set only `x` and `title`. What happens to the other labels, such as the y-axis and the legend?",
     "options": [
-      { "letter": "A", "text": "The plot raises an error, because `labs` requires every aesthetic to be labeled." },
+      { "letter": "A", "text": "They keep their default labels, the raw column names, since `labs` changes only the aesthetics you name." },
       { "letter": "B", "text": "They are removed from the plot entirely." },
-      { "letter": "C", "text": "They keep their default labels, the raw column names, since `labs` changes only the aesthetics you name." },
+      { "letter": "C", "text": "The plot raises an error, because `labs` requires every aesthetic to be labeled." },
       { "letter": "D", "text": "They all take the value of the title you set." }
     ],
-    "correct": "C"
+    "correct": "A"
   },
   {
     "id": "q13-05",
@@ -808,8 +808,8 @@
     "options": [
       { "letter": "A", "text": "Country is no longer stored in a column; it has become a set of column names, which breaks the rule that every variable is a single column." },
       { "letter": "B", "text": "The reshaped table has fewer rows than columns, and tidy tables must have more rows." },
-      { "letter": "C", "text": "The reshaped table adds new information that was not in the original, which tidiness forbids." },
-      { "letter": "D", "text": "The `cell` values become text, and tidy tables must be numeric." }
+      { "letter": "C", "text": "The `cell` values become text, and tidy tables must be numeric." },
+      { "letter": "D", "text": "The reshaped table adds new information that was not in the original, which tidiness forbids." }
     ],
     "correct": "A"
   },
@@ -828,12 +828,12 @@
     "id": "q15-02",
     "question": "Q15.02: Following the chapter's rules for naming variables, which of these is a valid column name?",
     "options": [
-      { "letter": "A", "text": "`birth_year`" },
-      { "letter": "B", "text": "`2nd_author`" },
-      { "letter": "C", "text": "`Birth Year`" },
-      { "letter": "D", "text": "`birth-year`" }
+      { "letter": "A", "text": "`birth-year`" },
+      { "letter": "B", "text": "`birth_year`" },
+      { "letter": "C", "text": "`2nd_author`" },
+      { "letter": "D", "text": "`Birth Year`" }
     ],
-    "correct": "A"
+    "correct": "B"
   },
   {
     "id": "q15-03",
@@ -949,21 +949,21 @@
     "id": "q17-03",
     "question": "Q17.03: A survey CSV records missing answers as the string `\"-99\"`. If you read it and do nothing about this, what goes wrong, and how does `null_values` help?",
     "options": [
-      { "letter": "A", "text": "Polars raises an error on the first `\"-99\"`; passing `null_values=[\"-99\"]` suppresses the error so the file loads." },
-      { "letter": "B", "text": "Polars treats `\"-99\"` as a real value, here a number, which corrupts your summaries; passing `null_values=[\"-99\"]` loads those entries as missing instead." },
-      { "letter": "C", "text": "Polars drops every row containing `\"-99\"`; passing `null_values=[\"-99\"]` keeps those rows." },
-      { "letter": "D", "text": "Polars loads `\"-99\"` as text in every column; passing `null_values=[\"-99\"]` converts the whole file to numbers." }
+      { "letter": "A", "text": "Polars loads `\"-99\"` as text in every column; passing `null_values=[\"-99\"]` converts the whole file to numbers." },
+      { "letter": "B", "text": "Polars drops every row containing `\"-99\"`; passing `null_values=[\"-99\"]` keeps those rows." },
+      { "letter": "C", "text": "Polars raises an error on the first `\"-99\"`; passing `null_values=[\"-99\"]` suppresses the error so the file loads." },
+      { "letter": "D", "text": "Polars treats `\"-99\"` as a real value, here a number, which corrupts your summaries; passing `null_values=[\"-99\"]` loads those entries as missing instead." }
     ],
-    "correct": "B"
+    "correct": "D"
   },
   {
     "id": "q17-04",
     "question": "Q17.04: A ZIP-code column full of values like `\"02138\"` loads as an integer and becomes 2138. Which `pl.read_csv()` argument fixes this, and why does the problem happen?",
     "options": [
       { "letter": "A", "text": "`schema_overrides={\"zip_code\": pl.Utf8}`, because Polars guesses the column is numeric and an integer type silently drops the leading zero." },
-      { "letter": "B", "text": "`null_values=[\"0\"]`, because the leading zero is treated as a missing-value code." },
-      { "letter": "C", "text": "`separator=\",\"`, because the zero is split into its own column." },
-      { "letter": "D", "text": "`skip_rows=1`, because the leading zero is read as a separate header row." }
+      { "letter": "B", "text": "`skip_rows=1`, because the leading zero is read as a separate header row." },
+      { "letter": "C", "text": "`null_values=[\"0\"]`, because the leading zero is treated as a missing-value code." },
+      { "letter": "D", "text": "`separator=\",\"`, because the zero is split into its own column." }
     ],
     "correct": "A"
   },
@@ -971,12 +971,12 @@
     "id": "q17-05",
     "question": "Q17.05: A colleague in Europe sends a CSV whose fields are separated by semicolons, because it was exported from a system set to a locale where the comma already means something else. Which argument loads it correctly, and what is the comma being used for in that locale?",
     "options": [
-      { "letter": "A", "text": "`null_values=[\",\"]`, because a lone comma is that locale's missing-value code." },
-      { "letter": "B", "text": "`separator=\";\"`, because in that locale the comma is the decimal separator inside numbers, so another character has to separate the fields." },
-      { "letter": "C", "text": "`encoding=\"windows-1252\"`, because the comma is reserved for the file's character encoding." },
-      { "letter": "D", "text": "`skip_rows=1`, because the comma marks a banner row that must be skipped." }
+      { "letter": "A", "text": "`separator=\";\"`, because in that locale the comma is the decimal separator inside numbers, so another character has to separate the fields." },
+      { "letter": "B", "text": "`skip_rows=1`, because the comma marks a banner row that must be skipped." },
+      { "letter": "C", "text": "`null_values=[\",\"]`, because a lone comma is that locale's missing-value code." },
+      { "letter": "D", "text": "`encoding=\"windows-1252\"`, because the comma is reserved for the file's character encoding." }
     ],
-    "correct": "B"
+    "correct": "A"
   },
   {
     "id": "q18-01",
@@ -1015,12 +1015,12 @@
     "id": "q18-04",
     "question": "Q18.04: You want to join `border` to `country`, but the matching column is called `iso_neighbor` in `border` and `iso` in `country`. How do you tell `.join()` about the mismatch?",
     "options": [
-      { "letter": "A", "text": "Pass `on=[c.iso_neighbor, c.iso]` as a two-element list." },
-      { "letter": "B", "text": "Pass `how=\"left_right\"` so Polars matches the columns by position." },
-      { "letter": "C", "text": "You cannot; the two columns must share a name before any join." },
-      { "letter": "D", "text": "Use `left_on=c.iso_neighbor` and `right_on=c.iso` to name the column in each table." }
+      { "letter": "A", "text": "Use `left_on=c.iso_neighbor` and `right_on=c.iso` to name the column in each table." },
+      { "letter": "B", "text": "You cannot; the two columns must share a name before any join." },
+      { "letter": "C", "text": "Pass `how=\"left_right\"` so Polars matches the columns by position." },
+      { "letter": "D", "text": "Pass `on=[c.iso_neighbor, c.iso]` as a two-element list." }
     ],
-    "correct": "D"
+    "correct": "A"
   },
   {
     "id": "q18-05",
@@ -1037,12 +1037,12 @@
     "id": "q19-01",
     "question": "Q19.01: Before using a table as the right-hand side of a join, you run `c_sml.select(c.iso).n_unique() == len(c_sml)` and get True. What has this confirmed?",
     "options": [
-      { "letter": "A", "text": "The `iso` column contains no missing values." },
+      { "letter": "A", "text": "The `iso` column has no repeated values, so it is a safe key that will not multiply rows in the join." },
       { "letter": "B", "text": "The two tables you are about to join have the same number of rows." },
       { "letter": "C", "text": "The join will keep every row of the left table." },
-      { "letter": "D", "text": "The `iso` column has no repeated values, so it is a safe key that will not multiply rows in the join." }
+      { "letter": "D", "text": "The `iso` column contains no missing values." }
     ],
-    "correct": "D"
+    "correct": "A"
   },
   {
     "id": "q19-02",
@@ -1059,12 +1059,12 @@
     "id": "q19-03",
     "question": "Q19.03: You accidentally use a right-hand table that has two rows for `\"AFG\"` instead of one, then join it to `border` on `iso`. What happens?",
     "options": [
-      { "letter": "A", "text": "Every Afghanistan row in `border` matches both AFG rows, so the result gains extra duplicate rows and no error is raised." },
-      { "letter": "B", "text": "Polars drops all Afghanistan rows because the key is ambiguous." },
-      { "letter": "C", "text": "Polars raises an error because the join key is not unique." },
+      { "letter": "A", "text": "Polars drops all Afghanistan rows because the key is ambiguous." },
+      { "letter": "B", "text": "Polars raises an error because the join key is not unique." },
+      { "letter": "C", "text": "Every Afghanistan row in `border` matches both AFG rows, so the result gains extra duplicate rows and no error is raised." },
       { "letter": "D", "text": "Polars keeps only the first AFG row, so the result is unchanged." }
     ],
-    "correct": "A"
+    "correct": "C"
   },
   {
     "id": "q19-04",
@@ -1081,23 +1081,23 @@
     "id": "q19-05",
     "question": "Q19.05: Both `c.gini.mean().over(c.region)` and grouping to a region summary then joining it back attach each region's average Gini to every row. Since `.over()` does it in one step, when is the agg-then-join version worth the extra work?",
     "options": [
-      { "letter": "A", "text": "When you also need the one-row-per-region summary table for its own sake, to inspect, plot, or join elsewhere, since `.over()` never materializes that table." },
-      { "letter": "B", "text": "When the table is too large for `.over()` to handle." },
+      { "letter": "A", "text": "When the table is too large for `.over()` to handle." },
+      { "letter": "B", "text": "When you also need the one-row-per-region summary table for its own sake, to inspect, plot, or join elsewhere, since `.over()` never materializes that table." },
       { "letter": "C", "text": "When you want the result to have one row per region instead of one row per original row." },
       { "letter": "D", "text": "When the summary must be attached without adding a new column." }
     ],
-    "correct": "A"
+    "correct": "B"
   },
   {
     "id": "q20-01",
     "question": "Q20.01: The `cellphone` table is long, with columns `year`, `iso`, and `cell`. To reshape it wide, one column per country, the call is `cellphone.pivot(index=c.year, on=c.iso, values=c.cell)`. What do the three arguments name, in order?",
     "options": [
-      { "letter": "A", "text": "The columns to drop, keep, and rename, in that order." },
-      { "letter": "B", "text": "The three columns to sort by before reshaping." },
-      { "letter": "C", "text": "Three columns that must all be numeric for the pivot to run." },
-      { "letter": "D", "text": "The column to index the new rows (`year`), the column whose values become new column names (`iso`), and the column that fills the cells (`cell`)." }
+      { "letter": "A", "text": "The column to index the new rows (`year`), the column whose values become new column names (`iso`), and the column that fills the cells (`cell`)." },
+      { "letter": "B", "text": "The columns to drop, keep, and rename, in that order." },
+      { "letter": "C", "text": "The three columns to sort by before reshaping." },
+      { "letter": "D", "text": "Three columns that must all be numeric for the pivot to run." }
     ],
-    "correct": "D"
+    "correct": "A"
   },
   {
     "id": "q20-02",
@@ -1114,23 +1114,23 @@
     "id": "q20-03",
     "question": "Q20.03: You call `.unpivot(index=c.year)` on the wide `cellphone` frame without naming the output columns. What are the two new columns called, and how would you rename them?",
     "options": [
-      { "letter": "A", "text": "They default to variable and value; set `variable_name` and `value_name` to choose your own names." },
+      { "letter": "A", "text": "They take the names of the first two original columns and cannot be renamed." },
       { "letter": "B", "text": "They default to column and data; set `on` and `values` to rename them." },
-      { "letter": "C", "text": "They take the names of the first two original columns and cannot be renamed." },
-      { "letter": "D", "text": "They default to key and val; set `index` and `values` to rename them." }
+      { "letter": "C", "text": "They default to key and val; set `index` and `values` to rename them." },
+      { "letter": "D", "text": "They default to variable and value; set `variable_name` and `value_name` to choose your own names." }
     ],
-    "correct": "A"
+    "correct": "D"
   },
   {
     "id": "q20-04",
     "question": "Q20.04: With the wide frame `cell_wide` (one column per country), mapping `color=c.iso` in plotnine fails. Why, and what fixes it?",
     "options": [
-      { "letter": "A", "text": "plotnine cannot use color with `geom_line`; switching to `geom_point` fixes it." },
-      { "letter": "B", "text": "The `iso` column is numeric and color needs text; casting it to a string fixes it." },
-      { "letter": "C", "text": "There is no `iso` column in the wide frame, only a column per country; unpivoting country back into one `iso` column lets `color=c.iso` draw one line per country." },
+      { "letter": "A", "text": "There is no `iso` column in the wide frame, only a column per country; unpivoting country back into one `iso` column lets `color=c.iso` draw one line per country." },
+      { "letter": "B", "text": "plotnine cannot use color with `geom_line`; switching to `geom_point` fixes it." },
+      { "letter": "C", "text": "The `iso` column is numeric and color needs text; casting it to a string fixes it." },
       { "letter": "D", "text": "The frame has too many columns; dropping all but two fixes it." }
     ],
-    "correct": "C"
+    "correct": "A"
   },
   {
     "id": "q20-05",

@@ -52,57 +52,38 @@
 \textbf{Building a network.}
 A network is a set of \textbf{nodes} and a set of \textbf{edges} joining pairs of them. It is
 recorded as an \textbf{edge list}: one row per edge, with the endpoints in the columns
-\code{doc\_id} and \code{doc\_id2}. In a \textbf{directed} network the two ends differ; in an
-\textbf{undirected} one they do not. Any directed network can be read as undirected by
-ignoring the direction; the reverse is not possible.
+\code{doc\_id} and \code{doc\_id2}.
 
 \begin{verbatim}
 node, edge, G = DSNetwork.process(edges, directed=False)
 \end{verbatim}
 
-\begin{itemize}
-  \item The graph is built \textit{from the edge list}, so a node belonging to no edge is
-        never created. Filtering an edge list deletes nodes, silently.
-  \item \code{node} has one row per node: \code{id}, the layout coordinates \code{x} and
-        \code{y}, and the metrics below. \code{edge} has one row per edge, with \code{x},
-        \code{y}, \code{xend}, \code{yend}, which are the four aesthetics of
-        \code{geom\_segment}. Add \code{arrow=arrow(length=0.02)} to draw direction.
-\end{itemize}
+\code{node} has one row per node: \code{id}, the layout coordinates \code{x} and \code{y}, and
+the metrics below.
 
 \smallskip
 
 \textbf{Components.}
-A \textbf{component} is a set of nodes all reachable from one another by following edges. A
-network with exactly one component is \textbf{connected}. The \code{component} column numbers
-them in \textbf{descending order of size}, so component 1 is always the largest, and
-\code{component\_size} gives the size of each.
+A \textbf{component} is a set of nodes all reachable from one another by following edges. The
+\code{component} column numbers them in \textbf{descending order of size}, so component 1 is
+always the largest, and \code{component\_size} gives the size of each.
 
 \smallskip
 
 \textbf{Centrality.}
-All four scores below are computed \textbf{separately within each component}, because the
-last three are only defined on a connected network. Filter to \code{component == 1} before
-comparing scores across nodes.
+Distances, and the scores built on them, are computed \textbf{separately within each
+component}. Filter to \code{component == 1} before comparing scores across nodes.
 
 \begin{itemize}
   \item \code{degree} --- the number of neighbors a node has. Purely local.
-  \item \code{eigen} --- \textit{eigenvalue centrality.} A score proportional to the sum of the
-        scores of its neighbors, so that being adjacent to central nodes makes a node central.
-        \textbf{Rescaled so the largest score in each component is 1}, which means a score of 1
-        says ``the most central node \textit{in this component}'' and cannot be compared across
-        components.
-        \begin{equation*}
-        s_j \;=\; \lambda \cdot \sum_{i \,\in\, \text{Neighbors}(j)} s_i
-        \end{equation*}
   \item \code{close} --- \textit{closeness centrality.} Take the shortest-path distance from
         the node to every other node in its component, and add up the \textbf{reciprocals}. A
         neighbor contributes 1, a node four hops away contributes only $1/4$, so the score
-        rewards being near \textit{everything}. Undirected networks only.
+        rewards being near \textit{everything}.
   \item \code{between} --- \textit{betweenness centrality.} For every pair of other nodes,
         consider the shortest paths between them; count what fraction of them run
         \textit{through} this node, and add that up over all pairs. High for
-        \textbf{bridges}: nodes that are not popular but are unavoidable. Degree and
-        betweenness can disagree completely about the same node.
+        \textbf{bridges}: nodes that are not popular but are unavoidable.
   \item \code{cluster} --- a community label, assigned by an algorithm that tries to put more
         edges inside groups than between them. It is an output, not a property: a node on the
         boundary between two groups may be assigned arbitrarily.
@@ -110,30 +91,9 @@ comparing scores across nodes.
 
 \smallskip
 
-\textbf{Directed networks.}
-Setting \code{directed=True} changes the node table. \code{degree} is replaced by
-\code{degree\_out} (links on the page), \code{degree\_in} (links into the page), and
-\code{degree\_total}. \code{eigen} and \code{between} are still computed but ignore the
-direction. \textbf{\code{close} is not available}, because a distance to a node you cannot
-reach is not defined.
-
-\smallskip
-
-\textbf{Kinds of network.}
-
-\begin{itemize}
-  \item \textbf{Citation.} An edge whenever one page links to another. Sensitive to page
-        length, so summarize by links \textit{in} rather than links \textit{out}.
-  \item \textbf{Co-citation.} An edge between two pages whenever some \textit{third} page cites
-        \textbf{both}. Always undirected. The \code{count} column holds the number of citing
-        pages a pair shares, and edges are usually kept only above a threshold. One page citing
-        $n$ items manufactures $n(n-1)/2$ co-citations at a stroke.
-  \item \textbf{Distance.} An edge whenever two documents are closer than a cutoff, using the
-        angle distances of Chapter 15.
-  \item \textbf{Symmetric nearest neighbor.} Take each document's $k$ nearest neighbors, and
-        keep an edge only when two documents are \textbf{mutually} in each other's sets. No node
-        can then exceed degree $k$, which stops popular documents from becoming hubs.
-\end{itemize}
+\textbf{Co-citation.}
+An edge between two pages whenever some \textit{third} page cites \textbf{both}. Always
+undirected. The \code{count} column holds the number of citing pages a pair shares.
 
 \smallskip
 
@@ -146,59 +106,20 @@ a $2 \times 2$ color image has 12 of them, not 4.
   \item \textbf{OpenCV stores channels in BGR order, not RGB.} \code{[255, 0, 0]} is
         \textit{blue} and \code{[0, 0, 255]} is \textit{red}. \code{[0,0,0]} is black and
         \code{[255,255,255]} is white.
-  \item \code{cv2.cvtColor(img, cv2.COLOR\_BGR2HSV)} --- convert to hue, saturation, value.
-        Same shape. OpenCV scales \textbf{hue to 0--179} (half of degrees, to fit in 8 bits) and
-        saturation and value to 0--255.
-  \item \code{DSImage.compute\_colors(img\_hsv)} --- the proportion of pixels in each color
-        category; the proportions sum to 1. It checks saturation and value \textit{before} hue,
-        so that dark and desaturated pixels are called black, white, or gray rather than being
-        binned by a hue that means nothing.
-  \item \code{DSImage.plot\_image\_grid(df, ncol=10, label\_name="label")} --- display images.
 \end{itemize}
-
-\smallskip
-
-\textbf{RGB to HSV.}
-Given $R$, $G$, $B$ scaled to $[0, 1]$, let $M = \max(R,G,B)$, $m = \min(R,G,B)$, and let the
-chroma be $C = M - m$. Then $V = M$, and:
-
-\begin{equation*}
-S = \begin{cases} 0 & \text{if } V = 0 \\[2pt] \dfrac{C}{V} & \text{otherwise} \end{cases}
-\qquad\qquad
-H = \begin{cases}
-0^\circ & \text{if } C = 0 \\[2pt]
-60^\circ \times \dfrac{G - B}{C} \bmod 360^\circ & \text{if } M = R \\[4pt]
-60^\circ \times \left( \dfrac{B - R}{C} + 2 \right) & \text{if } M = G \\[4pt]
-60^\circ \times \left( \dfrac{R - G}{C} + 4 \right) & \text{if } M = B
-\end{cases}
-\end{equation*}
-
-Hue is an angle on a color wheel: red $0^\circ$, yellow $60^\circ$, green $120^\circ$, cyan
-$180^\circ$, blue $240^\circ$, magenta $300^\circ$, wrapping back to red at $360^\circ$. When
-$C = 0$ the pixel is gray and \textbf{has no hue}; the formula would divide by zero, and the
-$0^\circ$ it returns instead is indistinguishable from red.
 
 \smallskip
 
 \textbf{Images as vectors.}
 
 \begin{itemize}
-  \item \code{ViTEmbedder()} --- returns a \textbf{dense} vector of \textbf{768} numbers for an
-        image. Unlike a TF-IDF vector, nearly every entry is non-zero and no single dimension
-        has a nameable meaning. Only the geometry matters.
-  \item \code{umap(df, features=[c.vit]).predict(full=True)} --- project to two dimensions,
-        returned as the columns \code{dr0} and \code{dr1}.
-  \item \textbf{Transfer learning}: reusing a model trained by someone else, on other images,
-        for other labels. What transfers is the \textit{representation}, not the labels.
   \item \code{SigLIPEmbedder()} --- embeds \textbf{images and text into the same space}, with
         \code{.embed\_image(path)} and \code{.embed\_text(string)}. The vectors are unit length,
         so \code{dot\_product(a, b)} is exactly the cosine similarity of Chapter 15: 1 means
         identical, 0 means orthogonal, and the angle distance is $\arccos$ of it.
   \item \textbf{Zero-shot classification}: embed each category description as text, and give
-        each image the label whose text vector it has the largest dot product with. No training,
-        no labeled examples. It is an \textit{argmax over the candidate list you supplied}, so
-        there is no ``none of the above,'' and adding a category can change a prediction that
-        was already made.
+        each image the label whose text vector it has the largest dot product with. No training
+        and no labeled examples --- an \textit{argmax over the candidate list you supplied}.
 \end{itemize}
 
 \end{document}

@@ -33,15 +33,15 @@
       </span>
     </p>
 
-    <p>The third exam is 75 minutes. It has six tasks, labeled A through F, with fifteen questions spread across them. It works exactly like the first two: every task gives you a small dataset &mdash; an edge list, a node table, a pixel array, a handful of vectors &mdash; together with the code that runs on it, and your job is to say what comes out. You are given the code and the data and asked for the result.</p>
+    <p>The third exam is 75 minutes. It has five tasks, labeled A through E, with nine questions spread across them. It works exactly like the first two: every task gives you a small dataset &mdash; an edge list, a node table, a pixel array, a handful of vectors &mdash; together with the code that runs on it, and your job is to say what comes out. You are given the code and the data and asked for the result.</p>
 
-    <p><b>You do not need to memorize any function names or arguments.</b> The <a href="exam03_reference.pdf" target="_blank" rel="noopener noreferrer">reference sheet</a> will be attached to your exam, and it carries every method, every column name, and every formula you could possibly need, including the HSV conversion. Bring a calculator and a pencil; you will be drawing a network, and you should draw it before you try to compute anything about it.</p>
+    <p><b>You do not need to memorize any function names or arguments.</b> The <a href="exam03_reference.pdf" target="_blank" rel="noopener noreferrer">reference sheet</a> will be attached to your exam, and it carries every method, every column name, and every formula you could possibly need. Bring a calculator and a pencil; you will be drawing a network, and you should draw it before you try to compute anything about it.</p>
 
-    <p>The exam covers <a href="https://taylor-arnold.github.io/fds2/16_network_data.html" target="_blank" rel="noopener noreferrer">Chapter 16</a> and <a href="https://taylor-arnold.github.io/fds2/17_image_data.html" target="_blank" rel="noopener noreferrer">Chapter 17</a>, along with Homeworks 15 through 18. Questions come in the same five forms as before:</p>
+    <p>The exam covers <a href="https://taylor-arnold.github.io/fds2/book/16_network_data.html" target="_blank" rel="noopener noreferrer">Chapter 16</a> and <a href="https://taylor-arnold.github.io/fds2/book/17_image_data.html" target="_blank" rel="noopener noreferrer">Chapter 17</a>, along with Homeworks 45 through 48. Questions come in the same five forms as before:</p>
 
     <ul>
       <li><b>Fill in the output.</b> A small dataset and a code block; write the table that comes back, or a named column of it, or just the number of rows.</li>
-      <li><b>Compute by hand.</b> A degree, a shortest path, a centrality score, a mean pixel value, a hue, a dot product. Exact numbers, with units.</li>
+      <li><b>Compute by hand.</b> A degree, a shortest path, a centrality score, a mean pixel value, a dot product. Exact numbers, with units.</li>
       <li><b>Find the trap.</b> Code that almost answers the question asked, containing one of the errors we have discussed all unit. Circle the offending line and say what the output shows instead.</li>
       <li><b>Choose the code.</b> Several candidate blocks, one of which produces the stated result.</li>
       <li><b>One sentence, with an anchor.</b> A short interpretation, always paired with something checkable: name the node that proves it, or the number that would change.</li>
@@ -55,47 +55,32 @@
     <ol>
       <li>Given an edge list, drawing the network, and given a drawing, writing the edge list back out.</li>
       <li>Given a network, writing the degree of every node, counting the components, and saying which component is numbered 1.</li>
-      <li>Saying what the nodes and the edges of a network actually record, for a stated way of building it, and what they do not.</li>
-      <li>Saying why counting links <i>into</i> a page differs from counting links <i>out</i> of it, and naming the bias that the choice avoids.</li>
-      <li>Saying what happens to a node when every edge it belongs to is filtered out of the edge list.</li>
     </ol>
 
     <p><b>Centrality and clusters.</b></p>
-    <ol start="6">
+    <ol start="3">
       <li>Given a drawing, computing the shortest-path distance from a named node to every other node in its component.</li>
       <li>Computing the closeness centrality of a node from those distances, using the formula on the reference sheet.</li>
       <li>Given a drawing, finding the shortest paths that run between two dense regions, naming the nodes they all pass through, and computing a betweenness score.</li>
-      <li>Explaining how degree and betweenness can disagree completely about the same node, and naming the node in a given drawing where they do.</li>
-      <li>Saying what eigenvalue centrality measures, why it is computed separately within each component, and what that does to the node table when you sort by it.</li>
       <li>Given a drawing, splitting it into the clusters a community detection algorithm would find, and naming the node whose cluster is genuinely ambiguous.</li>
     </ol>
 
     <p><b>Kinds of network.</b></p>
-    <ol start="12">
+    <ol start="7">
       <li>Given a list of outside pages and what each one links to, writing the co-citation edge list with a count for every pair.</li>
-      <li>Given a threshold, saying which co-citation edges survive it, and saying what a single page that links to everything does to the edge list.</li>
-      <li>Given a table of pairwise distances and a value of <i>k</i>, writing each document's <i>k</i> nearest neighbors, building the symmetric nearest neighbor network, and naming the pairs that fail the mutual test.</li>
-      <li>Saying what the mutual requirement prevents, and why no node of the resulting network can have a degree above <i>k</i>.</li>
-      <li>Saying which centrality scores are unavailable in a directed network and why, and reading an in-degree against an out-degree.</li>
     </ol>
 
     <p><b>Images as arrays.</b></p>
-    <ol start="17">
-      <li>Given a printed pixel array, giving its shape, naming the color of each pixel, and computing the mean pixel value.</li>
-      <li>Given RGB values, computing <i>M</i>, <i>m</i>, the chroma, and then the hue, saturation, and value, using the formulas on the reference sheet.</li>
-      <li>Saying what the hue of a gray or a black pixel is, why the number is not meaningful, and why a color classifier has to look at saturation and value before it looks at hue.</li>
-      <li>Saying what a brightness column, or a color proportion column, is actually a measurement of, and naming a finding it cannot support.</li>
+    <ol start="8">
+      <li>Given a printed pixel array whose channels are all 0 or 255, giving its shape, naming the color of each pixel, and computing the mean pixel value.</li>
     </ol>
 
     <p><b>Images as vectors.</b></p>
-    <ol start="21">
+    <ol start="9">
       <li>Given image and text embeddings, computing the dot product of each image with each category and giving the predicted label.</li>
-      <li>Saying what a zero-shot prediction depends on besides the image and the model, and what happens to it when the list of candidate categories changes.</li>
-      <li>Saying what is lost and what is gained by moving from a sparse TF-IDF vector, whose coordinates have names, to a dense embedding, whose coordinates do not.</li>
-      <li>Saying what has to be true of a model's original training data for transfer learning to work on a new collection, and how you would check without labels of your own.</li>
     </ol>
 
-    <p>We will not have the internals of walktrap or of any other community detection algorithm, computing an eigenvalue centrality score by hand, the architecture of a Vision Transformer, the training of any neural network, the exact bin boundaries that <code>compute_colors</code> uses, the internals of UMAP, or writing OpenCV code from scratch.</p>
+    <p>We will not have the internals of walktrap or of any other community detection algorithm, the architecture of a Vision Transformer, the training of any neural network, or writing OpenCV code from scratch.</p>
 
     <h3>Practice Exam Questions and Answers</h3>
 
@@ -116,7 +101,7 @@ U        V
 W        X
 </pre>
 
-    <p><b>1.</b> Draw the network. Write the degree of every node, say how many components it has, and say which one <code>DSNetwork.process</code> numbers as component 1.</p>
+    <p><b>1.</b> Draw the network described by the edge list above. Then, treating your picture as the given, read the edge list back off it, and say why the two representations carry exactly the same information.</p>
 
 <pre>
 The drawing is two triangles joined by a two-edge bridge, plus a separate pair:
@@ -127,6 +112,18 @@ The drawing is two triangles joined by a two-edge bridge, plus a separate pair:
     | /                 \ |
     Q                     V
 
+Reading the edges back off the drawing gives the same nine, in any order: P–Q,
+P–R, Q–R, R–S, S–T, T–U, T–V, U–V, W–X. An edge list and a drawing are two views
+of one object: the edge list is what the computer stores, the drawing is what you
+reason about, and neither holds anything the other lacks. The one thing the
+drawing adds is the LAYOUT: where a node sits on the page is a choice made for
+legibility, not a fact about the network, so the same edge list can be drawn a
+hundred ways and every one of them is correct.
+</pre>
+
+    <p><b>2.</b> Write the degree of every node, say how many components the network has, and say which one <code>DSNetwork.process</code> numbers as component 1.</p>
+
+<pre>
     degree:  P 2   Q 2   R 3   S 2   T 3   U 2   V 2   W 1   X 1
 
 TWO components. Component 1 is {P, Q, R, S, T, U, V}, with seven nodes, and
@@ -135,9 +132,9 @@ SIZE, so component 1 is always the largest. That numbering is a convention worth
 remembering, because it is what makes `filter(c.component == 1)` mean "keep the
 main body of the network" rather than "keep some arbitrary piece of it."
 
-Note that R and T have the highest degree, at 3, and that S, the node holding
-the two halves together, is stuck in a five-way tie for LAST at 2. Hold on to
-that; it comes back in question 4.
+Note that R and T have the highest degree, at 3, while S, the node holding the
+two halves together, has a degree of only 2 despite sitting at the center of
+the network.
 </pre>
 
     <p>Here is the picture, drawn to scale. The rest of the practice questions refer to it.</p>
@@ -187,35 +184,26 @@ that; it comes back in question 4.
     </svg>
     </p>
 
-    <p><b>2.</b> Suppose these are Wikipedia author pages, and an edge means one page links to the other. The chapter counts links <i>into</i> each page rather than out of it. Say what bias that avoids. Then say what an edge in this network is actually evidence of, being careful about who made it.</p>
-
-<pre>
-Counting links OUT of a page mostly measures HOW LONG THE PAGE IS. A long
-article has room for more links, so an author with a well-developed page racks
-up a large out-degree without anyone else having thought them important.
-Counting links IN measures how many other pages saw fit to mention this one,
-which is much closer to the thing we mean by centrality. It is not immune
-either, but it does not reward verbosity.
-
-As for what an edge records: NOT that one author knew, read, or influenced
-another. None of these authors linked to anyone; they were dead long before the
-web existed. Every edge in this network was placed by a Wikipedia editor,
-recently, according to the editorial conventions of Wikipedia. The network is a
-picture of how a community of present-day volunteers has chosen to connect
-these figures. That is a real and interesting object, but it is a fact about
-Wikipedia, and a sentence beginning "Shakespeare was central to..." has quietly
-swapped it for a fact about literary history.
-</pre>
-
     <h3>Task B. Centrality</h3>
 
-    <p><b>3.</b> Compute the shortest-path distance from <b>S</b> to every other node in its component, and from <b>P</b> to every other node. Then compute the closeness centrality of each, using the formula on the reference sheet.</p>
+    <p><b>3.</b> Compute the shortest-path distance from <b>S</b> to every other node in its component, and from <b>P</b> to every other node.</p>
 
 <pre>
 From S:   R=1   T=1   P=2   Q=2   U=2   V=2
 From P:   Q=1   R=1   S=2   T=3   U=4   V=4
 
-Closeness is the sum of the RECIPROCALS of those distances:
+Distance is counted in EDGES, not in the length of the lines on the page. From S,
+R and T are one hop away and everything else is two, so S reaches its whole
+component in at most two steps. From P the far side is a long way off: U and V
+are four hops away, because the only route to them runs P–R–S–T–U. Nodes outside
+a node's own component get no entry at all; the distance to W or X is not large,
+it is UNDEFINED, which is why these scores are computed one component at a time.
+</pre>
+
+    <p><b>4.</b> Using those distances, compute the closeness centrality of <b>S</b>, of <b>P</b>, and of <b>R</b>, using the formula on the reference sheet.</p>
+
+<pre>
+Closeness is the sum of the RECIPROCALS of the distances:
 
     close(S) = 1/1 + 1/1 + 1/2 + 1/2 + 1/2 + 1/2
              = 2 + 2 = 4.00
@@ -223,20 +211,19 @@ Closeness is the sum of the RECIPROCALS of those distances:
     close(P) = 1/1 + 1/1 + 1/2 + 1/3 + 1/4 + 1/4
              = 2 + 0.5 + 0.333 + 0.5 = 3.33
 
+    close(R) = 1/1 + 1/1 + 1/1 + 1/2 + 1/3 + 1/3
+             = 3 + 0.5 + 0.667 = 4.17
+
 S is closer to the network as a whole than P is, which the picture agrees with:
 S can reach every node in two hops, while P needs four to get to U or V. The
 reciprocal is what makes the score behave: a node four hops away contributes
 only 0.25, so being far from something costs you little, while being adjacent to
 it is worth a full point. Closeness rewards being NEAR EVERYTHING, not near one
-thing.
-
-For comparison, close(R) = 1 + 1 + 1 + 1/2 + 1/3 + 1/3 = 4.17, which edges out
-S. R has three neighbors at distance 1 and S has only two, and that extra
-adjacency is worth more than S's better position in the middle. Closeness and
-betweenness are about to disagree very sharply about exactly this.
+thing. R edges out S, 4.17 to 4.00: its three neighbors at distance 1 are worth
+more than S's better position in the middle.
 </pre>
 
-    <p><b>4.</b> Find every shortest path that runs from a node in <code>{P, Q, R}</code> to a node in <code>{T, U, V}</code>. Say which node lies on all of them, and compute its betweenness. Then say where degree ranks that node, and explain how the two metrics can disagree this badly.</p>
+    <p><b>5.</b> Find every shortest path that runs from a node in <code>{P, Q, R}</code> to a node in <code>{T, U, V}</code>. Say which node lies on all of them, and compute its betweenness.</p>
 
 <pre>
 Every path from the left triangle to the right one must cross the bridge, and
@@ -252,67 +239,25 @@ of them has a unique shortest path, each running through S. So
 scores 0.00. R and T sit on the nine crossing paths too, but R misses the three
 that start at R itself, and it picks up P–S and Q–S, netting 8.)
 
-    degree:       R 3,  T 3,  then P Q S U V all tied at 2
-    betweenness:  S 9,  R 8,  T 8,  then P Q U V all at 0
-
-BETWEENNESS RANKS S FIRST. DEGREE PUTS IT IN A FIVE-WAY TIE FOR LAST.
-
-They disagree because they are measuring different things, and neither is wrong.
-Degree is a purely local count: how many neighbors do you have? By that
-standard S is unremarkable, with two, the same as P. Betweenness is entirely
-global: of all the shortest paths in the network between other people, how many
-have to go through you? By that standard S is the most important node there is,
-because the network's entire traffic between its two halves is funneled through
-it, and nothing else can carry it.
-
-S is a BRIDGE, and a bridge is exactly the shape that degree cannot see.
-Betweenness is the metric that finds the gatekeepers: the nodes that are not
-popular but are unavoidable.
+S is a BRIDGE: the network's entire traffic between its two halves is funneled
+through it, and nothing else can carry it. Betweenness is the metric that finds
+these nodes, the ones that are not necessarily popular but are unavoidable.
 </pre>
 
     <p>The <code>node</code> table below is what <code>DSNetwork.process(edges, directed=False)</code> returns for this network. The layout columns <code>x</code> and <code>y</code> are omitted.</p>
 
     <table border="1">
-      <tr><th>id</th><th>component</th><th>component_size</th><th>cluster</th><th>degree</th><th>eigen</th><th>between</th></tr>
-      <tr><td>P</td><td>1</td><td>7</td><td>0</td><td>2</td><td>0.745</td><td>0.0</td></tr>
-      <tr><td>Q</td><td>1</td><td>7</td><td>0</td><td>2</td><td>0.745</td><td>0.0</td></tr>
-      <tr><td>R</td><td>1</td><td>7</td><td>0</td><td>3</td><td><b>1.000</b></td><td>8.0</td></tr>
-      <tr><td>S</td><td>1</td><td>7</td><td>1</td><td>2</td><td>0.854</td><td><b>9.0</b></td></tr>
-      <tr><td>T</td><td>1</td><td>7</td><td>1</td><td>3</td><td><b>1.000</b></td><td>8.0</td></tr>
-      <tr><td>U</td><td>1</td><td>7</td><td>1</td><td>2</td><td>0.745</td><td>0.0</td></tr>
-      <tr><td>V</td><td>1</td><td>7</td><td>1</td><td>2</td><td>0.745</td><td>0.0</td></tr>
-      <tr><td>W</td><td>2</td><td>2</td><td>2</td><td>1</td><td><b>1.000</b></td><td>0.0</td></tr>
-      <tr><td>X</td><td>2</td><td>2</td><td>2</td><td>1</td><td><b>1.000</b></td><td>0.0</td></tr>
+      <tr><th>id</th><th>component</th><th>component_size</th><th>cluster</th><th>degree</th><th>between</th></tr>
+      <tr><td>P</td><td>1</td><td>7</td><td>0</td><td>2</td><td>0.0</td></tr>
+      <tr><td>Q</td><td>1</td><td>7</td><td>0</td><td>2</td><td>0.0</td></tr>
+      <tr><td>R</td><td>1</td><td>7</td><td>0</td><td>3</td><td>8.0</td></tr>
+      <tr><td>S</td><td>1</td><td>7</td><td>1</td><td>2</td><td><b>9.0</b></td></tr>
+      <tr><td>T</td><td>1</td><td>7</td><td>1</td><td>3</td><td>8.0</td></tr>
+      <tr><td>U</td><td>1</td><td>7</td><td>1</td><td>2</td><td>0.0</td></tr>
+      <tr><td>V</td><td>1</td><td>7</td><td>1</td><td>2</td><td>0.0</td></tr>
+      <tr><td>W</td><td>2</td><td>2</td><td>2</td><td>1</td><td>0.0</td></tr>
+      <tr><td>X</td><td>2</td><td>2</td><td>2</td><td>1</td><td>0.0</td></tr>
     </table>
-
-    <p><b>5.</b> You want the most central pages, so you write <code>node.sort(c.eigen, descending=True).head(3)</code>. Write the three rows that come back. Say why the answer is absurd, why <code>eigen</code> did exactly what it was supposed to, and write the line that fixes it.</p>
-
-<pre>
-The three rows are R, W, and X, all with eigen = 1.000, in whatever order the
-sort happens to break the tie.
-
-The answer is absurd because W and X are the two least important nodes in the
-entire dataset. They have degree 1, they are connected to nothing but each
-other, and they sit in a two-node component off to the side. They have just tied
-the most central node of the main network.
-
-`eigen` did exactly what it was documented to do. Eigenvalue centrality is only
-defined on a CONNECTED network, so it is computed SEPARATELY WITHIN EACH
-COMPONENT, and by convention it is rescaled so that the largest score in each
-component is 1. Component 2 has two nodes, so one of them has to score 1, and by
-symmetry they both do. The score is a rank WITHIN a component, and comparing it
-across components is meaningless: 1.000 means "the most central node here," and
-"here" is different for R than it is for W.
-
-The fix is to say which network you actually mean:
-
-    node.filter(c.component == 1).sort(c.eigen, descending=True).head(3)
-
-which gives R and T (1.000, tied by the symmetry of the drawing) and then S
-(0.854). This is why the chapter keeps saying to filter to component 1 before
-reading any centrality score, and it is why component 1 is defined to be the
-largest one.
-</pre>
 
     <p><b>6.</b> The <code>cluster</code> column splits component 1 into <code>{P, Q, R}</code> and <code>{S, T, U, V}</code>. Say which cluster you would have put S in, why the answer is not obvious, and what that says about reading cluster labels in general.</p>
 
@@ -348,7 +293,7 @@ side of a boundary one node fell, it is not a finding.
       <tr><td>page 5</td><td>P, S</td></tr>
     </table>
 
-    <p><b>7.</b> Write the co-citation edge list, giving the count for every pair of authors that shares at least one citing page. Then keep only the edges with a count of 2 or more, and say which authors survive.</p>
+    <p><b>7.</b> Write the co-citation edge list, giving the count for every pair of authors that shares at least one citing page.</p>
 
 <pre>
 A co-citation edge joins two authors whenever some third page links to BOTH. Go
@@ -368,115 +313,9 @@ through the pages and tally every pair:
     R       S               1      (page 4)
 
 Q–S has a count of 0 and so is not a row at all: no page links to both.
-
-Keeping count >= 2 leaves TWO edges, P–Q and Q–R, so the network is the path
-P – Q – R.
-
-S SURVIVES AS AN AUTHOR BUT VANISHES AS A NODE. Both of its edges had a count of
-1 and were filtered out, and `DSNetwork.process` builds the graph FROM THE EDGE
-LIST, so a node with no surviving edges is never created. It does not appear in
-the node table with degree 0; it does not appear at all. Filtering an edge list
-silently deletes nodes, and the node table gives you no way to notice.
 </pre>
 
-    <p><b>8.</b> Now a sixth page appears. It is a list article, "British writers of the period," and it links to all four authors. Recompute the counts, apply the same threshold, and say what happened. Use it to explain why the chapter puts a threshold on the count at all.</p>
-
-<pre>
-The list article adds 1 to EVERY ONE of the six possible pairs, because it cites
-all four authors and therefore co-cites each of them with each of the others.
-
-    P–Q  2 -> 3        P–R  1 -> 2        P–S  1 -> 2
-    Q–R  2 -> 3        Q–S  0 -> 1        R–S  1 -> 2
-
-At the threshold of 2, the edge list goes from TWO edges to FIVE: everything
-survives except Q–S. The network was a path and is now nearly complete. One page
-did that, and it is a page that expresses no opinion about anybody: a list is
-not a claim that P and S are related, it is a claim that both are British
-writers.
-
-This is exactly what a threshold is for, and this example shows why it is not
-enough by itself. A single page linking to n authors manufactures n(n-1)/2
-co-citations in one stroke, so the pairs it invents grow QUADRATICALLY while the
-pages grow linearly. Long list articles, category pages, and navigation boxes
-are therefore the loudest voices in any raw co-citation count, and they are
-saying nothing. Raising the threshold helps, because a spurious pair usually
-gets only the one boost. But if the corpus contains several overlapping list
-pages, they will vote together, and no threshold will separate them from a real
-signal. The real fix is to look at what your citing pages are before you count
-them.
-</pre>
-
-    <h3>Task D. Nearest Neighbor Networks</h3>
-
-    <p>Five documents, with the angle distances of Chapter 15 between every pair.</p>
-
-    <table border="1">
-      <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th></tr>
-      <tr><th>A</th><td>&mdash;</td><td>0.15</td><td>0.60</td><td>0.85</td><td>0.95</td></tr>
-      <tr><th>B</th><td>0.15</td><td>&mdash;</td><td>0.25</td><td>0.70</td><td>0.90</td></tr>
-      <tr><th>C</th><td>0.60</td><td>0.25</td><td>&mdash;</td><td>0.30</td><td>0.80</td></tr>
-      <tr><th>D</th><td>0.85</td><td>0.70</td><td>0.30</td><td>&mdash;</td><td>0.20</td></tr>
-      <tr><th>E</th><td>0.95</td><td>0.90</td><td>0.80</td><td>0.20</td><td>&mdash;</td></tr>
-    </table>
-
-    <p><b>9.</b> Write each document's two nearest neighbors. Then build the symmetric nearest neighbor network with <i>k</i> = 2, keeping an edge only when two documents are <i>mutually</i> in each other's neighbor sets. Draw it, and name the pairs that were dropped for failing the mutual test.</p>
-
-<pre>
-Two nearest neighbors of each:
-
-    A:  B (0.15),  C (0.60)
-    B:  A (0.15),  C (0.25)
-    C:  B (0.25),  D (0.30)
-    D:  E (0.20),  C (0.30)
-    E:  D (0.20),  C (0.80)
-
-Now test each candidate pair for mutuality:
-
-    A–B    B is in A's set, A is in B's set          KEPT
-    B–C    C is in B's set, B is in C's set          KEPT
-    C–D    D is in C's set, C is in D's set          KEPT
-    D–E    E is in D's set, D is in E's set          KEPT
-    A–C    C is in A's set, but A is NOT in C's      DROPPED
-    C–E    C is in E's set, but E is NOT in C's      DROPPED
-
-The network is a PATH:      A — B — C — D — E
-
-The two dropped pairs are A–C and C–E, and they were dropped for the same
-reason. Both A and E consider C to be one of their two closest documents. C does
-not return the compliment: it has B and D, which are nearer to it than either of
-them. The relation "is a nearest neighbor of" is NOT SYMMETRIC, and the mutual
-test is what forces it to be.
-</pre>
-
-    <p><b>10.</b> Suppose you had instead built the network by the obvious rule: link every document to its two closest, and drop the direction. How many edges do you get, and what is C's degree? Say what the mutual requirement is protecting you from, and why no node of the symmetric network can have a degree above <i>k</i>.</p>
-
-<pre>
-The obvious rule gives SIX edges: A–B, A–C, B–C, C–D, C–E, D–E. And
-
-    C's degree is FOUR.
-
-C is named by A, by B, by D, and by E, and it names two of them back, so under
-the union rule it collects an edge with every other document in the collection.
-The degree of 4 is DOUBLE the k of 2.
-
-That is what the mutual requirement is protecting you from. C is the document
-sitting in the middle of the cloud, moderately close to everything and the
-nearest neighbor of nothing. Under the obvious rule, being generically central
-is rewarded: everyone points at C, C accumulates edges, and C ends up looking
-like the most important document in the corpus, when all it really is, is
-average. The same thing happens on real data with a popular page: it turns up in
-everybody's neighbor list and becomes an enormous hub, and the network reduces
-to a star with one node in the middle and no visible structure anywhere else.
-
-No node of the symmetric network can exceed degree k for a simple reason. An
-edge to X only survives if X is one of my k nearest neighbors, and I have EXACTLY
-k of those. So every edge I keep must be spent on one of my k slots, and I have
-no way to acquire more, however many other documents want me. The mutual test
-gives every node the same fixed budget, which is why these networks show the
-whole structure of a corpus instead of just its center.
-</pre>
-
-    <h3>Task E. Images as Arrays</h3>
+    <h3>Task D. Images as Arrays</h3>
 
     <p>OpenCV reads a tiny image and prints the following array.</p>
 
@@ -485,7 +324,7 @@ img = [[[  0,   0, 255], [255,   0,   0]],
        [[  0, 255,   0], [255, 255, 255]]]
 </pre>
 
-    <p><b>11.</b> Give <code>img.shape</code>, name the color of each of the four pixels, and compute <code>img.mean()</code>, which is the brightness the chapter would record. Say how many numbers you averaged over.</p>
+    <p><b>8.</b> Give <code>img.shape</code>, name the color of each of the four pixels (every channel is either 0 or 255, so each pixel is a primary, black, or white), and compute <code>img.mean()</code>, which is the brightness the chapter would record. Say how many numbers you averaged over.</p>
 
 <pre>
 img.shape is (2, 2, 3): two rows of pixels, two columns, three channels.
@@ -513,88 +352,7 @@ pixel sums, which gives 1530/4 = 382.5, a number larger than the maximum a pixel
 value can take.
 </pre>
 
-    <p><b>12.</b> A pixel has RGB values, scaled to [0, 1], of R = 0.8, G = 0.2, B = 0.4. Compute <i>M</i>, <i>m</i>, the chroma <i>C</i>, and then the hue, saturation, and value.</p>
-
-<pre>
-    M = max(0.8, 0.2, 0.4) = 0.8       (the max is R)
-    m = min(0.8, 0.2, 0.4) = 0.2
-    C = M - m = 0.6
-
-    V = M = 0.80
-
-    S = C / V = 0.6 / 0.8 = 0.75
-
-Since M = R, the hue uses the first branch:
-
-    H = 60 x ((G - B) / C)  mod 360
-      = 60 x ((0.2 - 0.4) / 0.6)  mod 360
-      = 60 x (-1/3)  mod 360
-      = -20  mod 360
-      = 340 degrees
-
-So H = 340 deg, S = 0.75, V = 0.80. A hue of 340 sits just short of the 360/0
-mark where red lives, so this is a vivid crimson or rose, which is what a pixel
-strong in red and weak in green ought to be. Watch the `mod 360`: the raw
-arithmetic gives a NEGATIVE angle, and forgetting to wrap it is the usual way
-this calculation goes wrong.
-</pre>
-
-    <p><b>13.</b> Now do the same for a pixel with R = G = B = 0.5. Say what happens to the hue, and use it to explain why <code>compute_colors</code> has to look at saturation and value and not only at hue.</p>
-
-<pre>
-    M = 0.5,  m = 0.5,  C = M - m = 0
-
-    V = 0.5
-    S = C / V = 0 / 0.5 = 0
-    H = ??
-
-THE HUE FORMULA DIVIDES BY C, AND C IS ZERO. The angle is not merely unknown, it
-does not exist: a gray pixel has no position on the color wheel, because it is
-not any color. The definition patches this with a special case that returns 0
-degrees, and that convention is a landmine, because 0 degrees IS THE HUE OF RED.
-
-So a medium gray pixel reports a hue of 0 and looks, to anything reading the hue
-column alone, exactly like a pure red pixel. So does black (0,0,0), for the same
-reason. So does white. A color classifier built on hue alone would sort every
-gray, black, and white pixel in the collection into the red bin, and since
-photographs are full of gray sky, black shadow, and white background, "red"
-would become the largest category in almost every image.
-
-That is why `compute_colors` checks saturation and value FIRST. A pixel with
-saturation near zero is gray no matter what its hue says; a pixel with value
-near zero is black no matter what its hue says. Only once a pixel has been shown
-to have a real color at all is its hue used to say WHICH color. Hue answers the
-question "which color," and it is only a valid question for pixels where the
-answer to "is there a color here" is yes.
-</pre>
-
-    <p><b>14.</b> The darkest images in the bird collection turn out to be the ones with black backgrounds, and peacock photographs are the darkest of the ten species. Say what the <code>brightness</code> column is a measurement of, and what that finding is and is not a fact about.</p>
-
-<pre>
-Brightness is the mean of every pixel in the frame, so it is a measurement of
-THE WHOLE PHOTOGRAPH: the background, the lighting, the exposure, and the
-photographer's choices, with the bird contributing only in proportion to how
-much of the frame it happens to fill. In most of these images that is a minority
-of the pixels. The column is much more nearly a measurement of the background
-than of the subject, which is exactly what the sorted images show: the darkest
-photos are the ones shot against black, whatever bird is in them.
-
-So "peacocks are the darkest species" IS a fact about how peacocks get
-photographed. Peacocks are shot against dark, dramatic backdrops that set off an
-iridescent display, and that convention is what the number records.
-
-It IS NOT a fact about peacocks. It does not say that peacocks are dark birds;
-their plumage is famously brilliant. A single peacock, moved from a dark studio
-to a bright lawn, would swap ends of the ranking without changing a feather. The
-same trap runs through the color columns: the images with the most yellow
-include a crowd of hummingbirds photographed against yellow-green foliage, so
-`yellow` is picking out a habitat and a photographic style, not a bird. Use these
-features to predict species and you will get a model that has learned to
-recognize backgrounds, and it will fail the moment a canary is photographed in a
-forest.
-</pre>
-
-    <h3>Task F. Embeddings and Zero-Shot Classification</h3>
+    <h3>Task E. Embeddings and Zero-Shot Classification</h3>
 
     <p>Suppose SigLIP embedded images and text into a space with only three dimensions. Two images and three category descriptions embed to the following unit-length vectors.</p>
 
@@ -604,7 +362,7 @@ img2    = (0.0, 0.8, 0.6)          peacock = (0.0, 0.0, 1.0)
                                    robin   = (0.8, 0.6, 0.0)
 </pre>
 
-    <p><b>15.</b> Compute the dot product of each image with each category, and give the predicted label for both images. Then say why the dot product is the right thing to compute here, and what it has to do with the angle distance from Chapter 15.</p>
+    <p><b>9.</b> Compute the dot product of each image with each category, and give the predicted label for both images. Then say why the dot product is the right thing to compute here, and what it has to do with the angle distance from Chapter 15.</p>
 
 <pre>
     img1 . canary  = 0.6(1.0) + 0.8(0.0) + 0.0(0.0) = 0.60
@@ -631,106 +389,6 @@ corresponds to an angle of arccos(0.96) = 0.28 radians, about 16 degrees, and it
 score of 0.00 against peacock is a full right angle. Once documents and images
 are both points in a vector space, the same small geometric toolkit does the work
 in both places.
-</pre>
-
-    <p><b>16.</b> Now add a fourth category, <code>finch = (0.0, 0.6, 0.8)</code>. Recompute. Exactly one of your two predictions changes, even though neither image nor the model changed. Say which, and say what it tells you about what a zero-shot prediction actually depends on.</p>
-
-<pre>
-    img1 . finch = 0.6(0.0) + 0.8(0.6) + 0.0(0.8) = 0.48
-    img2 . finch = 0.0(0.0) + 0.8(0.6) + 0.6(0.8) = 0.48 + 0.48 = 0.96
-
-    img1: robin 0.96, canary 0.60, finch 0.48, peacock 0.00   -> ROBIN, unchanged
-    img2: finch 0.96, peacock 0.60, robin 0.48, canary 0.00   -> FINCH, CHANGED
-
-img2 was a peacock and is now a finch. Its embedding is the same three numbers it
-always was. The model was not retrained, or reloaded, or touched. The only thing
-that changed is the LIST OF WORDS we offered it.
-
-What this tells you is that a zero-shot prediction is not a property of the
-image. It is an ARGMAX OVER A CANDIDATE LIST THAT YOU WROTE, and the list is as
-much a part of the classifier as the network is. Three consequences follow, and
-all of them bite in practice.
-
-There is no "none of the above." Every image gets a label, including an image of
-a bicycle, which will be confidently assigned to whichever bird name it points
-most nearly toward.
-
-The scores are not probabilities and do not compete for a fixed budget. img2's
-peacock score was 0.60 before finch arrived and it is still exactly 0.60 now.
-Peacock did not lose; finch simply outbid it.
-
-And the wording matters, not just the list. "a photo of a canary" and "canary"
-are different strings, so they have different text embeddings, so they can
-produce different predictions from identical images. The prompt is a parameter.
-</pre>
-
-    <p><b>17.</b> The TF-IDF vectors of Chapter 15 had one dimension per term, so a coordinate meant something you could name. The 768 numbers of a ViT embedding do not. Say what is lost and what is gained. Then say why the UMAP plot of these embeddings separates the ten bird species so cleanly when nothing in the pipeline ever told the model that these species exist.</p>
-
-<pre>
-WHAT IS LOST is the ability to read a coordinate. In a TF-IDF vector, dimension
-412 is the count of "poem," so you can say WHY two documents are close: they both
-talk about poems. You can point at the term that did it, drop a term you distrust,
-and explain the result to somebody who does not know linear algebra. A ViT
-embedding has no such handle. Dimension 412 is whatever the network found useful,
-it has no name, and nearly every entry is non-zero, so the vector is DENSE rather
-than sparse. When two images come out close, all you can say is that the model
-thinks they are similar, and there is no term to point at.
-
-WHAT IS GAINED is that it actually works. The sparse features we could name --
-brightness, the color proportions -- did not separate the species at all; those
-boxplots overlapped almost completely, because they describe the frame and not
-the bird. Meaning in an image lives in HOW THE PIXELS ARE ARRANGED, and no small
-set of hand-written rules captures arrangement. The embedding does, and the price
-of that is interpretability.
-
-The UMAP plot separates the species because the ViT model was trained on 14
-million images across 21,843 classes, and the visual distinctions that separate a
-robin from a peacock -- feather texture, beak shape, body plan, color layout --
-are precisely the distinctions it had to learn to do that job. Those features are
-GENERIC. They were not learned for our ten species and they do not depend on our
-ten species; they describe what is in a photograph of a bird, whatever bird it is.
-Our species are already separated in that 768-dimensional space before UMAP is
-called, and UMAP's only contribution is to find a two-dimensional view in which we
-can see it. That is transfer learning: the useful thing the model learned was
-never the labels, it was the representation underneath them.
-</pre>
-
-    <p><b>18.</b> The zero-shot classifier gets nearly every bird right. Be skeptical: say what the high accuracy does and does not demonstrate. Then suppose you wanted to run this pipeline on photographs of medieval manuscript pages. Say what you would want to know before trusting the embeddings, and how you could check it with no labeled data of your own.</p>
-
-<pre>
-WHAT IT DEMONSTRATES: that the pipeline works, and that a model trained by
-somebody else, on images we never saw, for labels we did not choose, can sort our
-photographs into categories we described in English, with no training data at all.
-That is genuinely remarkable and it is the reason to learn the technique.
-
-WHAT IT DOES NOT DEMONSTRATE is that it will do this on YOUR data. The birds are
-ten well-known species, cleanly photographed, one bird centered per frame, of
-exactly the kind that appear constantly in the image-caption pairs scraped off
-the internet that these models are trained on. Canaries and peacocks are not an
-unlucky draw for SigLIP; they are its home turf. The accuracy is a measurement of
-the OVERLAP between our task and the model's training distribution, and it tells
-you almost nothing about how the model will do on a task that does not overlap.
-
-Which is precisely the problem with the manuscripts. What I would want to know is
-whether the training data contained anything like them: medieval manuscript pages,
-illuminated initials, insular script. My honest expectation is barely any, because
-the web is not full of captioned twelfth-century vellum, and so the embeddings may
-carry no useful distinctions at all. They would not fail loudly. They would return
-768 numbers per page, as they always do, and those numbers would cluster the pages
-by something -- page brightness, image resolution, the color of the parchment, the
-lighting of the photograph -- and the clusters would look meaningful.
-
-To check without labels: embed the pages, project with UMAP, and then LOOK AT THE
-CLUSTERS, opening the actual images the way the chapter opened its
-misclassifications. If a cluster turns out to be "the pages photographed by the
-Bodleian," the model is reading the photography and not the manuscript. Second,
-use metadata you already have and did not use: if the embeddings separate pages by
-century or by scriptorium, columns that never entered the pipeline, then they have
-captured something real about the script. Third, run the model on a handful of
-pages whose answer you know by eye and see whether its nearest neighbors are the
-ones you would have picked. None of this is a substitute for labeled evaluation.
-All of it will catch a model that has learned nothing, which is the failure you
-are actually worried about.
 </pre>
 
     <div style="height:200px"></div>

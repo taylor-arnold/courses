@@ -36,7 +36,7 @@
 
 \begin{document}
 
-\footnotesize
+\small
 \sloppy
 
 \begin{center}
@@ -46,56 +46,6 @@
 \smallskip
 
 \textit{This sheet is attached to your exam. You do not need to memorize any of it.}
-
-\smallskip
-
-\textbf{HTTP requests.}
-A request needs an endpoint, a dictionary of parameters, and a \code{User-Agent} header.
-The response carries a status code and, usually, JSON.
-
-\begin{itemize}
-  \item \code{session.get(url, params=params, headers=headers)} --- send the request.
-  \item \code{response.status\_code} \quad \code{response.json()} \quad
-        \code{response.raise\_for\_status()}
-  \item \textbf{200} success. \quad \textbf{404} not found: a stable answer, worth caching.
-        \quad \textbf{429} rate limited: wait and retry. \quad \textbf{5xx} server error:
-        retry. Only 200 and 404 go in the cache.
-\end{itemize}
-
-\smallskip
-
-\textbf{Pagination.}
-A response holds at most a fixed number of results. If more remain, it carries a
-\code{continue} block, whose values are merged into the parameters of the next request.
-The loop stops when the block is \textit{absent}.
-
-\begin{verbatim}
-while True:
-    data = polite_get(base_url, params).json()
-    ...                                    # collect rows from this response
-    if "continue" not in data:
-        break
-    params.update(data["continue"])
-\end{verbatim}
-
-\smallskip
-
-\textbf{Titles, redirects, and identifiers.}
-Passing \code{redirects=1} makes the server report every substitution it applied.
-\code{normalized} fixes mechanical issues (underscores, the first letter's case);
-\code{redirects} follows a real pointer page. They \textit{chain}, so a title is walked
-through the map until it stops changing. A title matching no article appears in
-\code{pages} under a negative key with a \code{missing} flag and no \code{pageid}.
-
-\begin{itemize}
-  \item \code{page\_id} --- the stable key. Survives a page being renamed. Primary key.
-  \item \code{doc\_id} --- the readable key. The article title. Unique within the corpus,
-        but not stable across renames.
-  \item \code{rev\_id} --- names one immutable version of one page, forever.
-  \item \textbf{Raw layer}: the requests cache, the exact bytes the server sent.
-        \textbf{Processed layer}: the tidy Parquet tables. The second can always be rebuilt
-        from the first, without touching the network.
-\end{itemize}
 
 \smallskip
 
@@ -230,7 +180,7 @@ times before ranking, or the top of the list fills with pairs of rare words that
 co-occur once.
 
 \begin{equation*}
-\text{PMI}(w_1, w_2) \;=\; \log_2 \frac{P(w_1, w_2)}{P(w_1) \cdot P(w_2)}
+\text{PMI}(w_1, w_2) \;=\; \log \frac{P(w_1, w_2)}{P(w_1) \cdot P(w_2)}
 \end{equation*}
 
 \smallskip
