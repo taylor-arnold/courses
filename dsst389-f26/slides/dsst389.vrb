@@ -1,0 +1,23 @@
+\frametitle{Embedding Images with ViT}
+\begin{splitcode}{%
+
+\texttt{ViTEmbedder} wraps Google's Vision Transformer, trained on 14 million images across 21,843 classes --- it splits an image into patches and treats each one the way a language model treats a word.
+
+Every image becomes a dense 768-number vector; unlike sparse TF-IDF, nearly every entry is non-zero and no single dimension has a name. Only the geometry matters.
+
+}
+\begin{lstlisting}[language=Python]
+vit = ViTEmbedder()
+birds.select(c.filepath, c.label, c.vit)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (1555, 3)
+filepath                   label     vit
+"media/birds10/00000.png"  "canary"  [0.0179, -0.0305, 0.0577, ...]
+"media/birds10/00001.png"  "canary"  [0.0248, -0.0453, 0.0796, ...]
+"media/birds10/00002.png"  "canary"  [0.0506, -0.0245, 0.0628, ...]
+...                        ...       ...
+
+# each vit entry is a length-768 list
+\end{codeoutput}
+\end{splitcode}

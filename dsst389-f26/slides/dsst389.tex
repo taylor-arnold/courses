@@ -21,6 +21,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{outlineframe}{Outline}
   \rmitem{Overview}
+  \rmdim{Review}
   \rmdim{11 Spatial}
   \rmdim{12 Data APIs and Corpora}
   \rmdim{13 Temporal Data}
@@ -134,8 +135,451 @@ You may also count any other on-campus talk with a data science component. For a
 \end{rightframe}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\framesection{Overview}
+\begin{rightframe}{Google Colab}
+\splitcols{%
+
+We will use the Google Colab environment for running Python. This allows us to
+run Python code directly from the browser for free using your university Google
+account with zero setup required.
+
+Please keep in mind that Colab is simply the means of running Python. Everything
+we learn is directly applicable to running Python on your own machine or using a
+different cloud-based service.
+
+}{%
+  \imgcaption{images/colab.png}{The Google Colab environment running in a web browser.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\framesection{Overview}
+\begin{rightframe}{Running Code}
+\splitcols{%
+
+Code in Colab is organized into \textbf{cells}. There are two ways to run the
+code inside a cell:
+
+\begin{itemize}
+  \item Click the \textbf{run button} (the circle with a triangle) on the left
+        side of the cell.
+  \item Use a \textbf{keyboard shortcut}: \texttt{Shift+Enter} runs the cell and
+        moves to the next one; \texttt{Ctrl+Enter} (\texttt{Cmd+Enter} on a Mac)
+        runs the cell in place.
+\end{itemize}
+
+The keyboard shortcuts are much faster once you get used to them, so try to make
+a habit of using them.
+
+}{%
+  \imgcaption{images/colab.png}{Hover over a cell to reveal the run button on its left side.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\framesection{Overview}
+\begin{rightframe}{Colab Settings}
+\splitcols{%
+
+Before we start, please change two sets of settings. Open the
+\textbf{Tools > Settings} dialog and:
+
+\begin{enumerate}
+  \item Go to the \textbf{AI Assistance} tab. Turn off the first two options and
+        set the third to \textbf{hide generative AI}, as in the image.
+  \item Go to the \textbf{Editor} tab and unselect \textbf{``Automatically close
+        brackets and quotes in code cells''}.
+\end{enumerate}
+
+}{%
+  \imgcaption{images/colab_settings.png}{The AI Assistance settings, configured as required.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{outlineframe}{Outline}
   \rmdim{Overview}
+  \rmitem{Review}
+  \rmdim{11 Spatial}
+  \rmdim{12 Data APIs and Corpora}
+  \rmdim{13 Temporal Data}
+  \rmdim{14 Textual Data: Annotations}
+  \rmdim{15 Textual Data: Vectors}
+  \rmdim{16 Network Data}
+  \rmdim{17 Image Data}
+\end{outlineframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\framesection{Review}
+\begin{textframe}{Reviewing the First Semester}
+
+This chapter reviews the introductory material from the first semester (chapters 1--10). We assume you still remember the \textit{concepts} --- tidy data, units of observation, the data science pipeline. What we review here is the \textit{code}: manipulating data and building plots.
+
+\begin{itemize}
+\item Three starting points in this room: some of you used R, some used pandas, and most used Polars + plotnine with slightly different conventions
+\item Everything this semester uses one shared style: Polars for data, plotnine for plots, all chained together with dots
+\item Two familiar datasets carry the examples: \texttt{country} (one row per country) and \texttt{cellphone} (one row per country per year)
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{The Setup Code}
+\begin{splitcode}{%
+
+Every notebook opens with the same imports.
+
+\texttt{import} makes a module available under a prefix (\texttt{pl.}, \texttt{funs.}); \texttt{from ... import} pulls specific names in directly; \texttt{as} sets a short alias.
+
+\texttt{pl.read\_csv()} then loads a CSV into a \textit{DataFrame}: one row per observation, one column per variable.
+
+}
+\begin{lstlisting}[language=Python]
+import polars as pl
+from plotnine import ggplot, aes
+from polars import col as c
+
+import funs
+
+country = pl.read_csv("data/countries.csv")
+country
+\end{lstlisting}
+\begin{codeoutput}
+shape: (135, 15)
+iso    full_name    region      pop    hdi
+"SEN"  "Senegal"    "Africa"    18.93  0.53
+"VEN"  "Venezuela"  "Americas"  28.52  0.709
+"FIN"  "Finland"    "Europe"    5.623  0.948
+...    ...          ...         ...    ...
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Referring to Columns}
+\begin{splitcode}{%
+
+A column is named with the \texttt{c.} prefix.
+
+On its own, \texttt{c.pop} is not data --- it is an \textit{expression}: a recipe that Polars runs once per row. Attach arithmetic, a comparison, or a method to build a larger recipe.
+
+Nothing runs until the expression is handed to a method like \texttt{.select()} or \texttt{.filter()}.
+
+}
+\begin{lstlisting}[language=Python]
+c.pop            # the pop column
+c.hdi > 0.9      # a True/False per row
+c.pop.sqrt()     # a number per row
+c.pop * 1000     # a number per row
+\end{lstlisting}
+\begin{codeoutput}
+# each line describes a computation,
+# not a value -- the same expression
+# can be reused in any method
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Chaining Methods}
+\begin{splitcode}{%
+
+Each method takes a DataFrame and returns a new one, so methods chain end to end.
+
+Wrap the whole chain in parentheses and write one method per line. The original DataFrame is never modified.
+
+The same \texttt{c.} expression drops into whichever method needs it --- here \texttt{.filter()}, \texttt{.sort()}, and \texttt{.select()}.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .filter(c.region == "Europe")
+    .sort(c.hdi, descending=True)
+    .select(c.iso, c.hdi, c.happy)
+    .head(n=3)
+)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (3, 3)
+iso    hdi    happy
+"ISL"  0.959  7.53
+"NOR"  0.970  7.30
+"CHE"  0.967  7.24
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{From Chain to Plot}
+\begin{splitcode}{%
+
+The chain does not stop at a table.
+
+\texttt{.pipe(ggplot, aes(...))} hands the DataFrame to plotnine mid-chain, and every layer after it is added with a \textit{dot} --- \texttt{.geom\_point()}, \texttt{.geom\_text()} --- not the \texttt{+} that base plotnine uses.
+
+Columns are still named with \texttt{c.}, now inside \texttt{aes()}.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .filter(c.region == "Europe")
+    .pipe(ggplot, aes(c.hdi, c.happy))
+    .geom_point()
+    .geom_text(aes(label=c.iso), size=6, nudge_y=0.5)
+)
+\end{lstlisting}
+\begin{codeoutput}
+# same dot chain as the data steps;
+# c. still names the columns, geoms
+# join with . instead of +
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Verb: select and sort}
+\begin{splitcode}{%
+
+\texttt{.select()} keeps only the columns you name, in the order given; \texttt{.drop()} is the inverse.
+
+\texttt{.sort()} reorders rows by one or more columns. \texttt{descending=True} reverses the order, and later columns break ties in earlier ones.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .select(c.iso, c.region, c.pop)
+    .sort(c.pop, descending=True)
+    .head(n=3)
+)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (3, 3)
+iso    region      pop
+"IND"  "Asia"      1464
+"CHN"  "Asia"      1408
+"USA"  "Americas"  347.3
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Verb: filter}
+\begin{splitcode}{%
+
+\texttt{.filter()} keeps rows where a condition is \texttt{True}; rows where the test is null are dropped as well.
+
+Combine conditions with \texttt{\&} (and) and \texttt{|} (or), wrapping each in parentheses. \texttt{.is\_in()} tests membership in a set of values.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .filter(
+        (c.region == "Europe") & (c.hdi > 0.9)
+    )
+)
+
+(
+    country
+    .filter(c.region.is_in(["Europe", "Africa"]))
+)
+\end{lstlisting}
+\begin{codeoutput}
+# first: European rows with a very
+# high HDI
+# second: every European OR African row
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Verb: with\_columns}
+\begin{splitcode}{%
+
+\texttt{.with\_columns()} adds or overwrites columns and keeps the rest of the table.
+
+Name each new column with \texttt{=} and build it from a \texttt{c.} expression. \texttt{pl.when().then().otherwise()} builds a column from a condition; wrap literal text in \texttt{pl.lit()}.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .with_columns(
+        pop_1k = c.pop * 1000,
+        zone = (
+            pl.when(c.lat.abs() < 23.5)
+              .then(pl.lit("tropical"))
+            .otherwise(pl.lit("temperate"))
+        )
+    )
+)
+\end{lstlisting}
+\begin{codeoutput}
+# pop_1k and zone are appended;
+# all 15 original columns remain
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Verbs: group\_by and agg}
+\begin{splitcode}{%
+
+\texttt{.group\_by()} splits rows into groups; \texttt{.agg()} then computes one row of summaries per group.
+
+Only the grouping column(s) and the summaries you ask for survive; everything else is dropped. \texttt{pl.len()} counts the rows in each group.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .group_by(c.region)
+    .agg(
+        hdi_avg = c.hdi.mean(),
+        count = pl.len()
+    )
+)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (5, 3)
+region      hdi_avg  count
+"Africa"    0.5834   37
+"Americas"  0.7836   19
+"Europe"    0.8989   38
+"Asia"      0.7609   39
+"Oceania"   0.948    2
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Verb: join}
+\begin{splitcode}{%
+
+A \texttt{.join()} combines two tables along a shared key. Here \texttt{border} lists neighboring-country pairs and \texttt{c\_sml} holds one Gini value per country.
+
+Called on the left table, it takes the right table and the key column. The default \texttt{inner} drops non-matching rows; \texttt{how="left"} keeps every left row, filling \texttt{null} where the right side has no match.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    border
+    .join(c_sml, on=c.iso)
+)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (641, 3)
+iso  iso_neighbor  gini
+AFG  IRN           27.8
+AFG  PAK           27.8
+...  ...           ...
+ZWE  ZMB           50.3
+
+# how="left" would keep all 829 rows,
+# with null gini where iso didn't match
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Verbs: pivot and unpivot}
+\begin{splitcode}{%
+
+\texttt{.pivot()} turns a long table wide: \texttt{index} is the new row unit, \texttt{on} supplies the new column names, and \texttt{values} fills them in.
+
+\texttt{.unpivot()} reverses it, collapsing many columns back into two --- \texttt{variable} and \texttt{value} by default, renamed here with \texttt{variable\_name} and \texttt{value\_name}.
+
+}
+\begin{lstlisting}[language=Python]
+cell_wide = cellphone.pivot(
+    index=c.year, on=c.iso, values=c.cell
+)
+
+cell_wide.unpivot(
+    index=c.year,
+    variable_name=c.iso, value_name=c.cell
+)
+\end{lstlisting}
+\begin{codeoutput}
+# pivot: (3480, 3) -> (20, 175)
+# one column per country
+
+# unpivot: back to (3480, 3)
+year  iso    cell
+2003  "AFG"  0.8798
+2004  "AFG"  2.547
+...   ...    ...
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Plot Geometries}
+
+Every plot starts the same way: pipe a DataFrame into \texttt{ggplot} with an \texttt{aes()} mapping columns to position, color, or size, then chain each geometry with a dot.
+
+\begin{itemize}
+\item One mark per row: \texttt{.geom\_point()}, \texttt{.geom\_text()} (needs a \texttt{label}), \texttt{.geom\_line()} (ordered along $x$), \texttt{.geom\_col()} (a bar per row)
+\item Statistical geometries run a hidden group-and-count first: \texttt{.geom\_bar()} (counts a category), \texttt{.geom\_histogram()} (bins a number), \texttt{.geom\_boxplot()}
+\item A \textit{fixed} aesthetic (same for every row) goes outside \texttt{aes()}; a \textit{mapped} one (varies by row) goes inside. \texttt{.coord\_flip()}, \texttt{labs()}, and \texttt{theme\_*()} adjust axes, labels, and styling
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Window Functions: over}
+\begin{splitcode}{%
+
+A window function computes a group-level number but keeps every row, writing the group's answer onto each --- the counterpart to \texttt{.agg()}, which collapses.
+
+\texttt{.over()} scopes the computation to a group. Read \texttt{c.pop.sum().over(c.region)} inside out: a sum, scoped to each region.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .with_columns(
+        pop_share = c.pop / c.pop.sum().over(c.region) * 100
+    )
+    .sort(c.pop_share, descending=True)
+)
+
+# ordered windows -- .shift(), .rank(),
+# running totals -- also scope with .over()
+\end{lstlisting}
+\begin{codeoutput}
+shape: (135, 16)
+iso  region      pop_share
+AUS  "Oceania"   83.70
+USA  "Americas"  35.65
+IND  "Asia"      30.93
+CHN  "Asia"      29.92
+...  ...         ...
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{The Core Toolkit}
+
+Everything above is the toolkit the rest of the semester builds on.
+
+\begin{itemize}
+\item Single-table verbs --- \texttt{.filter()}, \texttt{.select()}/\texttt{.drop()}, \texttt{.sort()}, \texttt{.with\_columns()} --- each return a new table, so they chain
+\item Group and reshape --- \texttt{.group\_by().agg()} collapses to one row per group; \texttt{.pivot()}/\texttt{.unpivot()} move between long and wide; \texttt{.join()} combines tables on a key
+\item Keep the group \textit{and} the rows with \texttt{.over()}; plot by piping into \texttt{ggplot} and chaining geometries with dots
+\item New data types ahead --- spatial, temporal, text, network, image --- mostly just add new columns and a few specialized methods on top of these same verbs
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{outlineframe}{Outline}
+  \rmdim{Overview}
+  \rmdim{Review}
   \rmitem{11 Spatial}
   \rmdim{12 Data APIs and Corpora}
   \rmdim{13 Temporal Data}
@@ -148,6 +592,7 @@ You may also count any other on-campus talk with a data science component. For a
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{outlineframe}{Outline}
   \rmdim{Overview}
+  \rmdim{Review}
   \rmdim{11 Spatial}
   \rmitem{12 Data APIs and Corpora}
   \rmdim{13 Temporal Data}
@@ -532,6 +977,7 @@ Spatial data introduces error sources that do not arise with ordinary tables.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{outlineframe}{Outline}
   \rmdim{Overview}
+  \rmdim{Review}
   \rmdim{11 Spatial}
   \rmitem{12 Data APIs and Corpora}
   \rmdim{13 Temporal Data}
@@ -700,6 +1146,7 @@ Daily views for the three Brontë sisters show weekly rhythms and occasional spi
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{outlineframe}{Outline}
   \rmdim{Overview}
+  \rmdim{Review}
   \rmdim{11 Spatial}
   \rmdim{12 Data APIs and Corpora}
   \rmitem{13 Temporal Data}
@@ -879,6 +1326,7 @@ The red line is the 30-day rolling mean, which shows the article's actual trajec
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{outlineframe}{Outline}
   \rmdim{Overview}
+  \rmdim{Review}
   \rmdim{11 Spatial}
   \rmdim{12 Data APIs and Corpora}
   \rmdim{13 Temporal Data}
@@ -1045,6 +1493,7 @@ Named entities say \textit{what} is mentioned; dependency parsing says \textit{h
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{outlineframe}{Outline}
   \rmdim{Overview}
+  \rmdim{Review}
   \rmdim{11 Spatial}
   \rmdim{12 Data APIs and Corpora}
   \rmdim{13 Temporal Data}
@@ -1217,6 +1666,7 @@ Wikipedia's French edition lets us ask whether the same authors are described di
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{outlineframe}{Outline}
   \rmdim{Overview}
+  \rmdim{Review}
   \rmdim{11 Spatial}
   \rmdim{12 Data APIs and Corpora}
   \rmdim{13 Temporal Data}
@@ -1400,6 +1850,7 @@ Not every network comes from explicit citations. The angle distances from the pr
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{outlineframe}{Outline}
   \rmdim{Overview}
+  \rmdim{Review}
   \rmdim{11 Spatial}
   \rmdim{12 Data APIs and Corpora}
   \rmdim{13 Temporal Data}
