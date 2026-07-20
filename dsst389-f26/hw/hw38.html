@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<html lang="en">
+ <head>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>DSST389: Advanced Data Science</title>
+
+  <meta name="description" content="title">
+  <meta name="author" content="Taylor Arnold">
+  <meta charset="UTF-8">
+
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/fonts.css">
+  <link rel="stylesheet" href="../css/site.css">
+ </head>
+
+ <body>
+  <div class="container">
+    <h1>Homework 38</h1>
+    <p style="padding: 0 1em 1em 1em; font-size: 0.9em">
+      <span style="padding-right: 0.5em">
+        <b>
+          <a href="../index.html">[← back]</a>
+        </b>
+      </span>
+    </p>
+    <p>
+      This reading finishes the temporal chapter with truncation, window functions on real timestamps, durations, rolling windows, and joins on time. On a sheet of paper, hand write answers to the following. A few sentences apiece is enough.
+    </p>
+    <ol>
+      <li>Truncating a timestamp throws information away on purpose. Say why that is the point rather than a cost, and what it lets you do that you could not do with the exact second. The reading then makes two opposite moves: it keeps the date and drops the time to find the busiest days, and it keeps the hour and drops the date to find the daily rhythm. Say what question each of those two tables answers.</li>
+      <li>A reversion is detected by checking whether an article's size equals its size two edits ago. The reading calls this a heuristic rather than a proof. Say how the rule could flag an edit that is not a reversion, and how a real reversion could slip past it. Then look at the ranking of reversion counts by author and say what it is really measuring, and whether an author near the top of that list should be described as controversial.</li>
+      <li>The rolling functions from the earlier chapter define a window as a count of rows, and the reading says that this is almost always a subtle mistake on the revision data. Explain what a five-row rolling mean is actually averaging when two consecutive edits are forty seconds apart in one stretch of the series and eight months apart in another. Then say why the reading warns you to think about the unit when converting a duration, given that <code>.dt.total_days()</code> truncates toward zero.</li>
+      <li>The asof join gives each edit the page view count for the day it was made, and <code>by="doc_id"</code> keeps Chaucer's edits from being matched against Virginia Woolf's readership. Say what earlier tool that argument is playing the role of. Then say why <code>strategy="nearest"</code> would be the wrong choice for a question about whether edits follow attention, and be specific about what would go wrong. Finally, the chapter closes by pairing authors who were alive at the same time. Say why that table would tell you nothing if it were built from the 376 Victorians instead of these 75 authors.</li>
+    </ol>
+  </div>
+
+  <script src="../js/site.js"></script>
+ </body>
+</html>

@@ -1,14 +1,14 @@
 # Generating Homework Solutions
 
-This file tells an agent how to write a solution guide for a single DSST289
+This file tells an agent how to write a solution guide for a single DSST389
 homework and append it to the bottom of that homework's page. Work on **one
-homework at a time**: the prompt will name a homework (for example "hw09" or
-`hw/hw09.html`), and you produce the solutions for that homework only.
+homework at a time**: the prompt will name a homework (for example "hw39" or
+`hw/hw39.html`), and you produce the solutions for that homework only.
 
 ## Inputs and resources
 
-- **The homework itself.** The homeworks live in `hw/hw01.html` through
-  `hw/hw21.html`. Each is a plain HTML page with a `<div class="container">`
+- **The homework itself.** The homeworks live in `hw/hw31.html` through
+  `hw/hw49.html`. Each is a plain HTML page with a `<div class="container">`
   holding an `<h1>Homework NN</h1>`, a back link, one or more intro `<p>`
   paragraphs, and an `<ol>` of numbered questions. Read the whole page so you
   understand any datasets or scenarios described in the intro.

@@ -1,0 +1,227 @@
+\documentclass[11pt, a4paper]{article}
+
+\usepackage{fontspec}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\usepackage[normalem]{ulem}
+\usepackage{multicol}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{amssymb}
+
+\geometry{
+  top=1.6cm,
+  bottom=1.6cm,
+  left=1.6cm,
+  right=1.6cm,
+  marginparsep=4pt,
+  marginparwidth=1cm
+}
+
+\renewcommand{\headrulewidth}{0pt}
+\pagestyle{fancyplain}
+\fancyhf{}
+\lfoot{}
+\rfoot{}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\columnsep}{16pt}
+
+\usepackage{xunicode}
+\defaultfontfeatures{Mapping=tex-text}
+
+\setlist[itemize]{leftmargin=1.0em, itemsep=0pt, topsep=1pt, parsep=0pt}
+
+\definecolor{codecolor}{RGB}{0,70,140}
+\definecolor{keycolor}{RGB}{155,45,35}
+\newcommand{\code}[1]{\textcolor{codecolor}{\texttt{#1}}}
+\newcommand{\head}[1]{\smallskip\textbf{#1}\par\smallskip}
+\newcommand{\bighead}[1]{{\large\textbf{#1}}\par\smallskip\hrule\medskip}
+\newcommand{\key}[1]{\textcolor{keycolor}{$\blacktriangleright$~\textit{#1}}\par\smallskip}
+
+\begin{document}
+
+\small
+\sloppy
+
+\begin{center}
+\normalsize\textbf{DSST389: Semester I Function Reference (Ch. 1--9)}
+\end{center}
+
+\smallskip
+
+\textit{The Polars and plotnine functions from first semester, grouped by the task you are trying to do. The red lines are the ideas worth memorizing; everything else is lookup.}
+
+\bigskip
+
+\bighead{Polars}
+
+\begin{multicols}{2}
+
+\head{The One Big Idea}
+\key{An expression like \code{c.hdi > 0.9} is a \textbf{description}, not data. It produces values only inside a \textbf{context} that runs it on a real DataFrame.}
+\begin{itemize}
+  \item contexts: \code{.select} \code{.filter} \code{.with\_columns} \code{.sort} \code{.group\_by().agg} \code{.over()}
+  \item the same expression works unchanged in any of them
+  \item \code{c.col} --- refer to a column by name
+  \item \code{c("odd name")} --- names that aren't valid identifiers
+\end{itemize}
+
+\head{Read \& Inspect}
+\begin{itemize}
+  \item \code{pl.read\_csv(path)} / \code{pl.read\_excel(path)}
+  \item \code{df} or \code{df.print(n)} --- show \code{n} rows (course helper; default 8)
+  \item \code{df.schema} --- each column and its type
+  \item \code{len(df)} --- number of rows
+  \item \code{df.describe()} --- per-column summary stats at a glance
+  \item \code{df.pipe(f, ...)} --- run any function as a chain step; \code{df.pipe(f)} $=$ \code{f(df)}
+\end{itemize}
+
+\head{Choosing Rows}
+\begin{itemize}
+  \item \code{.sort(cols, descending=False)}
+  \item \code{.filter(cond)} --- keep \code{True} rows; \code{null} drops like \code{False}
+  \item comparisons: \code{== != < <= > >=}
+  \item \code{(a) \& (b)} (and) \code{(a) | (b)} (or) --- parenthesize each side
+  \item \code{.is\_in([...])}
+  \item \code{.head(n=)} \code{.tail(n=)}
+  \item \code{.sample(n=)} or \code{(fraction=)}
+  \item \code{.unique(subset=[...], keep="first"/"last")} --- one row per group; \code{.sort} first to control which
+\end{itemize}
+
+\head{Choosing \& Making Columns}
+\begin{itemize}
+  \item \code{.select(...)} --- keep only these columns
+  \item \code{.drop(...)} --- remove these columns
+  \item \code{.rename(\{"old":"new"\})}
+  \item \code{.with\_columns(name = expr, ...)} --- keep all columns, add/overwrite
+  \item \code{pl.when(c).then(a)} \code{.when(c2).then(b)} \code{.otherwise(d)} --- first match wins
+  \item \code{pl.lit("text")} --- a literal value, not a column name
+  \item \code{.alias("name")} --- older way to name a column inside \code{with\_columns}/\code{agg}; still common in docs
+\end{itemize}
+
+\head{Types \& Missing Data}
+\begin{itemize}
+  \item core types: \code{str}, \code{i64}, \code{f64}, \code{bool}
+  \item \code{.cast(pl.Int64/Float64/} \code{String/Boolean, strict=False)} --- unconvertible $\to$ \code{null}
+  \item \code{null} = missing; \code{NaN} = broken math (\code{f64} only)
+  \item \code{.is\_null()} / \code{.is\_nan()}
+  \item \code{.fill\_null(v)} / \code{.fill\_nan(v)}
+  \item \code{.drop\_nulls()} / \code{.drop\_nans()}
+  \item nulls propagate: arithmetic \emph{and} comparison vs \code{null} $\to$ \code{null} (aggregations skip them instead)
+  \item \code{.str.to\_uppercase()} \code{.str.to\_date()} \code{.str.split("sep")}
+\end{itemize}
+
+\head{Summaries: \code{group\_by} $+$ \code{agg}}
+\key{Aggregation \textbf{reduces} each group to one row.}
+\begin{itemize}
+  \item \code{.group\_by(cols, maintain\_order=False)} --- then chain \code{.agg}, \code{.head}, \code{.tail}, or a shortcut like \code{.mean()}
+  \item \code{.agg(name = expr, ...)} --- one row per group
+  \item whole frame (no groups): \code{.select(name = expr.mean())} --- \code{agg} needs a \code{group\_by}; \code{select} does not
+  \item \code{.mean() .median() .min() .max()} \code{.sum() .quantile(q) .first() .last()} \code{.any() .all()}
+  \item \code{pl.corr(a, b)}
+  \item counting: \code{pl.len()} rows/group $\cdot$ \code{col.count()} non-null $\cdot$ \code{col.n\_unique()} distinct (\code{null} counts as a value)
+\end{itemize}
+
+\head{Windows: \code{.over()}}
+\key{A window computes the same summaries but \textbf{keeps} every row, writing the group's answer onto each one.}
+\begin{itemize}
+  \item \code{expr.over(cols)} --- goes inside \code{with\_columns} or \code{filter}
+  \item ordered (\code{.sort} first): \code{.shift(k)} (neg $=$ forward) $\cdot$ \code{.diff()} $\cdot$ \code{.cum\_sum()} $\cdot$ \code{.rank(descending=)} $\cdot$ \code{.rolling\_mean(window\_size=k)}
+  \item \code{.forward\_fill()} / \code{.backward\_fill()}
+  \item scope ordered ops with \code{.over(group)} so they never cross a group boundary
+\end{itemize}
+
+\head{Joins}
+\key{Put the foreign key on the left, the primary key on the right.}
+\begin{itemize}
+  \item \code{left.join(right, on=col,} \code{how="inner"/"left"/} \code{"right"/"full")}
+  \item \code{on=[c.a, c.b]} \code{left\_on=} / \code{right\_on=} \code{suffix="\_right"}
+  \item \code{how="semi"} keep matched (no new cols) \code{how="anti"} keep unmatched
+  \item safety check before joining: \code{right.select(c.key)} \code{.n\_unique() == len(right)}
+  \item \code{.join\_asof(right, on=col, by=,}\\
+        \code{strategy="backward"/"forward"/"nearest")} --- both sorted first
+  \item \code{.join\_where(right, expr)} --- pairs by condition; shared names get \code{\_right}
+\end{itemize}
+
+\head{Reshape \& Stack}
+\begin{itemize}
+  \item \code{.pivot(index=, on=, values=)} --- long $\to$ wide
+  \item \code{.unpivot(index=, variable\_name=,} \code{value\_name=)} --- wide $\to$ long
+  \item \code{pivot}/\code{unpivot} want column \emph{names as strings}, not \code{c.}
+  \item \code{.str.split("sep")} then \code{.explode(col)} --- one list cell $\to$ one row each
+  \item \code{pl.concat([df1, df2])} --- stack rows of two frames
+\end{itemize}
+
+\end{multicols}
+
+\bighead{plotnine}
+
+\begin{multicols}{2}
+
+\head{The One Big Idea}
+\key{A plot $=$ data $+$ \code{aes()} mappings $+$ geoms, assembled by piping.}
+\begin{itemize}
+  \item \code{df.pipe(ggplot, aes(x, y))} \code{.geom\_*()}
+  \item inside \code{aes()}: mapped to a column
+  \item outside \code{aes()} but still in the geom: a fixed value
+  \item put fixed arguments \emph{after} the \code{aes()} call
+  \item shared aesthetics: \code{color}, \code{fill}, \code{alpha}, \code{size}, \code{shape}, \code{group}
+\end{itemize}
+
+\head{Geoms: One Shape Per Row}
+\begin{itemize}
+  \item \code{.geom\_point()} \code{.geom\_line()}
+  \item \code{.geom\_text(aes(label=c.col),} \code{size=, nudge\_y=)}
+  \item \code{.geom\_col()} --- you supply the bar height (needs \code{x}, \code{y})
+  \item \code{.geom\_*(data=other\_df)} --- different data for one layer
+  \item \code{.coord\_flip()} \code{.coord\_fixed()}
+\end{itemize}
+
+\head{Geoms: Computed From Data}
+\key{Each of these runs a \code{group\_by}$+$\code{agg} for you before drawing.}
+\begin{itemize}
+  \item \code{.geom\_bar()} --- counts rows per category itself (vs \code{geom\_col}, where you give the height)
+  \item \code{.geom\_histogram(binwidth=,} \code{boundary=)} or \code{(bins=)}
+  \item \code{.geom\_density(adjust=1)}
+  \item \code{.geom\_boxplot()} --- 25/50/75 box, whiskers, outliers
+  \item \code{.geom\_smooth(method="lm", se=False)} --- line of best fit
+  \item split by group: add a \code{color=} or \code{group=} aesthetic (a few groups only)
+\end{itemize}
+
+\head{Ordering Categories}
+\key{A categorical axis follows the row order in the data --- so \code{.sort()} before plotting.}
+\begin{itemize}
+  \item value already a column: \code{.sort(c.n)} then plot
+  \item order by a group summary: \code{.sort(pl.len().over(c.cat))} or \code{.sort(c.num.median()} \code{.over(c.cat))}
+  \item treat a numeric axis as categories (e.g. years): \code{.cast(pl.String)}
+\end{itemize}
+
+\head{Scales}
+\begin{itemize}
+  \item \code{scale\_color\_cmap\_d(cmap\_name="plasma")} --- viridis family, discrete (default)
+  \item \code{scale\_color\_cmap()} --- viridis, continuous
+  \item \code{scale\_color\_brewer(type="qual",} \code{palette=)}
+  \item \code{scale\_color\_manual(values=\{...\})}
+  \item \code{scale\_color\_identity()} --- use the column's own color values
+  \item \code{scale\_size\_area()}
+  \item \code{scale\_x\_log10()} / \code{scale\_y\_log10()}
+  \item \code{scale\_x\_continuous(breaks=breaks\_width(w),}\\
+        \code{limits=(lo, hi))} --- \code{None} leaves one end automatic
+\end{itemize}
+
+\head{Facets, Labels, Themes}
+\begin{itemize}
+  \item \code{.facet\_wrap("col")} \code{.facet\_grid("row", "col")}
+  \item \code{scales="free\_x"/"free\_y"/"free"} --- independent panel ranges (rare; breaks comparison)
+  \item \code{show\_legend=False} --- inside a geom, hide its legend
+  \item \code{.labs(x=, y=, color=, title=,}\\
+        \code{subtitle=, caption=)}
+  \item \code{theme\_minimal()} (default here) \code{theme\_set(theme\_minimal())}
+\end{itemize}
+
+\end{multicols}
+
+\end{document}

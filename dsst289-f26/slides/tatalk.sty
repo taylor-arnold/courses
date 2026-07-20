@@ -313,6 +313,23 @@
   comment=[l]{\#},%
   morekeywords={library,function,TRUE,FALSE,NA,NULL,if,else,for,in},%
 }
+
+% Printed result of a code chunk (shape line + rows/values), stacked below an
+% lstlisting in the code column of \splitcode. Muted grey, slightly smaller
+% than code, to read as "output" rather than input.
+\lstdefinestyle{taoutput}{%
+  basicstyle=\codefont\fontsize{4.8}{5.9}\selectfont\color{captiongrey},%
+  columns=fullflexible,%
+  keepspaces=true,%
+  showstringspaces=false,%
+  breaklines=false,%
+  frame=none,%
+  xleftmargin=0pt,%
+  xrightmargin=0pt,%
+  aboveskip=4pt,%
+  belowskip=0pt,%
+}
+\lstnewenvironment{codeoutput}{\lstset{style=taoutput}}{}
 \lstset{style=tacode}
 
 % Two-column split for a fragile CODE frame.  #1 = left column text; the

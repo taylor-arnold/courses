@@ -32,43 +32,1547 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \framesection{Overview}
-\begin{rightframe}{Introduction}
+\begin{rightframe}{Welcome!}
 \splitcols{%
 
-Sample text. \footcite{arnoldSitcom}
+This is the first semester of our year-long course in data science. Our goal of the two semesters is to introduce the core techniques of data science and how to apply them with a programming language.
+
+The \textbf{first semester} is designed to focus on data creation, visualization, and manipulation.
+
+The \textbf{second semester} moves towards working with increasingly complex data types such as spatial, temporal, network, text and image data. We will also continue to practice and become more comfortable with the core techniques throughout.
 
 }{%
-  \imgcaption{images/paper.png}{Front page our CHR paper, with the initial results.}
+  \imgcaption{images/diagram_eda.png}{Conceptual visualization of the data science pipeline.}
 }
 \end{rightframe}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \framesection{Overview}
-\begin{frame}[fragile]{Code Example}
+\begin{rightframe}{Instructors}
+\splitcols{%
+
+This course is co-taught by Prof.~Taylor Arnold (\texttt{taylor.arnold@richmond.edu}) and Prof.~Sam Kellogg (\texttt{sam.kellogg@richmond.edu}).
+
+Both of us will be in class and either of us is happy to hear from you about anything to do with the course material, the readings, the homework, or the project.
+
+Prof.~Arnold is the instructor of record, so please direct any questions about grades to him.
+
+}{%
+  \imgcaption{images/diagram_eda.png}{Conceptual visualization of the data science pipeline.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\framesection{Overview}
+\begin{rightframe}{Format}
+\splitcols{%
+
+The semester is broken into three units, each ending with an in-class exam, followed by a final project that runs through the end of the term. Class meetings are hands-on and interactive. Please bring a computer, pencil, and something to write on to each class. Class materials can be found on the course website.
+
+All of the material is available on the course website:
+\texttt{https://taylor-arnold.github.io/courses/dsst389-s26/}
+
+}{%
+  \imgcaption{images/course_website.png}{Screen shot from the course website. Please check website for most up-to-date details.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\framesection{Overview}
+\begin{rightframe}{Class Structure}
+\splitcols{%
+
+The general structure of each class:
+\begin{itemize}
+\item (Before class) Do the assigned reading
+\item (Before class) Do the assigned homework (hand-written)
+\item (Start of class) Fill out class form for attendence and homework completion
+\item Slides for new material (5-10 minutes)
+\item Discussion of the homework in groups (5-10 minutes)
+\item Questions and/or class poll of new material (5 minutes)
+\item Review of last notebook (5)
+\item Work on current class notebook (remainder of the class, roughly \~45 minutes)
+\end{itemize}
+
+}{%
+  \imgcaption{images/course_website.png}{Screen shot from the course website. Please check website for most up-to-date details.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\framesection{Overview}
+\begin{rightframe}{Grading}
+\splitcols{%
+
+The final grade is an evenly weight blend of five components:
+\begin{itemize}
+\item Exam I (20\%)
+\item Exam II (20\%)
+\item Exam III (20\%)
+\item Final Project (20\%)
+\item Attendance + Homework (20\%)
+\end{itemize}
+The exams will be given in class on the dates listed. Full study guides are posted on the website.
+
+}{%
+  \imgcaption{images/course_website.png}{Screen shot from the course website. Please check website for most up-to-date details.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\framesection{Overview}
+\begin{rightframe}{External Speakers}
+\splitcols{%
+
+You are required to attend at least two external talks over the course of the semester. These are a required component of the course but are not associated with a numerical grade. A list of talks is posted on the course website; any of those will count with not explaination needed.
+
+You may also count any other on-campus talk with a data science component. For a talk that is not on our list, you will be asked to write a short justification explaining what the data science component was. Attendance is recorded through the talk form linked on the course website.
+
+}{%
+  \imgcaption{images/course_website.png}{Screen shot from the course website. Please check website for most up-to-date details.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{outlineframe}{Outline}
+  \rmdim{Overview}
+  \rmitem{11 Spatial}
+  \rmdim{12 Data APIs and Corpora}
+  \rmdim{13 Temporal Data}
+  \rmdim{14 Textual Data: Annotations}
+  \rmdim{15 Textual Data: Vectors}
+  \rmdim{16 Network Data}
+  \rmdim{17 Image Data}
+\end{outlineframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{outlineframe}{Outline}
+  \rmdim{Overview}
+  \rmdim{11 Spatial}
+  \rmitem{12 Data APIs and Corpora}
+  \rmdim{13 Temporal Data}
+  \rmdim{14 Textual Data: Annotations}
+  \rmdim{15 Textual Data: Vectors}
+  \rmdim{16 Network Data}
+  \rmdim{17 Image Data}
+\end{outlineframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\framesection{11 Spatial}
+\begin{textframe}{Spatial Data}
+
+Every dataset we have used so far has been detached from physical space; a lot of real data is not. Crime reports happen at street addresses, and hospitals sit a measurable distance from every school in a city.
+
+\begin{itemize}
+\item A \textit{geometry} attaches a location or region to a row: a single point, or a polygon with thousands of vertices
+\item Once rows have geometries, we can ask questions with no ordinary-table equivalent: which points fall inside which polygon? which polygons touch? what is nearest?
+\item Polars has no native geometry support; the standard library is GeoPandas, built on pandas
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{The geo Namespace}
+
+Importing \texttt{funs} registers a namespace called \texttt{geo} on every Polars DataFrame, bridging Polars and GeoPandas without manual conversion.
+
+\begin{itemize}
+\item Any GeoPandas method or property is reachable through it: \texttt{metro.geo.to\_crs(5069)}, \texttt{state.geo.area}, \texttt{metro.geo.sjoin(state)}
+\item Each call converts the table to GeoPandas, runs the operation, and converts the result back to Polars
+\item Geometries are stored as plain text (WKT) in a \texttt{geometry} column; the coordinate system is tracked in a \texttt{\_crs} column
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Building Points}
 \begin{splitcode}{%
 
-Code slides use a wider right column so a full 72-character line of
-code fits without overflowing.
+\texttt{points\_from\_xy} builds \texttt{geometry} from two coordinate columns and records the coordinate system.
 
-The left column is for narration.
+It defaults to WGS 84 (\texttt{crs=4326}), ordinary latitude and longitude, the same system GPS devices use.
 
 }
 \begin{lstlisting}[language=Python]
-import polars as pl
-from plotnine import ggplot, aes
-from polars import col as c
+metro = metro.geo.points_from_xy("lon", "lat")
+metro
+\end{lstlisting}
+\begin{codeoutput}
+shape: (934, 15)
+name        lon     lat    geometry                _crs
+"New York"  -74.10  40.77  "POINT (-74.10 40.77)"  "EPSG:4326"
+"Los Ang."  -118.1  34.22  "POINT (-118.1 34.22)"  "EPSG:4326"
+"Chicago"   -87.96  41.70  "POINT (-87.96 41.70)"  "EPSG:4326"
+...         ...     ...    ...                     ...
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
 
-import funs
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{rightframe}{Plotting Raw Coordinates}
+\splitcols{%
 
-country = pl.read_csv("data/countries.csv")
+Because longitude and latitude are just numbers, a basic scatter plot needs no spatial tools at all: longitude on $x$, latitude on $y$.
+
+This treats a curved surface as an ordinary Cartesian grid, so distortion worsens at higher latitudes. There is also nothing to orient by --- no coastlines, no borders.
+
+}{%
+  \imgcaption{images/scatter_metro_unprojected.png}{US metro areas plotted directly from longitude and latitude.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Coordinate Reference Systems (CRS)}
+
+A \textit{coordinate reference system} (CRS) defines how coordinates map to locations on Earth's curved surface. Flattening a globe always trades off shape, area, or distance.
+
+\begin{itemize}
+\item WGS 84 (\texttt{EPSG:4326}): degrees of latitude/longitude, used by GPS --- the default we start from
+\item A \textit{projected} CRS is optimized for a region or purpose, e.g.\ \texttt{EPSG:5069} (NAD83 Conus Albers) for the contiguous US
+\item Look up codes at EPSG.io or spatialreference.org
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Reprojecting and Mapping}
+\begin{splitcode}{%
+
+\texttt{.to\_crs()} transforms coordinates into a new CRS.
+
+\texttt{geom\_map()} draws geometries straight from the \texttt{geometry} column; \texttt{coord\_fixed()} keeps one map unit the same length on both axes.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    ggplot(metro.geo.to_crs(5069))
+    .geom_map()
+    .coord_fixed()
+)
 \end{lstlisting}
 \end{splitcode}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\framesection{}
-\begin{frame}[allowframebreaks]{References}
-  \printbibliography[heading=none]
+\begin{rightframe}{Projected Points}
+\splitcols{%
+
+Reprojected into Albers, the point cloud now looks like the familiar outline of the continental US.
+
+Alaska and Hawaii appear distorted, since this projection is optimized for the lower 48 states.
+
+}{%
+  \imgcaption{images/scatter_metro_projected.png}{The same metro points after reprojecting to EPSG:5069.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Spatial Polygons}
+
+Many phenomena are better described by \textit{polygons}: closed shapes bounding a region. States, zip codes, census tracts, and watersheds are all naturally polygons.
+
+\begin{itemize}
+\item GeoJSON is a common polygon format: JSON-based, standardized as RFC 7946; Shapefiles, GeoPackage, and PostGIS are also common
+\item \texttt{funs.read\_file()} reads most spatial formats, returning a Polars DataFrame with WKT geometries
+\item Each polygon's \texttt{geometry} entry lists every vertex of its boundary --- sometimes thousands for complex coastlines
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Loading and Mapping Polygons}
+\begin{splitcode}{%
+
+Polygon data cannot be meaningfully drawn with a scatter plot; \texttt{geom\_map()} traces each shape from its vertex coordinates instead.
+
+The effect of projection is far more noticeable with polygons than with points.
+
+}
+\begin{lstlisting}[language=Python]
+state = funs.read_file("data/acs_state.geojson")
+(
+    ggplot(state.geo.to_crs(5069))
+    .geom_map(fill="white", color="black")
+    .coord_fixed()
+)
+\end{lstlisting}
+\end{splitcode}
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{rightframe}{State Boundaries}
+\splitcols{%
+
+Fifty states plus DC, drawn from their GeoJSON polygons after projecting to EPSG:5069.
+
+The Albers projection compresses and expands the coordinates to give a faithful picture of true shapes and relative sizes.
+
+}{%
+  \imgcaption{images/map_state_outline.png}{US state boundaries, projected and drawn with \texttt{geom\_map}.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Centroid and Area}
+\begin{splitcode}{%
+
+\texttt{centroid} and \texttt{area} are only meaningful in a projected CRS; on raw latitude/longitude they come out as nonsense.
+
+\texttt{centroid} replaces each polygon with its geometric center; \texttt{area} appends a numeric column, in square meters here.
+
+}
+\begin{lstlisting}[language=Python]
+state = state.geo.to_crs(5069)
+state.geo.centroid
+state = state.geo.area
+state.sort(c.area).select(c.name, c.area)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (50, 2)
+name          area
+"Rhode Isl."  2.76e9
+...           ...
+"California"  4.09e11
+"Texas"       6.88e11
+"Alaska"      1.46e12
+
+# area in square meters
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Choropleth Maps}
+\begin{splitcode}{%
+
+A \textit{choropleth map} colors regions by the value of a variable.
+
+With \texttt{area} already a column, building one takes a single aesthetic mapping: \texttt{fill=c.area}.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    ggplot(state, aes(fill=c.area))
+    .geom_map(color="white")
+    .coord_fixed()
+)
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{rightframe}{Choropleth Map}
+\splitcols{%
+
+Alaska dwarfs the other states by area; Texas and California follow.
+
+Larger regions draw the eye even when they matter less, so choropleths work best for area-based variables (density) rather than raw counts (population).
+
+}{%
+  \imgcaption{images/map_choropleth_area.png}{States colored by land area.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Spatial Joins}
+
+Ordinary joins match rows by equal keys. A \textit{spatial join} matches rows by geometric relationship instead.
+
+\begin{itemize}
+\item \texttt{.geo.sjoin()} tests a \textit{predicate} between geometries in two tables: \texttt{intersects}, \texttt{contains}, \texttt{within}, \texttt{touches}, \texttt{crosses}, \texttt{overlaps}
+\item Both tables must share a CRS before joining
+\item Row order matters: the left table's geometry survives in the output, so joining points into polygons keeps points; reversing keeps polygons, duplicated once per match
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Spatial Join}
+\begin{splitcode}{%
+
+The default predicate matches points to the polygon that contains them.
+
+Column names shared by both tables get \texttt{\_left}/\texttt{\_right} suffixes; a metro straddling a state line is assigned to whichever state contains its center point.
+
+}
+\begin{lstlisting}[language=Python]
+metro = metro.geo.to_crs(5069)
+metro.geo.sjoin(state)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (920, 20)
+name_left     name_right
+"New York"    "New Jersey"
+"Los Angel."  "California"
+"Chicago"     "Illinois"
+"Dallas"      "Texas"
+"Houston"     "Texas"
+...           ...
+
+# New York's CENTER POINT falls just
+# across the river, in New Jersey
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Nearest Neighbor Join}
+\begin{splitcode}{%
+
+\texttt{.sjoin\_nearest()} finds, for each row, the closest row in a second table --- e.g.\ the nearest hospital to each school.
+
+\texttt{exclusive=True} stops a row from matching itself; \texttt{distance\_col} records the distance, in CRS units.
+
+}
+\begin{lstlisting}[language=Python]
+metro.geo.sjoin_nearest(
+    metro, exclusive=True, distance_col="distance"
+)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (934, 30)
+name_left     name_right  distance
+"New York"    "Trenton"   74171
+"Los Angel."  "Oxnard"    89324
+"Chicago"     "Kankakee"  63507
+"Dallas"      "Sherman"   90905
+"Houston"     "El Campo"  97541
+...           ...         ...
+
+# distance in meters (Albers CRS)
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Buffers}
+\begin{splitcode}{%
+
+A \textit{buffer} expands a geometry outward by a fixed distance, turning points into discs.
+
+Buffers answer ``within $X$ of" questions; joined against another table, they find every feature near a point, not only the one containing it.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    ggplot(metro.geo.buffer(100_000))
+    .geom_map(alpha=0.3)
+    .coord_fixed()
+)
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{rightframe}{Buffers Around Metro Areas}
+\splitcols{%
+
+Each metro point becomes a 100 km disc; overlaps pile up where discs are drawn on top of each other.
+
+The overlaps trace a nearly solid band along the eastern seaboard and thin to isolated circles across the Mountain West --- a picture of urban density the point map only hinted at.
+
+}{%
+  \imgcaption{images/map_metro_buffer.png}{100 km buffers around each metro area.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Dissolving Boundaries}
+\begin{splitcode}{%
+
+\texttt{.dissolve()} is the spatial counterpart of \texttt{group\_by}/\texttt{agg}: it merges each group's geometries into one and erases the internal boundaries.
+
+\texttt{by} names the group key; \texttt{aggfunc} says how to combine the ordinary columns.
+
+}
+\begin{lstlisting}[language=Python]
+region = state.geo.dissolve(
+    by="side", aggfunc={"area": "sum"}
+)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (2, 4)
+side    area     geometry
+"East"  3.06e12  "POLYGON ((...))"
+"West"  6.21e12  "MULTIPOLYGON (((...)))"
+
+# West is a MultiPolygon: Alaska and
+# Hawaii don't touch the mainland
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{rightframe}{Dissolved Regions}
+\splitcols{%
+
+States grouped into East/West by their centroid, then dissolved into two merged polygons.
+
+The western geometry is a MultiPolygon, since Alaska and Hawaii do not touch the mainland.
+
+}{%
+  \imgcaption{images/map_state_dissolve.png}{State polygons dissolved into two regions.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Best Practices}
+
+Spatial data introduces error sources that do not arise with ordinary tables.
+
+\begin{itemize}
+\item \textbf{CRS mismatches}: operations on datasets in different CRSs silently give wrong locations or miss real matches --- check and align with \texttt{.to\_crs()} first
+\item \textbf{Unprojected calculations}: never compute distance or area on raw latitude/longitude; project first
+\item \textbf{Invalid polygons}: self-intersections and other topological errors can make functions fail or misbehave
+\item \textbf{Boundary effects}: a feature straddling a border is assigned by a single representative point --- handle these edge cases deliberately
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{outlineframe}{Outline}
+  \rmdim{Overview}
+  \rmdim{11 Spatial}
+  \rmitem{12 Data APIs and Corpora}
+  \rmdim{13 Temporal Data}
+  \rmdim{14 Textual Data: Annotations}
+  \rmdim{15 Textual Data: Vectors}
+  \rmdim{16 Network Data}
+  \rmdim{17 Image Data}
+\end{outlineframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\framesection{12 Data APIs and Corpora}
+\begin{textframe}{Data APIs}
+
+Every dataset we have used so far arrived as a file. A lot of real data is not distributed that way --- it lives on remote servers and is only reachable through a programmatic interface.
+
+\begin{itemize}
+\item An \textit{API} (application programming interface) exchanges structured data, usually JSON, over HTTP --- the same protocol your browser uses
+\item Two goals: learn the mechanics (requests, status codes, pagination, nested JSON) and use them to build something real
+\item Case study: a corpus of Wikipedia articles on 19th-century British and Irish novelists, reused in later chapters
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{HTTP Requests}
+
+\begin{itemize}
+\item Each request targets an \textit{endpoint} URL with a set of \textit{parameters} attached
+\item GET retrieves data; POST/PUT/DELETE modify it --- data collection almost always uses GET
+\item A numeric \textit{status code} reports what happened: 200 success, 404 not found, 429 rate limited, 5xx server error
+\item Many APIs require an account and key; the Wikimedia APIs used here require neither
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{A First Request}
+\begin{splitcode}{%
+
+An API call needs an endpoint, a dictionary of parameters, and headers identifying who is calling.
+
+The \texttt{User-Agent} header lets server administrators reach you if your requests cause problems.
+
+}
+\begin{lstlisting}[language=Python]
+params = {
+    "action": "query",
+    "format": "json",
+    "prop": "info",
+    "titles": "Emily Brontë"
+}
+response = session.get(
+    base_url, params=params, headers=headers
+)
+response.status_code
+\end{lstlisting}
+\begin{codeoutput}
+200
+
+# data = response.json()
+# data["query"]["pages"] looks like:
+# {'9810': {'pageid': 9810,
+#   'title': 'Emily Brontë',
+#   'touched': '2026-07-12T06:01:37Z',
+#   'length': 72283, ...}}
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Flattening Nested JSON}
+\begin{splitcode}{%
+
+A JSON response parses directly into nested Python dicts and lists. The useful data usually sits several levels deep, keyed oddly --- here by numeric page ID rather than as rows.
+
+We navigate to it, pull the fields we need into a list of dicts, and hand that list to Polars.
+
+}
+\begin{lstlisting}[language=Python]
+rows = []
+for page in data["query"]["pages"].values():
+    rows.append({
+        "page_id": page["pageid"],
+        "title": page["title"]
+    })
+pl.DataFrame(rows)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (1, 2)
+page_id  title
+9810     "Emily Brontë"
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Caching, Pagination, and Etiquette}
+
+\begin{itemize}
+\item \texttt{requests\_cache} saves every response to disk; reruns hit the cache instead of the network --- the cache becomes a permanent \textit{raw layer}
+\item A single response often caps out (e.g.\ 500 results); a \texttt{continue} block in the JSON says how to fetch the next page
+\item Rate limits cap requests per unit time; exceeding them returns 429 --- send a real \texttt{User-Agent}, request serially, and pause between calls
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Defining the Population}
+
+\begin{itemize}
+\item The first and most consequential decision: which pages belong in the corpus?
+\item Options: hand-curate a list, query a knowledge graph, or use Wikipedia's category system
+\item Category membership reflects editor tagging, not ground truth --- an author missing the tag is invisible to us
+\item Every population definition should be written down where later users of the data can find it
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Stable vs.\ Readable Keys}
+
+\begin{itemize}
+\item Titles are the least stable identifier --- pages get renamed, and yesterday's title becomes today's \textit{redirect}
+\item The numeric \texttt{page\_id} survives renames; the title (\texttt{doc\_id}) stays human-readable --- every table in the corpus carries both
+\item Redirects and missing titles must be resolved and logged, never silently dropped
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{rightframe}{Page View Statistics}
+\splitcols{%
+
+Page views come from a second, REST-style API: the request path itself encodes project, access type, article, and date range, rather than a parameter dictionary.
+
+Daily views for the three Brontë sisters show weekly rhythms and occasional spikes tied to real-world attention.
+
+}{%
+  \imgcaption{images/line_wiki_pageviews.png}{Daily Wikipedia page views for the Brontë sisters, 2025.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Raw and Processed Layers}
+
+\begin{itemize}
+\item \textit{Raw layer}: the requests cache --- exact, unmodified server responses
+\item \textit{Processed layer}: tidy Parquet tables built from those responses
+\item Every processed table can be rebuilt from the raw layer without touching the network, so downstream decisions can be revisited later
+\item A short manifest records what was collected, from where, and under what population definition
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Reproducible Snapshots}
+
+\begin{itemize}
+\item Wikipedia changes constantly --- what we collect is a \textit{snapshot}, not a fixed dataset
+\item Revision IDs pin an article to one immutable version, recoverable from the API forever
+\item Reproducibility here means being precise about what was captured, not freezing the source
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{outlineframe}{Outline}
+  \rmdim{Overview}
+  \rmdim{11 Spatial}
+  \rmdim{12 Data APIs and Corpora}
+  \rmitem{13 Temporal Data}
+  \rmdim{14 Textual Data: Annotations}
+  \rmdim{15 Textual Data: Vectors}
+  \rmdim{16 Network Data}
+  \rmdim{17 Image Data}
+\end{outlineframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\framesection{13 Temporal Data}
+\begin{textframe}{Temporal Data}
+
+Any dataset with a date or time column, or whose rows simply have a meaningful order, is temporal. Two tables from the Wikipedia corpus qualify: daily page views and a 500-edit revision history per author.
+
+\begin{itemize}
+\item Window functions (\texttt{.shift()}, \texttt{.over()}) and conditional joins (\texttt{.join\_asof()}, \texttt{.join\_where()}) return here, now on data with real clocks
+\item New to this chapter: the temporal type system itself --- dates, datetimes, time zones, truncation, durations
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{rightframe}{Real Dates, Not Row Numbers}
+\splitcols{%
+
+Plotting views against a row number or a fractional year works, but the axis needs explaining and says nothing a reader can act on.
+
+A real \texttt{Date} column gives plotnine sensible, labeled breaks for free --- and turns an anonymous spike into a fact: Chaucer's biggest day is always 14 February, thanks to \textit{Parlement of Foules}.
+
+}{%
+  \imgcaption{images/line_wiki_views_by_date.png}{Chaucer's page views plotted against a real date axis.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Date and Datetime Objects}
+\begin{splitcode}{%
+
+\texttt{pl.date()} builds a \texttt{Date} from year/month/day columns; \texttt{.str.to\_datetime()} parses an ISO-8601 string into a \texttt{Datetime}.
+
+Both types unlock the \texttt{.dt} namespace: weekday, hour, quarter, and more, all as portable numbers rather than locale-dependent names.
+
+}
+\begin{lstlisting}[language=Python]
+chaucer = page_views.with_columns(
+    date = pl.date(c.year, c.month, c.day)
+)
+page_revisions = page_revisions.with_columns(
+    timestamp = c.timestamp.str.to_datetime()
+)
+\end{lstlisting}
+\begin{codeoutput}
+chaucer.schema["date"]
+# Date
+
+chaucer.select(c.doc_id, c.date, c.views).head(3)
+# "Geoffrey Chaucer"  2025-01-01  1392
+# "Geoffrey Chaucer"  2025-01-02  1553
+# "Geoffrey Chaucer"  2025-01-03  1609
+
+page_revisions.schema["timestamp"]
+# Datetime(time_unit='us', time_zone=None)
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Truncating Dates}
+
+\begin{itemize}
+\item \texttt{.dt.truncate("1h")} or \texttt{.dt.truncate("1d")} rounds a timestamp down, discarding finer precision
+\item Truncation turns a continuous timestamp into a categorical bin --- the standard first step before \texttt{.group\_by()} on an event log
+\item \texttt{.dt.round()} rounds to the nearest unit instead of down; \texttt{.dt.date()} extracts just the date part of a datetime
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{rightframe}{Observation Windows Differ}
+\splitcols{%
+
+We collected each author's 500 most recent edits, not a fixed span of years, so the window covered differs by author.
+
+Emily Brontë's page is edited often, reaching back only to late 2024; Chaucer's moves slowly, reaching back to 2021 --- comparing the two as though they spanned the same years would be a mistake.
+
+}{%
+  \imgcaption{images/line_wiki_size_two_authors.png}{Article size over time for two authors with very different edit rates.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Time Zones: Naive vs.\ Aware}
+
+\begin{itemize}
+\item A \textit{naive} datetime carries no time zone; an \textit{aware} one is tagged with a specific zone
+\item \texttt{.dt.replace\_time\_zone()} attaches a zone --- a claim about what the clock reading always meant
+\item \texttt{.dt.convert\_time\_zone()} re-expresses an already-aware instant in a different zone --- an arithmetic operation
+\item Converting a naive column silently assumes it was UTC; attach first, then convert
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Window Functions Revisited}
+
+The same two ideas from window functions apply unchanged, now on irregularly spaced timestamps.
+
+\begin{itemize}
+\item \texttt{.diff().over(c.doc\_id)} gives the size change of each edit --- how many bytes it added or removed
+\item Reaching back two rows with \texttt{.shift(2)} instead of one flags \textit{reversions}: edits that put an article back where it stood two edits earlier
+\item \texttt{.over()} is still required --- ordered functions run past group boundaries without it
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Rolling Windows in Time}
+\begin{splitcode}{%
+
+A row-count window (\texttt{.rolling\_mean()}) assumes evenly spaced rows, which edit logs are not: two edits might be minutes or months apart.
+
+\texttt{.rolling\_mean\_by()} defines the window as a \textit{span of time} instead of a row count, using the \texttt{by} timestamp column.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    page_revisions
+    .filter(c.doc_id == "Geoffrey Chaucer")
+    .sort(c.timestamp)
+    .with_columns(
+        size_smooth = c.size.rolling_mean_by(
+            by=c.timestamp, window_size="30d"
+        )
+    )
+)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (500, 8)
+timestamp            size   size_smooth
+2021-11-23 15:31:56  70572  70572.0
+2021-11-23 15:35:22  70575  70573.5
+2021-11-23 15:37:01  70571  70572.7
+...                  ...    ...
+2026-07-10 23:37:58  88794  88735.0
+
+# no .over() needed -- already
+# filtered to one author
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{rightframe}{Time-Aware Smoothing}
+\splitcols{%
+
+The grey line is Chaucer's raw article size after every edit, jagged with vandalism and its reversal.
+
+The red line is the 30-day rolling mean, which shows the article's actual trajectory rather than every transient edit.
+
+}{%
+  \imgcaption{images/line_wiki_rolling_mean.png}{Chaucer's page size, raw and smoothed with a 30-day time-based window.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Joining on Time}
+
+\begin{itemize}
+\item \texttt{.join\_asof()} matches each row to the \textit{nearest} value in another table --- built for exactly this: pairing a revision with the most recent daily view count \texttt{strategy="backward"}
+\item \texttt{by="doc\_id"} requires an exact match before the nearest-in-time search, so authors are never matched across each other's data
+\item \texttt{.join\_where()} keeps every pair satisfying an inequality --- e.g.\ which authors' lifetimes overlapped --- producing a network of shared lifetimes
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{outlineframe}{Outline}
+  \rmdim{Overview}
+  \rmdim{11 Spatial}
+  \rmdim{12 Data APIs and Corpora}
+  \rmdim{13 Temporal Data}
+  \rmitem{14 Textual Data: Annotations}
+  \rmdim{15 Textual Data: Vectors}
+  \rmdim{16 Network Data}
+  \rmdim{17 Image Data}
+\end{outlineframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\framesection{14 Textual Data: Annotations}
+\begin{textframe}{Textual Data}
+
+Every dataset so far has been structured: rows with well-defined numeric, categorical, or temporal columns. A large share of recorded information exists only as unstructured text.
+
+\begin{itemize}
+\item A sentence has grammar, and meaning depends on context --- ``bank" means something different in ``river bank" than in ``bank account"
+\item This chapter turns unstructured text into structured tables of tokens, counts, and annotations, so the familiar filter/group/join toolkit applies
+\item Documents: Wikipedia pages for the same 75 British and Irish authors studied in the temporal data chapter
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{The NLP Pipeline}
+
+spaCy provides pre-trained models that tokenize text and annotate it linguistically.
+
+\begin{itemize}
+\item \texttt{DSText.process} sends each document through tokenization, part-of-speech tagging, lemmatization, named entity recognition, and dependency parsing
+\item Underneath, it is three nested loops --- documents, then sentences, then tokens --- building one dictionary per token and stacking them into a Polars DataFrame
+\item \texttt{tid} and \texttt{head\_idx} are renumbered within each sentence, which is what makes join-based analysis of grammar possible later
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Token Annotations}
+\begin{splitcode}{%
+
+Each row of \texttt{anno} is one token: a word or punctuation mark, labeled with its lemma, part of speech, and grammatical role.
+
+Key columns: \texttt{doc\_id}, \texttt{sid}, \texttt{tid} (a primary key), \texttt{lemma}, \texttt{upos}, \texttt{dep}, \texttt{head\_idx}, \texttt{ent\_type}.
+
+}
+\begin{lstlisting}[language=Python]
+anno = DSText.process(docs, nlp)
+anno
+\end{lstlisting}
+\begin{codeoutput}
+shape: (408700, 15)
+doc_id     sid  tid  token   lemma   upos   dep       head_idx  ent_type
+"Marie.."  1    1    Marie   Marie   PROPN  compound  3         PERSON
+"Marie.."  1    2    de      de      X      nmod      3         PERSON
+"Marie.."  1    3    France  France  PROPN  nsubj     4         PERSON
+"Marie.."  1    4    was     be      AUX    ROOT      4         ""
+"Marie.."  1    5    a       a       DET    det       6         ""
+"Marie.."  1    6    poet    poet    NOUN   attr      4         ""
+...        ...  ...  ...     ...     ...    ...       ...       ...
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Word Frequencies}
+
+Once text is a table, ordinary Polars operations answer linguistic questions with no text-specific tools at all.
+
+\begin{itemize}
+\item Filtering \texttt{upos == "NOUN"} and grouping by \texttt{lemma} surfaces the corpus's most common nouns: \textit{year}, \textit{life}, \textit{poem}, \textit{poet}
+\item Grouping by \texttt{[doc\_id, lemma]} instead gives the top adjectives on \textit{each} author's page --- ``Victorian", ``Gothic"
+\item Generic words dominate every page's list, a limitation the next chapter's TF-IDF weighting addresses
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Building N-grams}
+\begin{splitcode}{%
+
+Meaning often lives in word combinations --- ``New York", ``poet laureate" --- not single tokens.
+
+The exact \texttt{.shift()}/\texttt{.over()} pattern from the temporal data chapter pairs each token with its neighbor: a text read token-by-token is just another ordered dataset.
+
+}
+\begin{lstlisting}[language=Python]
+bigrams = anno.filter(c.is_alpha).with_columns(
+    next_token = c.lemma.shift(-1)
+        .over([c.doc_id, c.sid])
+)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (380244, 16)
+sid  tid  lemma   next_token
+1    1    Marie   de
+1    2    de      France
+1    3    France  be
+1    4    be      a
+1    5    a       poet
+1    6    poet    possibly
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Collocations via PMI}
+
+\begin{itemize}
+\item Raw bigram counts surface generic phrases --- ``of the" appears often simply because both words are common
+\item \textit{Pointwise mutual information} compares an observed pairing to what independence would predict: $\text{PMI}(w_1, w_2) = \log_2 \frac{P(w_1, w_2)}{P(w_1)\,P(w_2)}$
+\item High-PMI bigrams are proper names and domain-specific terms; a minimum count filter (e.g.\ $\geq 5$) keeps rare-word noise out
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Named Entity Recognition}
+
+\begin{itemize}
+\item spaCy tags proper nouns and specific references: PERSON, ORG, GPE, DATE, WORK\_OF\_ART, and more, stored in \texttt{ent\_type}
+\item Multi-word entities (``United Kingdom") repeat the same label on every token --- \texttt{ent\_iob} marks ``B" for the first token of each entity
+\item A cumulative sum of \texttt{ent\_iob == "B"} within each document assigns every entity an id, so grouping and \texttt{str.join} reconstruct full entity text
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{rightframe}{Entity Types Across the Corpus}
+\splitcols{%
+
+Biographical pages are rich in names, organizations, places, and dates --- unsurprising for encyclopedia entries about people's lives and work.
+
+A different corpus (press releases, scientific abstracts) would produce a very different profile, which is what makes this distribution a useful fingerprint of a collection.
+
+}{%
+  \imgcaption{images/bar_wiki_entity_types.png}{Counts of named entity types across the author corpus.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Dependency Parsing}
+
+Named entities say \textit{what} is mentioned; dependency parsing says \textit{how} words relate grammatically.
+
+\begin{itemize}
+\item Every token has a \textit{head} and a \textit{dependency relation} (\texttt{nsubj}, \texttt{dobj}, \texttt{amod}, \dots) describing how it modifies or depends on another token
+\item Since \texttt{head\_idx} shares \texttt{tid}'s coordinate system, matching a subject to its verb is an ordinary join on \texttt{[doc\_id, sid, tid]}
+\item The result: authors ``write", ``publish", ``die"; works ``appear", ``receive", ``influence"
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{KWIC and Complexity Metrics}
+
+\begin{itemize}
+\item \textit{Keyword in context} (\texttt{DSText.kwic}) prints every occurrence of a word with its surrounding tokens --- the cheapest way to check what a word is really doing, when counts and scores can only summarize
+\item Style metrics reduce a whole document to a number: mean sentence length, type-token ratio (vocabulary richness), mean word length, function-word ratio
+\item All four are ordinary \texttt{group\_by} + \texttt{agg} chains over \texttt{anno} --- no new machinery beyond what the rest of the book already taught
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{outlineframe}{Outline}
+  \rmdim{Overview}
+  \rmdim{11 Spatial}
+  \rmdim{12 Data APIs and Corpora}
+  \rmdim{13 Temporal Data}
+  \rmdim{14 Textual Data: Annotations}
+  \rmitem{15 Textual Data: Vectors}
+  \rmdim{16 Network Data}
+  \rmdim{17 Image Data}
+\end{outlineframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\framesection{15 Textual Data: Vectors}
+\begin{textframe}{From Words to Whole Documents}
+
+The previous chapter analyzed language \textit{within} documents, one token at a time. Comparing documents to each other --- which pages are most similar, do they cluster into groups --- requires representing each document as a single mathematical object.
+
+\begin{itemize}
+\item Step 1: summarize each document by its term counts, weighted by TF-IDF to emphasize distinctive vocabulary
+\item Step 2: treat those weighted counts as coordinates, turning each document into a \textit{point in space}
+\item Step 3: use that geometry to measure distance, project to two dimensions, and compare corpora across languages
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{TF-IDF}
+
+Raw term counts favor generic words (``the", ``year", ``life"). \textit{Term frequency--inverse document frequency} (TF-IDF) downweights terms that are common across the whole collection:
+
+\begin{itemize}
+\item $\text{tfidf} = \text{tf} \times \left(\log\left(\frac{N+1}{\text{df}+1}\right) + 1\right)$, where \textit{tf} is the term frequency, \textit{df} the number of documents containing the term, and $N$ the total document count
+\item Words appearing in nearly every document (e.g.\ ``publisher") score low even if frequent; words distinctive to a single page score high
+\item Top TF-IDF terms per document are proper nouns and domain vocabulary --- exactly what a human summary would pick out
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Computing TF-IDF}
+\begin{splitcode}{%
+
+\texttt{DSText.compute\_tfidf} is a single Polars chain: count lemmas per document, normalize by document length for \textit{tf}, count documents per lemma for \textit{df}, then combine.
+
+\texttt{min\_df}/\texttt{max\_df} filter out lemmas that are too rare or too common, acting like an automatic stopword list.
+
+}
+\begin{lstlisting}[language=Python]
+tfidf = DSText.compute_tfidf(
+    anno, min_df=0.01, max_df=1.0
+)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (106352, 7)
+doc_id         lemma   tf   idf    tfidf
+"A. A. Milne"  Milne   52   4.638  0.0949
+"A. A. Milne"  Pooh    40   4.638  0.0730
+"A. A. Milne"  the     183  1.0    0.0720
+"A. A. Milne"  Winnie  21   4.638  0.0383
+...            ...     ...  ...    ...
+
+# highest-tfidf terms are the ones
+# that make this page distinctive
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Documents as Vectors}
+
+Each row of the TF-IDF table is a list of numbers --- one per term. Treat that list as coordinates, and every document becomes a \textit{point in space}.
+
+\begin{itemize}
+\item Two terms give a 2-D scatterplot; $V$ terms give a point in $V$-dimensional space, $\mathbf{x}_d = (\text{tfidf}(t_1,d),\dots,\text{tfidf}(t_V,d))$
+\item Documents close together use similar vocabulary in similar proportions; documents far apart use different language
+\item Most entries are zero --- a document uses only a sliver of the vocabulary --- giving a \textit{sparse} representation
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{rightframe}{Mapping the Corpus with UMAP}
+\splitcols{%
+
+Thousands of dimensions can't be plotted directly, but UMAP projects the document vectors down to two dimensions while preserving distances as well as possible.
+
+Authors who use similar vocabulary land near each other --- proximity on the map reflects similarity in language, not chronology or genre labels.
+
+}{%
+  \imgcaption{images/scatter_wiki_umap_authors.png}{UMAP projection of 75 author pages built from TF-IDF vectors.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Document Distances}
+
+Euclidean distance is a poor fit for document vectors: a long page and a short page on the same topic use similar \textit{proportions} of vocabulary but sit far apart simply because their raw counts are bigger.
+
+\begin{itemize}
+\item The fix: measure the \textit{angle} between vectors instead of the straight-line gap --- length no longer matters, only direction
+\item $d(\mathbf{x}_a,\mathbf{x}_b) = \arccos\!\left(\dfrac{\mathbf{x}_a \cdot \mathbf{x}_b}{\lVert\mathbf{x}_a\rVert\,\lVert\mathbf{x}_b\rVert}\right)$, ranging from 0 (identical proportions) to $\pi/2$ (no shared vocabulary)
+\item The related \textit{cosine similarity} reports the quantity inside the arccosine directly: 1 means identical, 0 means no overlap
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Computing Distances}
+\begin{splitcode}{%
+
+\texttt{DSText.compute\_distances} pivots the long TF-IDF table to a wide matrix, rescales every row to unit length, then computes all pairwise angles at once with a single matrix product.
+
+The result is a long table with one row per pair --- each unordered pair of documents appears exactly once.
+
+}
+\begin{lstlisting}[language=Python]
+text_dist = DSText.compute_distances(
+    anno, min_df=0.01, max_df=0.5
+)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (2775, 3)
+doc_id         doc_id2                  distance
+"A. A. Milne"  "Alexander Pope"         1.5624
+"A. A. Milne"  "Alfred, Lord Tennyson"  1.5580
+"A. A. Milne"  "Ann Radcliffe"          1.5624
+"A. A. Milne"  "Beatrix Potter"         1.5484
+...            ...                      ...
+
+# 75 authors -> C(75,2) = 2775 pairs
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Nearest Neighbors}
+
+With distances in a table, ordinary Polars answers similarity questions directly --- no special ``similarity search" tool required.
+
+\begin{itemize}
+\item Sorting by \texttt{distance} within a single \texttt{doc\_id} finds the closest matches to one page (e.g.\ Jane Austen)
+\item \texttt{.group\_by(doc\_id).head(1)} after sorting finds the single nearest neighbor of \textit{every} document at once
+\item Worth reading against literary history: contemporaries matching contemporaries is expected; the surprises are often the most interesting rows
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Across Languages}
+
+Wikipedia's French edition lets us ask whether the same authors are described differently across languages and editor communities.
+
+\begin{itemize}
+\item Swap in a French spaCy model (\texttt{fr\_core\_news\_sm}) --- every downstream tool (TF-IDF, vectors, UMAP) applies unchanged
+\item English and French vectors live in different vocabularies and can't be compared directly, but the \textit{structure} of each collection can
+\item A French UMAP projection that groups authors differently reflects a genuine difference in framing, not just translation
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{From Geometry to Networks}
+
+\begin{itemize}
+\item TF-IDF turns token counts into distinctive-vocabulary scores; treating those scores as coordinates turns documents into points in space
+\item UMAP gives a two-dimensional map; angle distance gives an explicit number for every pair of documents
+\item Next chapter: a table of pairwise distances \textit{is} a network --- connect documents below a distance threshold, or link each to its nearest neighbors
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{outlineframe}{Outline}
+  \rmdim{Overview}
+  \rmdim{11 Spatial}
+  \rmdim{12 Data APIs and Corpora}
+  \rmdim{13 Temporal Data}
+  \rmdim{14 Textual Data: Annotations}
+  \rmdim{15 Textual Data: Vectors}
+  \rmitem{16 Network Data}
+  \rmdim{17 Image Data}
+\end{outlineframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\framesection{16 Network Data}
+\begin{textframe}{Network Data}
+
+A network is a set of objects (\textit{nodes}) plus a set of relationships between pairs of them (\textit{edges}). What counts as a node and what counts as an edge is a modeling choice, and that choice shapes everything downstream.
+
+\begin{itemize}
+\item An \textit{edge list} --- one row per edge, with a starting and ending id --- is enough to describe an entire network as an ordinary table
+\item \textit{Directed} networks distinguish the start from the end of an edge (A links to B); \textit{undirected} networks only ask whether a connection exists
+\item Any directed network can be viewed as undirected by dropping direction; the reverse is not true, so undirected is the safer starting point
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Creating a Network Object}
+\begin{splitcode}{%
+
+\texttt{DSNetwork.process} turns an edge list into a \texttt{node} table, an \texttt{edge} table, and an \texttt{igraph} graph object, computing layout coordinates and centrality metrics along the way.
+
+The \texttt{node} table's \texttt{x}/\texttt{y} columns are a \textit{graph drawing} layout --- like PCA or UMAP, individual values don't mean anything; only relative position does.
+
+}
+\begin{lstlisting}[language=Python]
+node, edge, G = DSNetwork.process(
+    page_citation, directed=False
+)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (72, 10)
+id                  x      y     degree  eigen  between
+"Marie de France"   -3.66  4.29  1       0.024  0.0
+"Geoffrey Chaucer"  -1.38  1.71  16      0.409  147.1
+"William Langland"  -3.64  1.68  3       0.062  4.72
+"John Gower"        -2.44  2.46  5       0.119  7.74
+"John Dryden"       0.97   1.14  25      0.731  197.5
+...                 ...    ...   ...     ...    ...
+
+# 377 links, 75 authors -> 72 nodes
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{rightframe}{Visualizing the Network}
+\splitcols{%
+
+\texttt{geom\_segment} draws the \texttt{edge} table's \texttt{x}/\texttt{y}/\texttt{xend}/\texttt{yend} columns as lines beneath the node points --- low \texttt{alpha} keeps a dense graph legible.
+
+Well-known authors of each era --- Shakespeare, Chaucer, Swift --- sit near the center; lesser-known pages are pushed to the edges.
+
+}{%
+  \imgcaption{images/network_wiki_citation_links.png}{Undirected link network among 75 author pages.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{rightframe}{Degree Centrality}
+\splitcols{%
+
+The simplest centrality score: a node's \textit{degree} is just its number of neighbors, counting every edge it touches (not just incoming links, as in the raw counts above).
+
+Nodes with the highest degree cluster near the middle of the layout --- the two ideas agree, but degree only sees a node's \textit{direct} neighbors.
+
+}{%
+  \imgcaption{images/network_wiki_degree_centrality.png}{Network colored by degree centrality.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Eigenvalue Centrality}
+
+A more holistic score: a node's importance is proportional to the importance of \textit{its} neighbors, not just their count.
+
+\begin{itemize}
+\item $s_j = \lambda \sum_{i \in \text{Neighbors}(j)} s_i$ --- a node scores high if it connects to other high-scoring nodes, scaled so the largest score is 1
+\item Only defined within a connected component; disconnected networks get a separate solution per component
+\item Concentrates score more sharply on the most central cluster than degree does, on a linear color scale
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Closeness Centrality}
+
+A score built from distance rather than direct connections: how many hops does it take, on average, to reach every other node?
+
+\begin{itemize}
+\item For each node, sum the reciprocals of its shortest-path lengths to every other node in its component
+\item High closeness means a node can reach the rest of the network quickly --- useful for questions about spreading information efficiently
+\item Transitions more smoothly from central to peripheral nodes than eigenvalue centrality does
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{rightframe}{Betweenness Centrality}
+\splitcols{%
+
+For every pair of nodes, count the shortest paths between them, then ask how many of those paths pass through a given node.
+
+High betweenness marks \textit{bridges} between otherwise separate parts of the network --- a different notion of importance than ``central within a cluster."
+
+}{%
+  \imgcaption{images/network_wiki_betweenness_centrality.png}{Network colored by betweenness centrality.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Clusters}
+
+Splitting nodes into groups so that most edges fall \textit{within} a group rather than across groups --- computed automatically by \texttt{DSNetwork.process} into a \texttt{cluster} column.
+
+\begin{itemize}
+\item Coloring the layout by cluster shows detected communities directly, but large networks quickly run out of plotting space for labels
+\item A table alternative scales better: \texttt{group\_by(cluster).agg(members = id.str.concat("; "))} lists who belongs to each community
+\item Our 75-author network mostly forms one large cluster around a few well-known figures --- larger, sparser networks show richer structure
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Co-citation Networks}
+
+Direct citation links are sensitive to document length and publication order. A \textit{co-citation} instead links two pages whenever a \textit{third} page cites both --- evidence they are related even with no direct link.
+
+\begin{itemize}
+\item Built the same way as any other network: filter an edge list (here, pairs cited together at least 6 times), then call \texttt{DSNetwork.process}
+\item Co-citation is undirected by definition --- there's no notion of ``which page cited first"
+\item Reshuffles the centrality rankings: John Milton tops the co-citation list despite not topping the raw citation count, reflecting shared thematic company rather than direct links
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{rightframe}{Directed Networks}
+\splitcols{%
+
+Setting \texttt{directed=True} keeps the direction of each edge and splits degree into \texttt{degree\_out} and \texttt{degree\_in} (closeness centrality is no longer defined).
+
+Most authors track the diagonal, but Orwell has far more outgoing links than incoming --- his page cites influences that predate him and don't cite back.
+
+}{%
+  \imgcaption{images/scatter_wiki_indegree_outdegree.png}{In-degree vs.\ out-degree, with several authors highlighted.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Distance and Nearest-Neighbor Networks}
+
+Not every network comes from explicit citations. The angle distances from the previous chapter can define edges too: link two documents whenever their distance falls below a threshold.
+
+\begin{itemize}
+\item A \textit{distance network} reveals implicit similarity in content, distinct from explicit reference structure
+\item A \textit{symmetric nearest-neighbor network} links two documents only when each is among the other's $k$ nearest neighbors --- degree is capped at $k$, so no node can dominate
+\item Avoids piling every connection onto a few popular nodes; often produces more even, interpretable clusters than citation-based networks
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{From Text to Networks, and Beyond}
+
+\begin{itemize}
+\item An edge list plus \texttt{DSNetwork.process} gives layout coordinates and four complementary centrality scores: degree, eigenvalue, closeness, betweenness
+\item Citation, co-citation, directed, distance, and nearest-neighbor networks all reuse the same tools --- what changes is how the edge list is built
+\item Networks pair naturally with the vector distances from the previous chapter: geometry defines edges, and network tools describe the resulting structure
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{outlineframe}{Outline}
+  \rmdim{Overview}
+  \rmdim{11 Spatial}
+  \rmdim{12 Data APIs and Corpora}
+  \rmdim{13 Temporal Data}
+  \rmdim{14 Textual Data: Annotations}
+  \rmdim{15 Textual Data: Vectors}
+  \rmdim{16 Network Data}
+  \rmitem{17 Image Data}
+\end{outlineframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\framesection{17 Image Data}
+\begin{textframe}{Image Data}
+
+A digital image is an array of numbers: height $\times$ width $\times$ color channels, each entry an intensity from 0 to 255. The challenge is bridging raw pixel values and semantic meaning --- getting from a grid of numbers to ``this is a robin."
+
+\begin{itemize}
+\item OpenCV's \texttt{cv2.imread} loads an image as a NumPy array, in BGR (not RGB) channel order by convention
+\item Hand-computed pixel statistics (brightness, color) are fast and interpretable but describe the whole frame, not just the subject
+\item Pre-trained neural networks solve the semantic gap the same way TF-IDF vectors did for text: by turning each image into a point in space
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{rightframe}{The Birds Dataset}
+\splitcols{%
+
+Ten species, preprocessed to a standard size --- a table of \texttt{filepath} and \texttt{label} columns pointing to files stored separately from the metadata, a common pattern for image data.
+
+Some species (canary, peacock) have distinctive, near-unmistakable coloration; others (duck, swallow, robin) are easy to confuse from color alone.
+
+}{%
+  \imgcaption{images/grid_bird_species.png}{One example image per species in the birds dataset.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Brightness: A First Pixel Statistic}
+
+The simplest possible image summary: the mean of every pixel value across the array.
+
+\begin{itemize}
+\item Higher mean $\Rightarrow$ a brighter image overall; lower mean $\Rightarrow$ a darker one --- computed once per image in a simple loop over the dataset
+\item The darkest images are dominated by black backgrounds, not dark birds; the brightest have light backgrounds, not light birds
+\item A pixel statistic describes the whole photograph --- subject, background, and lighting all mixed together
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{rightframe}{Brightness Overlaps Across Species}
+\splitcols{%
+
+Ostriches (bright savanna shots) sit at the top; peacocks (dramatic dark backgrounds) sit at the bottom --- but every species' box overlaps most of the others.
+
+Brightness reflects photographic context as much as the bird itself, so it is a weak signal for telling species apart.
+
+}{%
+  \imgcaption{images/box_bird_brightness.png}{Brightness distribution by species, heavily overlapping.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Hue, Saturation, and Value}
+
+RGB is not how humans perceive color. HSV separates a pixel into three more intuitive components, computed by OpenCV in one call (\texttt{cv2.cvtColor(img, cv2.COLOR\_BGR2HSV)}).
+
+\begin{itemize}
+\item \textit{Hue}: the pure color as an angle on a color wheel (red $0°$, green $120°$, blue $240°$)
+\item \textit{Saturation}: how vivid vs.\ washed-out/gray the color is; \textit{Value}: how light vs.\ dark it is
+\item \texttt{DSImage.compute\_colors} bins hue (plus saturation/value for black, white, gray) into named color categories per pixel, giving proportions like ``18\% yellow"
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Color Proportions Across Species}
+
+Per-image color proportions, computed the same way as brightness, reveal cleaner patterns than brightness alone.
+
+\begin{itemize}
+\item Canaries lead in yellow content, as expected, but so do some hummingbirds photographed against yellow-green foliage
+\item Peacocks lead in cyan --- their iridescent blue-green plumage --- with swallows close behind, mostly from sky in the background rather than the bird
+\item Still a scene-level statistic: useful for spotting outliers and broad patterns, not for telling a duck from a robin
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Transfer Learning}
+
+No small set of hand-written rules captures how pixels are \textit{arranged} into an eye, a wing, a beak. Deep neural networks trained on millions of labeled images learn that arrangement directly.
+
+\begin{itemize}
+\item Early layers detect edges and textures; later layers combine them into larger structures; the final layer predicts a category
+\item Just before that last step, the network has reduced the image to a fixed-length vector --- an \textit{embedding}, in exactly the sense of the previous chapter's document vectors
+\item \textit{Transfer learning}: reuse a model trained on someone else's categories, keeping only the embedding --- generic enough to describe any image
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Embedding Images with ViT}
+\begin{splitcode}{%
+
+\texttt{ViTEmbedder} wraps Google's Vision Transformer, trained on 14 million images across 21,843 classes --- it splits an image into patches and treats each one the way a language model treats a word.
+
+Every image becomes a dense 768-number vector; unlike sparse TF-IDF, nearly every entry is non-zero and no single dimension has a name. Only the geometry matters.
+
+}
+\begin{lstlisting}[language=Python]
+vit = ViTEmbedder()
+birds.select(c.filepath, c.label, c.vit)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (1555, 3)
+filepath                   label     vit
+"media/birds10/00000.png"  "canary"  [0.0179, -0.0305, 0.0577, ...]
+"media/birds10/00001.png"  "canary"  [0.0248, -0.0453, 0.0796, ...]
+"media/birds10/00002.png"  "canary"  [0.0506, -0.0245, 0.0628, ...]
+...                        ...       ...
+
+# each vit entry is a length-768 list
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{rightframe}{UMAP of ViT Embeddings}
+\splitcols{%
+
+Projecting the 768-dimensional ViT embeddings to two dimensions with UMAP separates all ten species almost perfectly.
+
+Nothing in the code told the model about our species --- it was trained on entirely different images and labels. Compare this to the heavily overlapping brightness boxplot: the embedding encodes far more of what the image actually shows.
+
+}{%
+  \imgcaption{images/scatter_bird_umap_vit.png}{UMAP projection of ViT embeddings, colored by species.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Zero-Shot Classification with SigLIP}
+
+SigLIP embeds images \textit{and} text into the same shared space --- an image and its caption land close together, with no task-specific training required.
+
+\begin{itemize}
+\item Similarity is measured by the dot product; since SigLIP embeddings are unit length, this is exactly the cosine similarity used for document vectors
+\item Embed the phrase ``a photo of a canary" and every image's similarity to it can be computed with a single \texttt{dot\_product} column
+\item Classify by comparing each image to a \textit{text} embedding for every species label, and picking the closest match --- no labeled training examples at all
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Zero-Shot Results}
+
+\begin{itemize}
+\item Cross-joining every image against every species' text embedding and keeping the highest similarity per image reproduces the true label almost every time
+\item Achieved with zero labeled training examples --- valuable when labels are expensive, categories are numerous, or a classifier needs to be prototyped quickly
+\item The few errors involve birds in unusual poses or cropped at the frame's edge, cutting off the features that distinguish one species from another
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{From Pixels to Vectors}
+
+\begin{itemize}
+\item Pixel statistics (brightness, color proportions) are fast, interpretable, and describe the whole frame --- background and lighting included
+\item Pre-trained embeddings close the semantic gap: ViT for general visual similarity, SigLIP for connecting images directly to plain-language descriptions
+\item The same theme runs through the last three chapters: once documents, networks, or images become vectors or graphs, one small geometric toolkit --- distance, similarity, projection --- does most of the analytical work
+\end{itemize}
+
+\end{textframe}
 
 \end{document}

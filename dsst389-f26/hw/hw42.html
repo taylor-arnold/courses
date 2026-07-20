@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html lang="en">
+ <head>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>DSST389: Advanced Data Science</title>
+
+  <meta name="description" content="title">
+  <meta name="author" content="Taylor Arnold">
+  <meta charset="UTF-8">
+
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/fonts.css">
+  <link rel="stylesheet" href="../css/site.css">
+ </head>
+
+ <body>
+  <div class="container">
+    <h1>Homework 42</h1>
+    <p style="padding: 0 1em 1em 1em; font-size: 0.9em">
+      <span style="padding-right: 0.5em">
+        <b>
+          <a href="../index.html">[← back]</a>
+        </b>
+      </span>
+    </p>
+    <p>
+      This reading turns each document into a point in space and then measures the distances between the points. Hand write answers to the following.
+    </p>
+    <ol>
+      <li>Suppose the vocabulary is just three terms, in the order <i>poem</i>, <i>novel</i>, <i>london</i>. Take three documents with the TF-IDF vectors A = (3, 0, 1), B = (15, 0, 5), and C = (0, 3, 0). Compute the Euclidean distance from A to B and from A to C. Then compute the angle distance from A to B and from A to C using the formula in the reading. The two measures disagree about which document is A's nearest neighbor. Say which one is right, and use the disagreement to explain what B is: a document with the same vocabulary proportions as A but five times as much of it.</li>
+      <li>Most entries of a real document vector are zero, and the reading calls this a sparse embedding. Say why the zeros are there. Then say what the <code>min_df</code> and <code>max_df</code> filters do to the vocabulary before the vectors are built, and why a term appearing in every single page would contribute nothing to the distance between two pages even though it takes up a dimension.</li>
+      <li>The nearest-neighbor table pairs each author with the page closest to theirs, and the reading says the rows worth chasing are the ones that depart from what literary history would predict. Say what two pages being close in this space actually means, and be precise: these are Wikipedia articles, not novels. Then say what the distance table shows you that the UMAP plot cannot.</li>
+    </ol>
+  </div>
+
+  <script src="../js/site.js"></script>
+ </body>
+</html>

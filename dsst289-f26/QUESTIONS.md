@@ -3,14 +3,17 @@
 This file tells an agent how to write multiple-choice poll questions and append
 them to `poll/questions.json`. These are the live in-class questions the
 instructor selects from the poll dropdown; each one tests understanding of a
-specific idea from the course notes. The prompt will name **which chapters or
-sections** to draw from and **how many** questions to generate.
+specific idea from the course notes. Questions are organized by **homework**: the
+code on each question is its homework number, and each homework has an assigned
+reading (a chapter and a range of sections). The prompt may name a homework
+explicitly, or ask for "the sample questions," in which case you pick the next
+homework automatically (see "Generating the sample questions" below).
 
 ## Inputs and resources
 
 - **The question file**, `poll/questions.json`. This is a JSON array of question
   objects. Read the whole file first: you need the existing entries to match
-  their format and to continue the per-chapter numbering (see "Numbering"
+  their format and to continue the per-homework numbering (see "Numbering"
   below). Preserve the file's existing indentation (two spaces).
 
 - **The course notes.** The readings are the source of truth for every concept,
@@ -42,6 +45,40 @@ sections** to draw from and **how many** questions to generate.
   do not invent conventions or method names from memory. This course uses a
   specific Polars/plotnine dialect (see "Code conventions" below).
 
+- **The homework readings.** Each homework is assigned one chapter and a specific
+  range of sections. Draw questions only from the sections that homework covers,
+  not the whole chapter. The authoritative source is the schedule table in
+  `index.html` (the "Reading" and "Homework" columns); the mapping below is a
+  snapshot of it. If a homework here disagrees with `index.html`, trust
+  `index.html` and update this table.
+
+  | Homework | Chapter file | Sections |
+  |----------|--------------|----------|
+  | 01 | `01_intro.qmd` | 1.1–1.7 |
+  | 02 | `01_intro.qmd` | 1.8–1.10 |
+  | 03 | `02_organize.qmd` | 2.1–2.6 |
+  | 04 | `02_organize.qmd` | 2.7–2.11 |
+  | 05 | `03_types.qmd` | 3.1–3.9 |
+  | 06 | `04_graphics.qmd` | 4.1–4.3 |
+  | 07 | `04_graphics.qmd` | 4.4–4.8 |
+  | 08 | `05_group.qmd` | 5.1–5.5 |
+  | 09 | `05_group.qmd` | 5.6–5.9 |
+  | 10 | `06_window.qmd` | 6.1–6.5 |
+  | 11 | `06_window.qmd` | 6.6–6.9 |
+  | 12 | `07_graphics_ii.qmd` | 7.1–7.6 |
+  | 13 | `07_graphics_ii.qmd` | 7.7–7.10 |
+  | 14 | `09_restructure.qmd` | 9.1–9.4 |
+  | 15 | `10_collect.qmd` | 10.1–10.5 |
+  | 16 | *(project workshop — no reading)* | — |
+  | 17 | `10_collect.qmd` | 10.6–10.10 |
+  | 18 | `08_combine.qmd` | 8.1–8.6 |
+  | 19 | `08_combine.qmd` | 8.7–8.9 |
+  | 20 | `09_restructure.qmd` | 9.5–9.8 |
+  | 21 | *(project workshop — no reading)* | — |
+
+  Homeworks 16 and 21 are project workshops with no reading; they get no poll
+  questions. Skip them.
+
 - **The `ta-humanizer` skill.** Run the prose you write — question stems and
   option text — through it before finalizing (see "Humanize the prose").
 
@@ -68,11 +105,16 @@ existing entries. Each question object has this shape:
 Field by field:
 
 - **`question`** — the prompt shown to students. It **must** start with the
-  question code: the letter `Q`, the two-digit zero-padded chapter number, a
+  question code: the letter `Q`, the two-digit zero-padded **homework number**, a
   period, and the two-digit zero-padded question number, then `: ` and the
-  question text. So question 12 for chapter 3 starts with `Q03.12: `; question 4
-  for chapter 11 starts with `Q11.04: `. The code is what lets the instructor
-  find questions in order from the dropdown.
+  question text. So question 12 for homework 3 starts with `Q03.12: `; question 4
+  for homework 11 starts with `Q11.04: `. The code is what lets the instructor
+  find questions in order from the dropdown. The leading number is the homework
+  number, **not** the chapter number. The two coincide only at the very start
+  (homework 1 reads chapter 1); homeworks advance faster than chapters, so from
+  homework 2 on they diverge. Homework 2 still reads chapter 1, homeworks 3 and 4
+  both read chapter 2, and so on. Always use the homework number in the code, and
+  consult the mapping in "Homework readings" to know which sections to read.
 - **`options`** — **exactly four** options, lettered `A`, `B`, `C`, `D` in that
   order. Each is an object with a `letter` and a `text`.
 - **`correct`** — the `letter` of the single correct option (`"A"`, `"B"`,
@@ -80,17 +122,46 @@ Field by field:
 - **`id`** — a short unique slug. Use the lowercased code with a hyphen:
   `Q03.12` → `"q03-12"`. Confirm the id does not already appear in the file.
 
+## Generating the sample questions
+
+When the prompt says "generate the sample questions" (or similar) without naming
+a homework, produce the standard batch of **five** questions for the **next
+homework that has no questions yet**:
+
+1. Read `poll/questions.json` and find the highest homework number that already
+   has questions. The next homework is the target. Skip any homework with no
+   reading (16 and 21) — go to the following one.
+2. Look up that homework in the "Homework readings" table to get its chapter file
+   and section range, and read those sections in full.
+3. Write five questions on that reading, graded by difficulty:
+   - **two easy** — a direct recall or a one-step check a student who did the
+     reading should get quickly;
+   - **two moderately harder** — apply an idea, read a short piece of code, or
+     tell two similar things apart;
+   - **one more challenging** — the hardest of the set. It should be a genuine
+     step up (combine two ideas, reason about why an approach works), but still
+     fair and answerable from the reading, not a trick question.
+4. Follow every other rule in this file: consecutive numbering from `01`, the
+   `QNN.MM` code and matching `id`, four options A–D with one defensible answer
+   (make it option `A`, with `"correct": "A"`), plausible distractors, and a
+   pass through `ta-humanizer`.
+
+If the prompt instead names a specific homework, or asks for a different count or
+difficulty mix, follow the prompt; this section is only the default.
+
 ## Numbering
 
-Question numbers run **per chapter** and never repeat within a chapter. Before
-adding questions for a chapter, scan `questions.json` for existing `QNN.` codes
-in that chapter and continue from the highest one. If chapter 3 already has
-`Q03.01` through `Q03.11`, your first new chapter-3 question is `Q03.12`. If a
-chapter has no questions yet, start at `01`.
+Question numbers run **per homework** and never repeat within a homework. The
+leading two-digit number in the code is the homework number, not the chapter
+number (see the `question` field above). Before adding questions for a homework,
+scan `questions.json` for existing `QNN.` codes with that homework number and
+continue from the highest one. If homework 3 already has `Q03.01` through
+`Q03.11`, your first new homework-3 question is `Q03.12`. If a homework has no
+questions yet, start at `01`.
 
-When the prompt asks for several questions across one chapter, number them
-consecutively. When it spans multiple chapters, number each chapter's questions
-independently against that chapter's existing codes.
+When the prompt asks for several questions for one homework, number them
+consecutively. When it spans multiple homeworks, number each homework's
+questions independently against that homework's existing codes.
 
 Note: some older entries may predate this scheme and lack a `QNN.MM` prefix or a
 `correct` field. Leave them as they are; just don't collide with any codes they
@@ -108,8 +179,9 @@ method *returns*, why an approach works), not trivia or memorized syntax.
   student might hold — confusing a lazy expression with an eager value, mixing up
   two similar methods, assuming pandas-style bracket indexing, expecting a filter
   to return a scalar. Avoid throwaway options no one would pick.
-- **Vary the correct letter.** Do not make `A` correct every time; spread the
-  correct answer across A–D over a set of questions.
+- **Put the correct answer first.** For new entries, just make option `A` the
+  correct one and set `"correct": "A"`. Don't spend effort shuffling the answer
+  across letters — a later step scrambles the option order for us.
 - **Self-contained stems.** A student reading the question live should have
   everything they need. If a question refers to code, put the code inline in the
   stem (e.g. `c.hdi > 0.9`) rather than assuming an external snippet.
@@ -155,15 +227,19 @@ and the existing questions. Code fragments are exempt — humanize only the pros
 
 ## Checklist before finishing
 
-- [ ] Read the named chapters/sections in `~/gh/fds2` in full.
-- [ ] Read `questions.json` and continued per-chapter numbering from the highest
-      existing `QNN.MM` code.
-- [ ] Produced the number of questions the prompt asked for.
+- [ ] Identified the target homework (named in the prompt, or the next homework
+      with no questions yet for "the sample questions") and read its assigned
+      sections in `~/gh/fds2` in full, per the "Homework readings" table.
+- [ ] Read `questions.json` and continued per-homework numbering from the highest
+      existing `QNN.MM` code for that homework.
+- [ ] Produced the number of questions the prompt asked for (five for the sample
+      set: two easy, two moderately harder, one more challenging).
 - [ ] Every question starts with its `QNN.MM: ` code and has a matching `id`.
 - [ ] Every question has exactly four options lettered A–D and one `correct`
       letter.
-- [ ] Correct answers are defensible from the notes; distractors are plausible;
-      the correct letter varies across the set.
+- [ ] Correct answers are defensible from the notes and distractors are
+      plausible; the correct option is `A` with `"correct": "A"` on every new
+      entry.
 - [ ] Any code follows the Polars/plotnine dialect and is verified against the
       `.qmd`, not guessed.
 - [ ] The file is still valid JSON, existing entries untouched, indentation

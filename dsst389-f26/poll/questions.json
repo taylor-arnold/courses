@@ -1,13 +1,1256 @@
 [
   {
-    "id": "q01-01",
-    "question": "Q01.01: The call round(number=3.14159, ndigits=2) passes its inputs as named arguments. How does its result compare to round(3.14159, 2)?",
+    "id": "gen-01",
+    "question": "How well did you understand the material you read for today?",
     "options": [
-      { "letter": "A", "text": "The named version raises an error because round does not accept keyword arguments." },
-      { "letter": "B", "text": "They return the same value, since named arguments identify each input by name instead of by position." },
-      { "letter": "C", "text": "The named version rounds to a different number of digits because naming the inputs reorders them." },
-      { "letter": "D", "text": "They differ because named arguments always round to the nearest integer." }
+      { "letter": "A", "text": "Very well." },
+      { "letter": "B", "text": "Mostly, with a few unclear points." },
+      { "letter": "C", "text": "Somewhat; a fair amount was confusing." },
+      { "letter": "D", "text": "Not well; I struggled with most of it." }
     ],
-    "correct": "B"
+    "resort": false
+  },
+  {
+    "id": "gen-02",
+    "question": "How do you feel about the pace of the course?",
+    "options": [
+      { "letter": "A", "text": "Too slow." },
+      { "letter": "B", "text": "A little slow." },
+      { "letter": "C", "text": "About right." },
+      { "letter": "D", "text": "Too fast." }
+    ],
+    "resort": false
+  },
+  {
+    "id": "gen-03",
+    "question": "How well did you feel about the material from the previous class?",
+    "options": [
+      { "letter": "A", "text": "Very comfortable." },
+      { "letter": "B", "text": "Mostly comfortable, with a few gaps." },
+      { "letter": "C", "text": "Somewhat shaky." },
+      { "letter": "D", "text": "Not comfortable at all." }
+    ],
+    "resort": false
+  },
+  {
+    "id": "gen-04",
+    "question": "How prepared do you feel for the next exam?",
+    "options": [
+      { "letter": "A", "text": "Very prepared." },
+      { "letter": "B", "text": "Fairly prepared." },
+      { "letter": "C", "text": "Somewhat unprepared." },
+      { "letter": "D", "text": "Not prepared at all." }
+    ],
+    "resort": false
+  },
+  {
+    "id": "q30-01",
+    "question": "Q30.01: What does this pipeline return?\n\n```python\n(\n    country\n    .sort(c.pop, descending=True)\n)\n```",
+    "options": [
+      { "letter": "A", "text": "The rows of country reordered so the largest population comes first, with every row and column kept." },
+      { "letter": "B", "text": "The rows of country reordered so the smallest population comes first, with every row and column kept." },
+      { "letter": "C", "text": "One row per region, ordered by population from largest to smallest, keeping the region and pop columns." },
+      { "letter": "D", "text": "Only the rows holding the largest populations, with the remaining rows discarded from the result." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q30-02",
+    "question": "Q30.02: What does this pipeline return?\n\n```python\n(\n    country\n    .filter(c.hdi > 0.9)\n)\n```",
+    "options": [
+      { "letter": "A", "text": "Only the rows where hdi is strictly greater than 0.9, with every column retained." },
+      { "letter": "B", "text": "Only the rows where hdi is 0.9 or greater, with every column retained." },
+      { "letter": "C", "text": "Every row of country, but with hdi set to null wherever it is 0.9 or below." },
+      { "letter": "D", "text": "Only the hdi column, restricted to the rows where its value is above 0.9." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q30-03",
+    "question": "Q30.03: What does this pipeline return?\n\n```python\n(\n    country\n    .select(c.iso, c.lat, c.lon)\n)\n```",
+    "options": [
+      { "letter": "A", "text": "A DataFrame containing only iso, lat, and lon, in that order." },
+      { "letter": "B", "text": "A DataFrame with iso, lat, and lon appended after the existing columns." },
+      { "letter": "C", "text": "A DataFrame containing every column except iso, lat, and lon." },
+      { "letter": "D", "text": "A DataFrame containing only iso, lat, and lon, sorted by iso." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q30-04",
+    "question": "Q30.04: What does this pipeline return?\n\n```python\n(\n    country\n    .group_by(c.region)\n    .agg(hdi_avg = c.hdi.mean())\n)\n```",
+    "options": [
+      { "letter": "A", "text": "One row per region, with the columns region and hdi_avg." },
+      { "letter": "B", "text": "One row per country, with the columns region and hdi_avg." },
+      { "letter": "C", "text": "One row per region, keeping every original column plus hdi_avg." },
+      { "letter": "D", "text": "A single row holding the mean hdi across all countries." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q30-05",
+    "question": "Q30.05: What does this pipeline return?\n\n```python\n(\n    country\n    .with_columns(hdi_avg = c.hdi.mean().over(c.region))\n)\n```",
+    "options": [
+      { "letter": "A", "text": "All 135 rows, each carrying its own region's average hdi in a new hdi_avg column." },
+      { "letter": "B", "text": "One row per region, each carrying that region's average hdi in an hdi_avg column." },
+      { "letter": "C", "text": "All 135 rows, each carrying the average hdi across all countries in an hdi_avg column." },
+      { "letter": "D", "text": "All 135 rows, with the hdi column overwritten by each region's average hdi." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q30-06",
+    "question": "Q30.06: What does n_large hold for each region?\n\n```python\n(\n    country\n    .group_by(c.region, maintain_order=True)\n    .agg(n_large = (c.pop > 100).sum())\n)\n```",
+    "options": [
+      { "letter": "A", "text": "The number of countries in the region whose population is above 100." },
+      { "letter": "B", "text": "The total population of the countries in the region whose population is above 100." },
+      { "letter": "C", "text": "The fraction of the region's countries whose population is above 100." },
+      { "letter": "D", "text": "The number of countries in the region, regardless of population." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q30-07",
+    "question": "Q30.07: What do n and n_gini hold for each region?\n\n```python\n(\n    country\n    .group_by(c.region, maintain_order=True)\n    .agg(\n        n = pl.len(),\n        n_gini = c.gini.count()\n    )\n)\n```",
+    "options": [
+      { "letter": "A", "text": "n is the number of rows in the region; n_gini is the number of those rows with a non-missing gini." },
+      { "letter": "B", "text": "n and n_gini are always equal, since both count the rows in the region." },
+      { "letter": "C", "text": "n is the number of rows in the region; n_gini is the number of distinct gini values in the region." },
+      { "letter": "D", "text": "n is the number of non-missing gini values; n_gini is the number of rows in the region." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q30-08",
+    "question": "Q30.08: What does maintain_order=True control here?\n\n```python\n(\n    country\n    .group_by(c.region, maintain_order=True)\n    .agg(count = pl.len())\n)\n```",
+    "options": [
+      { "letter": "A", "text": "The groups appear in the order their first row occurs in country." },
+      { "letter": "B", "text": "The groups appear sorted alphabetically by region name." },
+      { "letter": "C", "text": "The groups appear in an order that can change from one run to the next." },
+      { "letter": "D", "text": "The groups appear sorted by count, from largest to smallest." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q30-09",
+    "question": "Q30.09: What does this pipeline return?\n\n```python\n(\n    country\n    .select(\n        pop_total = c.pop.sum(),\n        n = pl.len()\n    )\n)\n```",
+    "options": [
+      { "letter": "A", "text": "A one-row DataFrame holding the total population and the row count." },
+      { "letter": "B", "text": "A DataFrame with one row per region holding its total population and row count." },
+      { "letter": "C", "text": "The country DataFrame with pop_total and n attached to every row." },
+      { "letter": "D", "text": "An error, since aggregating values requires a group_by before it." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q30-10",
+    "question": "Q30.10: What does change hold?\n\n```python\n(\n    cellphone\n    .sort(c.iso, c.year)\n    .with_columns(\n        change = c.cell - c.cell.shift(1).over(c.iso)\n    )\n)\n```",
+    "options": [
+      { "letter": "A", "text": "Within each country, each year's cell minus the previous year's, so the first year of each country is null." },
+      { "letter": "B", "text": "Within each country, each year's cell minus the next year's, so the last year of each country is null." },
+      { "letter": "C", "text": "Each year's cell minus the previous row's, carrying the subtraction across country boundaries." },
+      { "letter": "D", "text": "Within each country, the running total of cell up to and including each year." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q30-11",
+    "question": "Q30.11: What does this join return?\n\n```python\n(\n    border\n    .join(c_sml, on=c.iso)\n)\n```",
+    "options": [
+      { "letter": "A", "text": "The rows of border matched to c_sml on iso, dropping border rows with no match." },
+      { "letter": "B", "text": "The rows of border matched to c_sml on iso, keeping all border rows and filling null where there is no match." },
+      { "letter": "C", "text": "Every combination of a border row with a c_sml row, whether or not iso matches." },
+      { "letter": "D", "text": "Only the border rows that have a match in c_sml, with no columns added from c_sml." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q30-12",
+    "question": "Q30.12: What shape does cell_wide have?\n\n```python\ncell_wide = (\n    cellphone\n    .pivot(index=c.year, on=c.iso, values=c.cell)\n)\n```",
+    "options": [
+      { "letter": "A", "text": "One row per year and one column per country, filled with the cell values." },
+      { "letter": "B", "text": "One row per country and one column per year, filled with the cell values." },
+      { "letter": "C", "text": "One row per year and country combination, with a single cell column." },
+      { "letter": "D", "text": "One row per year, keeping iso and cell as two separate columns." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q30-13",
+    "question": "Q30.13: You want every point in a scatter plot of `hdi` against `happy` colored according to its `subregion`. Which layer does this?\n\n```python\n(country.filter(c.region == \"Europe\").pipe(ggplot, aes(c.hdi, c.happy))...)\n```",
+    "options": [
+      { "letter": "A", "text": "`.geom_point(aes(color=c.subregion))`" },
+      { "letter": "B", "text": "`.geom_point(color=c.subregion)`" },
+      { "letter": "C", "text": "`.geom_point(color=\"subregion\")`" },
+      { "letter": "D", "text": "`.geom_point(aes(c.subregion))`" }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q30-14",
+    "question": "Q30.14: You want all of the points fixed to the single color \"#F5276C\" rather than colored by any column. Which layer does this?\n\n```python\n(country.filter(c.region == \"Europe\").pipe(ggplot, aes(c.hdi, c.happy))...)\n```",
+    "options": [
+      { "letter": "A", "text": "`.geom_point(color=\"#F5276C\")`" },
+      { "letter": "B", "text": "`.geom_point(aes(color=\"#F5276C\"))`" },
+      { "letter": "C", "text": "`.geom_point(fill=\"#F5276C\")`" },
+      { "letter": "D", "text": "`.geom_point(aes(color=c.hdi))`" }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q30-15",
+    "question": "Q30.15: You have the raw `country` table with one row per country and want a plot whose bars show how many countries fall in each `subregion`, letting the geometry do the counting. Which chain does this?",
+    "options": [
+      { "letter": "A", "text": "`country.pipe(ggplot, aes(c.subregion)).geom_bar()`" },
+      { "letter": "B", "text": "`country.pipe(ggplot, aes(c.subregion)).geom_col()`" },
+      { "letter": "C", "text": "`country.pipe(ggplot, aes(c.subregion, c.n)).geom_bar()`" },
+      { "letter": "D", "text": "`country.pipe(ggplot, aes(c.subregion)).geom_point()`" }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q30-16",
+    "question": "Q30.16: You already computed a count column `n` per `subregion` and want each `n` drawn as the height of a bar without any further counting. Which chain does this?",
+    "options": [
+      { "letter": "A", "text": "`.sort(c.n).pipe(ggplot, aes(c.subregion, c.n)).geom_col()`" },
+      { "letter": "B", "text": "`.sort(c.n).pipe(ggplot, aes(c.subregion, c.n)).geom_bar()`" },
+      { "letter": "C", "text": "`.sort(c.n).pipe(ggplot, aes(c.subregion)).geom_col()`" },
+      { "letter": "D", "text": "`.sort(c.n).pipe(ggplot, aes(c.subregion)).geom_bar()`" }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q30-17",
+    "question": "Q30.17: You want to show the distribution of the numeric column `hdi` by cutting it into equal intervals and counting how many countries fall in each. Which chain does this?",
+    "options": [
+      { "letter": "A", "text": "`country.pipe(ggplot, aes(c.hdi)).geom_histogram(binwidth=0.1, boundary=0)`" },
+      { "letter": "B", "text": "`country.pipe(ggplot, aes(c.hdi)).geom_boxplot(binwidth=0.1, boundary=0)`" },
+      { "letter": "C", "text": "`country.pipe(ggplot, aes(c.region, c.hdi)).geom_histogram(binwidth=0.1, boundary=0)`" },
+      { "letter": "D", "text": "`country.pipe(ggplot, aes(c.hdi)).geom_bar(binwidth=0.1, boundary=0)`" }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q30-18",
+    "question": "Q30.18: You are plotting `year` against `cell` and want a separate line for each country, colored by its `iso` code. Which layer does this?\n\n```python\n(cellphone.filter(c.iso.is_in([\"USA\", \"GBR\", \"IRL\", \"CAN\"])).pipe(ggplot, aes(c.year, c.cell))...)\n```",
+    "options": [
+      { "letter": "A", "text": "`.geom_line(aes(color=c.iso))`" },
+      { "letter": "B", "text": "`.geom_line(color=c.iso)`" },
+      { "letter": "C", "text": "`.geom_col(aes(color=c.iso))`" },
+      { "letter": "D", "text": "`.geom_line(aes(label=c.iso))`" }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q30-19",
+    "question": "Q30.19: You want a small textual label placed at each point giving the country's `iso` code. Which layer does this?\n\n```python\n(country.filter(c.region == \"Europe\").pipe(ggplot, aes(c.hdi, c.happy))...)\n```",
+    "options": [
+      { "letter": "A", "text": "`.geom_text(aes(label=c.iso))`" },
+      { "letter": "B", "text": "`.geom_text(label=c.iso)`" },
+      { "letter": "C", "text": "`.geom_text(aes(c.iso))`" },
+      { "letter": "D", "text": "`.geom_point(aes(label=c.iso))`" }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q30-20",
+    "question": "Q30.20: You want to split the scatter plot into a grid of separate panels, one per `region`, rather than showing every region on a single set of axes. Which layer does this?\n\n```python\n(country.pipe(ggplot, aes(c.hdi, c.happy)).geom_point()...)\n```",
+    "options": [
+      { "letter": "A", "text": "`.facet_wrap(\"region\")`" },
+      { "letter": "B", "text": "`.geom_point(aes(color=c.region))`" },
+      { "letter": "C", "text": "`.facet_wrap(aes(color=c.region))`" },
+      { "letter": "D", "text": "`.coord_flip(\"region\")`" }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q31-01",
+    "question": "Q31.01: In the spatial chapter, what does importing the funs module do?",
+    "options": [
+      { "letter": "A", "text": "It registers a geo namespace on every Polars DataFrame for spatial work." },
+      { "letter": "B", "text": "It permanently converts every Polars DataFrame into a GeoPandas GeoDataFrame." },
+      { "letter": "C", "text": "It adds geometry types directly to the Polars core library." },
+      { "letter": "D", "text": "It loads the metro dataset into a variable named geo." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q31-02",
+    "question": "Q31.02: The geo namespace stores each geometry as text in a column named geometry. Which text standard does it use?",
+    "options": [
+      { "letter": "A", "text": "Well-Known Text (WKT)." },
+      { "letter": "B", "text": "GeoJSON." },
+      { "letter": "C", "text": "Well-Known Binary (WKB)." },
+      { "letter": "D", "text": "A plain comma-separated pair of latitude and longitude." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q31-03",
+    "question": "Q31.03: When you build points with metro.geo.points_from_xy(\"lon\", \"lat\"), which CRS does it record by default, and what is that code?",
+    "options": [
+      { "letter": "A", "text": "EPSG:4326, which is WGS 84, the standard latitude/longitude system." },
+      { "letter": "B", "text": "EPSG:5069, an equal-area projection for the contiguous United States." },
+      { "letter": "C", "text": "EPSG:3857, the Web Mercator system used by Google Maps." },
+      { "letter": "D", "text": "None; points_from_xy leaves the coordinate system undeclared." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q31-04",
+    "question": "Q31.04: You could build the geometry column by hand with pl.format(\"POINT ({} {})\", c.lon, c.lat). What does points_from_xy do that this hand-built version does not?",
+    "options": [
+      { "letter": "A", "text": "It records which coordinate system the numbers belong to, in the _crs column." },
+      { "letter": "B", "text": "It stores the geometry as binary instead of readable text." },
+      { "letter": "C", "text": "It reprojects the points into an equal-area CRS." },
+      { "letter": "D", "text": "It drops the original lon and lat columns from the table." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q31-05",
+    "question": "Q31.05: In metro.geo.explore(tooltip=[\"name\"]), why is the column given as the string \"name\" rather than as c.name?",
+    "options": [
+      { "letter": "A", "text": "explore hands the names straight to GeoPandas, and c. only works inside Polars expressions and aes()." },
+      { "letter": "B", "text": "c.name would match every column whose name starts with \"name\", so a string is required." },
+      { "letter": "C", "text": "A tooltip can show only one column, and c.name would try to show several." },
+      { "letter": "D", "text": "explore runs before the Polars expression system is loaded, so c. is unavailable." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q32-01",
+    "question": "Q32.01: Point data can be drawn with geom_point, but polygon data needs geom_map. Why?",
+    "options": [
+      { "letter": "A", "text": "A polygon is a series of boundary coordinates, and geom_map traces the shape from them while a scatter plot cannot." },
+      { "letter": "B", "text": "geom_point cannot read WKT strings, but geom_map can." },
+      { "letter": "C", "text": "Polygons store only a name, not coordinates, so a scatter plot has nothing to place." },
+      { "letter": "D", "text": "Scatter plots require a projected CRS, but geom_map does not." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q32-02",
+    "question": "Q32.02: In GeoPandas, centroid is a property rather than a method. What does state.geo.centroid do?",
+    "options": [
+      { "letter": "A", "text": "Accessed without parentheses, it returns a table whose geometry column holds each polygon's center point." },
+      { "letter": "B", "text": "Called as centroid(), it returns the area enclosed by each polygon." },
+      { "letter": "C", "text": "Accessed without parentheses, it permanently replaces the polygons stored in state with points." },
+      { "letter": "D", "text": "It returns a single point, the center of all the polygons combined." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q32-03",
+    "question": "Q32.03: Why do the notes project the states before computing centroid and area?",
+    "options": [
+      { "letter": "A", "text": "On raw latitude and longitude the results come out as meaningless numbers in squared degrees." },
+      { "letter": "B", "text": "GeoPandas refuses to run either one unless the CRS is EPSG:4326." },
+      { "letter": "C", "text": "Unprojected data has no geometry column for them to read." },
+      { "letter": "D", "text": "The centroid always lands outside the polygon unless the data is projected." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q32-04",
+    "question": "Q32.04: The area property returns ordinary numbers rather than geometries. How does the geo namespace add them to the table?",
+    "options": [
+      { "letter": "A", "text": "It appends them as a new column named after the property, area." },
+      { "letter": "B", "text": "It writes them into the geometry column, replacing the polygons." },
+      { "letter": "C", "text": "It returns a bare column with no name attached." },
+      { "letter": "D", "text": "It overwrites the _crs column with the area values." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q32-05",
+    "question": "Q32.05: A choropleth that colors each state by its total population can mislead a reader. Why, and what kind of variable suits a choropleth better?",
+    "options": [
+      { "letter": "A", "text": "Large states dominate the viewer's attention regardless of population, so area-based variables like density read more honestly than absolute counts." },
+      { "letter": "B", "text": "Choropleths cannot display counts at all, so the map would come out blank." },
+      { "letter": "C", "text": "The colors are assigned at random, so every variable is equally misleading." },
+      { "letter": "D", "text": "Population is not a spatial variable, so it cannot be joined to the state geometries." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q33-01",
+    "question": "Q33.01: How does a spatial join decide which rows of two tables to match, compared to the ordinary table join used earlier in the book?",
+    "options": [
+      { "letter": "A", "text": "It matches rows based on geometric relationships such as containment or proximity rather than equal key values." },
+      { "letter": "B", "text": "It matches rows only where a shared key column holds equal values in both tables." },
+      { "letter": "C", "text": "It matches rows that occupy the same position in each table's row order." },
+      { "letter": "D", "text": "It matches every row of one table to every row of the other regardless of geometry." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q33-02",
+    "question": "Q33.02: Joining the state table to itself with state.geo.sjoin(state, predicate=\"touches\") returns what?",
+    "options": [
+      { "letter": "A", "text": "Pairs of states that share at least one boundary point, with each border appearing twice." },
+      { "letter": "B", "text": "Pairs of states whose interiors overlap, with each border appearing once." },
+      { "letter": "C", "text": "Each state matched only to itself, since every state touches its own boundary." },
+      { "letter": "D", "text": "Pairs of states whose centroids fall within a fixed distance of each other." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q33-03",
+    "question": "Q33.03: In the result of metro.geo.sjoin(state), which geometry ends up in the output geometry column?",
+    "options": [
+      { "letter": "A", "text": "The point geometry from metro, the first (left) table." },
+      { "letter": "B", "text": "The polygon geometry from state, the second (right) table." },
+      { "letter": "C", "text": "A new geometry formed by intersecting each point with its state." },
+      { "letter": "D", "text": "Both geometries, kept side by side in separate _left and _right columns." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q33-04",
+    "question": "Q33.04: In metro.geo.sjoin_nearest(metro, exclusive=True, distance_col=\"distance\"), what does exclusive=True accomplish?",
+    "options": [
+      { "letter": "A", "text": "It stops each metro area from matching itself, which would otherwise be the zero-distance nearest feature." },
+      { "letter": "B", "text": "It keeps only the single closest pair in the whole table and drops the others." },
+      { "letter": "C", "text": "It limits matches to metro areas that fall inside the same state." },
+      { "letter": "D", "text": "It drops any match whose distance is greater than the average distance." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q33-05",
+    "question": "Q33.05: The distance column produced by sjoin_nearest on the metro data comes out in meters rather than degrees. What explains this?",
+    "options": [
+      { "letter": "A", "text": "The metro data was projected to Albers (EPSG:5069) first, and distances take the units of the current CRS." },
+      { "letter": "B", "text": "The sjoin_nearest method always reports distances in meters no matter the CRS." },
+      { "letter": "C", "text": "The distance_col parameter converts the raw degree distances into meters automatically." },
+      { "letter": "D", "text": "WGS 84 already records distances in meters, so no projection was required." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q34-01",
+    "question": "Q34.01: What does metro.geo.buffer(100_000) produce from the metro point data, given the data is in the Albers projection?",
+    "options": [
+      { "letter": "A", "text": "A disc of radius 100,000 meters around each point, turning each point into a polygon." },
+      { "letter": "B", "text": "A single point shifted 100,000 meters away from each original location." },
+      { "letter": "C", "text": "The 100,000 metro areas nearest to each point." },
+      { "letter": "D", "text": "A line joining each point to every other point within 100,000 meters." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q34-02",
+    "question": "Q34.02: Why does metro.geo.buffer(100_000).geo.sjoin(state) match some metro areas to more than one state, when the unbuffered join matched each to exactly one?",
+    "options": [
+      { "letter": "A", "text": "Each buffered metro is now a polygon, so it can overlap several states within 100 km instead of only the one holding its center point." },
+      { "letter": "B", "text": "Buffering shifts the CRS, which moves points onto nearby state borders." },
+      { "letter": "C", "text": "The sjoin method duplicates every metro row once per state by default." },
+      { "letter": "D", "text": "Buffering dissolves the boundaries between adjacent states so they count as one." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q34-03",
+    "question": "Q34.03: How do the dissolve and explode methods differ in what they do to geometries?",
+    "options": [
+      { "letter": "A", "text": "dissolve merges grouped geometries into one and erases internal boundaries, while explode splits each multi-part geometry into one row per part." },
+      { "letter": "B", "text": "dissolve splits each multi-part geometry into separate rows, while explode merges grouped geometries into one." },
+      { "letter": "C", "text": "Both merge geometries, but dissolve keeps the internal boundaries while explode removes them." },
+      { "letter": "D", "text": "dissolve removes vertices to coarsen a boundary, while explode adds vertices to smooth it." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q34-04",
+    "question": "Q34.04: The notes advise simplifying geometries for display rather than for analysis. What is the reason?",
+    "options": [
+      { "letter": "A", "text": "Each geometry is simplified independently, so shared borders can develop small gaps or overlaps that break predicates like touches." },
+      { "letter": "B", "text": "Simplifying changes the CRS, so any distances computed afterward come out wrong." },
+      { "letter": "C", "text": "Simplifying permanently deletes the original high-resolution geometries from the source file." },
+      { "letter": "D", "text": "Simplifying adds vertices, which makes later spatial joins slower on large tables." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q34-05",
+    "question": "Q34.05: After state.geo.explode(), recomputing area with .geo.area changes the values for Hawaii's rows. Why does the copied area column change?",
+    "options": [
+      { "letter": "A", "text": "explode copies the single state-level area onto every island row, so recomputing replaces each copy with that island's own area." },
+      { "letter": "B", "text": "explode sums the island areas, so recomputing divides the total evenly across the rows." },
+      { "letter": "C", "text": "explode leaves the area column empty, so recomputing fills each row with the first non-null value." },
+      { "letter": "D", "text": "explode reprojects each island to a new CRS, so recomputing reports area in different units." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q35-01",
+    "question": "Q35.01: The notes describe several HTTP status codes a server can return. Which situation does status code 429 signal?",
+    "options": [
+      { "letter": "A", "text": "The client is sending requests too quickly and should wait before retrying." },
+      { "letter": "B", "text": "The requested resource was not found anywhere on the server." },
+      { "letter": "C", "text": "The request succeeded and the response body holds the data." },
+      { "letter": "D", "text": "The server itself hit an internal error while handling the request." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q35-02",
+    "question": "Q35.02: The cache is configured with allowable_codes=(200, 404) instead of the default of storing only 200 responses. Why include 404?",
+    "options": [
+      { "letter": "A", "text": "A 404 for an article with no page views is a stable, informative answer, so caching it keeps that request off the network on later reruns." },
+      { "letter": "B", "text": "A 404 means the client sent requests too quickly, so caching it makes the code wait before it retries." },
+      { "letter": "C", "text": "A 404 signals a temporary server error, so caching it avoids re-downloading data that is about to change." },
+      { "letter": "D", "text": "A 404 is a response the server wants retried later, so caching it schedules that retry automatically." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q35-03",
+    "question": "Q35.03: The authors table carries both a numeric page_id and a title stored as doc_id. Why keep both rather than just one?",
+    "options": [
+      { "letter": "A", "text": "The page_id is stable because it survives a page being renamed, while doc_id is readable and says who a row is about; each does something the other cannot." },
+      { "letter": "B", "text": "The page_id is required for joins while doc_id cannot join tables at all, so both are needed to combine data later." },
+      { "letter": "C", "text": "The page_id comes from the Action API and doc_id comes from the REST API, so keeping both records which service each row came from." },
+      { "letter": "D", "text": "The page_id is unique within the corpus but doc_id is not, so both are needed to identify a row without ambiguity." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q35-04",
+    "question": "Q35.04: Article text is collected with prop=extracts and explaintext=1, in a loop over one page at a time rather than a batched request. What do these choices reflect?",
+    "options": [
+      { "letter": "A", "text": "The explaintext setting returns the article as plain text with markup stripped, and full-length extracts are limited to one page per request, so the collection must loop." },
+      { "letter": "B", "text": "The explaintext setting returns the raw wiki markup, and extracts are limited to one page per request, so the loop reassembles the markup afterward." },
+      { "letter": "C", "text": "The explaintext setting returns rendered HTML, and batching is possible but avoided so each response stays small enough to cache." },
+      { "letter": "D", "text": "The explaintext setting returns plain text, and the loop exists because the extracts property cannot resolve redirects in a batched call." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q35-05",
+    "question": "Q35.05: The polite_get helper calls session.cookies.clear() before every request. Without it, requests_cache sends cached entries back over the network anyway. What is the mechanism?",
+    "options": [
+      { "letter": "A", "text": "Wikimedia responses carry Vary: Cookie, so the cache compares current request cookies against those stored with the response; rotating session cookies differ each run, failing the match and forcing a network fetch." },
+      { "letter": "B", "text": "The rotating session cookies count against the rate limit, so once they accumulate the server returns 429 and the cache falls back to a fresh network request." },
+      { "letter": "C", "text": "The requests_cache library refuses to store any response that arrives with cookies set, so leaving the cookie jar full means those responses were never cached at all." },
+      { "letter": "D", "text": "The accumulated cookies get appended to the request URL as query parameters, so each request no longer matches the cache key built from the original URL." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q36-01",
+    "question": "Q36.01: Outgoing links are collected with prop=links and plnamespace=0, and a separate links_internal table is built by joining links against authors. What do these two steps accomplish?",
+    "options": [
+      { "letter": "A", "text": "The plnamespace=0 setting keeps only links to ordinary articles, and the join to authors narrows the full link list down to author-to-author edges." },
+      { "letter": "B", "text": "The plnamespace=0 setting keeps only links to talk and category pages, and the join to authors removes duplicate edges between the same two authors." },
+      { "letter": "C", "text": "The plnamespace=0 setting restricts the result to internal links, and the join to authors converts each directed edge into an undirected one for the network chapter." },
+      { "letter": "D", "text": "The plnamespace=0 setting limits each page to its first namespace of links, and the join to authors attaches the article text needed to weight each edge." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q36-02",
+    "question": "Q36.02: The page view endpoint builds the request into the URL path with segments en.wikipedia/all-access/user/.../daily/20250101/20251231. What do the user segment and the fixed date range do?",
+    "options": [
+      { "letter": "A", "text": "The user segment counts human readers and excludes bots, and fixing the date range means a rerun requests the same data instead of a window that drifts with the current date." },
+      { "letter": "B", "text": "The user segment counts only logged-in readers, and fixing the date range caps the response at one year so it fits in a single request." },
+      { "letter": "C", "text": "The user segment filters to requests from the account making the call, and fixing the date range lets the cache expire entries older than the start date." },
+      { "letter": "D", "text": "The user segment combines desktop and mobile traffic, and fixing the date range excludes days on which the article did not yet exist." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q36-03",
+    "question": "Q36.03: The revisions table stores a rev_id for each edit, which the notes call the most stable identifier in the corpus. Why does that matter?",
+    "options": [
+      { "letter": "A", "text": "Each rev_id names one immutable version of one page, and passing it to the Action API's revids parameter returns that exact text even after the live article changes." },
+      { "letter": "B", "text": "Each rev_id is the running byte size of the article, so sorting on it reconstructs how the page grew without parsing timestamps." },
+      { "letter": "C", "text": "Each rev_id is reused across pages for edits made on the same day, so it groups simultaneous edits into a single stable event." },
+      { "letter": "D", "text": "Each rev_id is assigned by the local cache rather than the server, so it stays constant even if Wikipedia renumbers its revisions." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q36-04",
+    "question": "Q36.04: When the curated list of 75 authors is resolved, Katherine Philipps and Margaret Cavendish both change to a different title. How do the two cases differ?",
+    "options": [
+      { "letter": "A", "text": "Katherine Philipps was a transcription typo, while Margaret Cavendish was a legitimate short name that Wikipedia redirects to a fuller formal title; following redirects fixed both." },
+      { "letter": "B", "text": "Katherine Philipps was a capitalization issue fixed by normalization, while Margaret Cavendish was a typo fixed by a redirect; the two used different mechanisms." },
+      { "letter": "C", "text": "Katherine Philipps pointed at a missing page with a negative ID, while Margaret Cavendish pointed at a real page; only the second was kept in the corpus." },
+      { "letter": "D", "text": "Katherine Philipps resolved to a different-language article, while Margaret Cavendish resolved within English Wikipedia; both required percent-encoding." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q36-05",
+    "question": "Q36.05: The pipeline splits into a raw layer (the requests cache) and a processed layer (Parquet tables), and the notes claim the processed tables can be rebuilt without any network access. What makes that guarantee hold?",
+    "options": [
+      { "letter": "A", "text": "The cache stores every exact response with expire_after=None, including the 404s, so each table is a pure transformation of bytes already on disk and re-running the code touches no server." },
+      { "letter": "B", "text": "The Parquet files embed a copy of the raw JSON alongside the tidy columns, so the processed layer is self-contained and the cache is only a backup." },
+      { "letter": "C", "text": "The manifest lists every endpoint and parameter used, so the code can regenerate the tables by replaying those requests against a local copy of Wikipedia." },
+      { "letter": "D", "text": "The revision IDs let the Action API return old text, so any table can be reconstructed by re-requesting each pinned revision from the server." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q37-01",
+    "question": "Q37.01: The notes plot Chaucer's page views two ways: against a row number, then against a fractional year computed as year + (month-1)/12 + (day-1)/(12*31). What does the fractional-year version gain over the row-number version?",
+    "options": [
+      { "letter": "A", "text": "You can approximately read a date off the axis, and the code works even if the data is unsorted, unevenly spaced, or missing days." },
+      { "letter": "B", "text": "It produces axis labels that need no explanation to a reader, unlike the row-number axis." },
+      { "letter": "C", "text": "It stores each observation as a true date type, which unlocks the .dt namespace for later use." },
+      { "letter": "D", "text": "It guarantees the rows are placed in chronological order before the plot is drawn." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q37-02",
+    "question": "Q37.02: The notes extract a weekday with c.date.dt.weekday() and average views within each one. How does this method number the days of the week?",
+    "options": [
+      { "letter": "A", "text": "Monday is 1 and Sunday is 7." },
+      { "letter": "B", "text": "Sunday is 1 and Saturday is 7." },
+      { "letter": "C", "text": "Monday is 0 and Sunday is 6." },
+      { "letter": "D", "text": "Sunday is 0 and Saturday is 6." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q37-03",
+    "question": "Q37.03: When page size is plotted over time for two authors, Emily Brontë's line covers only about a year while Chaucer's reaches back to 2021. What explains the different spans?",
+    "options": [
+      { "letter": "A", "text": "The data holds the 500 most recent edits per page, so a heavily edited page reaches back a shorter time than a rarely edited one." },
+      { "letter": "B", "text": "Brontë's Wikipedia page was created more recently, so it simply has fewer years of history available to plot." },
+      { "letter": "C", "text": "The plot filters each author to a fixed range of years, and Brontë happened to have fewer edits within that range." },
+      { "letter": "D", "text": "Brontë's timestamps were stored as strings and many of them failed to parse into datetime objects." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q37-04",
+    "question": "Q37.04: The notes distinguish .dt.replace_time_zone() from .dt.convert_time_zone(). Which description matches both correctly?",
+    "options": [
+      { "letter": "A", "text": "replace_time_zone attaches a zone to a naive datetime without changing the clock reading; convert_time_zone re-expresses an aware datetime in another zone, changing the reading." },
+      { "letter": "B", "text": "replace_time_zone re-expresses an aware datetime in another zone, changing the reading; convert_time_zone attaches a zone to a naive datetime without changing the reading." },
+      { "letter": "C", "text": "Both attach a zone to a naive datetime, but replace_time_zone keeps the reading while convert_time_zone shifts it by the offset." },
+      { "letter": "D", "text": "Both re-express an aware datetime in another zone, but only convert_time_zone leaves the underlying clock reading unchanged." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q37-05",
+    "question": "Q37.05: The notes warn against calling .dt.convert_time_zone('America/New_York') directly on the naive timestamp column instead of attaching UTC first. Why does that shortcut give the correct answer here yet remain dangerous?",
+    "options": [
+      { "letter": "A", "text": "Converting a naive datetime silently assumes it was already UTC; that holds for Wikipedia's timestamps, but the same code would wrongly shift naive local timestamps from another source." },
+      { "letter": "B", "text": "Converting a naive datetime raises a warning here that is easy to overlook, and that warning would be suppressed entirely for local timestamps from another source." },
+      { "letter": "C", "text": "Converting a naive datetime rounds it to the nearest hour, which matches here but would misplace timestamps recorded to the second from another source." },
+      { "letter": "D", "text": "Converting a naive datetime leaves the reading unchanged because UTC has no offset, but it would overwrite the zone label on already aware data from another source." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q38-01",
+    "question": "Q38.01: The notes call .dt.truncate() the standard first step in turning an event log into a time series. Why does truncation serve that role?",
+    "options": [
+      { "letter": "A", "text": "It rounds each timestamp down to a chosen duration, so every event in the same interval shares one value that .group_by() can collect." },
+      { "letter": "B", "text": "It rounds each timestamp to the nearest duration, so events split evenly between adjacent intervals before they are grouped." },
+      { "letter": "C", "text": "It converts each timestamp into a duration measuring elapsed time, which .group_by() can then total across the log." },
+      { "letter": "D", "text": "It pulls numeric components such as the hour out of each timestamp, which .group_by() then treats as separate categories." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q38-02",
+    "question": "Q38.02: After sorting by doc_id and timestamp, the notes compute c.size.diff().over(c.doc_id). Why is .over(c.doc_id) still required even though .diff() is the shortcut for a differenced shift?",
+    "options": [
+      { "letter": "A", "text": ".diff() is an ordered function that runs past the boundary between authors, subtracting one author's first edit from the previous author's last unless .over() confines it." },
+      { "letter": "B", "text": ".diff() ignores the sort order, so .over(c.doc_id) is what re-sorts the rows within each author before the difference is taken." },
+      { "letter": "C", "text": ".diff() returns a null for every row unless .over(c.doc_id) supplies the group that each row belongs to." },
+      { "letter": "D", "text": ".diff() collapses each author down to a single row, and .over(c.doc_id) is what keeps all of the rows instead." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q38-03",
+    "question": "Q38.03: To summarize the gap between edits, the notes convert an average duration with .dt.total_hours() rather than .dt.total_days(). Why does the unit matter?",
+    "options": [
+      { "letter": "A", "text": "total_days truncates toward zero, so any gap under twenty-four hours becomes zero and drags the busiest pages' averages down; the unit must be finer than the gaps being measured." },
+      { "letter": "B", "text": "total_days rounds to the nearest whole day, so gaps under twelve hours vanish while longer gaps are inflated, distorting the averages." },
+      { "letter": "C", "text": "total_days returns a duration rather than a number, so its output cannot be averaged or plotted the way total_hours can." },
+      { "letter": "D", "text": "total_days measures each gap from the start of the series rather than between rows, so it double counts the earliest gaps." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q38-04",
+    "question": "Q38.04: For the revision data the chapter uses .rolling_mean_by() with window_size='30d' instead of .rolling_mean() with a fixed row count. Why is the time-based window the right choice?",
+    "options": [
+      { "letter": "A", "text": "Revisions are unevenly spaced, so a fixed row count averages edits spanning a day in one place and a year in another; a time span keeps every window the same length of time." },
+      { "letter": "B", "text": ".rolling_mean() cannot be combined with .over(c.doc_id) while .rolling_mean_by() can, so only the latter works once multiple authors are present." },
+      { "letter": "C", "text": ".rolling_mean() requires the data to be sorted while .rolling_mean_by() sorts the timestamps itself, which removes the need for a separate .sort()." },
+      { "letter": "D", "text": ".rolling_mean() leaves the first rows of the series null while .rolling_mean_by() fills those rows using the timestamp column." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q38-05",
+    "question": "Q38.05: The asof join attaches a daily view count to each revision using by='doc_id' and strategy='backward'. What do these two arguments accomplish together?",
+    "options": [
+      { "letter": "A", "text": "by requires an exact author match before the search, and backward matches each edit to the most recent view record at or before its timestamp, giving the count for the day the edit was made." },
+      { "letter": "B", "text": "by sorts the two tables on the author column, and backward then matches each edit to the earliest view record for that author anywhere in the year." },
+      { "letter": "C", "text": "by matches each edit to the nearest view record in either time direction, and backward restricts that nearest search to records for the same author." },
+      { "letter": "D", "text": "by requires an exact author match before the search, and backward matches each edit to the next view record after its timestamp, giving the following day's count." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q39-01",
+    "question": "Q39.01: After running anno = DSText.process(docs, nlp), what does a single row of the resulting anno table represent?",
+    "options": [
+      { "letter": "A", "text": "One token, either a word or a punctuation mark, together with its annotations." },
+      { "letter": "B", "text": "One sentence, together with the counts of its parts of speech." },
+      { "letter": "C", "text": "One document, together with its full text and metadata." },
+      { "letter": "D", "text": "One named entity, together with the type spaCy assigned to it." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q39-02",
+    "question": "Q39.02: The anno table has both a token column and a lemma column. How do the two differ for a word like \"Books\" appearing at the start of a sentence?",
+    "options": [
+      { "letter": "A", "text": "token holds the text as it appears (\"Books\"), while lemma holds the normalized base form (\"book\")." },
+      { "letter": "B", "text": "token holds the base form (\"book\"), while lemma holds the text as it appears (\"Books\")." },
+      { "letter": "C", "text": "token holds the part-of-speech code, while lemma holds the readable word." },
+      { "letter": "D", "text": "token and lemma are always identical; lemma only differs for punctuation." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q39-03",
+    "question": "Q39.03: The notes point out that spaCy attributes such as token.lemma_ and token.pos_ end in an underscore. What does the trailing underscore signify?",
+    "options": [
+      { "letter": "A", "text": "The attribute returns a human-readable string; the same name without the underscore returns an internal integer code." },
+      { "letter": "B", "text": "The attribute returns an internal integer code; the same name without the underscore returns a readable string." },
+      { "letter": "C", "text": "The attribute is private and should not be read directly by user code." },
+      { "letter": "D", "text": "The attribute has been lemmatized, while the version without the underscore has not." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q39-04",
+    "question": "Q39.04: The chain that finds the most common nouns filters c.upos == \"NOUN\" and then uses group_by(c.lemma) rather than group_by(c.token). What does grouping by lemma accomplish here?",
+    "options": [
+      { "letter": "A", "text": "Different inflected forms of the same word, such as singular and plural, are counted together." },
+      { "letter": "B", "text": "Only the singular spelling of each word is kept and the plural rows are dropped before counting." },
+      { "letter": "C", "text": "Start-of-sentence capitalized words are excluded from the count entirely." },
+      { "letter": "D", "text": "Punctuation marks are merged with the noun that precedes them in the sentence." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q39-05",
+    "question": "Q39.05: Inside the process wrapper, tid is computed as (token.i - sent.start) + 1 and head_idx as (token.head.i - sent.start) + 1, instead of using spaCy's document-wide token.i directly. Why is this subtraction done?",
+    "options": [
+      { "letter": "A", "text": "So tid and head_idx use the same per-sentence coordinate system, which lets later steps join a token to its grammatical head within a sentence." },
+      { "letter": "B", "text": "So token numbering begins at zero, matching how Python lists are indexed." },
+      { "letter": "C", "text": "So the tokens within each sentence come out sorted in alphabetical order." },
+      { "letter": "D", "text": "So the integer codes stored by spaCy are converted into human-readable strings." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q40-01",
+    "question": "Q40.01: The bigram code uses next_token = c.lemma.shift(-1).over([c.doc_id, c.sid]). What does adding .over([c.doc_id, c.sid]) change about the shift?",
+    "options": [
+      { "letter": "A", "text": "The shift is applied separately within each document and sentence, so a bigram never pairs the last token of one sentence with the first of the next." },
+      { "letter": "B", "text": "The shift moves each value down by one row instead of up, reversing the direction of the pairing." },
+      { "letter": "C", "text": "The shift is applied only to rows where doc_id and sid are both non-null, skipping the rest." },
+      { "letter": "D", "text": "The shift sorts the table by doc_id and sid before pairing adjacent tokens." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q40-02",
+    "question": "Q40.02: By raw count, \"of the\" is one of the most frequent bigrams, yet it does not appear among the highest-PMI bigrams. Why does PMI rank a pair like \"of the\" low?",
+    "options": [
+      { "letter": "A", "text": "Both \"of\" and \"the\" are individually very frequent, so the pair occurs about as often as chance would predict from their separate frequencies." },
+      { "letter": "B", "text": "The pair \"of the\" is filtered out because its bigram count falls below the required minimum of five." },
+      { "letter": "C", "text": "PMI counts only bigrams made of alphabetic content words, and function words like \"of\" and \"the\" are excluded." },
+      { "letter": "D", "text": "PMI is negative whenever a bigram is common, so frequent pairs are always ranked at the bottom." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q40-03",
+    "question": "Q40.03: To turn per-token entity rows into whole entities, the code sets new_entity = c.ent_iob == \"B\" and then entity_id = c.new_entity.cum_sum().over([c.doc_id]). How does this assign a shared id to the tokens of a multi-word entity like \"United Kingdom\"?",
+    "options": [
+      { "letter": "A", "text": "The cumulative sum increases by one only at each \"B\" token, so every token from one entity's start up to the next entity's start carries the same id." },
+      { "letter": "B", "text": "The cumulative sum increases at every token, giving each token in the entity a distinct id that is later averaged." },
+      { "letter": "C", "text": "Tokens are grouped by their ent_type value alone, so all entities of the same type receive a single id." },
+      { "letter": "D", "text": "The cumulative sum counts \"I\" tokens, so only tokens inside an entity are numbered and the first token is skipped." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q40-04",
+    "question": "Q40.04: The notes say type-token ratio (TTR) is sensitive to document length and suggest computing it on a fixed-size sample of tokens. What problem does the fixed-size sample address?",
+    "options": [
+      { "letter": "A", "text": "Longer documents repeat common words and so have lower TTR, making comparisons across documents of different lengths unfair." },
+      { "letter": "B", "text": "Longer documents contain more punctuation, which inflates the token count and raises TTR." },
+      { "letter": "C", "text": "Shorter documents omit rare words entirely, so their TTR cannot be computed at all." },
+      { "letter": "D", "text": "TTR requires every document to have the same number of sentences before it can be averaged." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q40-05",
+    "question": "Q40.05: The subject-verb chain selects nsubj tokens with verb_idx = c.head_idx and joins them to the verbs table on [c.doc_id, c.sid, c.verb_idx]. Why must c.sid be part of the join key, not just doc_id and verb_idx?",
+    "options": [
+      { "letter": "A", "text": "Because tid and head_idx are numbered within each sentence, the same index recurs across sentences, so matching also on sid keeps the pairing inside one sentence." },
+      { "letter": "B", "text": "Because each verb appears exactly once per document, and sid is needed to break ties when a verb repeats." },
+      { "letter": "C", "text": "Because sid stores the dependency relation label, which must agree between the subject and its verb." },
+      { "letter": "D", "text": "Because a document usually contains a single sentence, so sid mainly guards the rare multi-sentence case." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q41-01",
+    "question": "Q41.01: A term-frequency (TF) matrix built from a collection of documents is organized so that:",
+    "options": [
+      { "letter": "A", "text": "each row is a document, each column is a term, and each entry counts how many times that document contains that term." },
+      { "letter": "B", "text": "each row is a term, each column is a document, and each entry counts how many documents contain that term." },
+      { "letter": "C", "text": "each row is a document, each column is a term, and each entry gives the proportion of the collection using that term." },
+      { "letter": "D", "text": "each row is a term, each column is a document, and each entry gives the rank of that term within the document." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q41-02",
+    "question": "Q41.02: TF-IDF improves on raw term counts by:",
+    "options": [
+      { "letter": "A", "text": "combining how often a term appears in a document with how rare that term is across the whole collection." },
+      { "letter": "B", "text": "combining how often a term appears in a document with how common that term is across the whole collection." },
+      { "letter": "C", "text": "replacing each term count with its rank among all the terms used in that document." },
+      { "letter": "D", "text": "dividing each term count by the total number of documents in the collection." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q41-03",
+    "question": "Q41.03: Under the TF-IDF weighting used in the chapter, a lemma that appears in almost every document in the collection receives:",
+    "options": [
+      { "letter": "A", "text": "a small inverse-document-frequency factor, which pulls its TF-IDF score down." },
+      { "letter": "B", "text": "a large inverse-document-frequency factor, which pushes its TF-IDF score up." },
+      { "letter": "C", "text": "an inverse-document-frequency factor of exactly zero, removing it from the matrix." },
+      { "letter": "D", "text": "an inverse-document-frequency factor equal to the number of documents it appears in." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q41-04",
+    "question": "Q41.04: In DSText.compute_tfidf, setting max_df=0.5:",
+    "options": [
+      { "letter": "A", "text": "drops every lemma that appears in more than half of the documents." },
+      { "letter": "B", "text": "drops every lemma that appears in fewer than half of the documents." },
+      { "letter": "C", "text": "keeps only the 50 most frequent lemmas across the collection." },
+      { "letter": "D", "text": "drops every lemma whose count in a document exceeds half of that document's length." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q41-05",
+    "question": "Q41.05: A lemma will receive its highest TF-IDF scores in a document when it is:",
+    "options": [
+      { "letter": "A", "text": "frequent within that document but rare across the rest of the collection." },
+      { "letter": "B", "text": "frequent within that document and also frequent across the rest of the collection." },
+      { "letter": "C", "text": "rare within that document but frequent across the rest of the collection." },
+      { "letter": "D", "text": "rare within that document and also rare across the rest of the collection." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q42-01",
+    "question": "Q42.01: When each document is represented as a vector of TF-IDF scores and placed as a point in space, two documents that sit close together:",
+    "options": [
+      { "letter": "A", "text": "use similar vocabulary in similar proportions." },
+      { "letter": "B", "text": "contain exactly the same number of total words." },
+      { "letter": "C", "text": "share none of their vocabulary terms with each other." },
+      { "letter": "D", "text": "were written in the same historical time period." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q42-02",
+    "question": "Q42.02: The chapter calls each document's TF-IDF vector a sparse embedding because:",
+    "options": [
+      { "letter": "A", "text": "any single document uses only a small fraction of the vocabulary, so most of its entries are zero." },
+      { "letter": "B", "text": "the vocabulary is small, so each vector has only a few dimensions in total." },
+      { "letter": "C", "text": "the entries are rounded down to zero whenever they fall below the min_df threshold." },
+      { "letter": "D", "text": "the vectors are stored in two dimensions after a UMAP projection is applied." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q42-03",
+    "question": "Q42.03: Straight-line Euclidean distance is a poor way to compare document vectors because:",
+    "options": [
+      { "letter": "A", "text": "a longer document has systematically larger TF-IDF values, so length differences overwhelm vocabulary differences." },
+      { "letter": "B", "text": "Euclidean distance cannot be computed for vectors that have more than two dimensions." },
+      { "letter": "C", "text": "TF-IDF values can be negative, which leaves the straight-line distance undefined." },
+      { "letter": "D", "text": "it ignores the term weights entirely and looks only at which terms are present." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q42-04",
+    "question": "Q42.04: Using the angle-based comparison from the chapter, a cosine similarity of 1 between two documents means:",
+    "options": [
+      { "letter": "A", "text": "they use their vocabulary in identical proportions, while 0 means they share no vocabulary." },
+      { "letter": "B", "text": "they are the two farthest-apart documents, while 0 means they are identical." },
+      { "letter": "C", "text": "they have exactly the same total length, while 0 means they differ most in length." },
+      { "letter": "D", "text": "they share every term in the vocabulary, while 0 means they share exactly half." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q42-05",
+    "question": "Q42.05: In compute_distances, each row of the matrix is divided by its length before the product X @ X.T is taken. This step matters because:",
+    "options": [
+      { "letter": "A", "text": "it removes the effect of document length, so the product reflects only the direction each vector points." },
+      { "letter": "B", "text": "it converts the TF-IDF weights back into raw integer counts before they are multiplied." },
+      { "letter": "C", "text": "it fills the missing term-document combinations with zeros so the product is defined." },
+      { "letter": "D", "text": "it guarantees every pairwise distance comes out strictly between 0 and 1." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q43-01",
+    "question": "Q43.01: Why can the English and French TF-IDF vectors for these authors not be compared directly?",
+    "options": [
+      { "letter": "A", "text": "the two editions have different vocabularies, so their vectors live in different spaces." },
+      { "letter": "B", "text": "the French vectors use raw counts while the English vectors use proportions." },
+      { "letter": "C", "text": "the French pages are much longer, so their vectors point in different directions." },
+      { "letter": "D", "text": "spaCy assigns different part-of-speech tags to the same words in the two languages." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q43-02",
+    "question": "Q43.02: The chapter finds that French uses determiners more often than English, and it treats this difference as:",
+    "options": [
+      { "letter": "A", "text": "a fact about grammar rather than about the content or editorial choices of the pages." },
+      { "letter": "B", "text": "evidence that the French pages cover more topics than the English ones." },
+      { "letter": "C", "text": "a sign that the French TF-IDF scores are miscalibrated and need rescaling." },
+      { "letter": "D", "text": "proof that the two editions describe the authors in the same way." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q43-03",
+    "question": "Q43.03: To run the same text pipeline on the French pages, the chapter:",
+    "options": [
+      { "letter": "A", "text": "loads a French spaCy model and passes it to DSText.process, then reuses the same wrappers unchanged." },
+      { "letter": "B", "text": "translates the French pages into English before annotating them with the English model." },
+      { "letter": "C", "text": "replaces DSText.process with a separate French-only annotation function." },
+      { "letter": "D", "text": "skips annotation and computes TF-IDF directly from the raw French text." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q43-04",
+    "question": "Q43.04: Although the two editions' vectors cannot be compared directly, the chapter compares their UMAP projections. If the French projection groups the authors differently than the English one, this signals:",
+    "options": [
+      { "letter": "A", "text": "a genuine difference in how the two communities of editors describe the figures." },
+      { "letter": "B", "text": "an error in the UMAP settings that should be corrected before interpreting." },
+      { "letter": "C", "text": "that the French pages simply contain fewer authors than the English pages." },
+      { "letter": "D", "text": "that the French vocabulary is a direct translation of the English one." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q43-05",
+    "question": "Q43.05: Comparing the two editions through their UMAP structure works, even though their vectors are incomparable, because:",
+    "options": [
+      { "letter": "A", "text": "each projection is built from within-collection distances, so the relative arrangement of pages can be compared across editions even when the axes differ." },
+      { "letter": "B", "text": "UMAP maps both languages into one shared coordinate space where the points line up." },
+      { "letter": "C", "text": "the TF-IDF step strips out language-specific terms, leaving a vocabulary common to both." },
+      { "letter": "D", "text": "translating the French lemmas into English aligns the two vocabularies before projection." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q44-01",
+    "question": "Q44.01: How large must your corpus be, and where do the pages come from?",
+    "options": [
+      { "letter": "A", "text": "Between 75 and 250 pages from a single language edition; fewer starves TF-IDF of vocabulary, and more turns the network into a hairball and leaves you waiting on the network." },
+      { "letter": "B", "text": "Exactly 75 pages, matching the author corpus used all semester, drawn from any language editions you like." },
+      { "letter": "C", "text": "Any number of pages you can justify, as long as they come from at least two language editions for comparison." },
+      { "letter": "D", "text": "At least 500 pages, since that is the revision cap and the two numbers should match." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q44-02",
+    "question": "Q44.02: Homework 44 is the proposal, due at Workshop I. What must it contain, and what happens to it in class that day?",
+    "options": [
+      { "letter": "A", "text": "The population and the rule defining it, how you will enumerate it, a rough page count, the hand-added metadata columns and their sources, and three or four research questions; a partner then tries to break your population definition, and populations are locked at the end of class." },
+      { "letter": "B", "text": "A draft of all four to six findings, which a partner reviews for statistical errors before the populations are graded and returned." },
+      { "letter": "C", "text": "The finished Parquet tables and manifest, which are checked in class so that collection can begin that afternoon." },
+      { "letter": "D", "text": "A one-page datasheet describing the corpus, which the instructor signs off on so the population can never be changed afterward." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q44-03",
+    "question": "Q44.03: The instructions require at least two metadata columns of your own. What makes these columns different from the rest of the tables?",
+    "options": [
+      { "letter": "A", "text": "They do not come from the API; you take them from an outside source or your own coding and record their provenance in the manifest, so you can group by a variable Wikipedia did not choose for you." },
+      { "letter": "B", "text": "They are two extra columns pulled from the API, such as born and died, added to the pages table for convenience." },
+      { "letter": "C", "text": "They are optional bonus columns that raise your grade but are not needed for any required finding." },
+      { "letter": "D", "text": "They must be derived from the langlinks table, since the number of language editions is the one variable outside Wikipedia's control." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q44-04",
+    "question": "Q44.04: The instructions insist that a Wikipedia page is not the thing it is about. How does this shape what you must say about each finding?",
+    "options": [
+      { "letter": "A", "text": "Every finding is first a finding about Wikipedia, so for each one you state what else it might be evidence of and how confident you are in that leap." },
+      { "letter": "B", "text": "You must exclude any finding that could be explained by editor behavior, keeping only facts about the underlying subject." },
+      { "letter": "C", "text": "You should treat page views, links, and revisions as direct measures of a subject's real-world importance." },
+      { "letter": "D", "text": "You must collect a second, non-Wikipedia dataset for every page so that no finding relies on Wikipedia at all." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q44-05",
+    "question": "Q44.05: The analysis calls for four to six findings drawn from the temporal, text, vector, and network chapters. Which requirement do the instructions single out as the one the book's own corpus could not support?",
+    "options": [
+      { "letter": "A", "text": "At least one finding that joins two of the layers, such as relating link-network centrality to page views or asking whether a hand-coded group clusters in the UMAP projection." },
+      { "letter": "B", "text": "At least six plots using at least four different geometries, one faceted and one fully labeled with labs." },
+      { "letter": "C", "text": "A re-collection of the corpus in a second language edition, with the two projections placed side by side." },
+      { "letter": "D", "text": "At least one centrality measure or clustering computed on the internal link network and plotted." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q45-01",
+    "question": "Q45.01: The code groups page_citation by c.doc_id2 and counts the rows, giving the number of links into each page. The text prefers counting links into a page rather than out of it. What is the stated reason?",
+    "options": [
+      { "letter": "A", "text": "It avoids a bias toward pages that are simply longer and therefore hold more outgoing links." },
+      { "letter": "B", "text": "It forces the network to be treated as directed rather than as undirected." },
+      { "letter": "C", "text": "It counts all of a node's edges instead of only some of the edges it touches." },
+      { "letter": "D", "text": "It guarantees that every page ends up inside the largest connected component." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q45-02",
+    "question": "Q45.02: In the node table produced by DSNetwork.process, what does the degree of a node measure?",
+    "options": [
+      { "letter": "A", "text": "The number of neighbors it has, counting every edge that the node is part of." },
+      { "letter": "B", "text": "The number of links pointing into the node, ignoring any of its outgoing edges." },
+      { "letter": "C", "text": "The sum of its neighbors' scores, scaled so that the largest value is one." },
+      { "letter": "D", "text": "The number of minimal paths between other nodes that happen to pass through it." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q45-03",
+    "question": "Q45.03: How does the chapter describe the eigenvalue centrality score that is stored in the node table?",
+    "options": [
+      { "letter": "A", "text": "A score proportional to the sum of its neighbors' scores, scaled so the largest score is one." },
+      { "letter": "B", "text": "A score equal to the count of its neighbors, scaled so the largest score is one." },
+      { "letter": "C", "text": "A score based on the reciprocal of the distances from the node to all others in its component." },
+      { "letter": "D", "text": "A score equal to the count of minimal paths between other nodes that run through the node." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q45-04",
+    "question": "Q45.04: The node table includes a variable called component. What does a component represent, and when is a network called connected?",
+    "options": [
+      { "letter": "A", "text": "A component is the set of nodes reachable by following edges; a network with a single component is connected." },
+      { "letter": "B", "text": "A component is a group of nodes with more edges inside it than to outside nodes; a connected network holds one such group." },
+      { "letter": "C", "text": "A component is the set of a node's direct neighbors; a connected network is one where every node has the same degree." },
+      { "letter": "D", "text": "A component is the shortest path between two nodes; a connected network is one that contains no such paths." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q45-05",
+    "question": "Q45.05: Suppose one node links two otherwise separate groups of pages, and it has only a few direct neighbors. Relative to its other centrality scores, which one would you most expect to stand out as high, and why?",
+    "options": [
+      { "letter": "A", "text": "Betweenness, because most minimal paths between the two groups have to pass through it even though it has few neighbors." },
+      { "letter": "B", "text": "Degree, because joining two groups forces the node to hold many direct edges into both of them." },
+      { "letter": "C", "text": "Eigenvalue, because its score rises in proportion to the many high-scoring neighbors that it links to." },
+      { "letter": "D", "text": "Closeness, because it sits the minimum number of edges away from every other node in the network." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q46-01",
+    "question": "Q46.01: In a co-citation network built from the Wikipedia pages, when is an edge formed between two pages?",
+    "options": [
+      { "letter": "A", "text": "When some third page links into both of them, and the resulting edge is undirected." },
+      { "letter": "B", "text": "When one of the two pages links directly to the other, and the resulting edge is directed." },
+      { "letter": "C", "text": "When the two pages both link out to the same third page, and the resulting edge is directed." },
+      { "letter": "D", "text": "When the two pages fall mutually within each other's set of nearest neighbors." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q46-02",
+    "question": "Q46.02: The chapter motivates co-citation networks by pointing out drawbacks of plain citation counts. Which drawback does it list?",
+    "options": [
+      { "letter": "A", "text": "They are sensitive to the time-order of publication and to the relative length of each document." },
+      { "letter": "B", "text": "They can never be computed for any network that contains more than one component." },
+      { "letter": "C", "text": "They require the network to be directed and cannot be treated as undirected at all." },
+      { "letter": "D", "text": "They assign every node the same centrality unless a distance cutoff is chosen first." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q46-03",
+    "question": "Q46.03: When DSNetwork.process is called with directed=True, how does the resulting node table differ from the undirected version?",
+    "options": [
+      { "letter": "A", "text": "Closeness centrality is no longer available, and there are now separate in-degree, out-degree, and total degree counts." },
+      { "letter": "B", "text": "Eigenvalue and betweenness centrality are no longer available, and closeness centrality is added in their place." },
+      { "letter": "C", "text": "Every centrality score is recomputed using edge direction, and a single degree count replaces the others." },
+      { "letter": "D", "text": "The component and cluster columns are dropped, and only the layout coordinates are kept in the table." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q46-04",
+    "question": "Q46.04: In a symmetric nearest neighbors network, when is an edge created between two documents?",
+    "options": [
+      { "letter": "A", "text": "When each document is in the other's set of k nearest neighbors, which holds every node's degree at or below k." },
+      { "letter": "B", "text": "When one document is in the other's set of k nearest neighbors, which lets popular nodes rise above degree k." },
+      { "letter": "C", "text": "When a third document lists both of them among its k nearest neighbors, forming an undirected link." },
+      { "letter": "D", "text": "When the distance between the two documents drops below a fixed cutoff, with no limit placed on degree." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q46-05",
+    "question": "Q46.05: The text notes that in symmetric nearest neighbors networks, eigenvalue and betweenness centrality are often less correlated than in other networks. What does a node with high betweenness but comparatively low eigenvalue centrality represent?",
+    "options": [
+      { "letter": "A", "text": "A gatekeeper that bridges denser parts of the network without itself being tied to many high-scoring neighbors." },
+      { "letter": "B", "text": "A highly popular node that sits at the center of a single dense cluster of well-connected pages." },
+      { "letter": "C", "text": "A node stranded in a small component that is reachable from only a few of the network's other nodes." },
+      { "letter": "D", "text": "A node whose many direct edges give it both the largest degree and the shortest paths to all others." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q47-01",
+    "question": "Q47.01: When you load an image with cv2.imread and inspect img.shape, it returns three numbers. What do those three dimensions represent, in order?",
+    "options": [
+      { "letter": "A", "text": "Height (rows of pixels), width (columns of pixels), and color channels." },
+      { "letter": "B", "text": "Width (columns of pixels), height (rows of pixels), and color channels." },
+      { "letter": "C", "text": "Color channels, height (rows of pixels), and width (columns of pixels)." },
+      { "letter": "D", "text": "Height (rows of pixels), width (columns of pixels), and bits per channel." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q47-02",
+    "question": "Q47.02: OpenCV reads images in BGR order rather than RGB. A single pixel with the values [255, 0, 0] therefore represents which color?",
+    "options": [
+      { "letter": "A", "text": "Pure blue." },
+      { "letter": "B", "text": "Pure red." },
+      { "letter": "C", "text": "Pure green." },
+      { "letter": "D", "text": "Pure white." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q47-03",
+    "question": "Q47.03: The brightness column is built by calling img.mean() on each image, which averages all of its pixel values. What does a higher value of this statistic indicate?",
+    "options": [
+      { "letter": "A", "text": "A brighter image, with more pixels closer to 255." },
+      { "letter": "B", "text": "A darker image, with more pixels closer to 0." },
+      { "letter": "C", "text": "A more colorful image, with more fully saturated pixels." },
+      { "letter": "D", "text": "A sharper image, with more high-contrast edges." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q47-04",
+    "question": "Q47.04: In the HSV color model described in the chapter, what does the saturation component measure?",
+    "options": [
+      { "letter": "A", "text": "The purity of a color, from gray at zero up to a vivid pure color." },
+      { "letter": "B", "text": "The pure color itself, given as an angle around a color wheel." },
+      { "letter": "C", "text": "How light or dark the color is, from black at zero up to the brightest." },
+      { "letter": "D", "text": "The mean intensity of the three color channels taken together." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q47-05",
+    "question": "Q47.05: When the images are sorted by their yellow proportion, the top results include many hummingbirds photographed near yellow-green foliage, not only yellow birds like canaries. What does this illustrate about these color features?",
+    "options": [
+      { "letter": "A", "text": "They describe the entire scene, including the background, rather than only the bird." },
+      { "letter": "B", "text": "They fail because OpenCV stores hue on a [0, 179] scale instead of [0, 360]." },
+      { "letter": "C", "text": "They mistake green foliage for yellow because the hue bins overlap at their edges." },
+      { "letter": "D", "text": "They weight the bird more heavily than the background when computing proportions." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q48-01",
+    "question": "Q48.01: The chapter relies on transfer learning to obtain image embeddings. What does transfer learning mean as used here?",
+    "options": [
+      { "letter": "A", "text": "Reusing a model trained for one task as the starting point for a different task." },
+      { "letter": "B", "text": "Training a new model from scratch on millions of labeled images for each task." },
+      { "letter": "C", "text": "Converting an image from one color space to another before analysis." },
+      { "letter": "D", "text": "Averaging the predictions of several models trained on different datasets." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q48-02",
+    "question": "Q48.02: How do the ViT image embeddings differ from the TF-IDF document vectors of the text chapter?",
+    "options": [
+      { "letter": "A", "text": "They are dense, with nearly every entry non-zero and no single dimension nameable." },
+      { "letter": "B", "text": "They are sparse, with one interpretable dimension for each term in a vocabulary." },
+      { "letter": "C", "text": "They are binary, marking only whether each visual feature is present or absent." },
+      { "letter": "D", "text": "They are counts, recording how many times each color appears in the image." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q48-03",
+    "question": "Q48.03: What does UMAP do with the 768-dimensional ViT embeddings in this chapter?",
+    "options": [
+      { "letter": "A", "text": "Projects them to two dimensions while preserving relative distances as much as possible." },
+      { "letter": "B", "text": "Trains a classifier that assigns each embedding to one of the ten bird species." },
+      { "letter": "C", "text": "Expands them to a higher dimension so the species become easier to separate." },
+      { "letter": "D", "text": "Averages the embeddings within each species to produce one point per species." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q48-04",
+    "question": "Q48.04: The SigLIP embeddings are scaled to unit length, and similarity is measured with a plain dot product of two vectors. Why is the dot product the right choice here?",
+    "options": [
+      { "letter": "A", "text": "For unit-length vectors the dot product equals the cosine similarity." },
+      { "letter": "B", "text": "The dot product counts how many dimensions the two vectors share exactly." },
+      { "letter": "C", "text": "The dot product measures the Euclidean distance between the two vectors." },
+      { "letter": "D", "text": "The dot product rescales the vectors so that their entries sum to one." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q48-05",
+    "question": "Q48.05: SigLIP performs zero-shot classification by comparing each image embedding to the text embedding of a species name, with no training on our labels. Why does this comparison work?",
+    "options": [
+      { "letter": "A", "text": "SigLIP was trained on image-caption pairs, so it places matching images and text close together in one shared space." },
+      { "letter": "B", "text": "SigLIP was trained on the ten bird species, so it already knows their labels from pre-training." },
+      { "letter": "C", "text": "SigLIP converts the species name into pixels and compares them directly to the image." },
+      { "letter": "D", "text": "SigLIP counts the words in the species name and matches them to color proportions in the image." }
+    ],
+    "correct": "A"
   }
 ]

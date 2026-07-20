@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<html lang="en">
+ <head>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>DSST389: Advanced Data Science</title>
+
+  <meta name="description" content="title">
+  <meta name="author" content="Taylor Arnold">
+  <meta charset="UTF-8">
+
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/fonts.css">
+  <link rel="stylesheet" href="../css/site.css">
+ </head>
+
+ <body>
+  <div class="container">
+    <h1>Homework 40</h1>
+    <p style="padding: 0 1em 1em 1em; font-size: 0.9em">
+      <span style="padding-right: 0.5em">
+        <b>
+          <a href="../index.html">[← back]</a>
+        </b>
+      </span>
+    </p>
+    <p>
+      This reading builds five things out of the annotation table: n-grams and collocations, named entities, grammatical patterns from the dependency parse, keyword-in-context displays, and complexity metrics. Two of the questions below ask you to compute by hand. Show your work; the arithmetic is the argument.
+    </p>
+    <ol>
+      <li>Suppose a corpus has 1,000 alphabetic tokens and 999 bigrams. The word "of" occurs 60 times, "the" occurs 100 times, and the bigram "of the" occurs 20 times. The word "poet" occurs 40 times, "laureate" occurs 5 times, and the bigram "poet laureate" occurs 5 times. Compute the PMI of both bigrams using the formula in the reading. Say which bigram is more frequent, which has the higher PMI, and what each of those two facts tells you. Then explain why the code filters to bigrams occurring at least five times before ranking by PMI, and what the top of the list would fill up with otherwise.</li>
+      <li>The entity table is rebuilt from the token table by taking a cumulative sum of the indicator <code>ent_iob == "B"</code>. Take the token sequence below, with the entity type and IOB tag given for each, and write out the <code>entity_id</code> that the cumulative sum assigns to every token, then the entity text that gets reassembled from each group:
+        <p style="padding-left: 2em">
+          <code>Emily</code> (PERSON, B), <code>Brontë</code> (PERSON, I), <code>and</code> (—, O), <code>Charlotte</code> (PERSON, B), <code>Brontë</code> (PERSON, I), <code>lived</code> (—, O), <code>in</code> (—, O), <code>Haworth</code> (GPE, B)
+        </p>
+        Now say what would go wrong if the code had grouped runs of consecutive tokens sharing the same <code>ent_type</code> instead of using the B tags. Your answer should explain why the B tag exists at all.</li>
+      <li>For the sentence <i>Charlotte Brontë published Jane Eyre in 1847</i>, write out the columns <code>tid</code>, <code>upos</code>, <code>dep</code>, and <code>head_idx</code>. Identify the root and say what its <code>head_idx</code> points at. Then walk through the subject-verb join in the reading: say what the two tables being joined contain, what the join keys are, and why <code>doc_id</code> and <code>sid</code> both have to be in the key even though <code>head_idx</code> already names a token.</li>
+      <li>The complexity metrics measure mean sentence length, type-token ratio, and mean word length for each author's page. Say what TTR does when a document gets longer, and why that makes a ranking of the 75 pages by TTR hard to interpret. Then the larger problem: these pages were written by Wikipedia editors, not by the authors they describe. Say what a claim like "Chaucer's page has the longest sentences" is really a claim about. Finally, say what a KWIC display of a word shows you that its count cannot, and name a moment in this chapter where you would want to run one before believing a number.</li>
+    </ol>
+  </div>
+
+  <script src="../js/site.js"></script>
+ </body>
+</html>

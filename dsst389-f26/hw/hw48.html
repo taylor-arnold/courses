@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<html lang="en">
+ <head>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>DSST389: Advanced Data Science</title>
+
+  <meta name="description" content="title">
+  <meta name="author" content="Taylor Arnold">
+  <meta charset="UTF-8">
+
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/fonts.css">
+  <link rel="stylesheet" href="../css/site.css">
+ </head>
+
+ <body>
+  <div class="container">
+    <h1>Homework 48</h1>
+    <p style="padding: 0 1em 1em 1em; font-size: 0.9em">
+      <span style="padding-right: 0.5em">
+        <b>
+          <a href="../index.html">[← back]</a>
+        </b>
+      </span>
+    </p>
+    <p>
+      This reading replaces hand-computed pixel statistics with embeddings from pre-trained neural networks, and then classifies images into categories described in plain English. The first question asks you to run the classifier by hand.
+    </p>
+    <ol>
+      <li>Suppose SigLIP embedded images and text into a space with only three dimensions. Two images have the unit-length embeddings <code>img1 = (0.8, 0.6, 0.0)</code> and <code>img2 = (0.0, 0.6, 0.8)</code>. Three category descriptions embed to <code>canary = (1.0, 0.0, 0.0)</code>, <code>peacock = (0.0, 0.0, 1.0)</code>, and <code>robin = (0.6, 0.8, 0.0)</code>. Compute the dot product of each image with each category and give the predicted label for both images. Now add a fourth category, <code>finch = (0.7, 0.7, 0.1)</code>, and compute again. One of your predictions changes, even though neither the image nor the model changed. Say what that tells you about what a zero-shot prediction depends on.</li>
+      <li>The TF-IDF vectors of the text chapter had one dimension per term, so a coordinate meant something you could name. The 768 numbers of a ViT embedding do not. Say what is lost by giving that up, and what is gained. Then say why the UMAP plot of the embeddings separates the ten species so cleanly when nothing in the pipeline ever told the model that these ten species exist.</li>
+      <li>Transfer learning means reusing a model trained by somebody else, on images we never saw, for labels we did not choose. Say what has to be true about that original training data for the embeddings to be useful on our birds. Then suppose you wanted to run this same analysis on a collection of photographs of medieval manuscript pages. Say what you would want to know about the model before trusting its embeddings, and how you could check without any labeled data of your own.</li>
+      <li>The zero-shot classifier gets nearly every bird right, and the reading calls that remarkable. Be skeptical for a moment: the dataset holds ten well-known species, cleanly photographed, of a kind that appear constantly in the images these models are trained on. Say what the high accuracy does and does not demonstrate. Then look at the errors, which the reading attributes to odd poses and cropping, and say what you would do to check that explanation rather than take it on faith.</li>
+    </ol>
+  </div>
+
+  <script src="../js/site.js"></script>
+ </body>
+</html>

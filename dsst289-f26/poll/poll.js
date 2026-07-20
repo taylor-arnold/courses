@@ -161,6 +161,62 @@
     while (el.firstChild) el.removeChild(el.firstChild);
   }
 
+  // Question stems and option text may carry Markdown-style code: fenced
+  // blocks delimited by triple backticks, and inline spans wrapped in single
+  // backticks. renderRich turns those into <pre>/<code> nodes and leaves the
+  // surrounding prose as plain text. Every node is built by hand (never
+  // innerHTML), so author content in questions.json cannot inject markup.
+  var FENCE_RE = /```[^\n]*\n([\s\S]*?)```/g;
+  var INLINE_RE = /`([^`]+)`/g;
+
+  function appendInline(parent, text) {
+    var last = 0;
+    var m;
+    INLINE_RE.lastIndex = 0;
+    while ((m = INLINE_RE.exec(text)) !== null) {
+      if (m.index > last) {
+        parent.appendChild(document.createTextNode(text.slice(last, m.index)));
+      }
+      var code = document.createElement("code");
+      code.className = "poll-code-inline";
+      code.textContent = m[1];
+      parent.appendChild(code);
+      last = INLINE_RE.lastIndex;
+    }
+    if (last < text.length) {
+      parent.appendChild(document.createTextNode(text.slice(last)));
+    }
+  }
+
+  function renderRich(text) {
+    var frag = document.createDocumentFragment();
+    var last = 0;
+    var m;
+    FENCE_RE.lastIndex = 0;
+    while ((m = FENCE_RE.exec(text)) !== null) {
+      if (m.index > last) appendInline(frag, text.slice(last, m.index));
+      var pre = document.createElement("pre");
+      pre.className = "poll-code-block";
+      var code = document.createElement("code");
+      code.textContent = m[1].replace(/\n$/, "");
+      pre.appendChild(code);
+      frag.appendChild(pre);
+      last = FENCE_RE.lastIndex;
+    }
+    if (last < text.length) appendInline(frag, text.slice(last));
+    return frag;
+  }
+
+  // Plain-text reduction for the <option> labels, which cannot hold markup:
+  // drop the fence and backtick markers and collapse whitespace to one line.
+  function stripRich(text) {
+    return text
+      .replace(FENCE_RE, function (_, code) { return code; })
+      .replace(INLINE_RE, "$1")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
   // Renders the current question's options as horizontal bars. When `counts`
   // is null, no data has been pulled yet, so every bar is drawn empty.
   function renderChart(question, counts) {
@@ -207,7 +263,7 @@
 
       var text = document.createElement("span");
       text.className = "poll-bar-text";
-      text.textContent = opt.text;
+      text.appendChild(renderRich(opt.text));
 
       label.appendChild(letter);
       label.appendChild(text);
@@ -322,17 +378,30 @@
     lastPulledEl.textContent = "";
   }
 
+  // The reveal button only makes sense for questions that carry a `correct`
+  // answer; ungraded survey questions (no `correct` field) hide it entirely.
+  function updateAnswerButton() {
+    if (!answerBtn) return;
+    var hasAnswer = !!(currentQuestion && currentQuestion.correct);
+    answerBtn.hidden = !hasAnswer;
+    answerBtn.disabled = revealed;
+    answerBtn.textContent = revealed ? "Answer revealed" : "Reveal answer";
+  }
+
   function showQuestion(question) {
     currentQuestion = question;
     revealed = false;
-    questionDisplay.textContent = question.question;
+    clearChildren(questionDisplay);
+    questionDisplay.appendChild(renderRich(question.question));
     renderChart(question, null);
+    updateAnswerButton();
   }
 
   function revealAnswer() {
-    if (!currentQuestion) return;
+    if (!currentQuestion || !currentQuestion.correct) return;
     revealed = true;
     renderChart(currentQuestion, lastCounts);
+    updateAnswerButton();
   }
 
   // Selecting a question always resets the poll window, since it marks the
@@ -368,7 +437,7 @@
     questions.forEach(function (q) {
       var option = document.createElement("option");
       option.value = q.id;
-      option.textContent = truncate(q.question, 55);
+      option.textContent = truncate(stripRich(q.question), 55);
       questionSelect.appendChild(option);
     });
   }

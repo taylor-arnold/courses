@@ -5,7 +5,7 @@
 \addbibresource{references.bib}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\title{DSST289: Introduction to Data Science}
+\title{DSST289: Introduction \\ to Data Science}
 
 \author{Taylor Arnold}
 \email{tarnold2@richmond.edu}
@@ -35,25 +35,291 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \framesection{Overview}
-\begin{rightframe}{Introduction}
+\begin{rightframe}{Welcome!}
 \splitcols{%
 
-Sample text. \footcite{arnoldSitcom}
+This is the first semester of our year-long course in data science. Our goal of the two semesters is to introduce the core techniques of data science and how to apply them with a programming language.
+
+The \textbf{first semester} is designed to focus on data creation, visualization, and manipulation.
+
+The \textbf{second semester} moves towards working with increasingly complex data types such as spatial, temporal, network, text and image data. We will also continue to practice and become more comfortable with the core techniques throughout.
 
 }{%
-  \imgcaption{images/paper.png}{Front page our CHR paper, with the initial results.}
+  \imgcaption{images/diagram_eda.png}{Conceptual visualization of the data science pipeline.}
 }
 \end{rightframe}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \framesection{Overview}
-\begin{frame}[fragile]{Code Example}
+\begin{rightframe}{Instructors}
+\splitcols{%
+
+This course is co-taught by Prof.~Taylor Arnold (\texttt{taylor.arnold@richmond.edu}) and Prof.~Sam Kellogg (\texttt{sam.kellogg@richmond.edu}).
+
+Both of us will be in class and either of us is happy to hear from you about anything to do with the course material, the readings, the homework, or the project.
+
+Prof.~Arnold is the instructor of record, so please direct any questions about grades to him.
+
+}{%
+  \imgcaption{images/diagram_eda.png}{Conceptual visualization of the data science pipeline.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\framesection{Overview}
+\begin{rightframe}{Format}
+\splitcols{%
+
+The semester is broken into three units, each ending with an in-class exam, followed by a final project that runs through the end of the term. Class meetings are hands-on and interactive. Please bring a computer, pencil, and something to write on to each class. Class materials can be found on the course website.
+
+All of the material is available on the course website:
+\texttt{https://taylor-arnold.github.io/courses/dsst289-s26/}
+
+}{%
+  \imgcaption{images/course_website.png}{Screen shot from the course website. Please check website for most up-to-date details.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\framesection{Overview}
+\begin{rightframe}{Class Structure}
+\splitcols{%
+
+The general structure of each class:
+\begin{itemize}
+\item (Before class) Do the assigned reading
+\item (Before class) Do the assigned homework (hand-written)
+\item (Start of class) Fill out class form for attendence and homework completion
+\item Slides for new material (5-10 minutes)
+\item Discussion of the homework in groups (5-10 minutes)
+\item Questions and/or class poll of new material (5 minutes)
+\item Review of last notebook (5)
+\item Work on current class notebook (remainder of the class, roughly \~45 minutes)
+\end{itemize}
+
+}{%
+  \imgcaption{images/course_website.png}{Screen shot from the course website. Please check website for most up-to-date details.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\framesection{Overview}
+\begin{rightframe}{Grading}
+\splitcols{%
+
+The final grade is an evenly weight blend of five components:
+\begin{itemize}
+\item Exam I (20\%)
+\item Exam II (20\%)
+\item Exam III (20\%)
+\item Final Project (20\%)
+\item Attendance + Homework (20\%)
+\end{itemize}
+The exams will be given in class on the dates listed. Full study guides are posted on the website.
+
+}{%
+  \imgcaption{images/course_website.png}{Screen shot from the course website. Please check website for most up-to-date details.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\framesection{Overview}
+\begin{rightframe}{External Speakers}
+\splitcols{%
+
+You are required to attend at least two external talks over the course of the semester. These are a required component of the course but are not associated with a numerical grade. A list of talks is posted on the course website; any of those will count with not explaination needed.
+
+You may also count any other on-campus talk with a data science component. For a talk that is not on our list, you will be asked to write a short justification explaining what the data science component was. Attendance is recorded through the talk form linked on the course website.
+
+}{%
+  \imgcaption{images/course_website.png}{Screen shot from the course website. Please check website for most up-to-date details.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\framesection{Overview}
+\begin{rightframe}{Recipe}
+\splitcols{%
+
+Let’s do a little data work today to start thinking about the core questions of
+data science.
+
+On a piece of paper, write down a recipe for a favorite dish of yours.
+Something moderately complicated (around 5-10 ingredients) is perfect.
+Include the ingredients and instructions for how to make it.
+
+}{%
+  \imgcaption{images/cookbook.jpg}{Example of a hand-written recipe.}
+}
+\end{rightframe}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\framesection{Overview}
+\begin{rightframe}{Recipe}
+\splitcols{%
+
+As you read the section for next class, consider what it would take to create a
+tabular version of your recipe as a structured dataset. Consider how we could
+create a large dataset of hundreds or thousands of these.
+
+What if we needed a way to do things such as detect recipes that are
+vegetarian, vegan, kosher, gluten free? What if we wanted to calculate how
+to scale up/down you version? Convert from/to metric? Figure out what
+things you could make with a certain ingredient?
+
+Think about all of these things as a concrete example as you read for
+Wednesday's class!
+
+}{%
+  \imgcaption{images/cookbook.jpg}{Example of a hand-written recipe.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{outlineframe}{Outline}
+  \rmdim{Overview}
+  \rmitem{1 Introduction}
+  \rmdim{2 Organizing Data I}
+  \rmdim{3 Data Types}
+  \rmdim{4 Visualizing Data I}
+  \rmdim{5 Grouping and Aggregating}
+  \rmdim{6 Window Functions}
+  \rmdim{7 Visualizaing Data II}
+  \rmdim{8 Combining Tables}
+  \rmdim{9 Restructuring Data}
+  \rmdim{10 Collecting Data}
+\end{outlineframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\framesection{1 Introduction}
+\begin{textframe}{Exploratory Data Analysis}
+
+We will focus on tools and techniques for \textbf{exploratory data analysis}, or EDA.
+
+\begin{itemize}
+\item Introduced by John Tukey in his 1977 book of the same name
+\item Examines data through visualizations and broad summary statistics
+\item Prioritizes studying data directly to generate hypotheses and spot trends, prior to (or instead of) formal statistical modeling
+\end{itemize}
+
+EDA is now widely used across statistics, computer science, and many other data-driven fields.
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{The Python Data Science Ecosystem}
+
+The ideas of EDA have been adopted and extended in Python through a rich ecosystem of libraries:
+
+\begin{itemize}
+\item \textbf{pandas} (Wes McKinney, 2008): brought R-like data structures to Python
+\item \textbf{matplotlib} / \textbf{seaborn}: general-purpose plotting
+\item \textbf{plotnine}: grammar-of-graphics plotting, following R's ggplot2
+\item \textbf{Polars}: a newer, high-performance alternative to pandas
+\end{itemize}
+
+In this course, we will build our workflow around \textbf{Polars} and \textbf{plotnine}.
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Working with Notebooks}
+
+We will write and run our code in \textbf{Quarto notebooks} (\texttt{.qmd} files), which let us mix code, output, and explanatory text in one document.
+
+\begin{itemize}
+\item A notebook is organized into \textit{cells}: code cells or text (markdown) cells
+\item Running a code cell executes the Python code and shows the output directly below it
+\item Code cells can be run with the run button or \texttt{Shift+Enter}
+\item Notebooks can be run for free in \textbf{Google Colab}, with no local setup required
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Python as a Calculator}
 \begin{splitcode}{%
 
-Code slides use a wider right column so a full 72-character line of
-code fits without overflowing.
+In its simplest form, Python acts as a calculator.
 
-The left column is for narration.
+Running a code cell displays its output directly beneath it.
+
+}
+\begin{lstlisting}[language=Python]
+1 + 1
+# output: 2
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Variables}
+\begin{splitcode}{%
+
+Running code can also store values in \textit{variables}, using the \texttt{=} symbol.
+
+The variable name goes on the left; the expression that produces its value goes on the right.
+
+Variable names should use only lowercase letters, numbers, and underscores.
+
+}
+\begin{lstlisting}[language=Python]
+mynum = 3 + 5
+# (no output; value is saved)
+
+mynum + 1
+# output: 9
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Functions}
+\begin{splitcode}{%
+
+A \textit{function} takes a set of input values (arguments) and returns an output value.
+
+For example, \texttt{round()} rounds a number to the nearest integer, or to a set number of digits.
+
+}
+\begin{lstlisting}[language=Python]
+round(3.14159)
+# output: 3
+
+round(3.14159, 2)
+# output: 3.14
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Named Arguments}
+\begin{splitcode}{%
+
+Arguments can also be passed by \textit{name} rather than by position, which often makes code easier to read.
+
+To learn a function's arguments, use \texttt{help()} or consult the module's online documentation.
+
+}
+\begin{lstlisting}[language=Python]
+round(number=3.14159, ndigits=2)
+# output: 3.14
+
+help(round)
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Importing Modules}
+\begin{splitcode}{%
+
+Lines starting with \texttt{import} make a module available; access its functions with \texttt{module.function()}.
+
+\texttt{from ... import} brings specific functions in directly, so no prefix is needed.
+
+The \texttt{as} clause creates a shorter alias for typing convenience.
 
 }
 \begin{lstlisting}[language=Python]
@@ -62,16 +328,2742 @@ from plotnine import ggplot, aes
 from polars import col as c
 
 import funs
-
-country = pl.read_csv("data/countries.csv")
 \end{lstlisting}
 \end{splitcode}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\framesection{}
-\begin{frame}[allowframebreaks]{References}
-  \printbibliography[heading=none]
+\begin{frame}[fragile]{Loading Data}
+\begin{splitcode}{%
+
+Tabular data is often stored in plaintext CSV files.
+
+\texttt{pl.read\_csv()} reads a CSV file into a Polars \textit{DataFrame}, given a path relative to the script's location.
+
+Each row is an \textit{observation}; each column is a \textit{variable}.
+
+}
+\begin{lstlisting}[language=Python]
+country = pl.read_csv("data/countries.csv")
+country
+# shape: (135, 15)
+\end{lstlisting}
+\end{splitcode}
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Formatting Code}
+\begin{splitcode}{%
+
+Consistent formatting (following PEP 8) makes code easier to read, debug, and maintain:
+
+\begin{itemize}
+\item snake\_case names, spaces around operators
+\item double-quoted strings
+\item long expressions wrapped in parentheses
+\item one method or operator per line when chaining
+\end{itemize}
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .filter(c.region == "Europe")
+    .pipe(ggplot, aes(c.hdi, c.happy))
+    .geom_point()
+    .geom_text(aes(label=c.iso), size=6, nudge_y=0.5)
+)
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{outlineframe}{Outline}
+  \rmdim{Overview}
+  \rmdim{1 Introduction}
+  \rmitem{2 Organizing Data I}
+  \rmdim{3 Data Types}
+  \rmdim{4 Visualizing Data I}
+  \rmdim{5 Grouping and Aggregating}
+  \rmdim{6 Window Functions}
+  \rmdim{7 Visualizaing Data II}
+  \rmdim{8 Combining Tables}
+  \rmdim{9 Restructuring Data}
+  \rmdim{10 Collecting Data}
+\end{outlineframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\framesection{2 Organizing Data I}
+\begin{textframe}{Organizing a Dataset}
+
+This chapter covers the core methods for reshaping a single DataFrame: reordering rows, choosing columns, filtering rows, creating new columns, and removing duplicates.
+
+\begin{itemize}
+\item Every method here works on one DataFrame at a time
+\item Each takes a DataFrame as input and returns a new DataFrame, so methods can be chained
+\item The original DataFrame is never modified; save a result to keep it
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Referring to Columns}
+\begin{splitcode}{%
+
+Most methods need to be told which column to work on, using the \texttt{c.} prefix.
+
+Attach a comparison, a method, or arithmetic to build a \textit{recipe}: Polars works through it once per row.
+
+}
+\begin{lstlisting}[language=Python]
+c.pop
+c.hdi > 0.9
+c.pop.sqrt()
+c.pop * 1000
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Sorting Rows}
+\begin{splitcode}{%
+
+\texttt{.sort()} reorders rows by one or more columns.
+
+Set \texttt{descending=True} to reverse order.
+
+With several columns, ties in the first are broken by the next.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .sort(c.pop, descending=True)
+)
+
+(
+    country
+    .sort(c.region, c.pop)
+)
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Selecting Columns}
+\begin{splitcode}{%
+
+\texttt{.select()} returns only the listed columns, in the order given.
+
+\texttt{.drop()} does the opposite: it removes the listed columns and keeps the rest.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .select(c.iso, c.lat, c.lon)
+)
+
+(
+    country
+    .drop(c.lat, c.lon)
+)
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Selecting Rows by Position}
+\begin{splitcode}{%
+
+\texttt{.head(n=)} returns the first \texttt{n} rows; \texttt{.tail(n=)} returns the last \texttt{n}.
+
+\texttt{.sample()} randomly selects rows: give \texttt{n=} for a count or \texttt{fraction=} for a proportion.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .head(n=4)
+)
+
+(
+    country
+    .sample(fraction=0.2)
+)
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Filtering Rows}
+\begin{splitcode}{%
+
+\texttt{.filter()} keeps rows where a condition evaluates to \texttt{True}.
+
+Rows where the tested value is missing are dropped as well.
+
+Use \texttt{==} for equality; a single \texttt{=} is reserved for assignment.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .filter(c.hdi > 0.9)
+)
+
+(
+    country
+    .filter(c.region == "Europe")
+)
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Combining Conditions}
+\begin{splitcode}{%
+
+Combine conditions with \texttt{\&} (and) and \texttt{|} (or); wrap each one in parentheses.
+
+\texttt{.is\_in()} checks membership in a set of values.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .filter(
+        (c.region == "Europe") & (c.hdi > 0.9)
+    )
+)
+
+(
+    country
+    .filter(c.region.is_in(["Europe", "Africa"]))
+)
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Rename and Unique}
+\begin{splitcode}{%
+
+\texttt{.rename()} takes a dictionary mapping old names to new ones.
+
+\texttt{.unique()} drops duplicate rows; pass \texttt{subset=} to compare only certain columns.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .rename({"pop": "population"})
+)
+
+(
+    country
+    .unique(subset=["region"])
+)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (5, 15)
+region      iso    full_name    pop    ...
+"Americas"  "VEN"  "Venezuela"  28.52  ...
+"Africa"    "SEN"  "Senegal"    18.93  ...
+"Oceania"   "AUS"  "Australia"  26.97  ...
+"Asia"      "LKA"  "Sri Lanka"  23.23  ...
+"Europe"    "FIN"  "Finland"    5.623  ...
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Modifying Columns}
+\begin{splitcode}{%
+
+\texttt{.with\_columns()} adds or overwrites columns, keeping the rest of the DataFrame.
+
+Name each new column with \texttt{=}; attach a method like \texttt{.sqrt()} for common transformations.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .with_columns(
+        population_1k = c.pop * 1000,
+        pop_sqrt = c.pop.sqrt()
+    )
+)
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Pipes}
+\begin{splitcode}{%
+
+\texttt{df.pipe(f)} does the same thing as \texttt{f(df)}, but keeps it as one more step in a chain.
+
+Extra arguments to \texttt{.pipe()} are passed straight through to the function.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .pipe(type)
+)
+
+(
+    country
+    .print(4)
+)
+\end{lstlisting}
+\begin{codeoutput}
+<class 'polars.dataframe.frame.DataFrame'>
+
+shape: (135, 15)
+iso    full_name   region     pop    ...
+"SEN"  "Senegal"   "Africa"   18.93  ...
+"VEN"  "Venezuela" "Americas" 28.52  ...
+...    ...         ...        ...    ...
+"CYP"  "Cyprus"    "Asia"     1.371  ...
+"PAK"  "Pakistan"  "Asia"     255.2  ...
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Conditional Columns}
+\begin{splitcode}{%
+
+\texttt{pl.when()}, \texttt{.then()}, and \texttt{.otherwise()} build a column from a condition.
+
+Chain more \texttt{.when().then()} pairs for several conditions; the first match wins.
+
+Wrap text values in \texttt{pl.lit()} so they aren't read as column names.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .with_columns(
+        zone = (
+            pl.when(c.lat.abs() < 23.5)
+              .then(pl.lit("tropical"))
+            .otherwise(pl.lit("temperate"))
+        )
+    )
+)
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{outlineframe}{Outline}
+  \rmdim{Overview}
+  \rmdim{1 Introduction}
+  \rmdim{2 Organizing Data I}
+  \rmitem{3 Data Types}
+  \rmdim{4 Visualizing Data I}
+  \rmdim{5 Grouping and Aggregating}
+  \rmdim{6 Window Functions}
+  \rmdim{7 Visualizaing Data II}
+  \rmdim{8 Combining Tables}
+  \rmdim{9 Restructuring Data}
+  \rmdim{10 Collecting Data}
+\end{outlineframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\framesection{3 Data Types}
+\begin{textframe}{Data Types}
+
+Every column in a DataFrame has exactly one \textit{type}, which determines whether its values can be added together, whether they sort numerically or alphabetically, and how missing entries behave.
+
+\begin{itemize}
+\item Four types cover almost everything in this course: \texttt{str}, \texttt{i64}, \texttt{f64}, \texttt{bool}
+\item \texttt{.schema} lists every column's type at once
+\item A DataFrame read from a messy file can have the wrong type without any error being raised
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Checking the Schema}
+\begin{splitcode}{%
+
+Printing a DataFrame shows each column's type directly under its name.
+
+\texttt{.schema} lists every column name alongside its type in one place.
+
+}
+\begin{lstlisting}[language=Python]
+country.schema
+# Schema({'iso': String, 'pop': Float64,
+#          'hdi': Float64, ...})
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{The Four Core Types}
+\begin{splitcode}{%
+
+\texttt{str} holds text, \texttt{i64} holds whole numbers, \texttt{f64} holds numbers with a decimal part.
+
+Comparison operators (\texttt{>}, \texttt{<}, \texttt{==}, \texttt{!=}) always build a \texttt{bool} column, whatever the type of their inputs.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .select(c.iso, c.hdi, high_hdi = c.hdi > 0.9)
+)
+# high_hdi column has type bool
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{A Column with the Wrong Type}
+\begin{splitcode}{%
+
+A messy file can silently mis-type a column: ZIP codes read as integers lose leading zeros, and one stray \texttt{"n/a"} forces an entire numeric column to become \texttt{str}.
+
+Strings compare alphabetically, so \texttt{.max()} on a broken numeric column gives nonsense, and arithmetic on it raises an error outright.
+
+}
+\begin{lstlisting}[language=Python]
+cities.schema
+# {'zip': Int64, 'pop': String, ...}
+
+cities.select(c.pop.max())
+# output: "n/a"
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Casting Columns}
+\begin{splitcode}{%
+
+\texttt{.cast()} converts a column to a new type, named with a \texttt{pl.} prefix: \texttt{pl.Int64}, \texttt{pl.Float64}, \texttt{pl.String}, \texttt{pl.Boolean}.
+
+Integer to float is always safe. Float to integer truncates the decimal part rather than rounding.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .select(c.iso, c.lat, lat_int = c.lat.cast(pl.Int64))
+)
+# 41.9 -> 41,  -34.6 -> -34
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Casting Invalid Values}
+\begin{splitcode}{%
+
+A plain cast raises an error if any value cannot be converted to the target type.
+
+\texttt{strict=False} converts anyway, replacing unconvertible values with a missing value.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    cities
+    .select(
+        c.city,
+        pop = c.pop.cast(pl.Int64, strict=False)
+    )
+)
+# "n/a" -> null
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Missing vs.\ Invalid Values}
+\begin{splitcode}{%
+
+\texttt{null} marks a missing value; any column of any type can contain one.
+
+\texttt{NaN} ("not a number") is different: it is the result of a computation with no valid answer, such as the square root of a negative number.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .select(c.iso, c.lat, lat_sqrt = c.lat.sqrt())
+)
+# negative lat -> NaN
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Testing and Filling}
+\begin{splitcode}{%
+
+\texttt{.is\_null()} / \texttt{.is\_nan()} test for each kind of problem; \texttt{.fill\_null()} / \texttt{.fill\_nan()} replace each with a chosen value.
+
+\texttt{.drop\_nulls()} and \texttt{.drop\_nans()} remove the corresponding rows; dropping one never touches the other.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    cities
+    .select(
+        c.city,
+        pop = c.pop.cast(pl.Int64, strict=False)
+                    .fill_null(0)
+    )
+)
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Null Propagation}
+\begin{splitcode}{%
+
+Arithmetic and comparisons involving a null produce another null, not an error or a guess.
+
+\texttt{.filter()} drops rows where the test comes out null, alongside the \texttt{False} ones.
+
+Aggregations like \texttt{.sum()} and \texttt{.mean()} are the exception: they skip nulls instead of propagating them.
+
+}
+\begin{lstlisting}[language=Python]
+c.pop > 100
+# missing pop -> null, not False
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Expressions}
+\begin{splitcode}{%
+
+A \texttt{c.} fragment such as \texttt{c.pop} is not data. It is an \textit{expression}: a description of a computation, with no DataFrame attached.
+
+Arithmetic, comparisons, and methods build one expression on top of another.
+
+}
+\begin{lstlisting}[language=Python]
+c.pop
+# description, not values
+
+c.pop.sqrt()
+c.hdi > 0.9
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Expressions and Contexts}
+\begin{splitcode}{%
+
+An expression only produces values once it is handed to a \textit{context}: a method that evaluates it against real data.
+
+\texttt{.select()} and \texttt{.with\_columns()} evaluate expressions into columns; \texttt{.filter()} keeps rows where the result is \texttt{True}; \texttt{.sort()} uses it to order rows.
+
+The same expression moves unchanged between contexts, which is why \texttt{c.} keeps reappearing for the rest of the course.
+
+}
+\begin{lstlisting}[language=Python]
+country.select(high_hdi = c.hdi > 0.9)
+country.filter(c.hdi > 0.9)
+# same expression, different context
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Strings and Dates}
+\begin{splitcode}{%
+
+String columns carry methods under \texttt{.str}, for tasks like changing case or extracting text.
+
+\texttt{.str.to\_date()} parses text into a genuine \texttt{date} column, which supports calendar-aware arithmetic.
+
+}
+\begin{lstlisting}[language=Python]
+country.select(
+    c.iso,
+    name_upper = c.full_name.str.to_uppercase()
+)
+
+cities.select(c.city, founded = c.founded.str.to_date())
+\end{lstlisting}
+\begin{codeoutput}
+shape: (8, 2)
+city           founded
+str            date
+"Agawam"       1855-05-17
+"Amherst"      1759-02-13
+"Boston"       1630-09-07
+"Lowell"       1826-03-01
+"Pittsfield"   1761-04-21
+"Salem"        1626-06-24
+"Springfield"  1636-05-14
+"Worcester"    1722-06-14
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{outlineframe}{Outline}
+  \rmdim{Overview}
+  \rmdim{1 Introduction}
+  \rmdim{2 Organizing Data I}
+  \rmdim{3 Data Types}
+  \rmitem{4 Visualizing Data I}
+  \rmdim{5 Grouping and Aggregating}
+  \rmdim{6 Window Functions}
+  \rmdim{7 Visualizaing Data II}
+  \rmdim{8 Combining Tables}
+  \rmdim{9 Restructuring Data}
+  \rmdim{10 Collecting Data}
+\end{outlineframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\framesection{4 Visualizing Data I}
+\begin{textframe}{The Grammar of Graphics}
+
+Plots in this course use \textbf{plotnine}, built around the \textit{grammar of graphics}: a visualization is assembled from independent layers.
+
+\begin{itemize}
+\item \textit{Data}: the DataFrame the plot draws from
+\item \textit{Aesthetics} (\texttt{aes()}): map columns to visual properties such as position, color, or size
+\item \textit{Geometry}: the kind of mark drawn per row --- points, text, lines, bars
+\end{itemize}
+
+Every plot starts the same way: pipe a DataFrame into \texttt{ggplot}.
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{rightframe}{Points Geometry}
+\splitcols{%
+
+Every plotnine chart begins the same way: pipe a DataFrame into \texttt{ggplot}, describe the \texttt{x} and \texttt{y} aesthetics, and add a geometry.
+
+A \textit{point geometry} (\texttt{geom\_point()}) draws one point per row. Below, each point is a European country, placed by its HDI and happiness score.
+
+Countries with higher human development tend to report higher happiness.
+
+}{%
+  \imgcaption{images/scatter_hdi_happy.png}{Scatter plot of HDI against happiness for European countries, one point per row.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Building a Scatter Plot}
+\begin{splitcode}{%
+
+\texttt{.pipe(ggplot, aes(x, y))} starts a plot, mapping columns to the axes.
+
+Chain on a geometry method: \texttt{.geom\_point()} draws one point per row.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .filter(c.region == "Europe")
+    .pipe(ggplot, aes(c.hdi, c.happy))
+    .geom_point()
+)
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Optional Aesthetics}
+\begin{splitcode}{%
+
+Beyond \texttt{x} and \texttt{y}, most geometries also accept \texttt{color}, \texttt{fill}, \texttt{alpha}, \texttt{size}, and \texttt{shape}.
+
+A variable mapping goes inside a second \texttt{aes()} call, passed to the geometry.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .filter(c.region == "Europe")
+    .pipe(ggplot, aes(c.hdi, c.happy))
+    .geom_point(aes(color=c.subregion))
+)
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{rightframe}{Mapping a Column to Color}
+\splitcols{%
+
+Mapping \texttt{subregion} to \texttt{color} adds a third variable to the plot without changing what the axes show.
+
+plotnine picks the colors automatically and builds the legend on the right.
+
+}{%
+  \imgcaption{images/scatter_color_subregion.png}{The same scatter plot, colored by subregion.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Fixed vs.\ Mapped Aesthetics}
+\begin{splitcode}{%
+
+A \textit{fixed} aesthetic --- the same value for every row --- goes outside \texttt{aes()}, directly in the geometry call.
+
+A \textit{mapped} aesthetic --- one that varies by row --- goes inside \texttt{aes()}.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .filter(c.region == "Europe")
+    .pipe(ggplot, aes(c.hdi, c.happy))
+    .geom_point(color="#F5276C")
+)
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{rightframe}{One Fixed Color for Every Point}
+\splitcols{%
+
+Every point is now the same pink, set once outside \texttt{aes()}, instead of one color per \texttt{subregion}.
+
+Compare with the colored version: the positions haven't changed, only how the points are drawn.
+
+}{%
+  \imgcaption{images/scatter_fixed_color.png}{The same scatter plot with a single fixed point color.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Text Geometry}
+\begin{splitcode}{%
+
+\texttt{geom\_text()} draws a text label per row instead of a point.
+
+It requires a \texttt{label} aesthetic, in addition to \texttt{x} and \texttt{y}.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .filter(c.region == "Europe")
+    .pipe(ggplot, aes(c.hdi, c.happy))
+    .geom_text(aes(label=c.iso))
+)
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{rightframe}{Labels Instead of Points}
+\splitcols{%
+
+Each country's ISO code sits where its point would have been, positioned by the same \texttt{hdi} and \texttt{happy} aesthetics.
+
+Labels identify every country at once, at the cost of overlapping text where points are close together.
+
+}{%
+  \imgcaption{images/text_hdi_happy.png}{Country codes plotted by HDI and happiness, with no points underneath.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Layering Geometries}
+\begin{splitcode}{%
+
+Geometries stack: chain \texttt{.geom\_point()} and \texttt{.geom\_text()} to draw both in one plot.
+
+\texttt{nudge\_y} and \texttt{size} move and shrink the labels so they don't sit on top of the points.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .filter(c.region == "Europe")
+    .pipe(ggplot, aes(c.hdi, c.happy))
+    .geom_point()
+    .geom_text(aes(label=c.iso), size=6, nudge_y=0.5)
+)
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{rightframe}{Points and Labels Together}
+\splitcols{%
+
+Points mark the exact HDI and happiness values; labels identify which country each point belongs to.
+
+\texttt{nudge\_y} shifts each label above its point so the two don't overlap.
+
+}{%
+  \imgcaption{images/scatter_points_text_nudge.png}{Points and nudged text labels layered in a single plot.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Line Geometry}
+\begin{splitcode}{%
+
+\texttt{geom\_line()} connects values in order along the x-axis, typically time.
+
+It takes the same aesthetics as \texttt{geom\_point()}.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    cellphone
+    .filter(c.iso.is_in(["USA", "GBR", "IRL", "CAN"]))
+    .pipe(ggplot, aes(c.year, c.cell))
+    .geom_line(aes(color=c.iso))
+)
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{rightframe}{Four Countries, Four Lines}
+\splitcols{%
+
+Each country traces its own line across years, colored by \texttt{iso}, sharing one x-axis and one y-axis.
+
+Cellphone adoption rose steeply and at different rates across these four countries over the same two decades.
+
+}{%
+  \imgcaption{images/line_cellphone_four.png}{Cellphone subscriptions per 100 people, 2003--2022, for four countries.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Bar Geometry}
+\begin{splitcode}{%
+
+\texttt{geom\_col()} draws a bar per row, with length given by \texttt{y}.
+
+\texttt{.coord\_flip()} swaps the axes, handy for long category names.
+
+A categorical axis takes its order from the data, so \texttt{.sort()} first if order matters.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .filter(c.subregion == "Northern Africa")
+    .sort(c.pop)
+    .pipe(ggplot, aes(c.full_name, c.pop))
+    .geom_col()
+    .coord_flip()
+)
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{rightframe}{Population by Country, Flipped}
+\splitcols{%
+
+Sorting by \texttt{pop} first, then flipping the axes, puts the countries in a readable rank order instead of alphabetically.
+
+Long category names --- full country names here --- fit naturally along a flipped y-axis.
+
+}{%
+  \imgcaption{images/bar_northern_africa_pop.png}{Population of Northern African countries, sorted and flipped.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Multiple Datasets}
+\begin{splitcode}{%
+
+Pass \texttt{data=} to a geometry to draw it from a different DataFrame than the rest of the plot.
+
+A common use is highlighting a subset on top of the full dataset.
+
+}
+\begin{lstlisting}[language=Python]
+country_ne = country.filter(c.subregion == "Northern Europe")
+(
+    country
+    .filter(c.region == "Europe")
+    .pipe(ggplot, aes(c.hdi, c.happy))
+    .geom_point(alpha=0.2)
+    .geom_point(color="#F5276C", data=country_ne)
+)
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{rightframe}{Highlighting a Subset}
+\splitcols{%
+
+The full set of European countries sits faded in the background (\texttt{alpha=0.2}); Northern European countries are drawn again, in pink, on top.
+
+Both layers come from the same plot, but each \texttt{geom\_point()} call reads from a different DataFrame.
+
+}{%
+  \imgcaption{images/scatter_highlight_northern_europe.png}{Northern European countries highlighted against the full European scatter plot.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{A Note on Labels}
+
+Every plot so far uses the raw column names as its axis labels. That is a deliberate default while exploring: it costs no extra effort, and the label can never drift out of sync with the column it names.
+
+\begin{itemize}
+\item \texttt{labs()} overrides any label: \texttt{x}, \texttt{y}, \texttt{title}, \texttt{subtitle}, legend titles
+\item Save the override for when a plot is ready to share, not while still exploring
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{outlineframe}{Outline}
+  \rmdim{Overview}
+  \rmdim{1 Introduction}
+  \rmdim{2 Organizing Data I}
+  \rmdim{3 Data Types}
+  \rmdim{4 Visualizing Data I}
+  \rmitem{5 Grouping and Aggregating}
+  \rmdim{6 Window Functions}
+  \rmdim{7 Visualizaing Data II}
+  \rmdim{8 Combining Tables}
+  \rmdim{9 Restructuring Data}
+  \rmdim{10 Collecting Data}
+\end{outlineframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\framesection{5 Grouping and Aggregating}
+\begin{textframe}{Grouping and Aggregation}
+
+Every question in this chapter has two parts: split the rows into groups, then compute one number per group.
+
+\begin{itemize}
+\item \texttt{.group\_by()} splits rows into groups, with syntax like \texttt{.sort()}
+\item \texttt{.agg()} computes one row of summaries per group
+\item Polars keeps these two steps strictly separate --- understanding why is most of this chapter
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Grouping Data}
+\begin{splitcode}{%
+
+\texttt{.group\_by()} groups rows by one or more columns; the method chained after it runs once per group.
+
+Combined with \texttt{.sort()}, this is the standard way to pull the top row of each group --- here, the largest country in each region.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .sort(c.pop, descending=True)
+    .group_by(c.region)
+    .head(n=1)
+)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (5, 15)
+region      full_name                    pop
+"Americas"  "United States of America"   347.3
+"Oceania"   "Australia"                  26.97
+"Europe"    "Russian Federation"         144.0
+"Asia"      "India"                      1464
+"Africa"    "Nigeria"                    237.5
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{What group\_by Returns}
+\begin{splitcode}{%
+
+\texttt{.group\_by()} alone returns no data, just a \texttt{GroupBy} object: a promise that the next method should run once per group.
+
+It must be consumed by a method like \texttt{.agg()}, \texttt{.head()}, or \texttt{.mean()}. There is no grouped DataFrame to save in a variable and reuse.
+
+}
+\begin{lstlisting}[language=Python]
+country.group_by(c.region)
+# <polars.dataframe.group_by.GroupBy
+#  object at 0x...>
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Aggregation}
+\begin{splitcode}{%
+
+\texttt{.agg()} computes a set of summaries per group, returning one row for each group.
+
+Only the grouping column and the summaries you ask for survive; everything else is dropped.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .group_by(c.region)
+    .agg(
+        hdi_avg = c.hdi.mean()
+    )
+)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (5, 2)
+region      hdi_avg
+"Africa"    0.5834
+"Americas"  0.7836
+"Europe"    0.8989
+"Asia"      0.7609
+"Oceania"   0.948
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Several Summaries at Once}
+\begin{splitcode}{%
+
+List several expressions inside \texttt{.agg()} to compute them all together.
+
+\texttt{pl.len()} counts the rows in each group.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .group_by(c.region)
+    .agg(
+        hdi_avg = c.hdi.mean(),
+        hdi_median = c.hdi.median(),
+        count = pl.len()
+    )
+)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (5, 4)
+region      hdi_avg  hdi_median  count
+"Africa"    0.5834   0.571       37
+"Americas"  0.7836   0.786       19
+"Europe"    0.8989   0.9115      38
+"Asia"      0.7609   0.766       39
+"Oceania"   0.948    0.948       2
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Stable Group Order}
+\begin{splitcode}{%
+
+Groups are built in parallel with a hash table, so their output order is not fixed from one run to the next.
+
+\texttt{maintain\_order=True} returns groups in the order their first row appears in the data --- worth the small cost for a final table.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .group_by(c.region, maintain_order=True)
+    .agg(
+        hdi_avg = c.hdi.mean(),
+        count = pl.len()
+    )
+)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (5, 3)
+region      hdi_avg  count
+"Africa"    0.5834   37
+"Americas"  0.7836   19
+"Europe"    0.8989   38
+"Asia"      0.7609   39
+"Oceania"   0.948    2
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Grouping by Multiple Columns}
+\begin{splitcode}{%
+
+Pass several columns to \texttt{.group\_by()}; a group is then every combination of values that actually occurs in the data.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .with_columns(north = c.lat >= 0)
+    .group_by(c.region, c.north, maintain_order=True)
+    .agg(
+        hdi_avg = c.hdi.mean(),
+        count = pl.len()
+    )
+)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (8, 4)
+region      north  hdi_avg  count
+"Africa"    true   0.5604   23
+"Americas"  true   0.7752   12
+"Europe"    true   0.8989   38
+"Asia"      true   0.7618   38
+"Africa"    false  0.6211   14
+"Americas"  false  0.798    7
+"Oceania"   false  0.948    2
+"Asia"      false  0.728    1
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Aggregating Expressions}
+\begin{splitcode}{%
+
+What you aggregate need not be a bare column --- any expression works, built and reduced per group inside \texttt{.agg()}.
+
+Below, \texttt{.sum()} on a Boolean expression counts how many rows in each group satisfy it.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .group_by(c.region, maintain_order=True)
+    .agg(
+        n_large = (c.pop > 100).sum()
+    )
+)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (5, 2)
+region      n_large
+"Africa"    4
+"Americas"  3
+"Europe"    1
+"Asia"      8
+"Oceania"   0
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Counting Rows vs.\ Values}
+\begin{splitcode}{%
+
+\texttt{pl.len()} counts the rows in a group, regardless of missing data.
+
+\texttt{.count()}, called on a column, counts only its non-missing values --- smaller than \texttt{pl.len()} whenever that column has holes.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .group_by(c.region, maintain_order=True)
+    .agg(
+        n = pl.len(),
+        n_gini = c.gini.count()
+    )
+)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (5, 3)
+region      n    n_gini
+"Africa"    37   35
+"Americas"  19   19
+"Europe"    38   36
+"Asia"      39   33
+"Oceania"   2    1
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Counting Distinct Values}
+\begin{splitcode}{%
+
+\texttt{.n\_unique()} counts the distinct values in a column --- a different question from counting rows.
+
+It treats \texttt{null} as a value of its own; drop nulls first if you want the count of distinct values actually present.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .select(
+        n_gini = c.gini.n_unique(),
+        n_gini_present =
+            c.gini.drop_nulls().n_unique()
+    )
+)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (1, 2)
+n_gini  n_gini_present
+101     100
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Aggregating the Whole Frame}
+\begin{splitcode}{%
+
+\texttt{.agg()} always belongs to a \texttt{.group\_by()}. For one summary of the entire dataset, use \texttt{.select()} with the same aggregating expressions instead.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .select(
+        pop_total = c.pop.sum(),
+        hdi_avg = c.hdi.mean(),
+        n = pl.len()
+    )
+)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (1, 3)
+pop_total  hdi_avg  n
+7802.082   0.757    135
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Aggregation as Row Reduction}
+
+Every aggregation reduces: it takes the many rows of a group and returns exactly one row for that group. Once a country's values are folded into the average, the row itself is gone.
+
+\begin{itemize}
+\item Fine when the answer you want is one number per group
+\item Not enough when you want a group-level number attached to every original row --- e.g., each country's share of its region's population
+\item The next chapter, window functions, computes a value per group while keeping every row
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Aggregation Functions}
+\begin{splitcode}{%
+
+\begin{itemize}
+\item \texttt{.mean()}, \texttt{.median()}, \texttt{.min()}, \texttt{.max()}, \texttt{.sum()}, \texttt{.quantile()}
+\item \texttt{.first()}, \texttt{.last()}, \texttt{.any()}, \texttt{.all()}
+\item \texttt{.n\_unique()}, \texttt{.count()}, \texttt{.len()}
+\end{itemize}
+
+Each is called on a column or an expression, exactly like \texttt{c.hdi.mean()}.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .select(
+        r = pl.corr(c.hdi, c.happy)
+    )
+)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (1, 1)
+r
+0.7807
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{outlineframe}{Outline}
+  \rmdim{Overview}
+  \rmdim{1 Introduction}
+  \rmdim{2 Organizing Data I}
+  \rmdim{3 Data Types}
+  \rmdim{4 Visualizing Data I}
+  \rmdim{5 Grouping and Aggregating}
+  \rmitem{6 Window Functions}
+  \rmdim{7 Visualizaing Data II}
+  \rmdim{8 Combining Tables}
+  \rmdim{9 Restructuring Data}
+  \rmdim{10 Collecting Data}
+\end{outlineframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\framesection{6 Window Functions}
+\begin{textframe}{Window Functions}
+
+Aggregation answers questions about groups by collapsing each group to a single row. Window functions compute the same group-level quantities but attach the answer to every original row instead.
+
+\begin{itemize}
+\item \textbf{Aggregation reduces rows}; \textbf{window functions preserve them}
+\item \texttt{.over()} scopes a computation to each group, without collapsing the table
+\item Some window tools also depend on row order: shifting, ranking, running totals
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{The Problem}
+\begin{splitcode}{%
+
+Suppose we want each country's share of its region's population.
+
+\texttt{.agg()} gives the regional totals, but as a separate table with one row per region --- lining it back up against each country would take a join.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .group_by(c.region)
+    .agg(pop_total = c.pop.sum())
+)
+# one row per region
+\end{lstlisting}
+\begin{codeoutput}
+shape: (5, 2)
+region      pop_total
+"Americas"  974.1
+"Oceania"   32.23
+"Europe"    733.2
+"Africa"    1330
+"Asia"      4732
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{The over Method}
+\begin{splitcode}{%
+
+\texttt{.over()} scopes an aggregation to each group, then writes that group's answer onto every row of the group --- no summary table, no join.
+
+Read it inside out: \texttt{c.pop.sum()} is a sum, \texttt{.over(c.region)} scopes it to each region.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .with_columns(
+        pop_share = c.pop / c.pop.sum().over(c.region) * 100
+    )
+    .sort(c.pop_share, descending=True)
+)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (135, 16)
+iso  full_name         region     pop_share
+AUS  "Australia"       "Oceania"  83.7
+USA  "United States"   "Americas" 35.65
+IND  "India"           "Asia"     30.93
+CHN  "China"           "Asia"     29.92
+BRA  "Brazil"          "Americas" 21.85
+...  ...               ...        ...
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Same Number, Different Shape}
+\begin{splitcode}{%
+
+\texttt{.agg()} collapses to one row per group.
+
+\texttt{.with\_columns()} with \texttt{.over()} keeps all 135 rows, with the regional average repeated on each.
+
+}
+\begin{lstlisting}[language=Python]
+country.group_by(c.region).agg(
+    hdi_avg = c.hdi.mean()
+)
+# one row per region
+
+country.with_columns(
+    hdi_avg = c.hdi.mean().over(c.region)
+)
+# 135 rows, hdi_avg repeated per region
+\end{lstlisting}
+\begin{codeoutput}
+shape: (5, 2)         shape: (135, 4)
+region      hdi_avg   iso  region      hdi    hdi_avg
+"Asia"      0.7609    SEN  "Africa"    0.53   0.5834
+"Americas"  0.7836    VEN  "Americas"  0.709  0.7836
+"Europe"    0.8989    FIN  "Europe"    0.948  0.8989
+"Oceania"   0.948     USA  "Americas"  0.938  0.7836
+"Africa"    0.5834    LKA  "Asia"      0.776  0.7609
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Windows Inside filter()}
+\begin{splitcode}{%
+
+A windowed expression is still just an expression, so it can be used anywhere one is expected --- including \texttt{.filter()}.
+
+No new column is created; the regional medians are computed, compared, and discarded.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .filter(c.hdi > c.hdi.median().over(c.region))
+)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (66, 15)
+iso  region       hdi
+FIN  "Europe"     0.948
+USA  "Americas"   0.938
+LKA  "Asia"       0.776
+SGP  "Asia"       0.946
+...  ...          ...
+
+# down from 135 rows: roughly half of
+# each region falls below its median
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Shift}
+\begin{splitcode}{%
+
+\texttt{.shift(n)} moves a column's values down by \texttt{n} rows; negative \texttt{n} shifts upward.
+
+Because ``the row above" depends on sort order, \texttt{.shift()} should sit directly after the \texttt{.sort()} that gives it meaning.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .sort(c.pop, descending=True)
+    .with_columns(
+        perc_larger = c.pop / c.pop.shift(-1) * 100
+    )
+)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (135, 16)
+iso  full_name        pop     perc_larger
+IND  "India"          1464    103.4
+CHN  "China"          1416    407.8
+USA  "United States"  347.3   121.5
+IDN  "Indonesia"      285.7   112.0
+...  ...              ...     ...
+ISL  "Iceland"        0.398   null
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Shift Within Groups}
+\begin{splitcode}{%
+
+On a table with several countries stacked together, a plain \texttt{.shift()} bleeds across country boundaries.
+
+\texttt{.over()} restarts the shift at each group: ``look one row up, but never past this country's first year."
+
+}
+\begin{lstlisting}[language=Python]
+(
+    cellphone
+    .sort(c.iso, c.year)
+    .with_columns(
+        change = c.cell - c.cell.shift(1).over(c.iso)
+    )
+)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (3480, 4)
+iso  year  cell     change
+AFG  2003  0.8798   null
+AFG  2004  2.547    1.667
+AFG  2005  4.917    2.37
+AFG  2006  9.913    4.996
+...  ...   ...      ...
+ZWE  2021  90.25    5.293
+ZWE  2022  88.996   -1.258
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Rank}
+\begin{splitcode}{%
+
+\texttt{.rank()} assigns each value its position within the column; \texttt{descending=True} makes rank 1 the largest.
+
+Scoped with \texttt{.over()}, it ranks within each group instead of across the whole table.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .with_columns(
+        hdi_rank = c.hdi.rank(descending=True)
+                        .over(c.region)
+    )
+    .select(c.iso, c.region, c.hdi, c.hdi_rank)
+    .sort(c.region, c.hdi_rank)
+)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (135, 4)
+iso  region      hdi    hdi_rank
+MUS  "Africa"    0.806  1.0
+EGY  "Africa"    0.754  2.0
+TUN  "Africa"    0.746  3.0
+...  ...         ...    ...
+AUS  "Oceania"   0.958  1.0
+NZL  "Oceania"   0.938  2.0
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Cumulative Sum}
+\begin{splitcode}{%
+
+\texttt{.cum\_sum()} gives a running total: each row holds the sum of every value up to and including itself.
+
+Sorting first, then dividing by the plain \texttt{.sum()}, gives a cumulative share of the whole.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .sort(c.pop, descending=True)
+    .select(
+        c.iso,
+        c.pop,
+        cum_share = c.pop.cum_sum() / c.pop.sum() * 100
+    )
+)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (135, 3)
+iso  pop    cum_share
+IND  1464   18.76
+CHN  1416   36.91
+USA  347.3  41.36
+IDN  285.7  45.03
+PAK  255.2  48.3
+NGA  237.5  51.34
+...  ...    ...
+ISL  0.398  100.0
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Rolling Windows}
+\begin{splitcode}{%
+
+\texttt{.rolling\_mean(window\_size=)} replaces each row with the average of itself and its recent neighbors, smoothing out short-term noise.
+
+The first \texttt{window\_size - 1} rows are \texttt{null}, since they don't yet have a full window behind them.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    cellphone
+    .filter(c.iso == "USA")
+    .sort(c.year)
+    .with_columns(
+        cell_smooth = c.cell.rolling_mean(window_size=5)
+    )
+)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (20, 4)
+iso  year  cell    cell_smooth
+USA  2003  55.41   null
+USA  2004  63.12   null
+USA  2005  68.88   null
+USA  2006  76.86   null
+USA  2007  82.59   69.37
+USA  2008  85.68   75.43
+...  ...   ...     ...
+USA  2022  108.8   105.6
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Aggregation Versus over}
+
+The choice comes down to one question: what should the result look like?
+
+\begin{itemize}
+\item Want a table of groups, one row each? Use \texttt{.group\_by()} and \texttt{.agg()}
+\item Want the original table with group information written on it, or filtered by it? Use \texttt{.over()}
+\item The two pair naturally: \texttt{.agg()} to report a summary, \texttt{.over()} to flag what drives it
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{rightframe}{Windows in Both Directions}
+\splitcols{%
+
+Every window so far grouped by country and looked across years. This one runs the other way: within each \textit{year}, it computes each country's share of five countries' combined subscriptions.
+
+Raw subscription counts all rise steeply, which makes trends hard to compare; shares put every country on a common scale.
+
+This plot needs one point per country per year --- exactly the rows an aggregated table would have collapsed away.
+
+}{%
+  \imgcaption{images/line_cellphone_share.png}{Each country's share of five countries' combined cellphone subscriptions, by year.}
+}
+\end{rightframe}
+
+\begin{outlineframe}{Outline}
+  \rmdim{Overview}
+  \rmdim{1 Introduction}
+  \rmdim{2 Organizing Data I}
+  \rmdim{3 Data Types}
+  \rmdim{4 Visualizing Data I}
+  \rmdim{5 Grouping and Aggregating}
+  \rmdim{6 Window Functions}
+  \rmitem{7 Visualizaing Data II}
+  \rmdim{8 Combining Tables}
+  \rmdim{9 Restructuring Data}
+  \rmdim{10 Collecting Data}
+\end{outlineframe}
+
+\framesection{7 Visualizaing Data II}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Statistical Geometries}
+
+A bar chart, a histogram, a boxplot: none of these draw one shape per row. Each one first runs a grouped computation over the data, then draws the result.
+
+A statistical geometry is a \texttt{.group\_by()} and \texttt{.agg()} in disguise --- it counts, bins, or summarizes for you before it ever reaches the page.
+
+Once you see that, the rest of this chapter is mostly control and polish: choosing scales, splitting a plot into panels, and labeling the result for someone else to read.
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{geom\_bar Counts for You}
+\begin{splitcode}{%
+
+\texttt{geom\_bar} takes one categorical aesthetic, groups the rows by its value, counts each group, and draws the counts as bars --- the \texttt{.group\_by()} and \texttt{.agg()} happen internally.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .pipe(ggplot, aes(c.subregion))
+    .geom_bar(fill="white", color="black")
+    .coord_flip()
+)
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{rightframe}{One Bar per Subregion}
+\splitcols{%
+
+Each bar's length is a count of rows, computed by \texttt{geom\_bar} itself --- no \texttt{.group\_by()} anywhere in the code.
+
+Subregions appear in the order they first occur in \texttt{country}, not sorted by count.
+
+}{%
+  \imgcaption{images/bar_subregion_counts.png}{Number of countries per subregion.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{geom\_col Draws What You Give It}
+\begin{splitcode}{%
+
+\texttt{geom\_col} does no counting of its own; it takes an \texttt{x} and a \texttt{y} and draws each \texttt{y} as a bar's height.
+
+If you find yourself computing a count with \texttt{.group\_by()} only to feed it to \texttt{geom\_bar}, you wanted \texttt{geom\_col}.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .group_by(c.subregion)
+    .agg(pl.len().alias("n"))
+    .sort(c.n)
+    .pipe(ggplot, aes(c.subregion, c.n))
+    .geom_col(fill="white", color="black")
+    .coord_flip()
+)
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{rightframe}{The Same Bars, Pre-Counted}
+\splitcols{%
+
+Same bars as before, but this time \texttt{.group\_by()} and \texttt{.agg()} compute the counts explicitly, then \texttt{.sort()} orders them by size.
+
+\texttt{geom\_col} just draws the \texttt{n} column it's handed --- sorting the categories was our job, not the geometry's.
+
+}{%
+  \imgcaption{images/col_subregion_counts.png}{Number of countries per subregion, sorted by count.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Ordering Categories}
+\begin{splitcode}{%
+
+A categorical axis follows the order values first appear in the data --- there is no separate sort step inside the plot.
+
+When the value to order by lives only inside the plot (like a bar's count), sort by the same computation written with \texttt{.over()} before plotting.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .sort(pl.len().over(c.subregion))
+    .pipe(ggplot, aes(c.subregion))
+    .geom_bar(fill="white", color="black")
+    .coord_flip()
+)
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{rightframe}{geom\_bar, Sorted This Time}
+\splitcols{%
+
+\texttt{geom\_bar} still counts the rows itself, but sorting the \textit{rows} by \texttt{pl.len().over(c.subregion)} first changes the category order it reads off.
+
+Identical bars to the very first bar chart in this chapter, now ranked smallest to largest.
+
+}{%
+  \imgcaption{images/bar_subregion_ordered.png}{Number of countries per subregion, ordered by count via a pre-sort.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Categorical Axes}
+\begin{splitcode}{%
+
+Plotnine reads a column of numbers as continuous, spacing it along an axis by distance rather than treating each value as its own group.
+
+Casting a column to \texttt{pl.String} forces each distinct value to become its own category with its own box or bar.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    cellphone
+    .filter(c.year.is_in(
+        [2003, 2008, 2013, 2018]
+    ))
+    .sort(c.year)
+    .with_columns(c.year.cast(pl.String))
+    .pipe(ggplot, aes(c.year, c.cell))
+    .geom_boxplot()
+)
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{rightframe}{Four Years as Four Categories}
+\splitcols{%
+
+Casting \texttt{year} to a string turns four numbers into four distinct categories, each with its own box.
+
+Had \texttt{year} stayed numeric, plotnine would have spaced the boxes by distance along a continuous axis instead of treating them as groups.
+
+}{%
+  \imgcaption{images/boxplot_cell_by_year.png}{Cellphone subscriptions by year, treated as a categorical axis.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Distributions}
+\begin{splitcode}{%
+
+For a numeric column, a \textit{group} means a bin. \texttt{geom\_histogram} cuts the number line into equal intervals and counts how many values land in each one; \texttt{binwidth} and \texttt{boundary} control the cuts.
+
+\texttt{geom\_density} models the same distribution as a smooth curve instead of tallying it into bars.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .pipe(ggplot, aes(c.hdi))
+    .geom_histogram(
+        fill="white", color="black",
+        binwidth=0.1, boundary=0
+    )
+)
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{rightframe}{One Distribution, Binned}
+\splitcols{%
+
+Each bar spans a 0.1-wide slice of HDI, from a boundary at 0, and counts how many countries land inside it.
+
+Most countries cluster in the upper HDI bins; only a handful fall below 0.5.
+
+}{%
+  \imgcaption{images/histogram_hdi.png}{Distribution of HDI across all countries.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{rightframe}{Boxplots as Grouped Quantiles}
+\splitcols{%
+
+A boxplot combines both ideas above: it summarizes a numeric variable separately for each category. Under the hood it is three quantiles per group --- 25th, 50th, 75th --- plus whiskers and outlier points.
+
+The regions here are ordered by \texttt{c.hdi.median().over(c.region)}, not by HDI itself --- sorting by a country's own HDI would order regions by their \textit{lowest} value, not their middle.
+
+}{%
+  \imgcaption{images/boxplot_hdi_region.png}{HDI distribution by region, ordered by median.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Fitting a Model}
+\begin{splitcode}{%
+
+\texttt{geom\_smooth} summarizes differently: instead of grouping rows, it fits a model to the relationship between two numeric variables and draws the fitted curve.
+
+\texttt{method="lm"} fits a straight line; leaving \texttt{method} out fits a more flexible, non-linear curve.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .filter(c.region == "Europe")
+    .pipe(ggplot, aes(c.hdi, c.happy))
+    .geom_point()
+    .geom_smooth(method="lm", se=False)
+)
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{rightframe}{A Fitted Line}
+\splitcols{%
+
+\texttt{geom\_smooth} adds a second layer on top of the points: a straight line fit by least squares, summarizing the trend those points suggest.
+
+\texttt{se=False} hides the shaded confidence band that plotnine draws around the line by default.
+
+}{%
+  \imgcaption{images/scatter_hdi_happy_lm.png}{HDI versus happiness for European countries, with a fitted linear trend.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Scales}
+\begin{splitcode}{%
+
+Every aesthetic has a scale attached to it, controlling how a value turns into something visible --- axis range, tick labels, or which colors mark which categories.
+
+Add a scale function to change the default. \texttt{scale\_color\_brewer} swaps the viridis ramp for hand-picked, easy-to-distinguish colors --- useful when categories have no natural order.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .filter(c.region == "Europe")
+    .pipe(ggplot, aes(c.hdi, c.happy))
+    .geom_point(aes(color=c.subregion))
+    .scale_color_brewer(type="qual", palette=2)
+)
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{rightframe}{A Different Color Scale}
+\splitcols{%
+
+Same points, same mapping of \texttt{subregion} to color --- only the palette generating the colors has changed.
+
+Brewer's qualitative palettes are built for exactly this: categories with no inherent order, needing colors that are easy to tell apart.
+
+}{%
+  \imgcaption{images/scatter_color_brewer.png}{HDI versus happiness, colored by subregion using a Brewer qualitative palette.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{rightframe}{Facets}
+\splitcols{%
+
+\texttt{facet\_wrap("region")} lays out a grid of small panels, one per region, instead of packing every group into a single plot.
+
+Mapping color to the same grouping variable and hiding the legend lets color reinforce which panel holds which group.
+
+Every panel shares one x-axis and one y-axis by default, which is what makes them comparable at a glance --- \texttt{scales="free"} breaks that comparison and should be used rarely.
+
+}{%
+  \imgcaption{images/facet_hdi_happy_region.png}{HDI versus happiness, faceted by region.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{rightframe}{Labels and Themes}
+\splitcols{%
+
+Default labels take no effort and use the exact column names you need elsewhere in a pipeline --- the right choice while exploring.
+
+Once a plot is meant for someone else, a \texttt{.labs()} layer adds real axis titles, a legend title, and a title/subtitle/caption for the plot as a whole.
+
+Themes govern everything that isn't data: axis lines, ticks, background. \texttt{theme\_minimal()} suits exploration; a sparer theme suits publication.
+
+}{%
+  \imgcaption{images/scatter_labs_europe.png}{The same scatter plot, labeled for an audience.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Best Practices}
+
+\begin{itemize}
+\item Bar plots, histograms, density plots: the distribution of one variable
+\item Scatter plots and boxplots: the relationship between two variables
+\item Scatter plots with text labels: individual points, not just the trend
+\item Use a variable color scale only after \texttt{x} and \texttt{y} are fully used
+\item Color and shape work only for a small set of categories --- eight is a reasonable ceiling
+\item Line plots: a single quantity measured over time or another continuum
+\end{itemize}
+
+\end{textframe}
+
+\begin{outlineframe}{Outline}
+  \rmdim{Overview}
+  \rmdim{1 Introduction}
+  \rmdim{2 Organizing Data I}
+  \rmdim{3 Data Types}
+  \rmdim{4 Visualizing Data I}
+  \rmdim{5 Grouping and Aggregating}
+  \rmdim{6 Window Functions}
+  \rmdim{7 Visualizaing Data II}
+  \rmitem{8 Combining Tables}
+  \rmdim{9 Restructuring Data}
+  \rmdim{10 Collecting Data}
+\end{outlineframe}
+
+\framesection{8 Combining Tables}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Combining Tables}
+
+A \textit{primary key} is one or more columns that uniquely identify a row of a table --- in \texttt{country}, the \texttt{iso} column.
+
+A \textit{foreign key} is a primary key from one table that appears in another. The same column, \texttt{iso}, is a foreign key wherever another table records which country a row belongs to.
+
+The link between them is a \textit{relation}, and a \textit{join} is how we combine two tables along it --- extending filtering and grouping to work across tables instead of just within one.
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{The Basic Join}
+\begin{splitcode}{%
+
+\texttt{.join()} is a method of the table holding the foreign key (the ``left'' table); it takes the other table and the shared key column.
+
+By convention, put the foreign-key table on the left and the primary-key table on the right --- the output's row count follows the left table.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    table_one
+    .join(table_two, on=c.key_col)
+)
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Left Joins Keep Every Row}
+\begin{splitcode}{%
+
+The default \texttt{how="inner"} drops any left-table row with no match on the right --- an easy way to silently lose rows.
+
+\texttt{how="left"} keeps every row of the left table, filling in \texttt{null} wherever the right table has no match.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    table_one
+    .join(table_two, on=c.key_col, how="left")
+)
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Inner Joins Can Drop Rows}
+\begin{splitcode}{%
+
+\texttt{border} has one row per pair of neighboring countries; \texttt{c\_sml} has one row per country with a Gini coefficient.
+
+Joining them on \texttt{iso} keeps only borders where the base country has economic data --- 641 rows survive out of the original 829.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    border
+    .join(c_sml, on=c.iso)
+)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (641, 3)
+iso  iso_neighbor  gini
+AFG  IRN           27.8
+AFG  PAK           27.8
+AFG  CHN           27.8
+...  ...           ...
+ZWE  ZAF           50.3
+ZWE  ZMB           50.3
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Restoring the Row Count}
+\begin{splitcode}{%
+
+Switching to \texttt{how="left"} restores all 829 rows of \texttt{border}, filling \texttt{null} wherever \texttt{c\_sml} had no matching \texttt{iso}.
+
+Nothing about the match itself changed --- only what happens to the rows that fail to match.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    border
+    .join(c_sml, on=c.iso, how="left")
+)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (829, 3)
+iso  iso_neighbor  gini
+AFG  IRN           27.8
+AFG  PAK           27.8
+...  ...           ...
+# 829 rows again -- unmatched iso
+# values now carry a null gini
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Different Key Names}
+\begin{splitcode}{%
+
+When the shared key has different names in each table, use \texttt{left\_on} and \texttt{right\_on} instead of \texttt{on}.
+
+This adds the \textit{neighboring} country's Gini coefficient to each row, by matching \texttt{iso\_neighbor} against \texttt{c\_sml}'s \texttt{iso}.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    border
+    .join(
+        c_sml,
+        left_on=c.iso_neighbor,
+        right_on=c.iso
+    )
+)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (667, 3)
+iso  iso_neighbor  gini
+AFG  IRN           40.9
+AFG  PAK           29.6
+AFG  CHN           38.2
+AFG  TJK           34.0
+...  ...           ...
+
+# gini here is the NEIGHBOR's value --
+# compare AFG-IRN: 40.9 vs. 27.8 above
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Two Joins for Both Sides}
+\begin{splitcode}{%
+
+Adding the base country's Gini \textit{and} its neighbor's takes two joins chained one after the other, one per key.
+
+\texttt{suffix="\_neighbor"} renames the second join's columns so they don't collide with the first.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    border
+    .join(c_sml, on=c.iso)
+    .join(
+        c_sml,
+        left_on=c.iso_neighbor,
+        right_on=c.iso,
+        suffix="_neighbor"
+    )
+)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (523, 4)
+iso  iso_neighbor  gini  gini_neighbor
+AFG  IRN           27.8  40.9
+AFG  PAK           27.8  29.6
+AFG  CHN           27.8  38.2
+...  ...           ...   ...
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Filtering Joins: Semi and Anti}
+\begin{splitcode}{%
+
+A \textit{semi-join} keeps left-table rows that have a match on the right; an \textit{anti-join} keeps the ones that don't. Neither adds any columns --- both just filter.
+
+Here, every surviving row is an \texttt{iso} in \texttt{border} with no match anywhere in \texttt{country}, not just in the trimmed \texttt{c\_sml}.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    border
+    .join(country, on=c.iso, how="anti")
+)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (188, 2)
+iso  iso_neighbor
+AGO  COD
+AGO  GAB
+AGO  NAM
+...  ...
+VUT  SLB
+WSM  USA
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Diagnosing Bad Joins}
+\begin{splitcode}{%
+
+Joining on a column that isn't actually unique in the right table silently multiplies rows: every match on the left pairs with \textit{every} matching row on the right.
+
+Check before you join, not after --- comparing \texttt{.n\_unique()} to \texttt{len()} on the key confirms the right table is safe to join against.
+
+\texttt{bad\_c\_sml} is \texttt{c\_sml} with Afghanistan's row deliberately duplicated, to show what the check catches.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    c_sml.select(c.iso).n_unique()
+    == len(c_sml)
+)
+# True: iso is a genuine key in c_sml
+
+(
+    bad_c_sml.select(c.iso).n_unique()
+    == len(bad_c_sml)
+)
+# False: bad_c_sml has a duplicated iso
+\end{lstlisting}
+\begin{codeoutput}
+border.join(c_sml, on=c.iso).shape
+# (641, 3)
+
+border.join(bad_c_sml, on=c.iso).shape
+# (647, 3) -- 6 extra rows, all
+# duplicate copies of AFG's borders
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{join\_asof: Nearest Match}
+\begin{splitcode}{%
+
+\texttt{.join\_asof()} matches each left row to the \textit{nearest} value in the right table on a numeric column, rather than requiring exact equality.
+
+Both tables must be pre-sorted by the join key. \texttt{strategy="nearest"} looks in both directions; the default, \texttt{backward}, looks only for earlier values.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    africa
+    .join_asof(
+        asia, on=c.gini,
+        strategy="nearest",
+        coalesce=False
+    )
+)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (35, 4)
+full_name    gini  full_name_right      gini_right
+"Guinea"     29.6  "Pakistan"           29.6
+"Egypt"      31.5  "Korea, Rep. of"     31.4
+"Mauritania" 32.6  "Mongolia"           32.7
+...          ...   ...                 ...
+"S. Africa"  63.1  "Malaysia"           46.2
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{join\_where: Conditional Joins}
+\begin{splitcode}{%
+
+\texttt{.join\_where()} takes a \texttt{.filter()}-style expression and keeps every pair of rows that satisfies it, with no equality requirement at all.
+
+Use the \texttt{\_right} suffix to refer to the second table's column when both sides share a name. This example pairs countries within 5 points of Gini.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    africa
+    .join_where(
+        asia,
+        (c.gini - c.gini_right).abs() < 5
+    )
+)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (414, 4)
+full_name  gini  full_name_right         gini_right
+"Guinea"   29.6  "Armenia"               25.2
+"Guinea"   29.6  "United Arab Emirates"  26.0
+"Guinea"   29.6  "Azerbaijan"            26.6
+...        ...   ...                    ...
+
+# 414 pairs out of 35x33 = 1155 possible
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Attaching a Group Summary}
+\begin{splitcode}{%
+
+A join is a second route to what \texttt{.over()} already does: attach a group-level number to every row without collapsing the table.
+
+Aggregate to one row per region, then join that summary back on \texttt{region}. Reach for this version when you want the summary table itself, not just the joined column.
+
+}
+\begin{lstlisting}[language=Python]
+region_avg = (
+    country
+    .group_by(c.region)
+    .agg(region_avg_gini = c.gini.mean())
+)
+(
+    country
+    .join(region_avg, on=c.region)
+)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (135, 16)
+iso  region      region_avg_gini
+SEN  "Africa"    41.92
+VEN  "Americas"  45.12
+FIN  "Europe"    30.85
+USA  "Americas"  45.12
+...  ...         ...
+
+# identical to region_avg_gini from
+# c.gini.mean().over(c.region) directly
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Choosing a Join}
+
+\begin{itemize}
+\item Adding columns by matching keys exactly? \texttt{.join()}, with \texttt{how} set to \texttt{inner}, \texttt{left}, \texttt{right}, or \texttt{full}
+\item Filtering one table by presence in another, no new columns? \texttt{how="semi"} or \texttt{how="anti"}
+\item Matching on the closest numeric value, not an exact one? \texttt{.join\_asof()}
+\item Matching on an arbitrary condition between columns? \texttt{.join\_where()}
+\item Attaching a group summary to every row? \texttt{.over()} is simplest; agg-then-join if you need the summary table too
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{outlineframe}{Outline}
+  \rmdim{Overview}
+  \rmdim{1 Introduction}
+  \rmdim{2 Organizing Data I}
+  \rmdim{3 Data Types}
+  \rmdim{4 Visualizing Data I}
+  \rmdim{5 Grouping and Aggregating}
+  \rmdim{6 Window Functions}
+  \rmdim{7 Visualizaing Data II}
+  \rmdim{8 Combining Tables}
+  \rmitem{9 Restructuring Data}
+  \rmdim{10 Collecting Data}
+\end{outlineframe}
+
+\framesection{9 Restructuring Data}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Restructuring Data}
+
+Reshaping a table changes its \textit{layout}, not its values --- no information is added or removed, only rearranged.
+
+Every layout is anchored to a \textit{unit of observation}: the ``who'' or ``what'' that each row represents.
+
+Picking the right layout, not the right values, is often what makes an analysis easy or painful.
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Units of Observation}
+
+Tracking the heights of 100 plants over 14 days could be stored several ways:
+
+\begin{itemize}
+\item one row per plant, one column per day --- unit of observation: \textit{plant}
+\item one row per day, one column per plant --- unit of observation: \textit{day}
+\item one row per plant-and-day pair, 1{,}400 rows total --- unit of observation: \textit{plant $\times$ day}
+\end{itemize}
+
+None of these is wrong --- each records the same measurements. Once a unit of observation is chosen, there is only one way to build the table.
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Tidy Data}
+
+A table is \textit{tidy} for a chosen unit of observation when:
+
+\begin{itemize}
+\item every variable is a single column
+\item every observation is a single row
+\item every table holds a single unit of observation
+\end{itemize}
+
+Tidiness is a property of a table \textit{relative to} a unit of observation, not of the values themselves --- a wide plant-by-day table is tidy for the unit \textit{plant}, and untidy the moment the unit needed is \textit{plant $\times$ day}.
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{A Tidy Table}
+\begin{splitcode}{%
+
+\texttt{cellphone} has one row per country per year, so its unit of observation is \textit{year $\times$ country}.
+
+Each variable --- \texttt{year}, \texttt{iso}, \texttt{cell} --- gets its own column, so the table is already tidy for that unit.
+
+}
+\begin{lstlisting}[language=Python]
+cellphone
+\end{lstlisting}
+\begin{codeoutput}
+shape: (3480, 3)
+iso  year  cell
+AFG  2003  0.8798
+AFG  2004  2.547
+AFG  2005  4.917
+AFG  2006  9.913
+...  ...   ...
+ZWE  2022  88.996
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{pivot(): Long to Wide}
+\begin{splitcode}{%
+
+\texttt{.pivot()} needs three columns: \texttt{index} becomes the new unit of observation, \texttt{on} supplies the new column names, and \texttt{values} fills them in.
+
+Combinations missing from the original table come back as \texttt{null}; chain \texttt{.fill\_null(0)} if a default makes more sense.
+
+}
+\begin{lstlisting}[language=Python]
+cell_wide = (
+    cellphone
+    .pivot(
+        index=c.year,
+        on=c.iso,
+        values=c.cell
+    )
+)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (20, 175)
+year  AFG      AGO      ALB    AND    ...
+2003  0.8798   1.951    35.28  74.68  ...
+2004  2.547    3.978    40.65  78.53  ...
+2005  4.917    8.352    49.75  83.39  ...
+...   ...      ...      ...    ...    ...
+
+# 3 columns -> 175 columns, one per iso
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{unpivot(): Wide to Long}
+\begin{splitcode}{%
+
+\texttt{.unpivot()} reverses a pivot, collapsing many columns back into two: \texttt{variable} and \texttt{value} by default.
+
+Aside from row and column order, this recovers the original long table exactly --- pivoting and unpivoting only rearrange values.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    cell_wide
+    .unpivot(index=c.year)
+)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (3480, 3)
+year  variable  value
+2003  "AFG"     0.8798
+2004  "AFG"     2.547
+2005  "AFG"     4.917
+...   ...       ...
+
+# default names: variable, value
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{plotnine Needs a Column to Map}
+\begin{splitcode}{%
+
+plotnine expects long data. In \texttt{cell\_wide} there is no \texttt{iso} column, only a separate column per country, so there is nothing to map \texttt{color} to.
+
+This runs, but only draws one hardcoded country --- there is no way to get ``one line per country'' without a separate call for each column.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    ggplot(
+        cell_wide,
+        aes(x=c.year, y=c.usa)
+    )
+    .geom_line()
+)
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{One Line per Country}
+\begin{splitcode}{%
+
+Naming the new columns as they're built restores \texttt{iso} as a real column, so \texttt{color=c.iso} is enough to draw one line per country.
+
+This is also why plotting \texttt{cellphone} directly always worked --- it was already stored long, one row per year-and-country.
+
+}
+\begin{lstlisting}[language=Python]
+cell_long = (
+    cell_wide
+    .unpivot(
+        index=c.year,
+        variable_name=c.iso,
+        value_name=c.cell
+    )
+)
+(
+    cell_long
+    .pipe(
+        ggplot,
+        aes(x=c.year, y=c.cell,
+            color=c.iso)
+    )
+    .geom_line()
+)
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{rightframe}{Every Country, One Plot}
+\splitcols{%
+
+With \texttt{iso} restored as a real column, \texttt{color=c.iso} draws all 175 countries at once --- one \texttt{geom\_line()} call, no loop.
+
+The legend is hidden here since 175 entries wouldn't fit; the point is the shape of the data, not identifying any one line.
+
+}{%
+  \imgcaption{images/line_cellphone_all_countries.png}{Cellphone subscriptions for every country, 2003--2022, one line each.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Splitting Text into List Columns}
+\begin{splitcode}{%
+
+Sometimes multiple values are packed into one cell, usually after a cleaning step rather than as raw input.
+
+\texttt{.str.split()} turns delimited text --- here, the \texttt{lang} column's pipe-separated codes --- into a list stored in each cell.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .select(c.full_name, c.lang)
+    .with_columns(
+        lang_codes =
+            c.lang.str.split("|")
+    )
+)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (135, 3)
+full_name    lang          lang_codes
+"Senegal"    "pbp|fra|wol" ["pbp","fra","wol"]
+"Finland"    "fin|swe"     ["fin","swe"]
+"USA"        "eng"         ["eng"]
+...          ...           ...
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{explode(): One Row per Element}
+\begin{splitcode}{%
+
+A list column is hard to work with directly. \texttt{.explode()} unravels it, giving each element its own row and duplicating the other columns to match.
+
+Watch the row count --- exploding multiple columns at once can make a table grow very large, very fast.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .select(c.full_name, c.lang)
+    .with_columns(
+        lang_codes =
+            c.lang.str.split("|")
+    )
+    .explode(c.lang_codes)
+)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (265, 3)
+full_name    lang           lang_codes
+"Senegal"    "pbp|fra|wol"  "pbp"
+"Senegal"    "pbp|fra|wol"  "fra"
+"Senegal"    "pbp|fra|wol"  "wol"
+...          ...            ...
+
+# 135 rows -> 265 rows
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Round Trips, Not Aggregation}
+
+\begin{itemize}
+\item Pivot and unpivot are round trips --- pivot to wide, unpivot back, and (row order aside) you have the original table
+\item Aggregation is not reversible --- collapsing rows to a group summary discards the individual values for good
+\item Reshaping changes a table's shape; aggregation changes its unit of observation, in one direction only
+\item Store data long: a long table can always be pivoted into whatever wide shape an analysis needs, but an aggregated table cannot be un-aggregated
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{outlineframe}{Outline}
+  \rmdim{Overview}
+  \rmdim{1 Introduction}
+  \rmdim{2 Organizing Data I}
+  \rmdim{3 Data Types}
+  \rmdim{4 Visualizing Data I}
+  \rmdim{5 Grouping and Aggregating}
+  \rmdim{6 Window Functions}
+  \rmdim{7 Visualizaing Data II}
+  \rmdim{8 Combining Tables}
+  \rmdim{9 Restructuring Data}
+  \rmitem{10 Collecting Data}
+\end{outlineframe}
+
+\framesection{10 Collecting Data}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Collecting Data}
+
+Most of a data scientist's time goes into collecting and cleaning data --- if it's collected in a clean format from the start, that work disappears.
+
+Chapter 9 gave the theory: what makes a table tidy, and why. This chapter is the practice --- the decisions you actually face when building a dataset from scratch.
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{What Tables?}
+
+The unit of observation, simple or compound, determines what tables you need.
+
+\begin{itemize}
+\item \textit{prefer longer to wider}: a long format is easier to extend and check, and there is usually only one of them, versus many possible wide layouts
+\item \textit{respect the unit of observation}: only record data that describes the whole unit --- metadata about a \texttt{plant} belongs in its own table, not copied into every row of a \texttt{plant} $\times$ \texttt{day} table
+\end{itemize}
+
+Merge tables later, once the data is collected, if an analysis needs them together.
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{What Variables?}
+
+\begin{itemize}
+\item \textit{prefer numeric}: store a variable as a number whenever you can; put units or currency in a separate column
+\item \textit{use standards}: for character variables, reach for an existing standard (ISO country codes, USPS state codes) before inventing your own
+\item \textit{atomic cells}: one value per cell --- never pack several values into one entry, even separated by commas
+\end{itemize}
+
+Include a primary key column whenever a natural one already exists in the data.
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{What Variable Names?}
+
+\begin{itemize}
+\item \textit{allowed characters}: lower-case letters, numbers, and underscores only --- start with a letter, never a number or underscore
+\item \textit{simple names}: skip metadata like units in the name unless needed to tell two columns apart; prefer short, full names over cryptic abbreviations
+\end{itemize}
+
+These rules are for variable \textit{names} --- spaces and capitals are fine inside the actual values.
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Storing Data in Spreadsheets}
+
+\begin{itemize}
+\item \textit{A1}: data collection starts in the upper-left cell --- column names in row one, data below
+\item \textit{sheets as tables}: one table per sheet, named the way you'll call it as a Python object
+\item \textit{just tables}: nothing outside the rectangle --- notes go in an extra column or table, not the margins
+\item \textit{minimal formatting}: bolding a header or sizing columns is fine; formatting must never be the only place data lives
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{rightframe}{Notes Belong in a Column}
+\splitcols{%
+
+An out-of-print book has no page count or weight --- those cells are simply left blank, the one cross-software way to mark a value missing.
+
+An explanatory note goes in its own \texttt{notes} column rather than a comment bolted onto a cell, keeping the table rectangular.
+
+}{%
+  \imgcaption{images/excel_cookbook_notes.png}{A cookbook table with blank cells for missing data and a dedicated notes column.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{rightframe}{A Second Table for a Second Unit}
+\splitcols{%
+
+The cookbooks table's unit of observation is \texttt{book\_title}; author birth details describe a different unit, \texttt{author}, so they get their own table.
+
+The \texttt{author} column in the cookbooks table is a foreign key into this one --- exactly the relation that made joins work in Chapter 8.
+
+}{%
+  \imgcaption{images/excel_authors_table.png}{An authors table, referenced by the cookbooks table through its author column.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Plain Text vs. Spreadsheet Files}
+
+Plain text --- almost always CSV --- is the best format for sharing and long-term storage: no formatting information, readable by anything, and it holds exactly one table.
+
+While a dataset is still being collected and edited, an Excel file or Google Sheet can be the better choice: it holds several tables at once and avoids round-trip errors between formats. Load one with \texttt{pl.read\_excel()}.
+
+Export to CSV once collection and cleaning are finished.
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Reading Imperfect Files}
+\begin{splitcode}{%
+
+Most files you didn't create won't load cleanly with the defaults. A handful of \texttt{pl.read\_csv()} arguments handle almost every case.
+
+\texttt{separator} and \texttt{encoding} fix the wrong delimiter or garbled characters; \texttt{skip\_rows} drops a title row; \texttt{null\_values} catches placeholder codes like \texttt{"-99"}; \texttt{schema\_overrides} stops a column like a ZIP code from losing its leading zero.
+
+}
+\begin{lstlisting}[language=Python]
+survey = pl.read_csv(
+    "survey_responses.csv",
+    separator=";",
+    encoding="windows-1252",
+    skip_rows=2,
+    null_values=["NA", "N/A", "-99"],
+    schema_overrides={
+        "zip_code": pl.Utf8
+    },
+)
+\end{lstlisting}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{rightframe}{The Data Dictionary}
+\splitcols{%
+
+A data dictionary documents each variable: its name, units, and what it means --- along with any decisions made while collecting it.
+
+It can be a plain text file or, as here, its own sheet in the workbook --- often the first or last one.
+
+}{%
+  \imgcaption{images/excel_data_dictionary.png}{A data dictionary describing each variable in the cookbooks dataset.}
+}
+\end{rightframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Special Considerations}
+
+\begin{itemize}
+\item \textit{dates}: either split into separate year/month/day columns, or use the ISO 8601 standard formats \texttt{YYYY-MM-DD} and \texttt{YYYY-MM-DD HH:MM:SS}
+\item \textit{missing values}: a blank cell, always --- character columns can also use a documented missing-value code if needed
+\item \textit{text and multimedia}: store the file name (and path) as a column; the media file itself is the data
+\item \textit{synthetic keys}: when no natural primary key exists, generate one --- a UUID is a common choice
+\end{itemize}
+
+\end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{textframe}{Collecting Data Well}
+
+The schema decisions in this chapter --- which tables, which variables, which names --- are cheapest to get right before a single row is entered.
+
+Every tool from the rest of this book, from grouping to joining to reshaping, works best on data that started tidy. Time spent designing a dataset up front is time saved cleaning it up later.
+
+\end{textframe}
 
 \end{document}
