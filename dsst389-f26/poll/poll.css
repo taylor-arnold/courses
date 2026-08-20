@@ -33,6 +33,16 @@
   box-shadow: 0 0 0 3px rgba(52, 145, 171, 0.2);
 }
 
+/* Editable text is meant to look exactly like the static text it replaces:
+   no box, no border, no focus ring. Only the cursor gives it away. */
+.poll-editable {
+  cursor: text;
+}
+
+.poll-editable:focus {
+  outline: none;
+}
+
 .poll-question-text {
   margin-top: 1.1em;
   font-family: "Noto Serif", sans-serif;
@@ -106,6 +116,12 @@
 .poll-btn-secondary {
   background-color: #fff;
   color: #3491ab;
+}
+
+.poll-btn-undo {
+  font-size: 1.15em;
+  line-height: 1;
+  padding: 0.45em 0.7em;
 }
 
 .poll-status {
@@ -186,6 +202,10 @@
   font-size: 0.78em;
   font-weight: 700;
   white-space: nowrap;
+}
+
+.poll-bar-correct-badge[hidden] {
+  display: none;
 }
 
 .poll-bar-correct .poll-bar-letter {

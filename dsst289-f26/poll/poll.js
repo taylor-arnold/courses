@@ -4,6 +4,19 @@
   var CSV_URL = "https://docs.google.com/spreadsheets/d/13q8RiVyZ-pYP6HOpjmI2jpW5LK-pENGzy_WDXTrfAHg/export?format=csv&gid=1911672727";
   var QUESTIONS_URL = "questions.json";
   var RESET_STORAGE_KEY = "poll-reset-timestamp";
+  var RESET_HISTORY_KEY = "poll-reset-history";
+  var DASH = "—";
+
+  // A blank question that always sits at the top of the picker. Its stem and
+  // options are just em dashes: type over them in place to run an ad hoc poll.
+  var GENERAL_QUESTION = {
+    id: "general",
+    label: "General",
+    question: DASH,
+    options: ["A", "B", "C", "D"].map(function (letter) {
+      return { letter: letter, text: DASH };
+    })
+  };
 
   var questionSelect = document.getElementById("question-select");
   var pollBody = document.getElementById("poll-body");
@@ -11,6 +24,7 @@
   var pullBtn = document.getElementById("pull-btn");
   var answerBtn = document.getElementById("answer-btn");
   var resetBtn = document.getElementById("reset-btn");
+  var undoBtn = document.getElementById("undo-btn");
   var sinceTimeEl = document.getElementById("since-time");
   var lastPulledEl = document.getElementById("last-pulled");
   var statusEl = document.getElementById("poll-status");
@@ -21,22 +35,105 @@
   var currentQuestion = null;
   var revealed = false;
   var lastCounts = null;
+  var chartRows = [];
+
+  // ISO 8601 style (YYYY-MM-DD HH:MM), matching the datetime format taught in
+  // the course, with a space separating date and time instead of T. Always shown
+  // in New York time regardless of the browser's time zone.
+  var DISPLAY_TIME_ZONE = "America/New_York";
+  var dateTimeParts = new Intl.DateTimeFormat("en-US", {
+    timeZone: DISPLAY_TIME_ZONE,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hourCycle: "h23"
+  });
 
   function formatDateTime(date) {
-    return date.toLocaleString(undefined, {
-      dateStyle: "medium",
-      timeStyle: "short"
+    var p = {};
+    dateTimeParts.formatToParts(date).forEach(function (part) {
+      p[part.type] = part.value;
     });
+    return p.year + "-" + p.month + "-" + p.day + " " + p.hour + ":" + p.minute + ":" + p.second;
+  }
+
+  // Google Forms records timestamps as wall-clock times in the spreadsheet's
+  // time zone (New York for this course), so we need the reverse of the
+  // formatter above: turn New York wall-clock components into an absolute
+  // instant. JS has no built-in for this, so we guess the instant as if the
+  // components were UTC, measure the zone's offset at that guess, and correct.
+  // A second pass catches guesses that straddle a DST transition.
+  var zoneParts = new Intl.DateTimeFormat("en-US", {
+    timeZone: DISPLAY_TIME_ZONE,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hourCycle: "h23"
+  });
+
+  function zoneOffsetMs(utcMs) {
+    var p = {};
+    zoneParts.formatToParts(new Date(utcMs)).forEach(function (part) {
+      p[part.type] = part.value;
+    });
+    var wallAsUtc = Date.UTC(
+      Number(p.year), Number(p.month) - 1, Number(p.day),
+      Number(p.hour), Number(p.minute), Number(p.second)
+    );
+    return wallAsUtc - utcMs;
+  }
+
+  function dateInDisplayZone(year, month, day, hour, minute, second) {
+    var guess = Date.UTC(year, month - 1, day, hour, minute, second);
+    var offset = zoneOffsetMs(guess);
+    var result = guess - offset;
+    var offsetAgain = zoneOffsetMs(result);
+    if (offsetAgain !== offset) result = guess - offsetAgain;
+    return new Date(result);
+  }
+
+  // Every reset pushes its timestamp onto a history stack kept in localStorage,
+  // so an accidental reset can be undone by popping back to the previous
+  // baseline (as many times as needed, down to "the beginning"). Only the last
+  // entry is ever live; there is no redo, since a fresh reset just pushes anew.
+  // Older pages stored a single timestamp under RESET_STORAGE_KEY, which is
+  // folded into the stack the first time it is read.
+  function getResetHistory() {
+    var history = [];
+    try {
+      var stored = JSON.parse(localStorage.getItem(RESET_HISTORY_KEY) || "[]");
+      if (Array.isArray(stored)) history = stored.filter(function (v) { return typeof v === "string"; });
+    } catch (e) {
+      history = [];
+    }
+    var legacy = localStorage.getItem(RESET_STORAGE_KEY);
+    if (legacy) {
+      if (history.indexOf(legacy) === -1) history.push(legacy);
+      localStorage.removeItem(RESET_STORAGE_KEY);
+      saveResetHistory(history);
+    }
+    return history;
+  }
+
+  function saveResetHistory(history) {
+    localStorage.setItem(RESET_HISTORY_KEY, JSON.stringify(history));
   }
 
   function getResetTime() {
-    var stored = localStorage.getItem(RESET_STORAGE_KEY);
-    return stored ? new Date(stored) : null;
+    var history = getResetHistory();
+    return history.length ? new Date(history[history.length - 1]) : null;
   }
 
   function renderSinceLabel() {
     var resetTime = getResetTime();
     sinceTimeEl.textContent = resetTime ? formatDateTime(resetTime) : "the beginning";
+    if (undoBtn) undoBtn.disabled = !resetTime;
   }
 
   function parseCSV(text) {
@@ -121,8 +218,21 @@
     return null;
   }
 
+  // Sheets can also be set to write ISO-style timestamps (YYYY-MM-DD HH:MM:SS),
+  // which have no ordering ambiguity. These still need the New York conversion:
+  // handing the string to new Date() would read it in the browser's own zone.
+  var ISO_TIMESTAMP_RE = /^(\d{4})-(\d{1,2})-(\d{1,2})[ T]+(\d{1,2}):(\d{2})(?::(\d{2}))?$/;
+
   function parseSheetTimestamp(value, order) {
     if (!value) return null;
+    var iso = value.trim().match(ISO_TIMESTAMP_RE);
+    if (iso) {
+      var isoDate = dateInDisplayZone(
+        parseInt(iso[1], 10), parseInt(iso[2], 10), parseInt(iso[3], 10),
+        parseInt(iso[4], 10), parseInt(iso[5], 10), iso[6] ? parseInt(iso[6], 10) : 0
+      );
+      return isNaN(isoDate.getTime()) ? null : isoDate;
+    }
     var m = value.trim().match(TIMESTAMP_RE);
     if (m) {
       var day = order === "DMY" ? parseInt(m[1], 10) : parseInt(m[2], 10);
@@ -131,7 +241,7 @@
       var hour = parseInt(m[4], 10);
       var minute = parseInt(m[5], 10);
       var second = m[6] ? parseInt(m[6], 10) : 0;
-      var date = new Date(year, month - 1, day, hour, minute, second);
+      var date = dateInDisplayZone(year, month, day, hour, minute, second);
       return isNaN(date.getTime()) ? null : date;
     }
     var fallback = new Date(value);
@@ -217,11 +327,85 @@
       .trim();
   }
 
-  // Renders the current question's options as horizontal bars. When `counts`
-  // is null, no data has been pulled yet, so every bar is drawn empty.
+  // The question stem and every option label are editable in place so that a
+  // question can be adjusted on the fly (or, for the General entry, written
+  // from scratch). Edits live only in the DOM: selecting a question again or
+  // pressing "Reset window" rebuilds it from questions.json. Pasted content is
+  // flattened to plain text so no outside markup lands in the page.
+  function makeEditable(el) {
+    el.setAttribute("contenteditable", "true");
+    el.setAttribute("spellcheck", "false");
+    el.classList.add("poll-editable");
+    el.addEventListener("paste", function (e) {
+      e.preventDefault();
+      var text = (e.clipboardData || window.clipboardData).getData("text/plain");
+      document.execCommand("insertText", false, text);
+    });
+  }
+
+  // Builds one bar row per option for `question`. The rows are created once
+  // per question and reused by renderChart, which only updates the meters, so
+  // in-place edits to the option text survive each pull.
+  function buildChart(question) {
+    clearChildren(chartEl);
+    chartRows = [];
+
+    question.options.forEach(function (opt) {
+      var row = document.createElement("div");
+      row.className = "poll-bar-row";
+
+      var label = document.createElement("div");
+      label.className = "poll-bar-label";
+
+      var letter = document.createElement("span");
+      letter.className = "poll-bar-letter";
+      letter.textContent = opt.letter;
+
+      var text = document.createElement("span");
+      text.className = "poll-bar-text";
+      text.appendChild(renderRich(opt.text));
+      makeEditable(text);
+
+      var badge = document.createElement("span");
+      badge.className = "poll-bar-correct-badge";
+      badge.textContent = "✓ Correct";
+      badge.hidden = true;
+
+      label.appendChild(letter);
+      label.appendChild(text);
+      label.appendChild(badge);
+
+      var meter = document.createElement("div");
+      meter.className = "poll-bar-meter";
+
+      var track = document.createElement("div");
+      track.className = "poll-bar-track";
+
+      var fill = document.createElement("div");
+      fill.className = "poll-bar-fill";
+      fill.style.width = "0%";
+
+      track.appendChild(fill);
+
+      var value = document.createElement("span");
+      value.className = "poll-bar-value";
+      value.textContent = "–";
+
+      meter.appendChild(track);
+      meter.appendChild(value);
+
+      row.appendChild(label);
+      row.appendChild(meter);
+      chartEl.appendChild(row);
+
+      chartRows.push({ letter: opt.letter, row: row, badge: badge, fill: fill, value: value });
+    });
+  }
+
+  // Updates the bars built by buildChart. When `counts` is null, no data has
+  // been pulled yet, so every bar is drawn empty.
   function renderChart(question, counts) {
     lastCounts = counts;
-    clearChildren(chartEl);
 
     if (!question) {
       chartEl.hidden = true;
@@ -245,58 +429,15 @@
     chartEl.hidden = false;
     emptyEl.hidden = true;
 
-    question.options.forEach(function (opt) {
-      var count = counts ? (counts[opt.letter] || 0) : 0;
+    chartRows.forEach(function (r) {
+      var count = counts ? (counts[r.letter] || 0) : 0;
       var pct = counts ? (count / total) * 100 : 0;
+      var isCorrect = revealed && r.letter === question.correct;
 
-      var isCorrect = revealed && opt.letter === question.correct;
-
-      var row = document.createElement("div");
-      row.className = "poll-bar-row" + (isCorrect ? " poll-bar-correct" : "");
-
-      var label = document.createElement("div");
-      label.className = "poll-bar-label";
-
-      var letter = document.createElement("span");
-      letter.className = "poll-bar-letter";
-      letter.textContent = opt.letter;
-
-      var text = document.createElement("span");
-      text.className = "poll-bar-text";
-      text.appendChild(renderRich(opt.text));
-
-      label.appendChild(letter);
-      label.appendChild(text);
-
-      if (isCorrect) {
-        var badge = document.createElement("span");
-        badge.className = "poll-bar-correct-badge";
-        badge.textContent = "✓ Correct";
-        label.appendChild(badge);
-      }
-
-      var meter = document.createElement("div");
-      meter.className = "poll-bar-meter";
-
-      var track = document.createElement("div");
-      track.className = "poll-bar-track";
-
-      var fill = document.createElement("div");
-      fill.className = "poll-bar-fill";
-      fill.style.width = pct + "%";
-
-      track.appendChild(fill);
-
-      var value = document.createElement("span");
-      value.className = "poll-bar-value";
-      value.textContent = counts ? Math.round(pct) + "% (" + count + ")" : "–";
-
-      meter.appendChild(track);
-      meter.appendChild(value);
-
-      row.appendChild(label);
-      row.appendChild(meter);
-      chartEl.appendChild(row);
+      r.row.classList.toggle("poll-bar-correct", isCorrect);
+      r.badge.hidden = !isCorrect;
+      r.fill.style.width = pct + "%";
+      r.value.textContent = counts ? Math.round(pct) + "% (" + count + ")" : "–";
     });
   }
 
@@ -345,6 +486,12 @@
         var resetTime = getResetTime();
         var dateOrder = detectDateOrder(dataRows.map(function (row) { return row[timestampCol]; })) || "MDY";
 
+        // Rows stamped in the future can only come from a time zone mismatch
+        // (e.g. rows written before the spreadsheet's zone was set to New York).
+        // Left alone they sort after every reset and never drop out of the
+        // window, so they are ignored. A few minutes of slack covers clock skew.
+        var latestAllowed = Date.now() + 5 * 60 * 1000;
+
         var counts = {};
         currentQuestion.options.forEach(function (opt) { counts[opt.letter] = 0; });
 
@@ -352,10 +499,9 @@
           var letter = normalizeToLetter(row[responseCol]);
           if (!letter || !(letter in counts)) return;
 
-          if (resetTime) {
-            var ts = parseSheetTimestamp(row[timestampCol], dateOrder);
-            if (!ts || ts <= resetTime) return;
-          }
+          var ts = parseSheetTimestamp(row[timestampCol], dateOrder);
+          if (ts && ts > latestAllowed) return;
+          if (resetTime && (!ts || ts <= resetTime)) return;
 
           counts[letter]++;
         });
@@ -373,9 +519,35 @@
   }
 
   function resetWindow() {
-    localStorage.setItem(RESET_STORAGE_KEY, new Date().toISOString());
+    var history = getResetHistory();
+    history.push(new Date().toISOString());
+    saveResetHistory(history);
     renderSinceLabel();
     lastPulledEl.textContent = "";
+  }
+
+  // Drops the most recent reset so the window opens from the previous baseline
+  // again. The question text is left untouched (including any in-place edits);
+  // only the bars are cleared, since they no longer match the window.
+  function undoReset() {
+    var history = getResetHistory();
+    if (!history.length) return;
+    history.pop();
+    saveResetHistory(history);
+    renderSinceLabel();
+    lastPulledEl.textContent = "";
+    if (currentQuestion) {
+      revealed = false;
+      renderChart(currentQuestion, null);
+      updateAnswerButton();
+    }
+    var resetTime = getResetTime();
+    setStatus(
+      "Last reset undone. Window now starts at " +
+        (resetTime ? formatDateTime(resetTime) : "the beginning") +
+        ". Press “Pull results” to refresh.",
+      false
+    );
   }
 
   // The reveal button only makes sense for questions that carry a `correct`
@@ -393,6 +565,8 @@
     revealed = false;
     clearChildren(questionDisplay);
     questionDisplay.appendChild(renderRich(question.question));
+    makeEditable(questionDisplay);
+    buildChart(question);
     renderChart(question, null);
     updateAnswerButton();
   }
@@ -437,7 +611,7 @@
     questions.forEach(function (q) {
       var option = document.createElement("option");
       option.value = q.id;
-      option.textContent = truncate(stripRich(q.question), 55);
+      option.textContent = q.label || truncate(stripRich(q.question), 55);
       questionSelect.appendChild(option);
     });
   }
@@ -455,7 +629,7 @@
         return resp.json();
       })
       .then(function (data) {
-        questions = data;
+        questions = [GENERAL_QUESTION].concat(data);
         populateSelect();
       })
       .catch(function (err) {
@@ -470,6 +644,7 @@
   pullBtn.addEventListener("click", pull);
   if (answerBtn) answerBtn.addEventListener("click", revealAnswer);
   resetBtn.addEventListener("click", reset);
+  if (undoBtn) undoBtn.addEventListener("click", undoReset);
 
   renderSinceLabel();
   init();
