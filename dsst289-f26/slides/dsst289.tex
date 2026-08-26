@@ -431,7 +431,7 @@ Consistent formatting (following PEP 8) makes code easier to read, debug, and ma
 (
     country
     .filter(c.region == "Europe")
-    .pipe(ggplot, aes(c.hdi, c.happy))
+    .ggplot(aes(c.hdi, c.happy))
     .geom_point()
     .geom_text(aes(label=c.iso), size=6, nudge_y=0.5)
 )
@@ -1002,7 +1002,7 @@ Plots in this course use \textbf{plotnine}, built around the \textit{grammar of 
 \item \textit{Geometry}: the kind of mark drawn per row --- points, text, lines, bars
 \end{itemize}
 
-Every plot starts the same way: pipe a DataFrame into \texttt{ggplot}.
+Every plot starts the same way: begin a chain from a DataFrame with \texttt{.ggplot()}.
 
 \end{textframe}
 
@@ -1010,7 +1010,7 @@ Every plot starts the same way: pipe a DataFrame into \texttt{ggplot}.
 \begin{rightframe}{Points Geometry}
 \splitcols{%
 
-Every plotnine chart begins the same way: pipe a DataFrame into \texttt{ggplot}, describe the \texttt{x} and \texttt{y} aesthetics, and add a geometry.
+Every plotnine chart begins the same way: call \texttt{.ggplot()} on a DataFrame, describe the \texttt{x} and \texttt{y} aesthetics, and add a geometry.
 
 A \textit{point geometry} (\texttt{geom\_point()}) draws one point per row. Below, each point is a European country, placed by its HDI and happiness score.
 
@@ -1025,7 +1025,7 @@ Countries with higher human development tend to report higher happiness.
 \begin{frame}[fragile]{Building a Scatter Plot}
 \begin{splitcode}{%
 
-\texttt{.pipe(ggplot, aes(x, y))} starts a plot, mapping columns to the axes.
+\texttt{.ggplot(aes(x, y))} starts a plot, mapping columns to the axes.
 
 Chain on a geometry method: \texttt{.geom\_point()} draws one point per row.
 
@@ -1034,7 +1034,7 @@ Chain on a geometry method: \texttt{.geom\_point()} draws one point per row.
 (
     country
     .filter(c.region == "Europe")
-    .pipe(ggplot, aes(c.hdi, c.happy))
+    .ggplot(aes(c.hdi, c.happy))
     .geom_point()
 )
 \end{lstlisting}
@@ -1054,7 +1054,7 @@ A variable mapping goes inside a second \texttt{aes()} call, passed to the geome
 (
     country
     .filter(c.region == "Europe")
-    .pipe(ggplot, aes(c.hdi, c.happy))
+    .ggplot(aes(c.hdi, c.happy))
     .geom_point(aes(color=c.subregion))
 )
 \end{lstlisting}
@@ -1087,7 +1087,7 @@ A \textit{mapped} aesthetic --- one that varies by row --- goes inside \texttt{a
 (
     country
     .filter(c.region == "Europe")
-    .pipe(ggplot, aes(c.hdi, c.happy))
+    .ggplot(aes(c.hdi, c.happy))
     .geom_point(color="#F5276C")
 )
 \end{lstlisting}
@@ -1120,7 +1120,7 @@ It requires a \texttt{label} aesthetic, in addition to \texttt{x} and \texttt{y}
 (
     country
     .filter(c.region == "Europe")
-    .pipe(ggplot, aes(c.hdi, c.happy))
+    .ggplot(aes(c.hdi, c.happy))
     .geom_text(aes(label=c.iso))
 )
 \end{lstlisting}
@@ -1153,7 +1153,7 @@ Geometries stack: chain \texttt{.geom\_point()} and \texttt{.geom\_text()} to dr
 (
     country
     .filter(c.region == "Europe")
-    .pipe(ggplot, aes(c.hdi, c.happy))
+    .ggplot(aes(c.hdi, c.happy))
     .geom_point()
     .geom_text(aes(label=c.iso), size=6, nudge_y=0.5)
 )
@@ -1187,7 +1187,7 @@ It takes the same aesthetics as \texttt{geom\_point()}.
 (
     cellphone
     .filter(c.iso.is_in(["USA", "GBR", "IRL", "CAN"]))
-    .pipe(ggplot, aes(c.year, c.cell))
+    .ggplot(aes(c.year, c.cell))
     .geom_line(aes(color=c.iso))
 )
 \end{lstlisting}
@@ -1223,7 +1223,7 @@ A categorical axis takes its order from the data, so \texttt{.sort()} first if o
     country
     .filter(c.subregion == "Northern Africa")
     .sort(c.pop)
-    .pipe(ggplot, aes(c.full_name, c.pop))
+    .ggplot(aes(c.full_name, c.pop))
     .geom_col()
     .coord_flip()
 )
@@ -1258,7 +1258,7 @@ country_ne = country.filter(c.subregion == "Northern Europe")
 (
     country
     .filter(c.region == "Europe")
-    .pipe(ggplot, aes(c.hdi, c.happy))
+    .ggplot(aes(c.hdi, c.happy))
     .geom_point(alpha=0.2)
     .geom_point(color="#F5276C", data=country_ne)
 )
@@ -2028,7 +2028,7 @@ Once you see that, the rest of this chapter is mostly control and polish: choosi
 \begin{lstlisting}[language=Python]
 (
     country
-    .pipe(ggplot, aes(c.subregion))
+    .ggplot(aes(c.subregion))
     .geom_bar(fill="white", color="black")
     .coord_flip()
 )
@@ -2064,7 +2064,7 @@ If you find yourself computing a count with \texttt{.group\_by()} only to feed i
     .group_by(c.subregion)
     .agg(pl.len().alias("n"))
     .sort(c.n)
-    .pipe(ggplot, aes(c.subregion, c.n))
+    .ggplot(aes(c.subregion, c.n))
     .geom_col(fill="white", color="black")
     .coord_flip()
 )
@@ -2098,7 +2098,7 @@ When the value to order by lives only inside the plot (like a bar's count), sort
 (
     country
     .sort(pl.len().over(c.subregion))
-    .pipe(ggplot, aes(c.subregion))
+    .ggplot(aes(c.subregion))
     .geom_bar(fill="white", color="black")
     .coord_flip()
 )
@@ -2136,7 +2136,7 @@ Casting a column to \texttt{pl.String} forces each distinct value to become its 
     ))
     .sort(c.year)
     .with_columns(c.year.cast(pl.String))
-    .pipe(ggplot, aes(c.year, c.cell))
+    .ggplot(aes(c.year, c.cell))
     .geom_boxplot()
 )
 \end{lstlisting}
@@ -2168,7 +2168,7 @@ For a numeric column, a \textit{group} means a bin. \texttt{geom\_histogram} cut
 \begin{lstlisting}[language=Python]
 (
     country
-    .pipe(ggplot, aes(c.hdi))
+    .ggplot(aes(c.hdi))
     .geom_histogram(
         fill="white", color="black",
         binwidth=0.1, boundary=0
@@ -2217,7 +2217,7 @@ The regions here are ordered by \texttt{c.hdi.median().over(c.region)}, not by H
 (
     country
     .filter(c.region == "Europe")
-    .pipe(ggplot, aes(c.hdi, c.happy))
+    .ggplot(aes(c.hdi, c.happy))
     .geom_point()
     .geom_smooth(method="lm", se=False)
 )
@@ -2251,7 +2251,7 @@ Add a scale function to change the default. \texttt{scale\_color\_brewer} swaps 
 (
     country
     .filter(c.region == "Europe")
-    .pipe(ggplot, aes(c.hdi, c.happy))
+    .ggplot(aes(c.hdi, c.happy))
     .geom_point(aes(color=c.subregion))
     .scale_color_brewer(type="qual", palette=2)
 )

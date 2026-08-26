@@ -209,8 +209,9 @@ questions, not executing them.
   (`c.calories`, `c.food_group`).
 - Method-chain style: the pipeline is wrapped in parentheses, starts with the
   DataFrame, and puts each method on its own line.
-- For plots, use the notes' plotnine style, which pipes into `ggplot` and adds
-  geometries as chained methods (`.geom_point(...)`), not `ggplot(...) + geom_point()`.
+- For plots, use the notes' plotnine style, which starts the plot with the
+  `.ggplot(aes(...))` method and adds geometries as chained methods
+  (`.geom_point(...)`), not `ggplot(...) + geom_point()`.
 - Use the datasets and column names as they appear in the chapter you are
   drawing from.
 

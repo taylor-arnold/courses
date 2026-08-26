@@ -162,9 +162,9 @@
 \begin{multicols}{2}
 
 \head{The One Big Idea}
-\key{A plot $=$ data $+$ \code{aes()} mappings $+$ geoms, assembled by piping.}
+\key{A plot $=$ data $+$ \code{aes()} mappings $+$ geoms, assembled by chaining.}
 \begin{itemize}
-  \item \code{df.pipe(ggplot, aes(x, y))} \code{.geom\_*()}
+  \item \code{df.ggplot(aes(x, y))} \code{.geom\_*()}
   \item inside \code{aes()}: mapped to a column
   \item outside \code{aes()} but still in the geom: a fixed value
   \item put fixed arguments \emph{after} the \code{aes()} call

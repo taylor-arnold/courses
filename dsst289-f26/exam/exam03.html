@@ -59,7 +59,7 @@
 (
     movie
     .sort(pl.len().over(c.mpa), descending=True)
-    .pipe(ggplot, aes(c.mpa))
+    .ggplot(aes(c.mpa))
     .geom_bar()
     .coord_flip()
 )</pre>
@@ -70,7 +70,7 @@
 # dataset whose runtime falls between 90 and 100 minutes.
 (
     movie
-    .pipe(ggplot, aes(c.runtime))
+    .ggplot(aes(c.runtime))
     .geom_histogram(binwidth=10, boundary=0)
 )</pre>
 
@@ -79,7 +79,7 @@
 (
     movie
     .sort(c.rating.median().over(c.mpa))
-    .pipe(ggplot, aes(c.mpa, c.rating))
+    .ggplot(aes(c.mpa, c.rating))
     .geom_boxplot()
     .coord_flip()
 )
@@ -98,7 +98,7 @@
 <pre>
 (
     movie
-    .pipe(ggplot, aes(c.rating_count, c.gross))
+    .ggplot(aes(c.rating_count, c.gross))
     .geom_point()
     .geom_smooth(method="lm", se=False)
     .scale_x_log10()
@@ -109,7 +109,7 @@
 <pre>
 (
     movie
-    .pipe(ggplot, aes(c.rating, c.gross))
+    .ggplot(aes(c.rating, c.gross))
     .geom_point(aes(color=c.mpa), show_legend=False)
     .facet_wrap("mpa")
     .labs(
@@ -183,7 +183,7 @@ movie.select(c.title).n_unique() == len(movie)
 (
     movie_wide
     .unpivot(index=c.year, variable_name=c.mpa, value_name=c.count)
-    .pipe(ggplot, aes(c.year, c.count, color=c.mpa))
+    .ggplot(aes(c.year, c.count, color=c.mpa))
     .geom_line()
 )</pre>
 

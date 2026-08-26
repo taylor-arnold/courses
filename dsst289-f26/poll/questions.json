@@ -342,7 +342,7 @@
   },
   {
     "id": "q06-03",
-    "question": "Q06.03: A plot sets up its axes with `.pipe(ggplot, aes(c.hdi, c.happy))`. What do these aesthetics do?",
+    "question": "Q06.03: A plot sets up its axes with `.ggplot(aes(c.hdi, c.happy))`. What do these aesthetics do?",
     "options": [
       { "letter": "A", "text": "They color the points by hdi and size them by happy." },
       { "letter": "B", "text": "They put happy on the x axis and hdi on the y axis." },
@@ -364,11 +364,11 @@
   },
   {
     "id": "q06-05",
-    "question": "Q06.05: Consider this pipeline:\n\n```python\n(\n    country\n    .filter(c.region == \"Europe\")\n    .pipe(ggplot, aes(c.hdi, c.happy))\n    .geom_point()\n)\n```\n\nWhat is the role of each part?",
+    "question": "Q06.05: Consider this pipeline:\n\n```python\n(\n    country\n    .filter(c.region == \"Europe\")\n    .ggplot(aes(c.hdi, c.happy))\n    .geom_point()\n)\n```\n\nWhat is the role of each part?",
     "options": [
-      { "letter": "A", "text": "`.pipe(ggplot, aes(...))` draws the points, and `.geom_point()` is only there to display the finished plot on screen." },
-      { "letter": "B", "text": "`.filter` chooses the rows to plot, `.pipe(ggplot, aes(...))` starts the plot and maps hdi to x and happy to y, and `.geom_point()` adds the layer that draws one point per remaining row." },
-      { "letter": "C", "text": "`.filter` chooses the columns to plot, `.pipe(ggplot, aes(...))` draws the points, and `.geom_point()` sets the axis labels." },
+      { "letter": "A", "text": "`.ggplot(aes(...))` draws the points, and `.geom_point()` is only there to display the finished plot on screen." },
+      { "letter": "B", "text": "`.filter` chooses the rows to plot, `.ggplot(aes(...))` starts the plot and maps hdi to x and happy to y, and `.geom_point()` adds the layer that draws one point per remaining row." },
+      { "letter": "C", "text": "`.filter` chooses the columns to plot, `.ggplot(aes(...))` draws the points, and `.geom_point()` sets the axis labels." },
       { "letter": "D", "text": "`.geom_point()` selects the European rows, while `.filter` sets the color of the points." }
     ],
     "correct": "B"
@@ -399,7 +399,7 @@
     "id": "q07-03",
     "question": "Q07.03: You want every point in a scatter plot to be the same fixed shade of pink. Where does the color setting go?",
     "options": [
-      { "letter": "A", "text": "As a `color=` argument inside the `.pipe(ggplot, ...)` call." },
+      { "letter": "A", "text": "As a `color=` argument inside the `.ggplot(...)` call." },
       { "letter": "B", "text": "As `color=\"#F5276C\"` inside `geom_point()` but outside the `aes()` call." },
       { "letter": "C", "text": "As `aes(color=\"#F5276C\")` inside `geom_point()`." },
       { "letter": "D", "text": "As `color=c.subregion` inside the `aes()` call." }
@@ -421,7 +421,7 @@
     "id": "q07-05",
     "question": "Q07.05: In a highlight plot, one layer is written `.geom_point(color=\"#F5276C\", data=country_ne)` while the other geometries have no `data=` argument. What does the `data=` argument do here?",
     "options": [
-      { "letter": "A", "text": "It draws that one layer from `country_ne` instead of the default dataset; the other geometries keep using the dataset piped into `ggplot`." },
+      { "letter": "A", "text": "It draws that one layer from `country_ne` instead of the default dataset; the other geometries keep using the dataset the plot was started from." },
       { "letter": "B", "text": "It merges `country_ne` into the default dataset before any geometry is drawn." },
       { "letter": "C", "text": "It replaces the dataset for the whole plot, so every geometry now draws from `country_ne`." },
       { "letter": "D", "text": "It filters the default dataset down to the rows found in `country_ne` for every layer." }

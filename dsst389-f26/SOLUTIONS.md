@@ -99,13 +99,14 @@ code** — you are writing a reference solution, not executing it.
   )
   ```
 
-- For plots, use the notes' plotnine style, which pipes into `ggplot` and adds
-  geometries as chained methods (not `ggplot(...) + geom_point()`):
+- For plots, use the notes' plotnine style, which starts the plot with the
+  `.ggplot(aes(...))` method and adds geometries as chained methods (not
+  `ggplot(...) + geom_point()`):
 
   ```
   (
       students
-      .pipe(ggplot, aes(c.study_hours, c.gpa))
+      .ggplot(aes(c.study_hours, c.gpa))
       .geom_point(aes(color=c.major))
   )
   ```

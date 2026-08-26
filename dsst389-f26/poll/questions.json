@@ -177,7 +177,7 @@
   },
   {
     "id": "q30-13",
-    "question": "Q30.13: You want every point in a scatter plot of `hdi` against `happy` colored according to its `subregion`. Which layer does this?\n\n```python\n(country.filter(c.region == \"Europe\").pipe(ggplot, aes(c.hdi, c.happy))...)\n```",
+    "question": "Q30.13: You want every point in a scatter plot of `hdi` against `happy` colored according to its `subregion`. Which layer does this?\n\n```python\n(country.filter(c.region == \"Europe\").ggplot(aes(c.hdi, c.happy))...)\n```",
     "options": [
       { "letter": "A", "text": "`.geom_point(aes(c.subregion))`" },
       { "letter": "B", "text": "`.geom_point(color=\"subregion\")`" },
@@ -188,7 +188,7 @@
   },
   {
     "id": "q30-14",
-    "question": "Q30.14: You want all of the points fixed to the single color \"#F5276C\" rather than colored by any column. Which layer does this?\n\n```python\n(country.filter(c.region == \"Europe\").pipe(ggplot, aes(c.hdi, c.happy))...)\n```",
+    "question": "Q30.14: You want all of the points fixed to the single color \"#F5276C\" rather than colored by any column. Which layer does this?\n\n```python\n(country.filter(c.region == \"Europe\").ggplot(aes(c.hdi, c.happy))...)\n```",
     "options": [
       { "letter": "A", "text": "`.geom_point(aes(color=\"#F5276C\"))`" },
       { "letter": "B", "text": "`.geom_point(color=\"#F5276C\")`" },
@@ -201,10 +201,10 @@
     "id": "q30-15",
     "question": "Q30.15: You have the raw `country` table with one row per country and want a plot whose bars show how many countries fall in each `subregion`, letting the geometry do the counting. Which chain does this?",
     "options": [
-      { "letter": "A", "text": "`country.pipe(ggplot, aes(c.subregion, c.n)).geom_bar()`" },
-      { "letter": "B", "text": "`country.pipe(ggplot, aes(c.subregion)).geom_point()`" },
-      { "letter": "C", "text": "`country.pipe(ggplot, aes(c.subregion)).geom_bar()`" },
-      { "letter": "D", "text": "`country.pipe(ggplot, aes(c.subregion)).geom_col()`" }
+      { "letter": "A", "text": "`country.ggplot(aes(c.subregion, c.n)).geom_bar()`" },
+      { "letter": "B", "text": "`country.ggplot(aes(c.subregion)).geom_point()`" },
+      { "letter": "C", "text": "`country.ggplot(aes(c.subregion)).geom_bar()`" },
+      { "letter": "D", "text": "`country.ggplot(aes(c.subregion)).geom_col()`" }
     ],
     "correct": "C"
   },
@@ -212,10 +212,10 @@
     "id": "q30-16",
     "question": "Q30.16: You already computed a count column `n` per `subregion` and want each `n` drawn as the height of a bar without any further counting. Which chain does this?",
     "options": [
-      { "letter": "A", "text": "`.sort(c.n).pipe(ggplot, aes(c.subregion)).geom_bar()`" },
-      { "letter": "B", "text": "`.sort(c.n).pipe(ggplot, aes(c.subregion, c.n)).geom_col()`" },
-      { "letter": "C", "text": "`.sort(c.n).pipe(ggplot, aes(c.subregion)).geom_col()`" },
-      { "letter": "D", "text": "`.sort(c.n).pipe(ggplot, aes(c.subregion, c.n)).geom_bar()`" }
+      { "letter": "A", "text": "`.sort(c.n).ggplot(aes(c.subregion)).geom_bar()`" },
+      { "letter": "B", "text": "`.sort(c.n).ggplot(aes(c.subregion, c.n)).geom_col()`" },
+      { "letter": "C", "text": "`.sort(c.n).ggplot(aes(c.subregion)).geom_col()`" },
+      { "letter": "D", "text": "`.sort(c.n).ggplot(aes(c.subregion, c.n)).geom_bar()`" }
     ],
     "correct": "B"
   },
@@ -223,16 +223,16 @@
     "id": "q30-17",
     "question": "Q30.17: You want to show the distribution of the numeric column `hdi` by cutting it into equal intervals and counting how many countries fall in each. Which chain does this?",
     "options": [
-      { "letter": "A", "text": "`country.pipe(ggplot, aes(c.hdi)).geom_boxplot(binwidth=0.1, boundary=0)`" },
-      { "letter": "B", "text": "`country.pipe(ggplot, aes(c.hdi)).geom_histogram(binwidth=0.1, boundary=0)`" },
-      { "letter": "C", "text": "`country.pipe(ggplot, aes(c.hdi)).geom_bar(binwidth=0.1, boundary=0)`" },
-      { "letter": "D", "text": "`country.pipe(ggplot, aes(c.region, c.hdi)).geom_histogram(binwidth=0.1, boundary=0)`" }
+      { "letter": "A", "text": "`country.ggplot(aes(c.hdi)).geom_boxplot(binwidth=0.1, boundary=0)`" },
+      { "letter": "B", "text": "`country.ggplot(aes(c.hdi)).geom_histogram(binwidth=0.1, boundary=0)`" },
+      { "letter": "C", "text": "`country.ggplot(aes(c.hdi)).geom_bar(binwidth=0.1, boundary=0)`" },
+      { "letter": "D", "text": "`country.ggplot(aes(c.region, c.hdi)).geom_histogram(binwidth=0.1, boundary=0)`" }
     ],
     "correct": "B"
   },
   {
     "id": "q30-18",
-    "question": "Q30.18: You are plotting `year` against `cell` and want a separate line for each country, colored by its `iso` code. Which layer does this?\n\n```python\n(cellphone.filter(c.iso.is_in([\"USA\", \"GBR\", \"IRL\", \"CAN\"])).pipe(ggplot, aes(c.year, c.cell))...)\n```",
+    "question": "Q30.18: You are plotting `year` against `cell` and want a separate line for each country, colored by its `iso` code. Which layer does this?\n\n```python\n(cellphone.filter(c.iso.is_in([\"USA\", \"GBR\", \"IRL\", \"CAN\"])).ggplot(aes(c.year, c.cell))...)\n```",
     "options": [
       { "letter": "A", "text": "`.geom_line(aes(color=c.iso))`" },
       { "letter": "B", "text": "`.geom_line(color=c.iso)`" },
@@ -243,7 +243,7 @@
   },
   {
     "id": "q30-19",
-    "question": "Q30.19: You want a small textual label placed at each point giving the country's `iso` code. Which layer does this?\n\n```python\n(country.filter(c.region == \"Europe\").pipe(ggplot, aes(c.hdi, c.happy))...)\n```",
+    "question": "Q30.19: You want a small textual label placed at each point giving the country's `iso` code. Which layer does this?\n\n```python\n(country.filter(c.region == \"Europe\").ggplot(aes(c.hdi, c.happy))...)\n```",
     "options": [
       { "letter": "A", "text": "`.geom_text(aes(label=c.iso))`" },
       { "letter": "B", "text": "`.geom_point(aes(label=c.iso))`" },
@@ -254,7 +254,7 @@
   },
   {
     "id": "q30-20",
-    "question": "Q30.20: You want to split the scatter plot into a grid of separate panels, one per `region`, rather than showing every region on a single set of axes. Which layer does this?\n\n```python\n(country.pipe(ggplot, aes(c.hdi, c.happy)).geom_point()...)\n```",
+    "question": "Q30.20: You want to split the scatter plot into a grid of separate panels, one per `region`, rather than showing every region on a single set of axes. Which layer does this?\n\n```python\n(country.ggplot(aes(c.hdi, c.happy)).geom_point()...)\n```",
     "options": [
       { "letter": "A", "text": "`.geom_point(aes(color=c.region))`" },
       { "letter": "B", "text": "`.facet_wrap(aes(color=c.region))`" },

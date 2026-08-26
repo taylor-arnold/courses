@@ -49,22 +49,6 @@ The \textbf{second semester} moves towards working with increasingly complex dat
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \framesection{Overview}
-\begin{rightframe}{Instructors}
-\splitcols{%
-
-This course is co-taught by Prof.~Taylor Arnold (\texttt{taylor.arnold@richmond.edu}) and Prof.~Sam Kellogg (\texttt{sam.kellogg@richmond.edu}).
-
-Both of us will be in class and either of us is happy to hear from you about anything to do with the course material, the readings, the homework, or the project.
-
-Prof.~Arnold is the instructor of record, so please direct any questions about grades to him.
-
-}{%
-  \imgcaption{images/diagram_eda.png}{Conceptual visualization of the data science pipeline.}
-}
-\end{rightframe}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\framesection{Overview}
 \begin{rightframe}{Format}
 \splitcols{%
 
@@ -316,7 +300,7 @@ iso    hdi    happy
 
 The chain does not stop at a table.
 
-\texttt{.pipe(ggplot, aes(...))} hands the DataFrame to plotnine mid-chain, and every layer after it is added with a \textit{dot} --- \texttt{.geom\_point()}, \texttt{.geom\_text()} --- not the \texttt{+} that base plotnine uses.
+\texttt{.ggplot(aes(...))} hands the DataFrame to plotnine mid-chain, and every layer after it is added with a \textit{dot} --- \texttt{.geom\_point()}, \texttt{.geom\_text()} --- not the \texttt{+} that base plotnine uses.
 
 Columns are still named with \texttt{c.}, now inside \texttt{aes()}.
 
@@ -325,7 +309,7 @@ Columns are still named with \texttt{c.}, now inside \texttt{aes()}.
 (
     country
     .filter(c.region == "Europe")
-    .pipe(ggplot, aes(c.hdi, c.happy))
+    .ggplot(aes(c.hdi, c.happy))
     .geom_point()
     .geom_text(aes(label=c.iso), size=6, nudge_y=0.5)
 )
@@ -519,7 +503,7 @@ year  iso    cell
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{textframe}{Plot Geometries}
 
-Every plot starts the same way: pipe a DataFrame into \texttt{ggplot} with an \texttt{aes()} mapping columns to position, color, or size, then chain each geometry with a dot.
+Every plot starts the same way: call \texttt{.ggplot()} on a DataFrame with an \texttt{aes()} mapping columns to position, color, or size, then chain each geometry with a dot.
 
 \begin{itemize}
 \item One mark per row: \texttt{.geom\_point()}, \texttt{.geom\_text()} (needs a \texttt{label}), \texttt{.geom\_line()} (ordered along $x$), \texttt{.geom\_col()} (a bar per row)

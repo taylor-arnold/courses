@@ -29,7 +29,7 @@
     </p>
     <p>The second exam consists of 15 questions. All involve hand-writing short code blocks concerning the RVA flights dataset <code>rva</code>, which has one row for each flight leaving or arriving at Richmond International Airport, with the columns <code>year</code>, <code>month</code>, <code>day</code>, <code>dep_time</code>, <code>sched_dep_time</code>, <code>dep_delay</code>, <code>arr_time</code>, <code>sched_arr_time</code>, <code>arr_delay</code>, <code>carrier</code>, <code>flight</code>, <code>tailnum</code>, <code>origin</code>, <code>dest</code>, <code>air_time</code>, and <code>distance</code>. It is very similar in style to Exam I. You should generally be comfortable with the material in <a href="https://taylor-arnold.github.io/fds2/book/04_graphics.html" target="_blank" rel="noopener noreferrer">Chapter 4</a>, <a href="https://taylor-arnold.github.io/fds2/book/05_group.html" target="_blank" rel="noopener noreferrer">Chapter 5</a>, and <a href="https://taylor-arnold.github.io/fds2/book/06_window.html" target="_blank" rel="noopener noreferrer">Chapter 6</a>. However, only those items mentioned below, along with <u>everything listed on Exam I</u>, will be required for this exam.</p>
     <ol>
-      <li>Building a plot by piping a dataset into <code>ggplot</code> with <code>.pipe(ggplot, aes(...))</code> and then adding geometries as further methods in the chain.</li>
+      <li>Building a plot by starting a chain from a dataset with <code>.ggplot(aes(...))</code> and then adding geometries as further methods in the chain.</li>
       <li>Creating a scatterplot with <code>geom_point</code>, which may have a variable or a fixed color or size.</li>
       <li>Adding text to a plot with <code>geom_text</code>, which may have a variable or a fixed color or size. No need to build in nudging (it is not possible without seeing the full dataset to get the scale correct anyway).</li>
       <li>Creating a line plot with <code>geom_line</code>, most often with a unit of time on the horizontal axis, and with an optional color aesthetic to draw one line per group.</li>
@@ -73,7 +73,7 @@
         avg_rating = c.rating.mean(),
         avg_gross = c.gross.mean()
     )
-    .pipe(ggplot, aes(c.avg_rating, c.avg_gross))
+    .ggplot(aes(c.avg_rating, c.avg_gross))
     .geom_point(color="yellow")
 )</pre>
 
@@ -82,7 +82,7 @@
 (
     movie
     .filter(c.year == 1985)
-    .pipe(ggplot, aes(c.rating, c.gross))
+    .ggplot(aes(c.rating, c.gross))
     .geom_text(aes(label=c.title))
 )</pre>
 
@@ -93,7 +93,7 @@
     .group_by(c.year, c.mpa)
     .agg(avg_gross = c.gross.mean())
     .sort(c.year)
-    .pipe(ggplot, aes(c.year, c.avg_gross))
+    .ggplot(aes(c.year, c.avg_gross))
     .geom_line(aes(color=c.mpa))
 )</pre>
 
@@ -103,7 +103,7 @@
     movie
     .group_by(c.mpa)
     .agg(count = pl.len())
-    .pipe(ggplot, aes(c.mpa, c.count))
+    .ggplot(aes(c.mpa, c.count))
     .geom_col()
     .coord_flip()
 )</pre>
