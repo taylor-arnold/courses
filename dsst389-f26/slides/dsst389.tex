@@ -409,12 +409,79 @@ Name each new column with \texttt{=} and build it from a \texttt{c.} expression.
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Missing Values}
+\begin{splitcode}{%
+
+A \texttt{null} is a value that is \textit{absent}, not a zero. \texttt{.is\_null()} and \texttt{.is\_not\_null()} turn a column into True/False, so \texttt{.sum()} on the result counts how many rows are missing.
+
+Nulls sort \textit{first} under \texttt{descending=True}, so a top-5 can be five blanks. Drop them with \texttt{.filter()} before sorting.
+
+}
+\begin{lstlisting}[language=Python]
+country.select(
+    n_missing = c.gini.is_null().sum()
+)
+
+(
+    country
+    .filter(c.gini.is_not_null())
+    .sort(c.gini, descending=True)
+    .head(n=3)
+)
+\end{lstlisting}
+\begin{codeoutput}
+n_missing
+11
+
+iso    gini
+"ZAF"  63.1
+"NAM"  59.1
+"ZMB"  57.1
+
+# without the filter, the top 3 are
+# SGP, LBY, PSE -- all null
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Summarizing Without Groups}
+\begin{splitcode}{%
+
+An \textit{aggregating} expression collapses a whole column to one number. Hand one to \texttt{.select()} and the table comes back with a single row --- \texttt{.agg()} does the same thing, once per group.
+
+The vocabulary is small and reused everywhere: \texttt{.mean()}, \texttt{.median()}, \texttt{.min()}, \texttt{.max()}, \texttt{.sum()}, \texttt{.n\_unique()}, and \texttt{pl.len()}. Summing a True/False expression \textit{counts} the rows where it holds.
+
+}
+\begin{lstlisting}[language=Python]
+country.select(
+    hdi_avg = c.hdi.mean(),
+    hdi_med = c.hdi.median(),
+    pop_max = c.pop.max(),
+    n_region = c.region.n_unique(),
+    n_rich = (c.hdi > 0.9).sum()
+)
+\end{lstlisting}
+\begin{codeoutput}
+shape: (1, 5)
+hdi_avg  hdi_med  pop_max
+0.7570   0.785    1463.9
+
+n_region  n_rich
+5         32
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}[fragile]{Verbs: group\_by and agg}
 \begin{splitcode}{%
 
 \texttt{.group\_by()} splits rows into groups; \texttt{.agg()} then computes one row of summaries per group.
 
 Only the grouping column(s) and the summaries you ask for survive; everything else is dropped. \texttt{pl.len()} counts the rows in each group.
+
+Group order is arbitrary unless you pass \texttt{maintain\_order=True}, which keeps groups in the order they first appear.
 
 }
 \begin{lstlisting}[language=Python]
@@ -446,6 +513,8 @@ region      hdi_avg  count
 A \texttt{.join()} combines two tables along a shared key. Here \texttt{border} lists neighboring-country pairs and \texttt{c\_sml} holds one Gini value per country.
 
 Called on the left table, it takes the right table and the key column. The default \texttt{inner} drops non-matching rows; \texttt{how="left"} keeps every left row, filling \texttt{null} where the right side has no match.
+
+When the key is spelled differently in each table, name both: \texttt{left\_on="dest"}, \texttt{right\_on="faa"}.
 
 }
 \begin{lstlisting}[language=Python]
@@ -507,11 +576,44 @@ Every plot starts the same way: call \texttt{.ggplot()} on a DataFrame with an \
 
 \begin{itemize}
 \item One mark per row: \texttt{.geom\_point()}, \texttt{.geom\_text()} (needs a \texttt{label}), \texttt{.geom\_line()} (ordered along $x$), \texttt{.geom\_col()} (a bar per row)
-\item Statistical geometries run a hidden group-and-count first: \texttt{.geom\_bar()} (counts a category), \texttt{.geom\_histogram()} (bins a number), \texttt{.geom\_boxplot()}
+\item Statistical geometries run a hidden group-and-count first: \texttt{.geom\_bar()} (counts a category), \texttt{.geom\_histogram()} (bins a number, sized with \texttt{binwidth} and anchored with \texttt{boundary}), \texttt{.geom\_boxplot()}
 \item A \textit{fixed} aesthetic (same for every row) goes outside \texttt{aes()}; a \textit{mapped} one (varies by row) goes inside. \texttt{.coord\_flip()}, \texttt{labs()}, and \texttt{theme\_*()} adjust axes, labels, and styling
 \end{itemize}
 
 \end{textframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{Adjusting the Plot}
+\begin{splitcode}{%
+
+\texttt{.facet\_wrap()} splits one plot into a small grid, one panel per value of a column, all sharing the same axes.
+
+\texttt{.geom\_smooth()} overlays a trend line; \texttt{method="lm"} makes it a straight fit and \texttt{se=False} drops the confidence band.
+
+\texttt{.coord\_cartesian()} \textit{crops} the view. Unlike filtering the data, the marks are still computed from every row --- it only changes what you see.
+
+}
+\begin{lstlisting}[language=Python]
+(
+    country
+    .ggplot(aes(c.hdi, c.happy))
+    .geom_point()
+    .geom_smooth(method="lm", se=False)
+    .facet_wrap("region")
+)
+
+# .coord_cartesian(ylim=(4, 8))
+# zooms in without dropping rows
+\end{lstlisting}
+\begin{codeoutput}
+# one panel per region, each with
+# its own points and its own fit
+
+# a boxplot with wild outliers is
+# unreadable until you crop it
+\end{codeoutput}
+\end{splitcode}
+\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}[fragile]{Window Functions: over}
@@ -532,7 +634,8 @@ A window function computes a group-level number but keeps every row, writing the
 )
 
 # ordered windows -- .shift(), .rank(),
-# running totals -- also scope with .over()
+# .cum_sum() -- return a whole column;
+# add .over() to restart them per group
 \end{lstlisting}
 \begin{codeoutput}
 shape: (135, 16)
