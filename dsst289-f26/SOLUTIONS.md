@@ -110,16 +110,25 @@ code** — you are writing a reference solution, not executing it.
   )
   ```
 
-  rather than `food.filter(c.calories > 100)`. The same applies when the
-  result feeds into something else: keep the pipeline in parentheses and put
-  the comparison or assignment outside it, as in
+  rather than `food.filter(c.calories > 100)`. When the pipeline ends in a
+  comparison, keep the comparison on the last step, inside the parentheses:
 
   ```
   (
       food
       .select(c.item)
-      .n_unique()
-  ) == len(food)
+      .n_unique() == len(food)
+  )
+  ```
+
+  When the result is assigned, the name goes outside and the pipeline opens on
+  the same line:
+
+  ```
+  snacks = (
+      food
+      .filter(c.calories > 100)
+  )
   ```
 
   A bare `df.method(...)` is fine inside prose or an inline `<code>` span when

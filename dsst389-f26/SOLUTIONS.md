@@ -120,15 +120,25 @@ code** — you are writing a reference solution, not executing it.
   )
   ```
 
-  rather than `metro.geo.sjoin_nearest(...)`. When the pipeline is assigned or
-  feeds into something else, keep the chain in parentheses and put the
-  assignment or comparison outside it:
+  rather than `metro.geo.sjoin_nearest(...)`. When the result is assigned, the
+  name goes outside and the pipeline opens on the same line:
 
   ```
   state = (
       funs.read_file("data/state.geojson")
       .geo.to_crs(5069)
       .geo.area
+  )
+  ```
+
+  When the pipeline ends in a comparison, keep the comparison on the last step,
+  inside the parentheses, the way the notes write the primary-key check:
+
+  ```
+  (
+      c_sml
+      .select(c.iso)
+      .n_unique() == len(c_sml)
   )
   ```
 

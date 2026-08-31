@@ -871,7 +871,10 @@ Strings compare alphabetically, so \texttt{.max()} on a broken numeric column gi
 cities.schema
 # {'zip': Int64, 'pop': String, ...}
 
-cities.select(c.pop.max())
+(
+    cities
+    .select(c.pop.max())
+)
 # output: "n/a"
 \end{lstlisting}
 \end{splitcode}
@@ -1008,8 +1011,14 @@ The same expression moves unchanged between contexts, which is why \texttt{c.} k
 
 }
 \begin{lstlisting}[language=Python]
-country.select(high_hdi = c.hdi > 0.9)
-country.filter(c.hdi > 0.9)
+(
+    country
+    .select(high_hdi = c.hdi > 0.9)
+)
+(
+    country
+    .filter(c.hdi > 0.9)
+)
 # same expression, different context
 \end{lstlisting}
 \end{splitcode}
@@ -1025,12 +1034,18 @@ String columns carry methods under \texttt{.str}, for tasks like changing case o
 
 }
 \begin{lstlisting}[language=Python]
-country.select(
-    c.iso,
-    name_upper = c.full_name.str.to_uppercase()
+(
+    country
+    .select(
+        c.iso,
+        name_upper = c.full_name.str.to_uppercase()
+    )
 )
 
-cities.select(c.city, founded = c.founded.str.to_date())
+(
+    cities
+    .select(c.city, founded = c.founded.str.to_date())
+)
 \end{lstlisting}
 \begin{codeoutput}
 shape: (8, 2)
@@ -1327,7 +1342,10 @@ A common use is highlighting a subset on top of the full dataset.
 
 }
 \begin{lstlisting}[language=Python]
-country_ne = country.filter(c.subregion == "Northern Europe")
+country_ne = (
+    country
+    .filter(c.subregion == "Northern Europe")
+)
 (
     country
     .filter(c.region == "Europe")
@@ -1432,7 +1450,10 @@ It must be consumed by a method like \texttt{.agg()}, \texttt{.head()}, or \text
 
 }
 \begin{lstlisting}[language=Python]
-country.group_by(c.region)
+(
+    country
+    .group_by(c.region)
+)
 # <polars.dataframe.group_by.GroupBy
 #  object at 0x...>
 \end{lstlisting}
@@ -1819,13 +1840,18 @@ BRA  "Brazil"          "Americas" 21.85
 
 }
 \begin{lstlisting}[language=Python]
-country.group_by(c.region).agg(
-    hdi_avg = c.hdi.mean()
+(
+    country
+    .group_by(c.region)
+    .agg(hdi_avg = c.hdi.mean())
 )
 # one row per region
 
-country.with_columns(
-    hdi_avg = c.hdi.mean().over(c.region)
+(
+    country
+    .with_columns(
+        hdi_avg = c.hdi.mean().over(c.region)
+    )
 )
 # 135 rows, hdi_avg repeated per region
 \end{lstlisting}
@@ -2614,22 +2640,32 @@ Check before you join, not after --- comparing \texttt{.n\_unique()} to \texttt{
 }
 \begin{lstlisting}[language=Python]
 (
-    c_sml.select(c.iso).n_unique()
-    == len(c_sml)
+    c_sml
+    .select(c.iso)
+    .n_unique() == len(c_sml)
 )
 # True: iso is a genuine key in c_sml
 
 (
-    bad_c_sml.select(c.iso).n_unique()
-    == len(bad_c_sml)
+    bad_c_sml
+    .select(c.iso)
+    .n_unique() == len(bad_c_sml)
 )
 # False: bad_c_sml has a duplicated iso
 \end{lstlisting}
 \begin{codeoutput}
-border.join(c_sml, on=c.iso).shape
+(
+    border
+    .join(c_sml, on=c.iso)
+    .shape
+)
 # (641, 3)
 
-border.join(bad_c_sml, on=c.iso).shape
+(
+    border
+    .join(bad_c_sml, on=c.iso)
+    .shape
+)
 # (647, 3) -- 6 extra rows, all
 # duplicate copies of AFG's borders
 \end{codeoutput}
@@ -2900,10 +2936,8 @@ This runs, but only draws one hardcoded country --- there is no way to get ``one
 }
 \begin{lstlisting}[language=Python]
 (
-    ggplot(
-        cell_wide,
-        aes(x=c.year, y=c.usa)
-    )
+    cell_wide
+    .ggplot(aes(x=c.year, y=c.usa))
     .geom_line()
 )
 \end{lstlisting}

@@ -418,8 +418,9 @@ Nulls sort \textit{first} under \texttt{descending=True}, so a top-5 can be five
 
 }
 \begin{lstlisting}[language=Python]
-country.select(
-    n_missing = c.gini.is_null().sum()
+(
+    country
+    .select(n_missing = c.gini.is_null().sum())
 )
 
 (
@@ -454,12 +455,15 @@ The vocabulary is small and reused everywhere: \texttt{.mean()}, \texttt{.median
 
 }
 \begin{lstlisting}[language=Python]
-country.select(
-    hdi_avg = c.hdi.mean(),
-    hdi_med = c.hdi.median(),
-    pop_max = c.pop.max(),
-    n_region = c.region.n_unique(),
-    n_rich = (c.hdi > 0.9).sum()
+(
+    country
+    .select(
+        hdi_avg = c.hdi.mean(),
+        hdi_med = c.hdi.median(),
+        pop_max = c.pop.max(),
+        n_region = c.region.n_unique(),
+        n_rich = (c.hdi > 0.9).sum()
+    )
 )
 \end{lstlisting}
 \begin{codeoutput}
@@ -547,13 +551,17 @@ ZWE  ZMB           50.3
 
 }
 \begin{lstlisting}[language=Python]
-cell_wide = cellphone.pivot(
-    index=c.year, on=c.iso, values=c.cell
+cell_wide = (
+    cellphone
+    .pivot(index=c.year, on=c.iso, values=c.cell)
 )
 
-cell_wide.unpivot(
-    index=c.year,
-    variable_name=c.iso, value_name=c.cell
+(
+    cell_wide
+    .unpivot(
+        index=c.year,
+        variable_name=c.iso, value_name=c.cell
+    )
 )
 \end{lstlisting}
 \begin{codeoutput}
@@ -726,7 +734,10 @@ It defaults to WGS 84 (\texttt{crs=4326}), ordinary latitude and longitude, the 
 
 }
 \begin{lstlisting}[language=Python]
-metro = metro.geo.points_from_xy("lon", "lat")
+metro = (
+    metro
+    .geo.points_from_xy("lon", "lat")
+)
 metro
 \end{lstlisting}
 \begin{codeoutput}
@@ -777,7 +788,9 @@ A \textit{coordinate reference system} (CRS) defines how coordinates map to loca
 }
 \begin{lstlisting}[language=Python]
 (
-    ggplot(metro.geo.to_crs(5069))
+    metro
+    .geo.to_crs(5069)
+    .ggplot()
     .geom_map()
     .coord_fixed()
 )
@@ -823,7 +836,9 @@ The effect of projection is far more noticeable with polygons than with points.
 \begin{lstlisting}[language=Python]
 state = funs.read_file("data/acs_state.geojson")
 (
-    ggplot(state.geo.to_crs(5069))
+    state
+    .geo.to_crs(5069)
+    .ggplot()
     .geom_map(fill="white", color="black")
     .coord_fixed()
 )
@@ -854,10 +869,20 @@ The Albers projection compresses and expands the coordinates to give a faithful 
 
 }
 \begin{lstlisting}[language=Python]
-state = state.geo.to_crs(5069)
+state = (
+    state
+    .geo.to_crs(5069)
+)
 state.geo.centroid
-state = state.geo.area
-state.sort(c.area).select(c.name, c.area)
+state = (
+    state
+    .geo.area
+)
+(
+    state
+    .sort(c.area)
+    .select(c.name, c.area)
+)
 \end{lstlisting}
 \begin{codeoutput}
 shape: (50, 2)
@@ -884,7 +909,8 @@ With \texttt{area} already a column, building one takes a single aesthetic mappi
 }
 \begin{lstlisting}[language=Python]
 (
-    ggplot(state, aes(fill=c.area))
+    state
+    .ggplot(aes(fill=c.area))
     .geom_map(color="white")
     .coord_fixed()
 )
@@ -928,8 +954,14 @@ Column names shared by both tables get \texttt{\_left}/\texttt{\_right} suffixes
 
 }
 \begin{lstlisting}[language=Python]
-metro = metro.geo.to_crs(5069)
-metro.geo.sjoin(state)
+metro = (
+    metro
+    .geo.to_crs(5069)
+)
+(
+    metro
+    .geo.sjoin(state)
+)
 \end{lstlisting}
 \begin{codeoutput}
 shape: (920, 20)
@@ -957,8 +989,11 @@ name_left     name_right
 
 }
 \begin{lstlisting}[language=Python]
-metro.geo.sjoin_nearest(
-    metro, exclusive=True, distance_col="distance"
+(
+    metro
+    .geo.sjoin_nearest(
+        metro, exclusive=True, distance_col="distance"
+    )
 )
 \end{lstlisting}
 \begin{codeoutput}
@@ -987,7 +1022,9 @@ Buffers answer ``within $X$ of" questions; joined against another table, they fi
 }
 \begin{lstlisting}[language=Python]
 (
-    ggplot(metro.geo.buffer(100_000))
+    metro
+    .geo.buffer(100_000)
+    .ggplot()
     .geom_map(alpha=0.3)
     .coord_fixed()
 )
@@ -1018,8 +1055,9 @@ The overlaps trace a nearly solid band along the eastern seaboard and thin to is
 
 }
 \begin{lstlisting}[language=Python]
-region = state.geo.dissolve(
-    by="side", aggfunc={"area": "sum"}
+region = (
+    state
+    .geo.dissolve(by="side", aggfunc={"area": "sum"})
 )
 \end{lstlisting}
 \begin{codeoutput}
@@ -1279,18 +1317,28 @@ Both types unlock the \texttt{.dt} namespace: weekday, hour, quarter, and more, 
 
 }
 \begin{lstlisting}[language=Python]
-chaucer = page_views.with_columns(
-    date = pl.date(c.year, c.month, c.day)
+chaucer = (
+    page_views
+    .with_columns(
+        date = pl.date(c.year, c.month, c.day)
+    )
 )
-page_revisions = page_revisions.with_columns(
-    timestamp = c.timestamp.str.to_datetime()
+page_revisions = (
+    page_revisions
+    .with_columns(
+        timestamp = c.timestamp.str.to_datetime()
+    )
 )
 \end{lstlisting}
 \begin{codeoutput}
 chaucer.schema["date"]
 # Date
 
-chaucer.select(c.doc_id, c.date, c.views).head(3)
+(
+    chaucer
+    .select(c.doc_id, c.date, c.views)
+    .head(3)
+)
 # "Geoffrey Chaucer"  2025-01-01  1392
 # "Geoffrey Chaucer"  2025-01-02  1553
 # "Geoffrey Chaucer"  2025-01-03  1609
@@ -1500,9 +1548,13 @@ The exact \texttt{.shift()}/\texttt{.over()} pattern from the temporal data chap
 
 }
 \begin{lstlisting}[language=Python]
-bigrams = anno.filter(c.is_alpha).with_columns(
-    next_token = c.lemma.shift(-1)
-        .over([c.doc_id, c.sid])
+bigrams = (
+    anno
+    .filter(c.is_alpha)
+    .with_columns(
+        next_token = c.lemma.shift(-1)
+            .over([c.doc_id, c.sid])
+    )
 )
 \end{lstlisting}
 \begin{codeoutput}
@@ -2050,7 +2102,10 @@ Every image becomes a dense 768-number vector; unlike sparse TF-IDF, nearly ever
 }
 \begin{lstlisting}[language=Python]
 vit = ViTEmbedder()
-birds.select(c.filepath, c.label, c.vit)
+(
+    birds
+    .select(c.filepath, c.label, c.vit)
+)
 \end{lstlisting}
 \begin{codeoutput}
 shape: (1555, 3)

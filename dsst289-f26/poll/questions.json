@@ -1035,7 +1035,7 @@
   },
   {
     "id": "q19-01",
-    "question": "Q19.01: Before using a table as the right-hand side of a join, you run this check and get True:\n\n```python\n(\n    c_sml\n    .select(c.iso)\n    .n_unique()\n) == len(c_sml)\n```\n\nWhat has this confirmed?",
+    "question": "Q19.01: Before using a table as the right-hand side of a join, you run this check and get True:\n\n```python\n(\n    c_sml\n    .select(c.iso)\n    .n_unique() == len(c_sml)\n)\n```\n\nWhat has this confirmed?",
     "options": [
       { "letter": "A", "text": "The `iso` column has no repeated values, so it is a safe key that will not multiply rows in the join." },
       { "letter": "B", "text": "The two tables you are about to join have the same number of rows." },

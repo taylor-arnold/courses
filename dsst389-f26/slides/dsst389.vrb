@@ -8,7 +8,10 @@ Every image becomes a dense 768-number vector; unlike sparse TF-IDF, nearly ever
 }
 \begin{lstlisting}[language=Python]
 vit = ViTEmbedder()
-birds.select(c.filepath, c.label, c.vit)
+(
+    birds
+    .select(c.filepath, c.label, c.vit)
+)
 \end{lstlisting}
 \begin{codeoutput}
 shape: (1555, 3)
