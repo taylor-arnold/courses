@@ -37,6 +37,46 @@
       <li>Three variable names that follow the conventions described in the reading and two that do not, with a short note about what is wrong with each of the second set.</li>
     </ol>
 
+    <h3>Solutions</h3>
+    <p>Write these out by hand; the point of the assignment is the writing, not the running. Questions 1 and 4 ask about you, so your page will not match mine word for word.</p>
+
+    <p>1. Store your age in a variable, then use that variable to work out roughly how many days old you are.</p>
+<pre>
+age_years = 20
+age_days = age_years * 365</pre>
+    <p>Your own age goes on the first line. The second line has to mention <code>age_years</code>: if you wrote <code>age_days = 20 * 365</code> you did the arithmetic yourself and never used the variable, which was the whole point.</p>
+
+    <p>2. The imports that start nearly every script this semester.</p>
+<pre>
+import polars as pl
+from plotnine import ggplot, aes
+from polars import col as c
+
+import funs</pre>
+    <p>All four lines matter, and so does the spelling of the aliases. We type <code>pl</code> and <code>c</code> constantly, so they have to be exactly these.</p>
+
+    <p>3. Round 2.71828 to two digits, once with positional arguments and once with named arguments.</p>
+<pre>
+round(2.71828, 2)
+
+round(number=2.71828, ndigits=2)</pre>
+    <p>Both return 2.72. The names <code>number</code> and <code>ndigits</code> are the ones <code>round</code> actually uses; <code>help(round)</code> is how you would look them up.</p>
+
+    <p>4. Three variable names that follow the conventions from the reading, and two that break them.</p>
+    <p>Lots of names work here. One good set:</p>
+<pre>
+Good:
+    age_years
+    total_fat
+    mean_rating_2024
+
+Bad:
+    2nd_try     starts with a number, so Python will not accept it at all
+    Total Fat   has a space in it, and capital letters we would have to
+                remember later; total_fat is the name we want</pre>
+    <p>The conventions are: start with a letter or an underscore, use only lowercase letters, numbers, and underscores after that, and separate words with underscores rather than capital letters. So <code>totalFat</code> also belongs in the second group, since it runs afoul of the last rule even though Python would happily accept it.</p>
+  </div>
+
   <script src="../js/site.js"></script>
  </body>
 </html>
