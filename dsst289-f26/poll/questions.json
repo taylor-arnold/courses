@@ -232,7 +232,7 @@
   },
   {
     "id": "q04-03",
-    "question": "Q04.03: The chapter says `df.pipe(f)` does the same thing as which of these?",
+    "question": "Q04.03: A pipeline ends with a call to `.pipe`:\n\n```python\n(\n    df\n    .pipe(f)\n)\n```\n\nThe chapter says this does the same thing as which of these?",
     "options": [
       { "letter": "A", "text": "`pl.pipe(df, f)`" },
       { "letter": "B", "text": "`df.f()`" },
@@ -430,7 +430,7 @@
   },
   {
     "id": "q08-01",
-    "question": "Q08.01: You run `country.group_by(c.region)` with no method after it. What do you get back?",
+    "question": "Q08.01: You write this pipeline and stop, with no method after the `.group_by`:\n\n```python\n(\n    country\n    .group_by(c.region)\n)\n```\n\nWhat do you get back?",
     "options": [
       { "letter": "A", "text": "The original data with a hidden marker showing the groups." },
       { "letter": "B", "text": "A DataFrame with one row per region, ready to print." },
@@ -584,7 +584,7 @@
   },
   {
     "id": "q10-05",
-    "question": "Q10.05: What does `country.filter(c.hdi > c.hdi.median().over(c.region))` return, and does it add a column?",
+    "question": "Q10.05: What does this pipeline return, and does it add a column?\n\n```python\n(\n    country\n    .filter(c.hdi > c.hdi.median().over(c.region))\n)\n```",
     "options": [
       { "letter": "A", "text": "An error, because a windowed expression cannot be used inside `.filter()`." },
       { "letter": "B", "text": "Every country, with a new column giving the regional median HDI." },
@@ -1035,7 +1035,7 @@
   },
   {
     "id": "q19-01",
-    "question": "Q19.01: Before using a table as the right-hand side of a join, you run `c_sml.select(c.iso).n_unique() == len(c_sml)` and get True. What has this confirmed?",
+    "question": "Q19.01: Before using a table as the right-hand side of a join, you run this check and get True:\n\n```python\n(\n    c_sml\n    .select(c.iso)\n    .n_unique()\n) == len(c_sml)\n```\n\nWhat has this confirmed?",
     "options": [
       { "letter": "A", "text": "The `iso` column has no repeated values, so it is a safe key that will not multiply rows in the join." },
       { "letter": "B", "text": "The two tables you are about to join have the same number of rows." },
@@ -1090,7 +1090,7 @@
   },
   {
     "id": "q20-01",
-    "question": "Q20.01: The `cellphone` table is long, with columns `year`, `iso`, and `cell`. To reshape it wide, one column per country, the call is `cellphone.pivot(index=c.year, on=c.iso, values=c.cell)`. What do the three arguments name, in order?",
+    "question": "Q20.01: The `cellphone` table is long, with columns `year`, `iso`, and `cell`. To reshape it wide, one column per country, the pipeline is:\n\n```python\n(\n    cellphone\n    .pivot(index=c.year, on=c.iso, values=c.cell)\n)\n```\n\nWhat do the three arguments name, in order?",
     "options": [
       { "letter": "A", "text": "The column to index the new rows (`year`), the column whose values become new column names (`iso`), and the column that fills the cells (`cell`)." },
       { "letter": "B", "text": "The columns to drop, keep, and rename, in that order." },

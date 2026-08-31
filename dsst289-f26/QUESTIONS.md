@@ -208,7 +208,24 @@ questions, not executing them.
 - Use **Polars**, never pandas. Reference columns with the `c.` prefix
   (`c.calories`, `c.food_group`).
 - Method-chain style: the pipeline is wrapped in parentheses, starts with the
-  DataFrame, and puts each method on its own line.
+  DataFrame, and puts each method on its own line. **This holds even when the
+  chain is a single method**, and it holds for the `geo` namespace and every
+  other accessor. When a stem needs to show code, put it in a fenced
+  ```python block as a full pipeline rather than inline as a bare
+  `df.method(...)` call:
+
+  ```python
+  (
+      country
+      .group_by(c.region)
+  )
+  ```
+
+  The exception is an option that is *deliberately* a wrong form, where the
+  bare call is the thing being tested (`f(df)` versus `df.f()`, say). When the
+  four options are competing chains, move the shared pipeline into the stem and
+  leave only the differing steps in the options, so each option stays on one
+  line.
 - For plots, use the notes' plotnine style, which starts the plot with the
   `.ggplot(aes(...))` method and adds geometries as chained methods
   (`.geom_point(...)`), not `ggplot(...) + geom_point()`.
@@ -233,6 +250,8 @@ and the existing questions. Code fragments are exempt — humanize only the pros
       sections in `~/gh/fds2` in full, per the "Homework readings" table.
 - [ ] Read `questions.json` and continued per-homework numbering from the highest
       existing `QNN.MM` code for that homework.
+- [ ] Any code in a stem is a parenthesized pipeline in a fenced block, not a
+      bare `df.method(...)` call.
 - [ ] Produced the number of questions the prompt asked for (five for the sample
       set: two easy, two moderately harder, one more challenging).
 - [ ] Every question starts with its `QNN.MM: ` code and has a matching `id`.

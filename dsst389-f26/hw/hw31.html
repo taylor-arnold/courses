@@ -37,6 +37,98 @@
       <li>Explain in your own words why Web Mercator (EPSG:3857) makes Greenland look bigger than Africa.</li>
       <li>Name one question about metro areas that the single-point simplification can still answer honestly, and one for which it would quietly mislead you.</li>
     </ol>
+
+    <h3>Solutions</h3>
+
+    <p>1. The two objections to plotting <code>lat</code> against <code>lon</code> directly, and which is about accuracy and which is about use.</p>
+<pre>
+The accuracy objection: the plot treats longitude and latitude as ordinary
+Cartesian coordinates, when they describe positions on a curved surface. Equal
+steps in longitude cover less ground the further north you go, so the top of
+the plot is stretched east-west relative to the bottom. The picture is not just
+ugly, it is wrong about the relative positions of the cities in it.
+
+The use objection: there is nothing on the plot to orient by. No coastlines, no
+state borders, nothing but dots on a blank field. A reader who does not already
+know the shape of the country cannot tell what they are looking at.
+</pre>
+
+    <p>2. What the number 4326 records, and why a WKT string on its own does not identify a place.</p>
+<pre>
+4326 is an EPSG code, and it records the coordinate reference system that the
+numbers belong to: WGS 84, the latitude/longitude system GPS uses, with both
+coordinates measured in degrees. It is what `points_from_xy` writes into the
+`_crs` column, and it is the default because most raw coordinate data arrives
+that way.
+
+POINT (-86.8 32.4) on its own is a pair of numbers with no statement of what
+they are coordinates *in*. Read as WGS 84 they land in Alabama; read as meters
+in a projected system they land somewhere else entirely, or off the map. The
+geometry supplies the coordinates and the CRS supplies the rule for turning
+them into a place. You need both halves, which is why the two columns travel
+together.
+</pre>
+
+    <p>3. An analysis of <code>metro</code> that comes out wrong in EPSG:4326, and the direction of the error.</p>
+<pre>
+Several answers work here, since any distance, area, or buffer computed on
+unprojected coordinates is suspect. A good one is the nearest-neighbor join:
+
+(
+    metro
+    .geo.sjoin_nearest(metro, exclusive=True, distance_col="distance")
+)
+
+In EPSG:4326 the distances come back in degrees, and a degree is not a fixed
+length. One degree of longitude is about 111 km at the equator but only about
+85 km at 40 degrees north, roughly the latitude of New York. The calculation
+counts every east-west degree at its full equatorial worth, so the distances
+come out TOO LARGE, and the error grows the further north the pair sits.
+
+The damage is not that the numbers are in the wrong unit. It is that an
+east-west neighbor is penalized against a north-south one, so the join can hand
+back the wrong nearest city, and nothing raises an error when it does.
+</pre>
+
+    <p>4. Why Web Mercator makes Greenland look bigger than Africa.</p>
+<pre>
+Mercator is built to preserve shape. Lines of longitude converge toward the
+poles on the globe but are drawn parallel on the map, so the map has to stretch
+east-west more and more as you go north. To keep shapes from being squashed, it
+then stretches north-south by that same factor. Stretching both directions
+equally is what keeps angles and shapes right, but it multiplies area by the
+SQUARE of the factor, and the factor grows without bound toward the poles.
+
+Africa straddles the equator, where the factor is about 1 and the drawing is
+close to true size. Greenland sits between roughly 60 and 83 degrees north,
+where the factor is large, so it is inflated many times over. Africa is about
+14 times the area of Greenland, and on the map the two look about the same.
+
+This is the trade-off from the reading in its plainest form: you can preserve
+shape or area, but not both, and Web Mercator chose shape.
+</pre>
+
+    <p>5. One question the single-point simplification answers honestly, and one where it misleads.</p>
+<pre>
+There is no single right pair here. What matters is the distinction: the honest
+question only needs to know roughly WHERE the metro area is, and the misleading
+one needs to know how far it SPREADS.
+
+Answered honestly: which state is each metro area in, or how many metro areas
+lie west of the Mississippi. A metro area is small next to a state, so its
+center point falls in the right one nearly every time, and the answer does not
+depend on the metro having any size at all.
+
+Quietly misleading: does this metro area cross a state line, or how many of its
+residents live within 20 km of the coast. A point can only be in one state, so
+the join reports a single state for Kansas City exactly as it does for Boise,
+and never signals that one of them straddles a border. The second question is
+worse, because the whole population sits at one coordinate: a buffer either
+catches all of it or none of it, when the true answer is some fraction in
+between. The output looks the same in both cases, which is what makes it quiet.
+</pre>
+
+    <div style="height:200px"></div>
   </div>
 
   <script src="../js/site.js"></script>

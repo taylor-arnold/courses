@@ -177,7 +177,7 @@
   },
   {
     "id": "q30-13",
-    "question": "Q30.13: You want every point in a scatter plot of `hdi` against `happy` colored according to its `subregion`. Which layer does this?\n\n```python\n(country.filter(c.region == \"Europe\").ggplot(aes(c.hdi, c.happy))...)\n```",
+    "question": "Q30.13: You want every point in a scatter plot of `hdi` against `happy` colored according to its `subregion`. Which layer does this?\n\n```python\n(\n    country\n    .filter(c.region == \"Europe\")\n    .ggplot(aes(c.hdi, c.happy))\n    ...\n)\n```",
     "options": [
       { "letter": "A", "text": "`.geom_point(aes(c.subregion))`" },
       { "letter": "B", "text": "`.geom_point(color=\"subregion\")`" },
@@ -188,7 +188,7 @@
   },
   {
     "id": "q30-14",
-    "question": "Q30.14: You want all of the points fixed to the single color \"#F5276C\" rather than colored by any column. Which layer does this?\n\n```python\n(country.filter(c.region == \"Europe\").ggplot(aes(c.hdi, c.happy))...)\n```",
+    "question": "Q30.14: You want all of the points fixed to the single color \"#F5276C\" rather than colored by any column. Which layer does this?\n\n```python\n(\n    country\n    .filter(c.region == \"Europe\")\n    .ggplot(aes(c.hdi, c.happy))\n    ...\n)\n```",
     "options": [
       { "letter": "A", "text": "`.geom_point(aes(color=\"#F5276C\"))`" },
       { "letter": "B", "text": "`.geom_point(color=\"#F5276C\")`" },
@@ -199,12 +199,12 @@
   },
   {
     "id": "q30-15",
-    "question": "Q30.15: You have the raw `country` table with one row per country and want a plot whose bars show how many countries fall in each `subregion`, letting the geometry do the counting. Which chain does this?",
+    "question": "Q30.15: You have the raw `country` table with one row per country and want a plot whose bars show how many countries fall in each `subregion`, letting the geometry do the counting. Which pair of steps completes this pipeline?\n\n```python\n(\n    country\n    ...\n)\n```",
     "options": [
-      { "letter": "A", "text": "`country.ggplot(aes(c.subregion, c.n)).geom_bar()`" },
-      { "letter": "B", "text": "`country.ggplot(aes(c.subregion)).geom_point()`" },
-      { "letter": "C", "text": "`country.ggplot(aes(c.subregion)).geom_bar()`" },
-      { "letter": "D", "text": "`country.ggplot(aes(c.subregion)).geom_col()`" }
+      { "letter": "A", "text": "`.ggplot(aes(c.subregion, c.n))` then `.geom_bar()`" },
+      { "letter": "B", "text": "`.ggplot(aes(c.subregion))` then `.geom_point()`" },
+      { "letter": "C", "text": "`.ggplot(aes(c.subregion))` then `.geom_bar()`" },
+      { "letter": "D", "text": "`.ggplot(aes(c.subregion))` then `.geom_col()`" }
     ],
     "correct": "C"
   },
@@ -221,18 +221,18 @@
   },
   {
     "id": "q30-17",
-    "question": "Q30.17: You want to show the distribution of the numeric column `hdi` by cutting it into equal intervals and counting how many countries fall in each. Which chain does this?",
+    "question": "Q30.17: You want to show the distribution of the numeric column `hdi` by cutting it into equal intervals and counting how many countries fall in each. Which pair of steps completes this pipeline?\n\n```python\n(\n    country\n    ...\n)\n```",
     "options": [
-      { "letter": "A", "text": "`country.ggplot(aes(c.hdi)).geom_boxplot(binwidth=0.1, boundary=0)`" },
-      { "letter": "B", "text": "`country.ggplot(aes(c.hdi)).geom_histogram(binwidth=0.1, boundary=0)`" },
-      { "letter": "C", "text": "`country.ggplot(aes(c.hdi)).geom_bar(binwidth=0.1, boundary=0)`" },
-      { "letter": "D", "text": "`country.ggplot(aes(c.region, c.hdi)).geom_histogram(binwidth=0.1, boundary=0)`" }
+      { "letter": "A", "text": "`.ggplot(aes(c.hdi))` then `.geom_boxplot(binwidth=0.1, boundary=0)`" },
+      { "letter": "B", "text": "`.ggplot(aes(c.hdi))` then `.geom_histogram(binwidth=0.1, boundary=0)`" },
+      { "letter": "C", "text": "`.ggplot(aes(c.hdi))` then `.geom_bar(binwidth=0.1, boundary=0)`" },
+      { "letter": "D", "text": "`.ggplot(aes(c.region, c.hdi))` then `.geom_histogram(binwidth=0.1, boundary=0)`" }
     ],
     "correct": "B"
   },
   {
     "id": "q30-18",
-    "question": "Q30.18: You are plotting `year` against `cell` and want a separate line for each country, colored by its `iso` code. Which layer does this?\n\n```python\n(cellphone.filter(c.iso.is_in([\"USA\", \"GBR\", \"IRL\", \"CAN\"])).ggplot(aes(c.year, c.cell))...)\n```",
+    "question": "Q30.18: You are plotting `year` against `cell` and want a separate line for each country, colored by its `iso` code. Which layer does this?\n\n```python\n(\n    cellphone\n    .filter(c.iso.is_in([\"USA\", \"GBR\", \"IRL\", \"CAN\"]))\n    .ggplot(aes(c.year, c.cell))\n    ...\n)\n```",
     "options": [
       { "letter": "A", "text": "`.geom_line(aes(color=c.iso))`" },
       { "letter": "B", "text": "`.geom_line(color=c.iso)`" },
@@ -243,7 +243,7 @@
   },
   {
     "id": "q30-19",
-    "question": "Q30.19: You want a small textual label placed at each point giving the country's `iso` code. Which layer does this?\n\n```python\n(country.filter(c.region == \"Europe\").ggplot(aes(c.hdi, c.happy))...)\n```",
+    "question": "Q30.19: You want a small textual label placed at each point giving the country's `iso` code. Which layer does this?\n\n```python\n(\n    country\n    .filter(c.region == \"Europe\")\n    .ggplot(aes(c.hdi, c.happy))\n    ...\n)\n```",
     "options": [
       { "letter": "A", "text": "`.geom_text(aes(label=c.iso))`" },
       { "letter": "B", "text": "`.geom_point(aes(label=c.iso))`" },
@@ -254,7 +254,7 @@
   },
   {
     "id": "q30-20",
-    "question": "Q30.20: You want to split the scatter plot into a grid of separate panels, one per `region`, rather than showing every region on a single set of axes. Which layer does this?\n\n```python\n(country.ggplot(aes(c.hdi, c.happy)).geom_point()...)\n```",
+    "question": "Q30.20: You want to split the scatter plot into a grid of separate panels, one per `region`, rather than showing every region on a single set of axes. Which layer does this?\n\n```python\n(\n    country\n    .ggplot(aes(c.hdi, c.happy))\n    .geom_point()\n    ...\n)\n```",
     "options": [
       { "letter": "A", "text": "`.geom_point(aes(color=c.region))`" },
       { "letter": "B", "text": "`.facet_wrap(aes(color=c.region))`" },
@@ -287,7 +287,7 @@
   },
   {
     "id": "q31-03",
-    "question": "Q31.03: When you build points with metro.geo.points_from_xy(\"lon\", \"lat\"), which CRS does it record by default, and what is that code?",
+    "question": "Q31.03: You build point geometries with this pipeline:\n\n```python\n(\n    metro\n    .geo.points_from_xy(\"lon\", \"lat\")\n)\n```\n\nWhich CRS does it record by default, and what is that code?",
     "options": [
       { "letter": "A", "text": "EPSG:4326, which is WGS 84, the standard latitude/longitude system." },
       { "letter": "B", "text": "EPSG:3857, the Web Mercator system used by Google Maps." },
@@ -309,7 +309,7 @@
   },
   {
     "id": "q31-05",
-    "question": "Q31.05: In metro.geo.explore(tooltip=[\"name\"]), why is the column given as the string \"name\" rather than as c.name?",
+    "question": "Q31.05: In this pipeline, why is the column given as the string \"name\" rather than as c.name?\n\n```python\n(\n    metro\n    .geo.explore(tooltip=[\"name\"])\n)\n```",
     "options": [
       { "letter": "A", "text": "explore hands the names straight to GeoPandas, and c. only works inside Polars expressions and aes()." },
       { "letter": "B", "text": "A tooltip can show only one column, and c.name would try to show several." },
@@ -386,7 +386,7 @@
   },
   {
     "id": "q33-02",
-    "question": "Q33.02: Joining the state table to itself with state.geo.sjoin(state, predicate=\"touches\") returns what?",
+    "question": "Q33.02: Joining the state table to itself returns what?\n\n```python\n(\n    state\n    .geo.sjoin(state, predicate=\"touches\")\n)\n```",
     "options": [
       { "letter": "A", "text": "Pairs of states whose interiors overlap, with each border appearing once." },
       { "letter": "B", "text": "Pairs of states whose centroids fall within a fixed distance of each other." },
@@ -397,7 +397,7 @@
   },
   {
     "id": "q33-03",
-    "question": "Q33.03: In the result of metro.geo.sjoin(state), which geometry ends up in the output geometry column?",
+    "question": "Q33.03: In the result of this pipeline, which geometry ends up in the output geometry column?\n\n```python\n(\n    metro\n    .geo.sjoin(state)\n)\n```",
     "options": [
       { "letter": "A", "text": "The point geometry from metro, the first (left) table." },
       { "letter": "B", "text": "The polygon geometry from state, the second (right) table." },
@@ -408,7 +408,7 @@
   },
   {
     "id": "q33-04",
-    "question": "Q33.04: In metro.geo.sjoin_nearest(metro, exclusive=True, distance_col=\"distance\"), what does exclusive=True accomplish?",
+    "question": "Q33.04: In this pipeline, what does exclusive=True accomplish?\n\n```python\n(\n    metro\n    .geo.sjoin_nearest(metro, exclusive=True, distance_col=\"distance\")\n)\n```",
     "options": [
       { "letter": "A", "text": "It limits matches to metro areas that fall inside the same state." },
       { "letter": "B", "text": "It drops any match whose distance is greater than the average distance." },
@@ -430,7 +430,7 @@
   },
   {
     "id": "q34-01",
-    "question": "Q34.01: What does metro.geo.buffer(100_000) produce from the metro point data, given the data is in the Albers projection?",
+    "question": "Q34.01: What does this pipeline produce from the metro point data, given the data is in the Albers projection?\n\n```python\n(\n    metro\n    .geo.buffer(100_000)\n)\n```",
     "options": [
       { "letter": "A", "text": "A single point shifted 100,000 meters away from each original location." },
       { "letter": "B", "text": "The 100,000 metro areas nearest to each point." },
@@ -441,7 +441,7 @@
   },
   {
     "id": "q34-02",
-    "question": "Q34.02: Why does metro.geo.buffer(100_000).geo.sjoin(state) match some metro areas to more than one state, when the unbuffered join matched each to exactly one?",
+    "question": "Q34.02: Why does this pipeline match some metro areas to more than one state, when the unbuffered join matched each to exactly one?\n\n```python\n(\n    metro\n    .geo.buffer(100_000)\n    .geo.sjoin(state)\n)\n```",
     "options": [
       { "letter": "A", "text": "Each buffered metro is now a polygon, so it can overlap several states within 100 km instead of only the one holding its center point." },
       { "letter": "B", "text": "Buffering shifts the CRS, which moves points onto nearby state borders." },
@@ -474,7 +474,7 @@
   },
   {
     "id": "q34-05",
-    "question": "Q34.05: After state.geo.explode(), recomputing area with .geo.area changes the values for Hawaii's rows. Why does the copied area column change?",
+    "question": "Q34.05: In this pipeline, recomputing area with .geo.area changes the values for Hawaii's rows. Why does the copied area column change?\n\n```python\n(\n    state\n    .geo.explode()\n    .geo.area\n)\n```",
     "options": [
       { "letter": "A", "text": "explode reprojects each island to a new CRS, so recomputing reports area in different units." },
       { "letter": "B", "text": "explode leaves the area column empty, so recomputing fills each row with the first non-null value." },

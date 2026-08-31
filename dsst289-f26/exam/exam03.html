@@ -133,9 +133,13 @@
     .agg(count = pl.len())
 )</pre>
 
-    <p>7. A colleague sends you a new version of the <code>movie</code> table and you are not sure it has only one row per film. Write the single line of code that would tell you, before you join anything, whether <code>title</code> on its own is a genuine primary key of that table. What happens to the join in question 6 if it is not, and why does Python not warn you?</p>
+    <p>7. A colleague sends you a new version of the <code>movie</code> table and you are not sure it has only one row per film. Write the code that would tell you, before you join anything, whether <code>title</code> on its own is a genuine primary key of that table. What happens to the join in question 6 if it is not, and why does Python not warn you?</p>
 <pre>
-movie.select(c.title).n_unique() == len(movie)
+(
+    movie
+    .select(c.title)
+    .n_unique()
+) == len(movie)
 
 # If it comes back False, a title with two rows will match every row of
 # people twice, so the join silently produces extra, duplicated rows.

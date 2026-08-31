@@ -37,6 +37,36 @@
     </ol>
 <pre>
 x=pl.read_csv('data/courses.csv' ,n_rows=5)</pre>
+    <h3>Solutions</h3>
+    <p>The table itself is yours, so questions 1 and 2 depend on what you wrote down. Here is a table of the right shape to check yours against:</p>
+<pre>
+course_id   title                   credits   professor
+DSST289     Introduction to DS      1.0       Arnold
+MATH211     Discrete Structures     1.0       Kerckhove
+FREN221     French Conversation     1.0       Ravaux
+MUS127      Jazz History            0.5       Bennett</pre>
+
+    <p>1. How many observations and how many variables are in your table?</p>
+<pre>
+4 observations and 4 variables.</pre>
+    <p>One observation per course, so count the data rows and leave out the header. The variables are the columns: <code>course_id</code>, <code>title</code>, <code>credits</code>, and <code>professor</code>. Two things to check on your own page: every column needs a name written at the top, and at least one column has to hold numbers (<code>credits</code> here) while at least one holds text.</p>
+
+    <p>2. Read the file into Python and call the result <code>courses</code>.</p>
+<pre>
+courses = pl.read_csv("data/courses.csv")</pre>
+    <p>The path is a string, so it needs quotes, and it is relative to where the script lives rather than an address on your own laptop.</p>
+
+    <p>3. Rewrite the given line so it follows the formatting conventions, and say what you fixed.</p>
+<pre>
+courses = pl.read_csv("data/courses.csv", n_rows=5)
+
+Three fixes:
+  1. Spaces around the assignment =, which had none.
+  2. Double quotes around the file path instead of single quotes.
+  3. A space after the comma, not before it. The original had it
+     backwards.</pre>
+    <p>The <code>n_rows=5</code> is already right and should be left alone. Named arguments are the one place we do not put spaces around the <code>=</code>, so "fixing" it to <code>n_rows = 5</code> would break the convention rather than follow it. Renaming <code>x</code> to <code>courses</code> is worth doing too, though that is a judgment about clear names rather than one of the spacing rules; <code>x</code> tells a reader nothing about what is in the table.</p>
+
   </div>
 
   <script src="../js/site.js"></script>

@@ -99,6 +99,32 @@ code** — you are writing a reference solution, not executing it.
   )
   ```
 
+  **Always use this form for data work, even when the chain is a single
+  method, and never call a method directly on a DataFrame in running code.**
+  Write
+
+  ```
+  (
+      food
+      .filter(c.calories > 100)
+  )
+  ```
+
+  rather than `food.filter(c.calories > 100)`. The same applies when the
+  result feeds into something else: keep the pipeline in parentheses and put
+  the comparison or assignment outside it, as in
+
+  ```
+  (
+      food
+      .select(c.item)
+      .n_unique()
+  ) == len(food)
+  ```
+
+  A bare `df.method(...)` is fine inside prose or an inline `<code>` span when
+  you are naming a method, just not as a code answer.
+
 - For plots, use the notes' plotnine style, which starts the plot with the
   `.ggplot(aes(...))` method and adds geometries as chained methods (not
   `ggplot(...) + geom_point()`):
@@ -157,6 +183,8 @@ Code blocks are exempt — humanize only the natural-language text.
 - [ ] Every numbered question is answered, in order.
 - [ ] Code matches the Polars/plotnine dialect in the notes; method and
       argument names verified against the `.qmd`, not guessed.
+- [ ] Every code answer is a parenthesized pipeline, including single-method
+      chains; no bare `df.method(...)` calls.
 - [ ] Open-ended and multi-answer questions are labeled as such and handled per
       the rules above.
 - [ ] All answers are grouped in one section under `<h3>Solutions</h3>` at the

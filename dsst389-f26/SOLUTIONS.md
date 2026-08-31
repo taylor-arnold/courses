@@ -99,6 +99,42 @@ code** — you are writing a reference solution, not executing it.
   )
   ```
 
+  **Always use this form for data work, even when the chain is a single
+  method, and never call a method directly on a DataFrame in running code.**
+  Write
+
+  ```
+  (
+      food
+      .filter(c.calories > 100)
+  )
+  ```
+
+  rather than `food.filter(c.calories > 100)`. The same holds for the `geo`
+  namespace and every other accessor: write
+
+  ```
+  (
+      metro
+      .geo.sjoin_nearest(metro, exclusive=True, distance_col="distance")
+  )
+  ```
+
+  rather than `metro.geo.sjoin_nearest(...)`. When the pipeline is assigned or
+  feeds into something else, keep the chain in parentheses and put the
+  assignment or comparison outside it:
+
+  ```
+  state = (
+      funs.read_file("data/state.geojson")
+      .geo.to_crs(5069)
+      .geo.area
+  )
+  ```
+
+  A bare `df.method(...)` is fine inside prose or an inline `<code>` span when
+  you are naming a method, just not as a code answer.
+
 - For plots, use the notes' plotnine style, which starts the plot with the
   `.ggplot(aes(...))` method and adds geometries as chained methods (not
   `ggplot(...) + geom_point()`):
@@ -157,6 +193,8 @@ Code blocks are exempt — humanize only the natural-language text.
 - [ ] Every numbered question is answered, in order.
 - [ ] Code matches the Polars/plotnine dialect in the notes; method and
       argument names verified against the `.qmd`, not guessed.
+- [ ] Every code answer is a parenthesized pipeline, including single-method
+      chains and `.geo` calls; no bare `df.method(...)` calls.
 - [ ] Open-ended and multi-answer questions are labeled as such and handled per
       the rules above.
 - [ ] All answers are grouped in one section under `<h3>Solutions</h3>` at the

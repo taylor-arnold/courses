@@ -176,11 +176,13 @@
     <h3>Task A. Building Geometries</h3>
 
 <pre>
-metro = pl.read_csv("data/metro.csv")
-metro = metro.geo.points_from_xy("lon", "lat")
+metro = (
+    pl.read_csv("data/metro.csv")
+    .geo.points_from_xy("lon", "lat")
+)
 </pre>
 
-    <p><b>1.</b> Name the two columns that the second line adds, and give the exact contents of each for a metro area whose <code>lon</code> is -77.4 and whose <code>lat</code> is 37.5.</p>
+    <p><b>1.</b> Name the two columns that <code>.geo.points_from_xy()</code> adds, and give the exact contents of each for a metro area whose <code>lon</code> is -77.4 and whose <code>lat</code> is 37.5.</p>
 
 <pre>
 A column `geometry` holding POINT (-77.4 37.5), and a column `_crs` holding
@@ -213,21 +215,32 @@ supplies the missing half of the statement.
     <h3>Task B. Area</h3>
 
 <pre>
-state = funs.read_file("data/state.geojson")
-state = state.geo.area
-state.select(c.name, c.area)
+state = (
+    funs.read_file("data/state.geojson")
+    .geo.area
+)
+
+(
+    state
+    .select(c.name, c.area)
+)
 </pre>
 
     <p><b>4.</b> This code does not do what it appears to do. Circle the line that causes the problem, say what the values in the <code>area</code> column are measured in, and write the one line that fixes it.</p>
 
 <pre>
-The offending line is `state = state.geo.area`, but only because of what is
-missing before it: the table is still in EPSG:4326 as it came off the disk, so
-the areas come back in SQUARED DEGREES, a unit that means nothing and that
-varies with latitude. The values are not merely in the wrong unit; they are not
-even proportional to the true areas. The fix is to project first:
+The offending line is `.geo.area`, but only because of what is missing before
+it: the table is still in EPSG:4326 as it came off the disk, so the areas come
+back in SQUARED DEGREES, a unit that means nothing and that varies with
+latitude. The values are not merely in the wrong unit; they are not even
+proportional to the true areas. The fix is to project first, which is a single
+line inserted into the pipeline:
 
-state = state.geo.to_crs(5069)
+state = (
+    funs.read_file("data/state.geojson")
+    .geo.to_crs(5069)
+    .geo.area
+)
 
 Nothing raises an error, which is the point. You get a column of
 plausible-looking numbers and no warning at all.
@@ -241,10 +254,13 @@ kilometers. The `area` column itself is in square meters, so Cedar's value is
 8.0e10. To get square kilometers you divide by 1,000,000.
 </pre>
 
-    <p><b>6.</b> You want a choropleth of population density rather than of total population. Write the single <code>with_columns</code> line that creates the density column, being careful about units, and say in one sentence which state the total-population map would have made look most important for the wrong reason.</p>
+    <p><b>6.</b> You want a choropleth of population density rather than of total population. Write the <code>with_columns</code> step that creates the density column, being careful about units, and say in one sentence which state the total-population map would have made look most important for the wrong reason.</p>
 
 <pre>
-state.with_columns(dens = c.pop / (c.area / 1_000_000))
+(
+    state
+    .with_columns(dens = c.pop / (c.area / 1_000_000))
+)
 
 Cedar, which is twice the area of any other state and would dominate the page
 under any color scale, while holding only Kester's 600.
@@ -291,7 +307,7 @@ because in every one of those cases Elm is simply not there. An absent row and
 a zero look identical, and only a zero is a fact about the world.
 </pre>
 
-    <p><b>10.</b> Now suppose the first two lines were replaced with <code>state.geo.sjoin(metro)</code>. How many rows does that call return, what kind of geometry is in the output, and which single row of <code>metro</code> is missing from it?</p>
+    <p><b>10.</b> Now suppose the first two lines of that pipeline were swapped, so that it starts from <code>state</code> and calls <code>.geo.sjoin(metro)</code>. How many rows does that return, what kind of geometry is in the output, and which single row of <code>metro</code> is missing from it?</p>
 
 <pre>
 Five rows. The geometry is the POLYGONS, because `sjoin` keeps the geometry of
@@ -304,7 +320,10 @@ swapping the tables changes which side gets dropped.
     <h3>Task D. Predicates and Buffers</h3>
 
 <pre>
-state.geo.sjoin(state, predicate="touches")
+(
+    state
+    .geo.sjoin(state, predicate="touches")
+)
 </pre>
 
     <p><b>11.</b> How many rows does this return? List the pairs. Then name the two states that do not appear in the output at all, and say what that tells you about them.</p>
@@ -352,7 +371,10 @@ five, and the answer would look like a finding rather than a mistake.
     <h3>Task E. Nearest Neighbors</h3>
 
 <pre>
-metro.geo.sjoin_nearest(metro, exclusive=True, distance_col="distance")
+(
+    metro
+    .geo.sjoin_nearest(metro, exclusive=True, distance_col="distance")
+)
 </pre>
 
     <p><b>14.</b> How many rows does this return? Give the nearest neighbor and the exact value of <code>distance</code> for Alder and for Kester.</p>
@@ -382,7 +404,10 @@ to itself.
     <h3>Task F. Dissolve and Explode</h3>
 
 <pre>
-region = state.geo.dissolve(by="side", aggfunc={"area": "sum"})
+region = (
+    state
+    .geo.dissolve(by="side", aggfunc={"area": "sum"})
+)
 </pre>
 
     <p><b>16.</b> Fill in the output, giving the <code>area</code> column in square kilometers. Then say which of the two merged geometries is a Polygon and which is a MultiPolygon, and describe the exact shape of the West geometry.</p>
@@ -415,7 +440,7 @@ guaranteed to be a point OF that region, so any analysis that treats it as one
 can return an answer about a place the region does not occupy.
 </pre>
 
-    <p><b>18.</b> Calling <code>region.geo.explode()</code> on the result gives back a table with how many rows? Write out the <code>area</code> column of that table, say which of its values are now false, and give the single call that repairs them.</p>
+    <p><b>18.</b> Chaining <code>.geo.explode()</code> onto <code>region</code> gives back a table with how many rows? Write out the <code>area</code> column of that table, say which of its values are now false, and give the single call that repairs them.</p>
 
 <pre>
 Three rows: West is a single Polygon and stays one row, while East is a
@@ -427,7 +452,11 @@ copies the region-level column onto every part, and neither part is 30,000
 km^2: each is 15,000. Chaining `.geo.area` recomputes the column from the
 geometry each row actually has.
 
-region.geo.explode().geo.area
+(
+    region
+    .geo.explode()
+    .geo.area
+)
 </pre>
 
     <p><b>19.</b> Summing is the right aggregation for <code>area</code>. Say in one sentence why the same <code>aggfunc</code> would produce a wrong number for a median household income column, even though both columns are just numbers.</p>
