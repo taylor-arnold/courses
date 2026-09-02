@@ -7,6 +7,12 @@
   var RESET_HISTORY_KEY = "poll-reset-history";
   var DASH = "—";
 
+  // The form offers a fifth choice, "Not Sure", alongside the lettered options.
+  // It is counted as its own bucket under a sentinel key that the single-letter
+  // parser below can never produce, so it can never collide with a real option.
+  var NOT_SURE_KEY = "?";
+  var NOT_SURE_LABEL = "Not Sure";
+
   // A blank question that always sits at the top of the picker. Its stem and
   // options are just em dashes: type over them in place to run an ad hoc poll.
   var GENERAL_QUESTION = {
@@ -184,10 +190,14 @@
 
   // Any single letter is accepted here (not just A-E) so that questions with
   // more or fewer options than the current default set still parse correctly.
+  // "Not Sure" is the one non-letter response the form can record; it is matched
+  // loosely (spacing, hyphen, trailing punctuation, "Unsure") so a small edit to
+  // the form's wording puts responses in the bucket instead of dropping them.
   function normalizeToLetter(value) {
     if (!value) return null;
     var cleaned = value.trim().toLowerCase().replace(/^option\s*/, "").trim();
     if (/^[a-z]$/i.test(cleaned)) return cleaned.toUpperCase();
+    if (/^(not\s*-?\s*sure|unsure)\b/.test(cleaned)) return NOT_SURE_KEY;
     return null;
   }
 
@@ -343,63 +353,74 @@
     });
   }
 
-  // Builds one bar row per option for `question`. The rows are created once
-  // per question and reused by renderChart, which only updates the meters, so
-  // in-place edits to the option text survive each pull.
+  // Appends one bar row, keyed by `key`, and records it in chartRows. The Not
+  // Sure bucket comes from the form rather than from questions.json, so its
+  // label is fixed: it is neither editable nor eligible for the correct badge.
+  function appendBarRow(key, content, isNotSure) {
+    var row = document.createElement("div");
+    row.className = "poll-bar-row";
+    if (isNotSure) row.classList.add("poll-bar-not-sure");
+
+    var label = document.createElement("div");
+    label.className = "poll-bar-label";
+
+    var letter = document.createElement("span");
+    letter.className = "poll-bar-letter";
+    letter.textContent = key;
+
+    var text = document.createElement("span");
+    text.className = "poll-bar-text";
+    text.appendChild(content);
+    if (!isNotSure) makeEditable(text);
+
+    var badge = document.createElement("span");
+    badge.className = "poll-bar-correct-badge";
+    badge.textContent = "✓ Correct";
+    badge.hidden = true;
+
+    label.appendChild(letter);
+    label.appendChild(text);
+    label.appendChild(badge);
+
+    var meter = document.createElement("div");
+    meter.className = "poll-bar-meter";
+
+    var track = document.createElement("div");
+    track.className = "poll-bar-track";
+
+    var fill = document.createElement("div");
+    fill.className = "poll-bar-fill";
+    fill.style.width = "0%";
+
+    track.appendChild(fill);
+
+    var value = document.createElement("span");
+    value.className = "poll-bar-value";
+    value.textContent = "–";
+
+    meter.appendChild(track);
+    meter.appendChild(value);
+
+    row.appendChild(label);
+    row.appendChild(meter);
+    chartEl.appendChild(row);
+
+    chartRows.push({ letter: key, row: row, badge: badge, fill: fill, value: value });
+  }
+
+  // Builds one bar row per option for `question`, plus the Not Sure bucket that
+  // every question on the form offers. The rows are created once per question
+  // and reused by renderChart, which only updates the meters, so in-place edits
+  // to the option text survive each pull.
   function buildChart(question) {
     clearChildren(chartEl);
     chartRows = [];
 
     question.options.forEach(function (opt) {
-      var row = document.createElement("div");
-      row.className = "poll-bar-row";
-
-      var label = document.createElement("div");
-      label.className = "poll-bar-label";
-
-      var letter = document.createElement("span");
-      letter.className = "poll-bar-letter";
-      letter.textContent = opt.letter;
-
-      var text = document.createElement("span");
-      text.className = "poll-bar-text";
-      text.appendChild(renderRich(opt.text));
-      makeEditable(text);
-
-      var badge = document.createElement("span");
-      badge.className = "poll-bar-correct-badge";
-      badge.textContent = "✓ Correct";
-      badge.hidden = true;
-
-      label.appendChild(letter);
-      label.appendChild(text);
-      label.appendChild(badge);
-
-      var meter = document.createElement("div");
-      meter.className = "poll-bar-meter";
-
-      var track = document.createElement("div");
-      track.className = "poll-bar-track";
-
-      var fill = document.createElement("div");
-      fill.className = "poll-bar-fill";
-      fill.style.width = "0%";
-
-      track.appendChild(fill);
-
-      var value = document.createElement("span");
-      value.className = "poll-bar-value";
-      value.textContent = "–";
-
-      meter.appendChild(track);
-      meter.appendChild(value);
-
-      row.appendChild(label);
-      row.appendChild(meter);
-      chartEl.appendChild(row);
-
-      chartRows.push({ letter: opt.letter, row: row, badge: badge, fill: fill, value: value });
+      appendBarRow(opt.letter, renderRich(opt.text), false);
     });
+
+    appendBarRow(NOT_SURE_KEY, document.createTextNode(NOT_SURE_LABEL), true);
   }
 
   // Updates the bars built by buildChart. When `counts` is null, no data has
@@ -415,8 +436,8 @@
 
     var total = 0;
     if (counts) {
-      question.options.forEach(function (opt) {
-        total += counts[opt.letter] || 0;
+      chartRows.forEach(function (r) {
+        total += counts[r.letter] || 0;
       });
     }
 
@@ -494,6 +515,7 @@
 
         var counts = {};
         currentQuestion.options.forEach(function (opt) { counts[opt.letter] = 0; });
+        counts[NOT_SURE_KEY] = 0;
 
         dataRows.forEach(function (row) {
           var letter = normalizeToLetter(row[responseCol]);

@@ -252,3 +252,19 @@
   color: #222;
   font-variant-numeric: tabular-nums;
 }
+
+/* "Not Sure" is a real bucket but not one of the question's lettered choices,
+   so it is drawn in gray to keep it visually apart from them. */
+.poll-bar-not-sure .poll-bar-letter {
+  background-color: #f0f0f0;
+  color: #777;
+}
+
+.poll-bar-not-sure .poll-bar-text {
+  color: #555;
+  font-style: italic;
+}
+
+.poll-bar-not-sure .poll-bar-fill {
+  background-color: #b0b0b0;
+}
