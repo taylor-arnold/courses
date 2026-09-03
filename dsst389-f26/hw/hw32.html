@@ -37,6 +37,113 @@
       <li>Name one variable you would want to join onto <code>state</code>, and say whether it should be a count or a rate and why.</li>
       <li>Say why a file format would store a single-part shape like Colorado as a MultiPolygon anyway.</li>
     </ol>
+
+    <h3>Solutions</h3>
+
+    <p>1. Why projection distortion is easier to see in the state polygons than in the metro points.</p>
+<pre>
+A point has no shape and no size. Distortion moves it, but a dot in the wrong
+spot still looks exactly like a dot, and you have nothing to check it against.
+The whole cloud of metro areas comes out roughly country-shaped under any of
+these projections, so the eye has no way to catch the error.
+
+A polygon carries a shape you already know. Florida has a panhandle, Texas has
+its notch, Maine leans the way it leans, and you have seen all of them since
+grade school. Stretching shows up immediately against that memory.
+
+Polygons also let you compare sizes within one picture. The east-west stretch
+grows as you go north, so in unprojected coordinates Montana and North Dakota
+get visibly inflated against Texas and Florida. Two states you know the
+relative sizes of, drawn wrong side by side, is a much louder signal than a
+point that has quietly slid fifty kilometers.
+</pre>
+
+    <p>2. What actually goes wrong in a centroid or an area computed on raw longitude and latitude.</p>
+<pre>
+For area, the result is in squared degrees, and that is not a unit of area. You
+cannot fix it by multiplying through by a constant, because a degree of
+longitude is not a fixed length: about 111 km at the equator, about 85 km at 40
+degrees north. Every state's east-west extent is counted at its full equatorial
+worth, so northern states are inflated more than southern ones. The damage is
+not that the numbers are in the wrong unit, it is that the RANKING changes.
+Sorting by squared degrees is not the same list as sorting by square
+kilometers.
+
+For the centroid, the problem is the same stretch seen from the other side. The
+centroid is the balance point of the shape in whatever plane you compute it in,
+and raw longitude and latitude give you a plane that is stretched east-west,
+increasingly so toward the south. The top of a state gets more weight than it
+has earned, and the centroid drifts north of the true center. It is still a
+point on the map, it is still inside the state most of the time, and nothing
+warns you that it is the wrong point.
+
+Both are fixed the same way, by projecting first:
+
+state = (
+    funs.read_file("data/acs_state.geojson")
+    .geo.to_crs(5069)
+)
+</pre>
+
+    <p>3. A state whose centroid falls outside its own borders, and what that should make you cautious about.</p>
+<pre>
+Hawaii is the clearest case: the state is a chain of islands, and the balance
+point of the chain sits in open ocean. Michigan is the other standard example,
+with its two peninsulas putting the centroid out in Lake Michigan. Alaska is
+worth a mention too, since the Aleutians drag its centroid a long way west of
+anywhere anyone lives.
+
+The immediate caution is mechanical. If you replace each state by its centroid
+and then join those points back against state polygons, Hawaii and Michigan
+match nothing, and a state's own point can land inside a neighbor. Distances
+"from Michigan" measured off that point start in the water.
+
+The larger caution is that the centroid is a summary, and it drops everything
+about extent. It is not the population center, it is not the capital, and it is
+not where anything happens; it is a fact about the outline. Any question whose
+answer depends on how far a state SPREADS, rather than roughly where it sits,
+is a question the centroid cannot be trusted with.
+</pre>
+
+    <p>4. One variable to join onto <code>state</code>, and whether it should be a count or a rate.</p>
+<pre>
+There is no single right variable here; what the answer has to do is commit to
+one and give the reason. One good choice is health insurance coverage, joined
+on by the state name or the FIPS code.
+
+It should be a RATE: the share of residents without coverage, not the number of
+them. On a choropleth the fill covers the whole polygon, so the reader takes it
+as a property of the whole state, and every count map ends up as a population
+map with California and Texas on top. Worse, the states that dominate the
+picture visually are the big empty western ones, so a count map manages to
+mislead in two directions at once.
+
+The reading's rule is the short version: choropleths want variables that are
+already area-based or per-person, like density or a percentage. Counts are
+sometimes the quantity you genuinely care about, but then a map is the wrong
+display for them and a sorted bar chart is the right one.
+</pre>
+
+    <p>5. Why a format would store a single-part shape like Colorado as a MultiPolygon.</p>
+<pre>
+Because the column has to hold every state, and some states are genuinely
+multi-part. Hawaii is islands, Michigan has two peninsulas plus islands, Alaska
+has the Aleutians, Massachusetts has Nantucket, Virginia has its Eastern Shore.
+Many formats declare one geometry type for a whole layer, and a Shapefile
+requires it outright, so the type has to be the one that can hold the hardest
+row. Wrapping Colorado in a MultiPolygon with a single member costs nothing:
+the shape it describes is identical, and the file gains a column where every
+row has the same type.
+
+The payoff is that nothing downstream has to branch. Code that walks the parts
+of a geometry works on all fifty states without a special case for the simple
+ones, and operations that can split a shape (clipping to a coastline,
+intersecting with a buffer) can turn a single-part state into a multi-part one
+without changing the type of the column. It is easier to always use the general
+type than to switch to it the first time you need it.
+</pre>
+
+    <div style="height:200px"></div>
   </div>
 
   <script src="../js/site.js"></script>

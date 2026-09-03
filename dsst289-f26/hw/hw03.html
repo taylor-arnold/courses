@@ -36,6 +36,44 @@
       <li>The code to select every History major whose GPA is at least 3.5.</li>
       <li>The code that keeps only the students majoring in History, Rhetoric, or Music and then returns just their <code>name</code> and <code>gpa</code> columns.</li>
     </ol>
+
+    <h3>Solutions</h3>
+    <p>1. Pull out the one row that describes you.</p>
+<pre>
+(
+    students
+    .filter(c.name == "Taylor Arnold")
+)</pre>
+    <p>Your own name goes inside the quotes. Testing for equality takes a double equals sign; a single <code>=</code> assigns a value and will not work here.</p>
+
+    <p>2. The five students with the lowest GPA.</p>
+<pre>
+(
+    students
+    .sort(c.gpa)
+    .head(n=5)
+)</pre>
+    <p>A sort runs from smallest to largest unless you say otherwise, so the lowest GPAs land on top and <code>.head</code> takes the first five of them. Adding <code>descending=True</code> would hand back the five highest instead.</p>
+
+    <p>3. Every History major with a GPA of at least 3.5.</p>
+<pre>
+(
+    students
+    .filter((c.major == "History") &amp; (c.gpa >= 3.5))
+)</pre>
+    <p>Two conditions joined with <code>&amp;</code>, each in its own set of parentheses. "At least 3.5" is <code>>=</code> rather than <code>></code>, so a student sitting exactly at 3.5 stays in. Two separate <code>.filter</code> steps, one per condition, give the same rows and are equally correct; the single filter is the tighter chain.</p>
+
+    <p>4. Keep the History, Rhetoric, and Music majors, then return only their names and GPAs.</p>
+<pre>
+(
+    students
+    .filter(c.major.is_in(["History", "Rhetoric", "Music"]))
+    .select(c.name, c.gpa)
+)</pre>
+    <p>The three majors go in square brackets inside <code>.is_in</code>, which is shorter and easier to read than three equality tests strung together with <code>|</code>. The order of the two methods matters: filtering first leaves <code>major</code> in the table to be tested, whereas selecting first throws that column away and the filter then has nothing to look at.</p>
+
+    <p>One note on all four: each answer is wrapped in its own pair of parentheses, sits on its own line under the dataset name, and indents each method four spaces. That formatting is part of what these questions are asking for, so write it out even when the chain is a single method long.</p>
+
   </div>
 
   <script src="../js/site.js"></script>
