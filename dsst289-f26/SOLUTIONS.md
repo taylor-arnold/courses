@@ -63,8 +63,9 @@ Notes on the format:
   `<pre>` block, exactly as `exam01.html` does.
 - Code goes in `<pre>` blocks. Prose answers (for conceptual or open-ended
   questions) also go in `<pre>` blocks when they are the whole answer, matching
-  the style of question 11 in `exam01.html`; short framing sentences can sit in
-  a `<p>`. Use your judgment, but keep it consistent with the exam guides.
+  the style of the conceptual answers in the exam guides; short framing
+  sentences can sit in a `<p>`. Use your judgment, but keep it consistent with
+  the exam guides.
 - Remember to HTML-escape inside `<pre>`: `&amp;` for `&`, `&lt;`/`&gt;` for
   `<`/`>`, `&quot;` where needed. The exam guides do this (e.g.
   `(c.mpa == "R") &amp; (c.runtime > 120)`).

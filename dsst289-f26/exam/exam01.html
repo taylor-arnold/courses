@@ -34,7 +34,7 @@
       <li>Selecting a certain number of rows using <code>.head</code> or <code>.tail</code>.</li>
       <li>Using <code>.select</code> to choose a subset of the columns, or <code>.drop</code> to remove them.</li>
       <li>Selecting rows using <code>.filter</code> based on a numeric variable being less than, less than or equal to, equal to, greater than or equal to, or greater than a fixed value.</li>
-      <li>Selecting rows using <code>.filter</code> based on a string variable being equal to a specific value.</li>
+      <li>Selecting rows using <code>.filter</code> based on a string variable being equal to, or not equal to, a specific value.</li>
       <li>Selecting rows using <code>.filter</code> and <code>.is_in</code> to select rows where a string column is in a set of values.</li>
       <li>Combining two or more conditions inside <code>.filter</code> with the <code>&amp;</code> (and) and <code>|</code> (or) operators, wrapping each condition in its own set of parentheses.</li>
       <li>Using <code>.with_columns</code> to create a new variable based on arithmetic manipulation of two or more other columns.</li>
@@ -44,8 +44,6 @@
       <li>Naming the four core data types (<code>str</code>, <code>i64</code>, <code>f64</code>, and <code>bool</code>) and saying which one you would expect a given column to have.</li>
       <li>Using <code>.cast</code> to convert a column to another type, including the use of <code>strict=False</code> when some values cannot be converted.</li>
       <li>Handling missing values with <code>.drop_nulls</code>, <code>.fill_null</code>, and <code>.is_null</code>, and explaining the difference between a <code>null</code> and a <code>NaN</code>.</li>
-      <li>Applying a string method (such as <code>.str.to_uppercase</code>; I will give you the name of the method) to a text column.</li>
-      <li>Explaining, in a sentence or two, what an expression is and what it means for a method such as <code>.filter</code> to act as a context for it.</li>
     </ol>
     <p></p>
     <p>Many questions will require putting multiple functions together in a method chain. All can be done with at most three methods. Your code should follow the class formatting rules of putting parentheses around the whole block, starting with the DataFrame, and having each method on its own line. You should be familiar with the other formatting rules regarding spacing and names, but these will not be graded on the exam.</p>
@@ -127,24 +125,6 @@
     )
 )</pre>
 
-    <p>10. Create a new column holding the title of each film in uppercase letters, keeping all of the other columns as they are.</p>
-<pre>
-(
-    movie
-    .with_columns(
-        title_upper = c.title.str.to_uppercase()
-    )
-)</pre>
-
-    <p>11. What is printed if you type <code>c.rating > 8</code> into a cell on its own, with no DataFrame anywhere in sight?</p>
-<pre>
-Not a column of True and False values, and not an error. Polars prints a
-description of an expression: a recipe that says "take the column named
-rating and compare each value to 8." No data is attached to it, because
-`c.rating > 8` does not know that `movie` exists. The expression only
-produces values once it is handed to a context, such as `.filter()`,
-which keeps the rows where it comes out True, or `.select()`, which
-returns the True and False values themselves as a new bool column.</pre>
 
   </div>
 
