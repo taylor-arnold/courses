@@ -37,6 +37,95 @@
       <li>Explain why a self-join with <code>predicate="touches"</code> returns each shared border twice.</li>
       <li>Say what <code>exclusive=True</code> is protecting you from in <code>metro.geo.sjoin_nearest(metro, exclusive=True, distance_col="distance")</code>.</li>
     </ol>
+
+    <h3>Solutions</h3>
+
+    <p>1. What plays the role of the key in <code>metro.geo.sjoin(state)</code>.</p>
+<pre>
+The geometry columns do, together with the predicate that says how they have to
+line up. An ordinary join asks whether two key values are equal; a spatial join
+asks whether the metro point and the state polygon stand in some geometric
+relationship, and here the default is that they intersect, which for a point and
+a polygon means the point falls inside the polygon.
+
+So there is no shared column to name and no on= argument. The match is computed
+from the coordinates themselves, which is also why both tables have to be in the
+same CRS first: two geometries written in different coordinate systems are being
+compared as if they were numbers on the same axes, and they are not.
+</pre>
+
+    <p>2. How <code>metro.geo.sjoin(state)</code> differs from <code>state.geo.sjoin(metro)</code>, with a question for each.</p>
+<pre>
+The pairs that come back are the same. What changes is which table is driving
+the result: the left table sets the row structure and supplies the geometry
+column that survives the join.
+
+Put metro first and you get one row per metro area, carrying the point geometry,
+with the containing state's columns attached. That is the table for "which state
+is each metro area in?" or for coloring the metro points by some state-level
+variable.
+
+Put state first and you get polygons, one row per state-metro pair, so a state
+with eight metro areas in it is repeated eight times. That is the table for
+"how many metro areas does each state have?" or "what is the total metro
+population per state?", since it is already shaped for a group_by on the state.
+
+It is the same one-to-many logic as a relational join. The many side is metro
+areas, and whichever table you put on the left is the one whose geometry you
+still have at the end.
+</pre>
+
+    <p>3. What a per-state metro population total gets wrong for Missouri and Kansas.</p>
+<pre>
+The join assigns each metro area to exactly one state, and for Kansas City that
+is whichever state contains the point we built the geometry from, its center. So
+the entire Kansas City population lands on one side of the border and nothing
+lands on the other. Missouri's total is too high by the number of people who
+live on the Kansas side, and Kansas's total is too low by the same amount.
+
+The problem is not that the join picked wrong. There is no right choice
+available to it: a metro area is a single row with a single point, so it cannot
+be divided. The error is in treating a per-metro count as if it were a
+per-state count when the underlying unit crosses the boundary you are
+aggregating over.
+
+Kansas City is the obvious case, but the same thing happens to St. Louis,
+Cincinnati, Philadelphia, New York, and Washington. If the per-state number
+matters, you want population measured on units that nest inside states, such as
+counties, rather than a metro total repaired after the fact.
+</pre>
+
+    <p>4. Why a self-join with <code>predicate="touches"</code> returns every shared border twice.</p>
+<pre>
+Because the join walks every ordered pair of rows, and touching is symmetric. If
+Kansas touches Nebraska, then Nebraska touches Kansas, so the pair passes the
+test in both directions and both are kept: one row with Kansas on the left and
+Nebraska on the right, one row the other way around.
+
+Nothing in the operation knows that the two tables are the same table, or that
+the shared border is one border. It is doing what it always does, checking left
+rows against right rows, and here the left and right rows come from the same
+fifty polygons.
+
+If you want each border once, deduplicate afterward. The usual trick is to keep
+only the rows where the left name sorts before the right name, which picks one
+member of each pair and drops the mirror image.
+</pre>
+
+    <p>5. What <code>exclusive=True</code> is protecting against in the nearest-neighbor self-join.</p>
+<pre>
+From every metro area matching itself. The nearest thing to Denver in the metro
+table is Denver, sitting at distance zero, so without exclusive=True you get
+back the table you started with, each row paired to itself and a distance
+column of all zeros. Correct, and useless.
+
+The flag tells sjoin_nearest to skip the row's own match and take the closest
+other one, which is the question you were actually asking. It only comes up when
+you join a table to itself; joining metro against state there is no self to
+exclude.
+</pre>
+
+    <div style="height:200px"></div>
   </div>
 
   <script src="../js/site.js"></script>

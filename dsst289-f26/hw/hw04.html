@@ -37,6 +37,63 @@
       <li>The code that adds a new column named <code>honors</code> that is equal to 1 for students with a GPA of at least 3.5 and 0 for everyone else.</li>
       <li>Finally, in a sentence or two of your own words, explain what the <code>.pipe</code> method does and why we would want it when we already have a chain of methods.</li>
     </ol>
+
+    <h3>Solutions</h3>
+    <p>1. Give the <code>gpa</code> column a longer name.</p>
+<pre>
+(
+    students
+    .rename({"gpa": "grade_point_average"})
+)</pre>
+    <p>The argument is a dictionary, with the old name on the left of the colon and the new one on the right. Both names are quoted strings here, not <code>c.</code> columns.</p>
+
+    <p>2. One row per major.</p>
+<pre>
+(
+    students
+    .unique(subset=["major"])
+)</pre>
+    <p>The subset goes in square brackets even when it names a single column. Without the subset, <code>.unique</code> would compare whole rows and hand back nearly everything, since two students rarely match on name, year, and GPA all at once.</p>
+
+    <p>3. Add a <code>gpa_100</code> column with the GPA rescaled to run from 0 to 100.</p>
+<pre>
+(
+    students
+    .with_columns(gpa_100 = c.gpa / 4 * 100)
+)</pre>
+    <p>Use <code>.with_columns</code> rather than <code>.select</code>: the question asks to keep the other columns, and that is the only difference between the two methods. The new name sits on the left of a single equals sign and is written plainly, with no quotes and no <code>c.</code> prefix.</p>
+
+    <p>4. Add an <code>honors</code> column equal to 1 for a GPA of 3.5 or higher and 0 otherwise.</p>
+<pre>
+(
+    students
+    .with_columns(
+        honors = pl.when(c.gpa >= 3.5).then(1).otherwise(0)
+    )
+)</pre>
+    <p>A column built from a condition calls for <code>pl.when</code>, and every <code>.when().then()</code> needs an <code>.otherwise()</code> to say what happens to the rows that did not match. "At least 3.5" is <code>>=</code>, so a student sitting exactly at 3.5 counts as honors. The definition is long enough to earn its own indented line inside <code>.with_columns</code>.</p>
+
+    <p>5. In your own words, what <code>.pipe</code> does and why it is worth having.</p>
+<pre>
+There is no single correct wording here. A good answer says both of these things:
+
+  - .pipe hands the DataFrame to a function as that function's first
+    argument, so df.pipe(f) does the same thing as f(df).
+
+  - It is useful because a chain only reaches methods that Polars itself
+    defines. .pipe lets you drop any function you like into the middle of
+    a chain, as one more step, instead of wrapping it around the outside
+    and breaking the top-to-bottom reading order.
+
+One possible answer: "The .pipe method passes the data to a function of my
+choosing, so f(df) can be written as df.pipe(f). That matters because
+chaining otherwise limits me to Polars' own methods, and .pipe lets an
+outside function join the chain without interrupting it."
+
+Check that you said what .pipe actually does, not only that it is
+convenient, and that your reason mentions functions outside of Polars.
+</pre>
+
   </div>
 
   <script src="../js/site.js"></script>
