@@ -37,6 +37,103 @@
       <li>The code that adds a new column holding each student's name in uppercase.</li>
       <li>A short explanation, in your own words, of what an <em>expression</em> is and why the same expression <code>c.gpa > 3.5</code> can be handed to both <code>.filter()</code> and <code>.select()</code>.</li>
     </ol>
+
+    <h3>Solutions</h3>
+    <p>1. Name the four core types and say which column of <code>students</code> should have each one.</p>
+<pre>
+str  (String)  - name, and also major and exam
+i64  (Int64)   - year
+f64  (Float64) - gpa
+bool (Boolean) - none of the columns as they are read in
+
+The first three come straight from the data: text, whole numbers, and
+numbers with a decimal part. Nothing in students is stored as True/False,
+so bool only turns up once you ask a yes-or-no question of the data, such
+as c.gpa &gt; 3.5. The exam column is a str here only because of the one
+"absent" entry; a single piece of text forces the whole column to be read
+as a string.
+</pre>
+
+    <p>2. Add <code>exam_score</code> as an integer column, then a version that fills the missing values with zero.</p>
+<pre>
+(
+    students
+    .with_columns(exam_score = c.exam.cast(pl.Int64, strict=False))
+)</pre>
+    <p>A plain <code>.cast</code> would raise an error on <code>"absent"</code>. Adding <code>strict=False</code> tells the cast to put a <code>null</code> in place of anything it cannot convert. The second version chains <code>.fill_null</code> onto the same expression:</p>
+<pre>
+(
+    students
+    .with_columns(
+        exam_score = c.exam.cast(pl.Int64, strict=False).fill_null(0)
+    )
+)</pre>
+    <p>Filling with zero is a bad idea if we want the average. <code>.mean()</code> skips nulls, so leaving the value missing gives the average of the students who actually sat the exam. A zero is a real number to the average, and it says the student took the test and got nothing right, which is a different claim than not taking it. The zero pulls the average down for a reason that has nothing to do with how the class did.</p>
+
+    <p>3. Explain the difference between a <code>null</code> and a <code>NaN</code>, with code that produces each.</p>
+<pre>
+A null means the value is missing: we do not have it. A NaN ("not a
+number") means we did have values, ran a computation on them, and the
+mathematics had no answer to give. Only float columns can hold a NaN;
+any column of any type can hold a null.
+
+The two have their own separate tools: .is_null() and .is_nan(),
+.fill_null() and .fill_nan(), .drop_nulls() and .drop_nans(). Dropping
+nulls leaves NaNs alone, and dropping NaNs leaves nulls alone.
+
+A null, from the failed conversion of "absent":
+
+(
+    students
+    .with_columns(exam_score = c.exam.cast(pl.Int64, strict=False))
+)
+
+A NaN, from taking the square root of a negative number:
+
+(
+    students
+    .with_columns(gpa_odd = (c.gpa - 4).sqrt())
+)
+</pre>
+
+    <p>4. Add a column holding each name in uppercase.</p>
+<pre>
+(
+    students
+    .with_columns(name_upper = c.name.str.to_uppercase())
+)</pre>
+    <p>String methods sit behind the <code>.str</code> prefix, so it is <code>c.name.str.to_uppercase()</code> and not <code>c.name.to_uppercase()</code>.</p>
+
+    <p>5. In your own words, what an expression is and why <code>c.gpa &gt; 3.5</code> works in both <code>.filter()</code> and <code>.select()</code>.</p>
+<pre>
+There is no single correct wording here. A good answer covers both of
+these points:
+
+  - An expression is a description of a computation, not the result of
+    one. Typing c.gpa on its own prints a note saying "the column named
+    gpa"; it holds no data, and it does not know that students exists.
+    Comparisons and methods build bigger expressions out of smaller ones,
+    and each step is still just a description.
+
+  - An expression only produces values when a method runs it on real
+    data. Those methods are called contexts, and each one does something
+    different with the result: .select() returns it as a column of a new
+    DataFrame, .filter() keeps the rows where it comes out True. The
+    expression does not know which method will run it, so the same
+    c.gpa &gt; 3.5 can be handed to either one unchanged.
+
+One possible answer: "c.gpa &gt; 3.5 is a recipe rather than an answer. It
+says 'compare the gpa column to 3.5' and stops there, waiting for a
+method to hand it some data. .select() takes the True/False column it
+builds and shows it; .filter() takes the same column and keeps the rows
+marked True. The recipe is identical in both cases, and the method is
+what differs."
+
+Check that you said an expression carries no data of its own, and that
+your reason for the second half is about the method deciding what to do
+with the result.
+</pre>
+
   </div>
 
   <script src="../js/site.js"></script>

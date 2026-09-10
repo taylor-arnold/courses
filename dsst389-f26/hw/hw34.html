@@ -37,6 +37,111 @@
       <li>After <code>explode</code> copies the state area onto every Hawaiian island, say which columns of the exploded table are now false and what you must recompute to fix them.</li>
       <li>Explain why the reading tells you to simplify geometries for display rather than for analysis.</li>
     </ol>
+
+    <h3>Solutions</h3>
+
+    <p>1. What it means for ground to sit inside two 100 kilometer discs, and why that breaks a population total.</p>
+<pre>
+The discs overlap. Two metro centers less than 200 kilometers apart have buffers
+that cross, and every point in the crossing is within 100 kilometers of both
+centers. Baltimore and Washington are the easy example: the land between them
+belongs to both discs at once.
+
+That is fine as a description of the ground, and it is fatal if you add the
+discs up. Summing a population figure over the buffers counts the people in the
+overlap once for each disc that covers them, so the total comes out larger than
+the number of people who actually live in the covered region. The more crowded
+the map, the worse it gets, and the eastern seaboard is where the buffers pile
+into a nearly solid band.
+
+The fix is to stop treating the discs as separate pieces. Dissolve them into one
+geometry first, so the shared ground is part of a single region, and then
+measure the population of that region.
+</pre>
+
+    <p>2. Which part of <code>dissolve</code> is the grouping and which part is the aggregation.</p>
+<pre>
+The by argument is the grouping. It names the column whose values define the
+groups, exactly the way group_by does, so by="side" puts every state with side
+equal to "West" in one group and the rest in the other.
+
+The aggfunc argument is the aggregation, and it applies to the ordinary
+non-geometry columns. Writing aggfunc={"area": "sum"} says that the area of a
+group is the sum of the areas of its states.
+
+The geometries have an aggregation too, and it is the one part you do not get to
+choose: the group's geometries are merged into a single geometry with the
+internal borders erased. That merge is the whole point of dissolve, and it is
+what group_by and agg cannot do on their own.
+</pre>
+
+    <p>3. Why summing works for area but not for median household income.</p>
+<pre>
+Area is additive. Two states that do not overlap have a combined area equal to
+the sum of the two areas, so summing the column gives the right answer for the
+merged region, and it matches what the merged geometry would report if you
+recomputed its area directly.
+
+Median household income is not additive. Adding Virginia's median to Maryland's
+produces a number in the neighborhood of $180,000, which is not the median
+income of anywhere, and does not describe any household in either state.
+Medians do not add, and a value already computed as a median cannot be combined
+into a larger median at all, since you would need the underlying household
+records to do that.
+
+The closest honest substitute is a population weighted mean of the state
+medians, which is an approximation of the regional median rather than the real
+thing. The general rule: sums are safe for extensive quantities like area, land
+count, and population, and wrong for intensive ones like rates, densities,
+medians, and per capita figures.
+</pre>
+
+    <p>4. Which columns of the exploded Hawaii table are now false, and what to recompute.</p>
+<pre>
+Every column that describes the state as a whole, because explode copies the
+state's values onto each island without changing them. The area column is the
+clear one: after the explode, each of the Hawaiian rows claims the area of the
+entire state, so the eight of them together report roughly eight times too much
+land. Anything else derived from the state's geometry is wrong for the same
+reason, including the centroid coordinate x, the side column built from it, and
+a vertex count from count_coordinates. A population column would be false in the
+same way, though the value would at least be recoverable if you had per island
+figures.
+
+The name column is fine, and so is the geometry column. Those are the two you
+can trust, and the geometry is what lets you rebuild the rest.
+</pre>
+<pre>
+(
+    state
+    .geo.explode()
+    .filter(c.name == "Hawaii")
+    .geo.area
+)</pre>
+    <p>The <code>.geo.area</code> call overwrites the copied column with each island's own area. Anything else that was computed from the state polygon has to be recomputed the same way, after the explode rather than before it.</p>
+
+    <p>5. Why the reading says to simplify for display and not for analysis.</p>
+<pre>
+Because simplify works on one geometry at a time. It drops vertices from each
+polygon independently, keeping that polygon within the tolerance you gave it,
+and it has no idea that the vertex it just removed from Kansas was also on
+Nebraska's border. The two boundaries were identical and now they are not, so
+small gaps and slivers of overlap open up along shared edges.
+
+For a plot that costs nothing. The gaps are far smaller than the width of a
+drawn line, the map looks the same, and it draws faster because Alaska is no
+longer carrying tens of thousands of vertices you cannot see.
+
+For analysis it matters, because the predicates are exact. touches asks whether
+two polygons share a boundary, and after simplifying they may not share one
+anymore, so a pair of neighboring states can quietly stop being neighbors.
+Areas shift, an intersects join near a border can go either way, and a point
+close to a coastline can land on the wrong side of it. Do the analysis on the
+full geometries and save the simplification for the last step, when you are
+drawing.
+</pre>
+
+    <div style="height:200px"></div>
   </div>
 
   <script src="../js/site.js"></script>
