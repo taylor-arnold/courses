@@ -29,8 +29,8 @@ homework at a time**: the prompt will name a homework (for example "hw09" or
   format exactly** — they are the template for how a solution block should
   look. Read one before you start.
 
-- **The `ta-humanizer` skill.** Run every piece of prose you write through it
-  before finalizing (see "Humanize the prose" below).
+- **The `plain-prose` skill.** Load it before you write any prose and follow
+  its rules while drafting (see "Write plain prose" below).
 
 ## What to produce
 
@@ -179,13 +179,15 @@ label it plainly:
 When a question mixes a conceptual part and a code part, answer both parts in
 order within that numbered item.
 
-## Humanize the prose
+## Write plain prose
 
 Any prose you write (restatements, explanations, advice for open-ended
-questions) should read as if a person wrote it. Before finalizing the block,
-run your prose through the **`ta-humanizer`** skill and apply its fixes. Keep
-sentences plain and direct, matching the voice of the notes and exam guides.
-Code blocks are exempt — humanize only the natural-language text.
+questions) should read as if a person wrote it. Load the **`plain-prose`**
+skill before drafting and follow its rules as you write. When the block is
+done, reread the prose against those rules and fix anything that slipped
+through. Keep sentences plain and direct, matching the voice of the notes and
+exam guides. Code blocks are exempt; the rules apply only to the
+natural-language text.
 
 ## Checklist before finishing
 
@@ -200,5 +202,5 @@ Code blocks are exempt — humanize only the natural-language text.
 - [ ] All answers are grouped in one section under `<h3>Solutions</h3>` at the
       bottom of the container div, formatted like the exam guides.
 - [ ] Special characters inside `<pre>` are HTML-escaped.
-- [ ] Prose has been run through `ta-humanizer`.
+- [ ] Prose follows the `plain-prose` skill and was reread against its rules.
 - [ ] No code was executed; nothing else on the page was changed.

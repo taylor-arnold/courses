@@ -37,6 +37,94 @@
       <li>A revised version of the code from part (2) that makes the same plot using only the students who are majoring in History.</li>
       <li>A list of three things that plotnine will decide for us in this plot even though we never mention them in the code.</li>
     </ol>
+
+    <h3>Solutions</h3>
+    <p>1. Name the three components of a layer and say something about each in your own words.</p>
+<pre>
+The three components are the dataset, the aesthetics, and the geometry.
+The sentences are yours to write, so the wording will vary. Each one
+should say something close to this:
+
+  Dataset:    the table that the layer takes its values from. For us
+              that is students.
+
+  Aesthetics: the mappings that tie parts of the plot to columns of
+              the data, such as which column sets the horizontal
+              position, which sets the vertical position, and which
+              sets the color.
+
+  Geometry:   the kind of object drawn for each row of the data. A
+              point geometry draws one point per student.
+
+Check that your sentence about aesthetics says they connect the plot to
+columns. "Aesthetics are how the plot looks" is too loose, because a
+fixed color changes how the plot looks without being a mapping.
+</pre>
+
+    <p>2. Make a scatter plot of <code>study_hours</code> and <code>gpa</code>, and explain the choice of x-axis.</p>
+<pre>
+(
+    students
+    .ggplot(aes(c.study_hours, c.gpa))
+    .geom_point()
+)</pre>
+    <p>The first column inside <code>aes()</code> goes on the x-axis, so <code>study_hours</code> is on the x-axis and <code>gpa</code> is on the y-axis. The convention from the reading is to put the variable that is more likely to be the cause on the x-axis and the one more likely to be the outcome on the y-axis. It is easier to believe that studying more raises a student's GPA than that a high GPA makes someone study more.</p>
+
+    <p>3. Sketch by hand what you expect the plot to look like.</p>
+<pre>
+There is no single correct sketch, since nobody has seen the data. A
+good one has these things:
+
+  - The x-axis is labeled study_hours and the y-axis is labeled gpa,
+    matching the code in part (2). The default labels are the column
+    names, so write those and not "Hours" or "Grade Point Average".
+
+  - Each axis has rough start and stop values that make sense for the
+    variable. Weekly study hours might run from 0 up to 40 or so. GPA
+    stops at 4.0. Few students will be below 2.0, so an axis from
+    about 2.0 to 4.0 is reasonable.
+
+  - A cloud of separate points, one per student, with no line
+    connecting them.
+
+  - The cloud shows the relationship you expect. Most people will
+    draw it rising from the lower left to the upper right, because
+    students who study more tend to have higher GPAs. Make it a
+    loose cloud and not a tight line, because plenty of other things
+    affect a GPA.
+
+As a refinement, the cloud can flatten out on the right side, because
+GPA is capped at 4.0 no matter how many hours someone studies.
+</pre>
+
+    <p>4. Make the same plot using only the History majors.</p>
+<pre>
+(
+    students
+    .filter(c.major == "History")
+    .ggplot(aes(c.study_hours, c.gpa))
+    .geom_point()
+)</pre>
+    <p>The <code>.filter()</code> goes before <code>.ggplot()</code>, so the plot only ever sees the History rows. Nothing else in the code changes.</p>
+
+    <p>5. List three things plotnine decides for us in this plot.</p>
+<pre>
+Several answers work here. Any three of the defaults below, all named
+in the reading, make a complete answer:
+
+  - the range of values shown on each axis
+  - the axis labels (the column names study_hours and gpa)
+  - the tick marks and where they fall
+  - the grid lines
+  - the color of the points (black)
+  - the size of the points
+  - the shape of the points (filled circles)
+
+Other defaults count too, such as the gray background or the overall
+size of the figure. Do not list the columns on the axes or the use of
+points, since we chose those ourselves in aes() and geom_point().
+</pre>
+
   </div>
 
   <script src="../js/site.js"></script>
