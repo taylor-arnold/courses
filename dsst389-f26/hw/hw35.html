@@ -37,6 +37,125 @@
       <li>Say why a title that resolves to no article at all should be looked at rather than dropped.</li>
       <li>Say what makes it safe to discard fields while flattening the API's nested JSON here.</li>
     </ol>
+
+    <h3>Solutions</h3>
+
+    <p>1. Why a 404 belongs in the cache and a 429 does not.</p>
+<pre>
+A 404 is an answer about the data. When we ask for the page views of an article
+that has none, the server says "not found," and it will say the same thing
+tomorrow. The response is stable and informative, so it is worth storing like
+any other result. If it stays out of the cache, every rerun sends those same
+requests back over the network to learn the same thing again, which is the
+traffic the cache exists to prevent. With 404 added to allowable_codes, a second
+run of the chapter reaches the network zero times.
+
+A 429 is an answer about us. It means we sent requests too quickly, and it says
+nothing about the page we asked for. The right response is to wait and retry,
+and the retry will probably succeed. Caching the 429 would store "too many
+requests" as if it were the content of that page, and because the cache never
+expires, every later run would read the failure from disk and never ask again.
+The same reasoning keeps a 500 out of the cache, since a server error is also
+temporary.
+
+A useful test for any status code is whether the server would give the same
+response to the same request next week. It would for a 404 and would not for a
+429.
+</pre>
+
+    <p>2. Which authors go missing from a corpus built on category tags, and whether the gaps are random.</p>
+<pre>
+The corpus contains exactly the articles that a volunteer editor tagged with
+Category:Victorian novelists or Category:19th-century Irish novelists. An author
+without one of those tags is invisible to us, however well they fit the
+description. Three kinds of author fall out:
+
+  - Authors whose article exists but was never given either tag. Membership
+    reflects tagging practice as much as historical fact.
+  - Authors filed only under a subcategory. We collect direct members and do
+    not descend into subcategories, so anyone who sits one level down is
+    skipped.
+  - Authors with no Wikipedia article at all. No category can list them.
+
+The omissions are probably not random. Tags are added by people who care about
+an article, so heavily edited pages on famous authors are the ones most likely
+to be tagged correctly. The authors who slip through are more likely to be
+obscure, to have short articles that few editors have visited, or to be better
+known as something else (a poet, a journalist, or a politician who also wrote
+novels) and tagged under that label instead. The subcategory rule removes whole
+groups at once, which is systematic by construction.
+
+This matters because any claim made from the corpus is a claim about tagged
+authors, and the tagged authors lean toward the well documented. The reading
+asks that the definition and its caveats be written down where later users of
+the data can find them.
+</pre>
+
+    <p>3. What <code>page_id</code> and <code>doc_id</code> each offer, and which one is the primary key.</p>
+<pre>
+page_id is stable. It is the number Wikipedia assigns to the page, and it
+survives the page being renamed. A title does not: pages get renamed, and
+yesterday's title becomes today's redirect. It is also the value the Action API
+takes in the pageids parameter, so the collection loops run on it.
+
+doc_id is readable. It holds the article title, so "Emily Brontë" tells you who
+a row is about and 10393 does not. That makes it the better column for a printed
+table, a filter you type by hand, or a plot legend.
+
+page_id is the primary key of the authors table. It is the column we
+deduplicate on when an author appears in both categories, and the reading names
+it as the primary key because of its stability.
+
+doc_id is just as unique within this corpus, so it also identifies a row, and
+the later chapters key their work on it because it is easier to read. Every
+table carries both columns, and either one can join a table back to authors.
+</pre>
+
+    <p>4. Why a title that matches no article should be examined before it is dropped.</p>
+<pre>
+Because a missing title has several possible causes, and each one calls for a
+different response. The reading lists three:
+
+  - A typo in the source list. The author has an article and we spelled the
+    title wrong. Fix the title, and the author comes back into the corpus.
+  - A person with no Wikipedia article. That is a fact about Wikipedia's
+    coverage, and it is worth reporting, since it says who the encyclopedia
+    leaves out.
+  - A disagreement about the name. Our list and Wikipedia call the person
+    different things, and no redirect connects the two. Find the title
+    Wikipedia uses and record the mapping.
+
+Dropping the row without looking treats all three the same way and hides the
+choice from anyone who uses the data later. The corpus shrinks, nothing records
+why, and the authors who vanish are probably the less famous ones, so the loss
+is biased in the same direction as the category problem in question 2.
+
+The API makes the check easy. A missing page comes back in the pages block with
+a "missing" flag and a negative placeholder ID. Log those titles, look at each
+one, and write down what you decided.
+</pre>
+
+    <p>5. Why fields can be thrown away when flattening the nested JSON.</p>
+<pre>
+Because the flattened table is not the only copy. The session is a
+requests_cache.CachedSession, so every response is saved to a SQLite file
+exactly as the server sent it, and expire_after=None means those entries never
+expire. That file is the raw layer of the pipeline. The loop that pulls
+page_id, title, length, and touched out of data["query"]["pages"] reads from
+the response and leaves the stored copy untouched.
+
+So discarding a field is a reversible decision. If a later analysis needs
+something we skipped, we add one line to the loop and rerun it. The rerun reads
+every response from the cache, reaches the network zero times, and rebuilds the
+table with the extra column.
+
+The safety depends on the cache, which is why the question says "here." Without
+it, or with entries that expire, the flattened table would be the only record.
+A discarded field could then be recovered only by requesting the page again, and
+Wikipedia may have changed in the meantime.
+</pre>
+
+    <div style="height:200px"></div>
   </div>
 
   <script src="../js/site.js"></script>
