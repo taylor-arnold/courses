@@ -37,6 +37,62 @@
       <li>The code that returns a table with one row for each major, giving the number of students in that major with a GPA above 3.5, <em>without</em> adding any new columns to the dataset first.</li>
       <li>Finally, in a sentence or two of your own words, describe what Polars gives you back if you call <code>.group_by</code> and then stop, and explain why there is nothing in Polars that corresponds to "ungrouping" a dataset.</li>
     </ol>
+
+    <h3>Solutions</h3>
+    <p>1. Return the student with the highest GPA in each major.</p>
+<pre>
+(
+    students
+    .sort(c.gpa, descending=True)
+    .group_by(c.major)
+    .head(n=1)
+)</pre>
+    <p>This is the sort-then-group pattern from the reading. The <code>.sort</code> has to come before <code>.group_by</code>, so that the rows reach each group already ordered from highest GPA to lowest and <code>.head(n=1)</code> keeps the top one. Without the sort, the first row of each group is whatever student happens to come first in the data. If two students in a major tie for the highest GPA, this code still returns only one of them.</p>
+
+    <p>2. Give the average GPA and the number of students for each major, with the rows in a predictable order.</p>
+<pre>
+(
+    students
+    .group_by(c.major, maintain_order=True)
+    .agg(
+        gpa_avg = c.gpa.mean(),
+        n = pl.len()
+    )
+)</pre>
+    <p>The names <code>gpa_avg</code> and <code>n</code> are your choice. The part of the question about order points to <code>maintain_order=True</code>. Without it, Polars builds the groups in parallel and the rows can come back in a different order each time you run the code. With it, the majors appear in the order their first row appears in <code>students</code>. Adding <code>.sort(c.major)</code> after the <code>.agg</code> also gives a fixed order, so either answer is fine.</p>
+
+    <p>3. Give the average number of study hours for each combination of major and year.</p>
+<pre>
+(
+    students
+    .group_by(c.major, c.year, maintain_order=True)
+    .agg(
+        study_hours_avg = c.study_hours.mean()
+    )
+)</pre>
+    <p>Both columns go inside the same <code>.group_by</code>, separated by a comma. Each row of the result is one combination of major and year that occurs in the data. A combination with no students, such as a major that has no first-year students, does not get a row. The question does not ask for an order, so <code>maintain_order=True</code> is optional here.</p>
+
+    <p>4. Count the students with a GPA above 3.5 in each major, without adding a new column first.</p>
+<pre>
+(
+    students
+    .group_by(c.major, maintain_order=True)
+    .agg(
+        n_high_gpa = (c.gpa &gt; 3.5).sum()
+    )
+)</pre>
+    <p>The comparison <code>c.gpa &gt; 3.5</code> gives a column of true and false values, and <code>.sum()</code> counts the true ones. Because the expression is built inside <code>.agg</code>, there is no need to create the column with <code>.with_columns</code> beforehand, which is what the question rules out. Do not use <code>.filter(c.gpa &gt; 3.5)</code> before grouping here. It gives the right counts for most majors, but a major with no students above 3.5 disappears from the result instead of showing a count of zero.</p>
+
+    <p>5. Describe what <code>.group_by</code> returns on its own, and explain why Polars has no way to ungroup.</p>
+<pre>
+Calling .group_by and stopping gives back a GroupBy object, not a
+DataFrame. It has no rows or columns to print, only an instruction that
+the next method should run once per group. Polars has nothing like
+ungroup because the grouping only lasts until the next method (such as
+.agg or .head) uses it up. What that method returns is an ordinary
+DataFrame with no grouping attached, so there is nothing to remove.</pre>
+    <p>Your wording will differ. Check that your answer says two things: that the result is a <code>GroupBy</code> object rather than a table, and that the grouping is consumed by the very next method instead of staying attached to the data, as it does in R's dplyr.</p>
+
   </div>
 
   <script src="../js/site.js"></script>
