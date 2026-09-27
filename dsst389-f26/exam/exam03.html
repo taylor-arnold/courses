@@ -26,26 +26,20 @@
           <a href="../index.html">[← back]</a>
         </b>
       </span>
-      <span style="padding-right: 0.5em">
-        <b>
-          <a href="exam03_reference.pdf" target="_blank" rel="noopener noreferrer">[reference sheet]</a>
-        </b>
-      </span>
     </p>
 
-    <p>The third exam is 75 minutes. It has five tasks, labeled A through E, with nine questions spread across them. It works exactly like the first two: every task gives you a small dataset &mdash; an edge list, a node table, a pixel array, a handful of vectors &mdash; together with the code that runs on it, and your job is to say what comes out. You are given the code and the data and asked for the result.</p>
-
-    <p><b>You do not need to memorize any function names or arguments.</b> The <a href="exam03_reference.pdf" target="_blank" rel="noopener noreferrer">reference sheet</a> will be attached to your exam, and it carries every method, every column name, and every formula you could possibly need. Bring a calculator and a pencil; you will be drawing a network, and you should draw it before you try to compute anything about it.</p>
-
-    <p>The exam covers <a href="https://taylor-arnold.github.io/fds2/book/16_network_data.html" target="_blank" rel="noopener noreferrer">Chapter 16</a> and <a href="https://taylor-arnold.github.io/fds2/book/17_image_data.html" target="_blank" rel="noopener noreferrer">Chapter 17</a>, along with Homeworks 45 through 48. Questions come in the same five forms as before:</p>
+    <p>The third exam is 75 minutes. It has twenty-five short questions spread across five tasks, labeled A through E. As on the first two exams, every task gives you a small dataset &mdash; an edge list, a node table, a pixel array, a handful of vectors &mdash; together with the code that runs on it, and your job is to say what comes out. As on the second exam, every question is either multiple choice or fill-in-the-blank, and you write your answers directly on the exam:</p>
 
     <ul>
-      <li><b>Fill in the output.</b> A small dataset and a code block; write the table that comes back, or a named column of it, or just the number of rows.</li>
-      <li><b>Compute by hand.</b> A degree, a shortest path, a centrality score, a mean pixel value, a dot product. Exact numbers, with units.</li>
-      <li><b>Find the trap.</b> Code that almost answers the question asked, containing one of the errors we have discussed all unit. Circle the offending line and say what the output shows instead.</li>
-      <li><b>Choose the code.</b> Several candidate blocks, one of which produces the stated result.</li>
-      <li><b>One sentence, with an anchor.</b> A short interpretation, always paired with something checkable: name the node that proves it, or the number that would change.</li>
+      <li><b>Multiple choice.</b> Four options; circle the one best answer. The right answer is always clearly right, but at least one of the others will look plausible if you are not careful: it is usually the answer you get by making one of the mistakes we have discussed all unit, such as reading a BGR array as RGB, dividing by the number of pixels instead of the number of values, or trusting a picture&rsquo;s layout over its edges.</li>
+      <li><b>Fill in the blank.</b> A number, a label, a row count, or a short piece of text, with one correct answer. Numbers should be exact or rounded to two decimal places.</li>
     </ul>
+
+    <p>The questions come in the same kinds as before, just in a shorter form: fill in a value from the output of some code, compute something by hand (a degree, a shortest path, a centrality score, a mean pixel value, a dot product), spot what goes wrong when code contains a common trap, or pick the statement that correctly explains a result.</p>
+
+    <p><b>You do not need to memorize any function names, arguments, column names, or formulas.</b> There is no reference sheet for this exam. Instead, anything you need is given with the question itself: the definitions of closeness and betweenness, what co-citation means, the BGR channel order, and the angle distance are all stated where they are used. What you do need is to understand the ideas well enough to apply them. The network is drawn for you, so you will not have to draw it yourself, but bring a pencil to sketch on it as you work, and bring a calculator.</p>
+
+    <p>The exam covers <a href="https://taylor-arnold.github.io/fds2/book/16_network_data.html" target="_blank" rel="noopener noreferrer">Chapter 16</a> and <a href="https://taylor-arnold.github.io/fds2/book/17_image_data.html" target="_blank" rel="noopener noreferrer">Chapter 17</a>, along with Homeworks 45 through 48.</p>
 
     <h3>What You Need To Be Able To Do</h3>
 
@@ -60,7 +54,7 @@
     <p><b>Centrality and clusters.</b></p>
     <ol start="3">
       <li>Given a drawing, computing the shortest-path distance from a named node to every other node in its component.</li>
-      <li>Computing the closeness centrality of a node from those distances, using the formula on the reference sheet.</li>
+      <li>Computing the closeness centrality of a node from those distances.</li>
       <li>Given a drawing, finding the shortest paths that run between two dense regions, naming the nodes they all pass through, and computing a betweenness score.</li>
       <li>Given a drawing, splitting it into the clusters a community detection algorithm would find, and naming the node whose cluster is genuinely ambiguous.</li>
     </ol>
@@ -72,17 +66,20 @@
 
     <p><b>Images as arrays.</b></p>
     <ol start="8">
-      <li>Given a printed pixel array whose channels are all 0 or 255, giving its shape, naming the color of each pixel, and computing the mean pixel value.</li>
+      <li>Given a printed pixel array whose channels are all 0 or 255, giving its shape, naming the color of each pixel, and computing the mean pixel value, and saying what a whole-image statistic like brightness does and does not capture.</li>
     </ol>
 
     <p><b>Images as vectors.</b></p>
     <ol start="9">
       <li>Given image and text embeddings, computing the dot product of each image with each category and giving the predicted label.</li>
+      <li>Saying why the dot product of unit vectors is the cosine similarity, what zero-shot classification does when the true category is not on the list, and why it needs a model like SigLIP that embeds images and text in the same space.</li>
     </ol>
 
     <p>We will not have the internals of walktrap or of any other community detection algorithm, the architecture of a Vision Transformer, the training of any neural network, or writing OpenCV code from scratch.</p>
 
     <h3>Practice Exam Questions and Answers</h3>
+
+    <p>The practice questions below are written in a longer, open-ended form: each one asks you to work through a whole problem and explain it. They are good preparation because every multiple choice or fill-in-the-blank question on the exam is a small piece of a problem like these. If you can do these, you can do the exam. A few extra questions written in the exam&rsquo;s own format are at the <a href="#extra">end of this page</a>.</p>
 
     <h3>Task A. Building the Network</h3>
 
@@ -200,7 +197,7 @@ a node's own component get no entry at all; the distance to W or X is not large,
 it is UNDEFINED, which is why these scores are computed one component at a time.
 </pre>
 
-    <p><b>4.</b> Using those distances, compute the closeness centrality of <b>S</b>, of <b>P</b>, and of <b>R</b>, using the formula on the reference sheet.</p>
+    <p><b>4.</b> Using those distances, compute the closeness centrality of <b>S</b>, of <b>P</b>, and of <b>R</b>, where closeness is the sum of the reciprocals of the distances from the node to every other node in its component.</p>
 
 <pre>
 Closeness is the sum of the RECIPROCALS of the distances:
@@ -389,6 +386,111 @@ corresponds to an angle of arccos(0.96) = 0.28 radians, about 16 degrees, and it
 score of 0.00 against peacock is a full right angle. Once documents and images
 are both points in a vector space, the same small geometric toolkit does the work
 in both places.
+</pre>
+
+
+    <h3 id="extra">Extra Practice: Multiple Choice and Fill-in-the-Blank</h3>
+
+    <p>The questions below show what the exam format looks like, using the same data as the practice questions above. They are here so the format holds no surprises; they are not the best way to study. <b>The long-form questions above are the better preparation.</b> Each one walks through a whole problem, and its answer explains every nuance along the way: the bridge with the lowest degree, the distance that is undefined rather than large, the cluster label that is a tiebreak, the channel order that nothing in the array announces. Any of those details can become a multiple choice or fill-in-the-blank question on the exam, and a short question like the ones below only ever tests one of them at a time.</p>
+
+    <p><b>10.</b> (Multiple choice.) In the network from Task A, suppose the edge R&ndash;S is deleted. Which nodes are then in component 1?</p>
+    <ol type="A">
+      <li>{P, Q, R}, because P is the first node in the edge list.</li>
+      <li>{S, T, U, V}, because it is now the largest component.</li>
+      <li>All seven of {P, Q, R, S, T, U, V}, because component numbers are assigned before the edge is deleted.</li>
+      <li>{W, X}, because it is the only component left unchanged.</li>
+    </ol>
+
+<pre>
+(B). Deleting R-S splits the old component 1 into {P, Q, R} and {S, T, U, V}.
+S stays with the right-hand triangle through S-T. There are now three
+components, of sizes 4, 3, and 2, and they are numbered in descending order of
+size, so {S, T, U, V} is component 1.
+
+The numbers are computed from the network you hand to DSNetwork.process, so they
+always describe the current edge list, which rules out (C). And the order of the
+edge list never matters, which rules out (A).
+</pre>
+
+    <p><b>11.</b> (Fill in the blank.) In the original network from Task A, the closeness of T is ________ and the closeness of U is ________.</p>
+
+<pre>
+4.17 and 3.33.
+
+    From T:  S = 1, U = 1, V = 1, R = 2, P = 3, Q = 3
+    close(T) = 3 + 1/2 + 1/3 + 1/3 = 4.17
+
+    From U:  T = 1, V = 1, S = 2, R = 3, P = 4, Q = 4
+    close(U) = 2 + 1/2 + 1/3 + 1/4 + 1/4 = 3.33
+
+You could have saved the arithmetic: the network is symmetric, T is the mirror
+image of R, and U is the mirror image of P, so their scores must match the ones
+computed in question 4.
+</pre>
+
+    <p><b>12.</b> (Multiple choice.) In the original network from Task A, S has betweenness 9. Suppose one edge, P&ndash;U, is added. What happens to the betweenness of S?</p>
+    <ol type="A">
+      <li>It stays at 9, since S still lies on the path between the two triangles.</li>
+      <li>It falls to 0, since S is no longer needed to get from one triangle to the other.</li>
+      <li>It falls to 2.</li>
+      <li>It rises, since the network now has more paths for S to sit on.</li>
+    </ol>
+
+<pre>
+(C). The new edge gives the two triangles a second connection that does not
+touch S, and most crossing pairs now have a shortest path that avoids S:
+
+    R-T   R-S-T (2 edges) is the only shortest path           -> 1
+    Q-T   Q-R-S-T and Q-P-U-T, both 3 edges; half go via S     -> 1/2
+    R-V   R-S-T-V and R-P-U-V, both 3 edges; half go via S     -> 1/2
+    every other pair has a shortest path avoiding S          -> 0
+
+    betweenness(S) = 1 + 1/2 + 1/2 = 2
+
+(B) is the tempting answer, and it is right that S is no longer a bridge. But
+betweenness counts SHORTEST paths, and for R and T the route through S is still
+the shortest one. Notice also the halves: when two shortest paths tie, each
+node on one of them gets only a share of the credit.
+</pre>
+
+    <p><b>13.</b> (Fill in the blank.) In the co-citation network from Task C, the degree of P is ________, and the sum of the counts on P&rsquo;s edges is ________.</p>
+
+<pre>
+3 and 4.
+
+P shares a citing page with Q (count 2), R (count 1), and S (count 1). Degree
+counts neighbors, so it is 3; the counts add up to 4. The two numbers answer
+different questions: how many authors P keeps company with, versus how many
+times it does.
+</pre>
+
+    <p><b>14.</b> (Multiple choice.) A classmate reverses the channel order of the Task D array from BGR to RGB before calling <code>img.mean()</code>. What does the mean become?</p>
+    <ol type="A">
+      <li>It is unchanged at 127.5.</li>
+      <li>It falls, because the red pixel&rsquo;s 255 moves to a different channel.</li>
+      <li>It rises, because RGB order puts the brightest channel first.</li>
+      <li>It cannot be computed until the pixels are also reordered.</li>
+    </ol>
+
+<pre>
+(A). Reversing the channel order moves the numbers around inside each pixel but
+changes none of them, and a mean of all twelve numbers does not care what order
+they are in. Channel order matters when you NAME a color, not when you average
+it: the red and blue pixels trade names, and the mean stays at 127.5.
+</pre>
+
+    <p><b>15.</b> (Fill in the blank.) Suppose a fourth category, <code>jay</code> = (0.0, 0.6, 0.8), is added to the three in Task E. The label of img2 becomes ________, with a dot product of ________.</p>
+
+<pre>
+jay, with 0.96.
+
+    img2 . jay = 0.0(0.0) + 0.8(0.6) + 0.6(0.8) = 0.48 + 0.48 = 0.96
+
+That beats peacock's 0.60, so img2's label changes even though img2 itself did
+not. Zero-shot classification is an argmax over the list of candidates you
+supplied: add a candidate and a label can change; leave the right one out and
+the classifier returns the closest wrong one, with no warning. img1's label is
+unaffected: img1 . jay = 0.8(0.6) = 0.48, still below robin's 0.96.
 </pre>
 
     <div style="height:200px"></div>

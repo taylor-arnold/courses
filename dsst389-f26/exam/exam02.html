@@ -26,26 +26,20 @@
           <a href="../index.html">[← back]</a>
         </b>
       </span>
-      <span style="padding-right: 0.5em">
-        <b>
-          <a href="exam02_reference.pdf" target="_blank" rel="noopener noreferrer">[reference sheet]</a>
-        </b>
-      </span>
     </p>
 
-    <p>The second exam is 75 minutes. It has five tasks, labeled A through E, with twelve questions spread across them. It works exactly like the first exam: every task gives you a small dataset &mdash; a printed table, a handful of tokens &mdash; together with the code that runs on it, and your job is to say what comes out. You are given the code and the data and asked for the result.</p>
-
-    <p><b>You do not need to memorize any function names or arguments.</b> The <a href="exam02_reference.pdf" target="_blank" rel="noopener noreferrer">reference sheet</a> will be attached to your exam, and it lists every method and every formula you could possibly need. Bring a calculator; several questions ask for a logarithm or a square root.</p>
-
-    <p>The exam covers <a href="https://taylor-arnold.github.io/fds2/book/13_temporal_data.html" target="_blank" rel="noopener noreferrer">Chapter 13</a>, <a href="https://taylor-arnold.github.io/fds2/book/14_text_annotations.html" target="_blank" rel="noopener noreferrer">Chapter 14</a>, and <a href="https://taylor-arnold.github.io/fds2/book/15_text_vectors.html" target="_blank" rel="noopener noreferrer">Chapter 15</a>, along with Homeworks 35 through 43. Chapter 12 (Data APIs) is deliberately not tested here: the API work is hard to assess on paper, and it is exercised directly in the final project, which relies on it heavily. Questions come in the same five forms as last time:</p>
+    <p>The second exam is 75 minutes. It has twenty-five short questions spread across five tasks, labeled A through E. As on the first exam, every task gives you a small dataset &mdash; a printed table, a handful of tokens &mdash; together with the code that runs on it, and your job is to say what comes out. What is different this time is how you answer. Every question is either multiple choice or fill-in-the-blank, and you write your answers directly on the exam:</p>
 
     <ul>
-      <li><b>Fill in the output.</b> A small table and a code block; write the table that comes back, or a named column of it, or just the number of rows.</li>
-      <li><b>Compute by hand.</b> A TF-IDF score, a PMI, an angle, a duration, a row count. Exact numbers, with units.</li>
-      <li><b>Find the trap.</b> Code that almost answers the question asked, containing one of the errors we have discussed all unit. Circle the offending line and say what the output shows instead.</li>
-      <li><b>Choose the code.</b> Several candidate blocks, one of which produces the stated result.</li>
-      <li><b>One sentence, with an anchor.</b> A short interpretation, always paired with something checkable: name the row that proves it, or the number that would change.</li>
+      <li><b>Multiple choice.</b> Four options; circle the one best answer. The right answer is always clearly right, but at least one of the others will look plausible if you are not careful: it is usually the answer you get by making one of the mistakes we have discussed all unit, such as forgetting a null, letting a window run across a group boundary, or reading a boundary as strict when it is inclusive.</li>
+      <li><b>Fill in the blank.</b> A number, a date, a row count, or a short piece of text, with one correct answer. Numbers should be exact or rounded to two decimal places, with units where they apply.</li>
     </ul>
+
+    <p>The questions come in the same kinds as last time, just in a shorter form: fill in a value from the output of some code, compute something by hand (a TF-IDF score, a PMI, an angle, a duration, a row count), spot what goes wrong when code contains a common trap, or pick the statement that correctly explains a result.</p>
+
+    <p><b>You do not need to memorize any function names, arguments, or formulas.</b> There is no reference sheet for this exam. Instead, anything you need is given with the question itself: when a question uses a formula (TF-IDF, PMI, the angle distance) or depends on how a method behaves (the <code>strategy</code> of an asof join, the fact that <code>total_hours()</code> truncates), the question states it. What you do need is to understand the ideas well enough to apply them. Bring a calculator; several questions ask for a logarithm, a square root, or an arccosine.</p>
+
+    <p>The exam covers <a href="https://taylor-arnold.github.io/fds2/book/13_temporal_data.html" target="_blank" rel="noopener noreferrer">Chapter 13</a>, <a href="https://taylor-arnold.github.io/fds2/book/14_text_annotations.html" target="_blank" rel="noopener noreferrer">Chapter 14</a>, and <a href="https://taylor-arnold.github.io/fds2/book/15_text_vectors.html" target="_blank" rel="noopener noreferrer">Chapter 15</a>, along with Homeworks 35 through 43. Chapter 12 (Data APIs) is deliberately not tested here: the API work is hard to assess on paper, and it is exercised directly in the final project, which relies on it heavily.</p>
 
     <h3>What You Need To Be Able To Do</h3>
 
@@ -81,7 +75,7 @@
     <p><b>Documents as vectors.</b></p>
     <ol start="16">
       <li>Given a small corpus, writing out the term-frequency matrix, giving the document frequency of each term, and counting the zeros.</li>
-      <li>Given a term frequency and a document frequency, computing a TF-IDF score with the smoothed formula on the reference sheet.</li>
+      <li>Given a term frequency and a document frequency, computing a TF-IDF score with the smoothed formula.</li>
       <li>Given <code>min_df</code> and <code>max_df</code> as proportions, listing exactly which terms survive the filter.</li>
       <li>Given document vectors, computing both the Euclidean and the angle distance.</li>
     </ol>
@@ -89,6 +83,8 @@
     <p>We will not have reciting the list of dependency labels or entity types, predicting what spaCy would do to a sentence you have not been shown (the annotation table is always handed to you as data), the internals of UMAP, writing a format string for an unusual date layout, or any time zone conversion that crosses a daylight-saving boundary.</p>
 
     <h3>Practice Exam Questions and Answers</h3>
+
+    <p>The practice questions below are written in a longer, open-ended form: each one asks you to work through a whole problem and explain it. They are good preparation because every multiple choice or fill-in-the-blank question on the exam is a small piece of a problem like these. If you can do these, you can do the exam. A few extra questions written in the exam&rsquo;s own format are at the <a href="#extra">end of this page</a>.</p>
 
     <p>The questions below use a small corpus of three authors, identified by <code>doc_id</code>:</p>
 
@@ -707,7 +703,7 @@ with one row per non-zero pair, rather than materializing a wide matrix that
 would be almost entirely empty.
 </pre>
 
-    <p><b>15.</b> Using the smoothed formula from the reference sheet, compute the TF-IDF score of <code>the</code>, <code>poet</code>, <code>write</code>, and <code>poem</code> in Doc 1. Rank them. Then say what <code>max_df=0.5</code> would do, and be careful about the boundary.</p>
+    <p><b>15.</b> Using the smoothed formula tfidf = tf_norm &times; (ln((N + 1) / (df + 1)) + 1), where tf_norm is a term&rsquo;s count divided by the length of its document, compute the TF-IDF score of <code>the</code>, <code>poet</code>, <code>write</code>, and <code>poem</code> in Doc 1. Rank them. Then say what <code>max_df=0.5</code> would do, and be careful about the boundary.</p>
 
 <pre>
 Every document has 4 tokens, so tf_norm = 1/4 = 0.25 for every term present.
@@ -815,6 +811,108 @@ drop out here. What removes it is max_df, and that is exactly why the chapter
 calls max_df an automatic stop word list: the smoothing declines to do the job,
 so the filter has to.
 </pre>
+
+
+    <h3 id="extra">Extra Practice: Multiple Choice and Fill-in-the-Blank</h3>
+
+    <p>The questions below show what the exam format looks like, using the same data as the practice questions above. They are here so the format holds no surprises; they are not the best way to study. <b>The long-form questions above are the better preparation.</b> Each one walks through a whole problem, and its answer explains every nuance along the way: the null at the top of a group, the boundary that is inclusive rather than strict, the join that quietly reaches into the future. Any of those details can become a multiple choice or fill-in-the-blank question on the exam, and a short question like the ones below only ever tests one of them at a time.</p>
+
+    <p><b>18.</b> (Multiple choice.) Using the <code>revisions</code> table from Task A, count the edits per day in Tokyo, which is nine hours <i>ahead</i> of UTC on all of these dates. How many of the seven edits land on a different calendar day than they do in UTC?</p>
+    <ol type="A">
+      <li>0</li>
+      <li>2</li>
+      <li>3</li>
+      <li>4</li>
+    </ol>
+
+<pre>
+(B). Moving EAST pushes the clock forward, so the edits that change day are the
+ones late in the UTC evening, at 15:00 or later:
+
+    Bram Vale  02-10 23:30 UTC -> 02-11 08:30 in Tokyo
+    Bram Vale  02-12 15:30 UTC -> 02-13 00:30 in Tokyo
+
+The tempting answer is (C), the three edits that moved in New York. But those
+were edits in the small hours of the UTC morning, and they moved BACK a day.
+Which rows move depends on the direction of the offset as well as its size.
+</pre>
+
+    <p><b>19.</b> (Fill in the blank.) Using the gaps from question 4, Bram Vale's <code>c.since_last.dt.total_hours().mean()</code> is ________, and his <code>c.since_last.dt.total_days().mean()</code> is ________.</p>
+
+<pre>
+20.0 and 0.5.
+
+Bram Vale's two gaps are 2h (02-10 23:30 -> 02-11 01:30) and 38h (02-11 01:30
+-> 02-12 15:30). Both are whole hours, so total_hours loses nothing and the
+mean is exactly 20.0. In days they truncate to 0 and 1, and the mean is 0.5,
+against a true mean of 20/24 = 0.83 days. Same data, same truncation: whether
+it does damage depends only on whether the unit is finer than the gaps.
+</pre>
+
+    <p><b>20.</b> (Fill in the blank.) In a corpus of 1,000 words and (take it as the same) 1,000 bigrams, <code>poet</code> occurs 20 times, <code>laureate</code> occurs 5 times, and the bigram <code>poet laureate</code> occurs 4 times. Using PMI = log<sub>2</sub>( P(w<sub>1</sub>, w<sub>2</sub>) / (P(w<sub>1</sub>) P(w<sub>2</sub>)) ), the PMI of <code>poet laureate</code> is ________.</p>
+
+<pre>
+5.32.
+
+    P(poet, laureate) = 4 / 1000  = 0.004
+    P(poet)           = 20 / 1000 = 0.02
+    P(laureate)       = 5 / 1000  = 0.005
+
+    0.004 / (0.02 x 0.005) = 0.004 / 0.0001 = 40,    log2(40) = 5.32
+
+Four of the five times "laureate" appears, it follows "poet": far more often
+than independence would predict. The bigram occurs only 4 times, which is
+exactly why a minimum count filter matters: with counts this small, one more or
+one fewer occurrence moves the score a lot.
+</pre>
+
+    <p><b>21.</b> (Multiple choice.) In the entity code from question 11, a classmate writes <code>c.new_entity.cum_sum().over([c.doc_id, c.sid])</code>, adding <code>c.sid</code>. Run on the Ada Kerr annotation table from Task D, what comes back?</p>
+    <ol type="A">
+      <li>The same three entities, Ada Kerr, 1847, and Bram Vale, since each entity lies within a single sentence anyway.</li>
+      <li>Two entities: a PERSON with the text &ldquo;Ada Kerr Bram Vale&rdquo;, and a DATE, &ldquo;1847&rdquo;.</li>
+      <li>Three entities, but numbered 1, 2, 3 in the opposite order.</li>
+      <li>An error, because the cumulative sum restarts and produces duplicate ids.</li>
+    </ol>
+
+<pre>
+(B). With sid in the window, the numbering RESTARTS in every sentence:
+
+    token       Ada  Kerr  1847    Bram  Vale
+    sid           1     1     1       2     2
+    entity_id     1     1     2       1     1
+
+The group_by is on (doc_id, entity_id, ent_type) and does not include sid, so
+Ada Kerr (sentence 1, id 1, PERSON) and Bram Vale (sentence 2, id 1, PERSON)
+land in the same group and are joined into one four-word person. 1847 survives
+only because it happens to be the only DATE.
+
+(A) is the tempting answer, and it is right that no entity crosses a sentence
+boundary. But the id has to be unique across the whole document, not just
+within a sentence, because the grouping no longer knows which sentence a token
+came from. This is the opposite of the bigram code, where the window MUST stop
+at the sentence boundary.
+</pre>
+
+    <p><b>22.</b> (Fill in the blank.) Using the TF-IDF scores from question 15, the angle distance between Doc 1 and Doc 3 is ________ radians. After filtering with <code>max_df=0.5</code>, it is ________ radians.</p>
+
+<pre>
+1.443 and 1.571 (pi/2).
+
+Every term present has tf_norm 0.25, so "the" scores 0.25 and every other term
+scores 0.25 x 1.511 = 0.378. Doc 1 and Doc 3 share only "the":
+
+    Doc 1 . Doc 3  = 0.25 x 0.25 = 0.0625
+    ||Doc 1||^2    = 0.25^2 + 3 x 0.378^2 = 0.0625 + 0.428 = 0.490
+    ||Doc 3||^2    = the same, 0.490
+
+    cos = 0.0625 / 0.490 = 0.127,    arccos(0.127) = 1.443
+
+max_df=0.5 removes "the", which is in all four documents. The two documents
+then share no terms at all, the dot product is zero, and the angle is pi/2, the
+largest it can be. The whole of the similarity between them was one word that
+every document contains, and the smoothed idf kept it in play.
+</pre>
+
 
     <div style="height:200px"></div>
   </div>
