@@ -103,7 +103,7 @@ history = (
     .ggplot(aes(c.semester, c.gpa))
     .geom_line(aes(group=c.name))
 )</pre>
-    <p>Two answers work here. The <code>group</code> aesthetic splits the rows into one line per student without changing the color, which suits a whole class of students. Writing <code>aes(color=c.name)</code> also gives one line per student, as in the cellphone example from the reading, and it adds a legend that gets crowded once there are more than a handful of names. Time goes on the x-axis in either version. With neither <code>group</code> nor <code>color</code>, plotnine has no way to tell which rows belong to the same student, so it cannot draw a separate line for each one.</p>
+    <p>Two answers work here. The <code>group</code> aesthetic splits the rows into one line per student without changing the color, which suits a whole class of students. Writing <code>aes(color=c.name)</code> also gives one line per student, as in the cellphone example from the reading. It adds a legend, which gets crowded once there are more than a handful of names. Time goes on the x-axis in either version. With neither <code>group</code> nor <code>color</code>, plotnine has no way to tell which rows belong to the same student, so it cannot draw a separate line for each one.</p>
 
     <p>5. Use <code>majors</code> to make a horizontal bar plot of the number of students in each major.</p>
 <pre>

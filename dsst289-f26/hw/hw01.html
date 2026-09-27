@@ -44,7 +44,7 @@
 <pre>
 age_years = 20
 age_days = age_years * 365</pre>
-    <p>Your own age goes on the first line. The second line has to mention <code>age_years</code>: if you wrote <code>age_days = 20 * 365</code> you did the arithmetic yourself and never used the variable, which was the whole point.</p>
+    <p>Your own age goes on the first line. The second line has to use <code>age_years</code>. Writing <code>age_days = 20 * 365</code> does the arithmetic by hand and never uses the variable.</p>
 
     <p>2. The imports that start nearly every script this semester.</p>
 <pre>
@@ -60,7 +60,7 @@ import funs</pre>
 round(2.71828, 2)
 
 round(number=2.71828, ndigits=2)</pre>
-    <p>Both return 2.72. The names <code>number</code> and <code>ndigits</code> are the ones <code>round</code> actually uses; <code>help(round)</code> is how you would look them up.</p>
+    <p>Both return 2.72. The names <code>number</code> and <code>ndigits</code> are the argument names of <code>round</code>, and <code>help(round)</code> shows them.</p>
 
     <p>4. Three variable names that follow the conventions from the reading, and two that break them.</p>
     <p>Lots of names work here. One good set:</p>
@@ -74,7 +74,8 @@ Bad:
     2nd_try     starts with a number, so Python will not accept it at all
     Total Fat   has a space in it, and capital letters we would have to
                 remember later; total_fat is the name we want</pre>
-    <p>The conventions are: start with a letter or an underscore, use only lowercase letters, numbers, and underscores after that, and separate words with underscores rather than capital letters. So <code>totalFat</code> also belongs in the second group, since it runs afoul of the last rule even though Python would happily accept it.</p>
+    <p>The conventions are: start with a letter or an underscore, use only lowercase letters, numbers, and underscores after that, and separate words with underscores rather than capital letters. Python accepts <code>totalFat</code>, but it breaks the last rule, so it also belongs in the second group.</p>
+
   </div>
 
   <script src="../js/site.js"></script>

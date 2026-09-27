@@ -199,6 +199,21 @@ through. Keep sentences plain and direct, matching the voice of the notes and
 exam guides. Code blocks are exempt; the rules apply only to the
 natural-language text.
 
+## Storing the solutions
+
+Solutions are not kept in the homework pages in git. They live in
+`ans/hwNN.parquet` (one row, one `html` column) and `update_solutions.py`
+copies them onto each page from noon on the day of that homework's class.
+After writing the block into the page, store it and restore the page:
+
+```
+uv run update_solutions.py --save hw37
+uv run update_solutions.py
+```
+
+The second command strips the block from the page again if the class has not
+happened yet. Commit the parquet file, not the page with solutions on it.
+
 ## Checklist before finishing
 
 - [ ] Read the full homework page and its matching reading in `~/gh/fds2`.
@@ -214,3 +229,4 @@ natural-language text.
 - [ ] Special characters inside `<pre>` are HTML-escaped.
 - [ ] Prose follows the `plain-prose` skill and was reread against its rules.
 - [ ] No code was executed; nothing else on the page was changed.
+- [ ] Block saved to `ans/` with `--save`, then `update_solutions.py` rerun.

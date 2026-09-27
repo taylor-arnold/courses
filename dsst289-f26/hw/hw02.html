@@ -37,6 +37,7 @@
     </ol>
 <pre>
 x=pl.read_csv('data/courses.csv' ,n_rows=5)</pre>
+
     <h3>Solutions</h3>
     <p>The table itself is yours, so questions 1 and 2 depend on what you wrote down. Here is a table of the right shape to check yours against:</p>
 <pre>
@@ -65,7 +66,7 @@ Three fixes:
   2. Double quotes around the file path instead of single quotes.
   3. A space after the comma, not before it. The original had it
      backwards.</pre>
-    <p>The <code>n_rows=5</code> is already right and should be left alone. Named arguments are the one place we do not put spaces around the <code>=</code>, so "fixing" it to <code>n_rows = 5</code> would break the convention rather than follow it. Renaming <code>x</code> to <code>courses</code> is worth doing too, though that is a judgment about clear names rather than one of the spacing rules; <code>x</code> tells a reader nothing about what is in the table.</p>
+    <p>The <code>n_rows=5</code> is already right and should be left alone. Named arguments are the one place we do not put spaces around the <code>=</code>, so changing it to <code>n_rows = 5</code> would break the convention. Renaming <code>x</code> to <code>courses</code> also helps, because <code>x</code> tells a reader nothing about what is in the table. That change is about clear names, not one of the spacing rules.</p>
 
   </div>
 

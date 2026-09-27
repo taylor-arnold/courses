@@ -59,9 +59,9 @@
 <pre>
 (
     students
-    .filter((c.major == "History") &amp; (c.gpa >= 3.5))
+    .filter((c.major == "History") &amp; (c.gpa &gt;= 3.5))
 )</pre>
-    <p>Two conditions joined with <code>&amp;</code>, each in its own set of parentheses. "At least 3.5" is <code>>=</code> rather than <code>></code>, so a student sitting exactly at 3.5 stays in. Two separate <code>.filter</code> steps, one per condition, give the same rows and are equally correct; the single filter is the tighter chain.</p>
+    <p>The two conditions are joined with <code>&amp;</code>, and each one sits in its own parentheses. "At least 3.5" is <code>&gt;=</code> rather than <code>&gt;</code>, so a student sitting exactly at 3.5 stays in. Two separate <code>.filter</code> steps, one per condition, give the same rows and are also correct. The single filter makes a shorter chain.</p>
 
     <p>4. Keep the History, Rhetoric, and Music majors, then return only their names and GPAs.</p>
 <pre>
@@ -70,9 +70,9 @@
     .filter(c.major.is_in(["History", "Rhetoric", "Music"]))
     .select(c.name, c.gpa)
 )</pre>
-    <p>The three majors go in square brackets inside <code>.is_in</code>, which is shorter and easier to read than three equality tests strung together with <code>|</code>. The order of the two methods matters: filtering first leaves <code>major</code> in the table to be tested, whereas selecting first throws that column away and the filter then has nothing to look at.</p>
+    <p>The three majors go in square brackets inside <code>.is_in</code>, which is shorter and easier to read than three equality tests strung together with <code>|</code>. The filter has to come first. Selecting first would throw away the <code>major</code> column, and the filter would then have no column to test.</p>
 
-    <p>One note on all four: each answer is wrapped in its own pair of parentheses, sits on its own line under the dataset name, and indents each method four spaces. That formatting is part of what these questions are asking for, so write it out even when the chain is a single method long.</p>
+    <p>Each of the four answers is wrapped in its own pair of parentheses, starts with the dataset name on its own line, and indents each method four spaces. These questions ask for that formatting, so write it out even when the chain is a single method long.</p>
 
   </div>
 

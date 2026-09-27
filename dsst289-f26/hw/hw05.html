@@ -68,7 +68,7 @@ as a string.
         exam_score = c.exam.cast(pl.Int64, strict=False).fill_null(0)
     )
 )</pre>
-    <p>Filling with zero is a bad idea if we want the average. <code>.mean()</code> skips nulls, so leaving the value missing gives the average of the students who actually sat the exam. A zero is a real number to the average, and it says the student took the test and got nothing right, which is a different claim than not taking it. The zero pulls the average down for a reason that has nothing to do with how the class did.</p>
+    <p>Filling with zero is a bad idea if we want the average. <code>.mean()</code> skips nulls, so leaving the value missing gives the average of the students who sat the exam. A zero counts in the average as a real score: it claims the student took the test and got nothing right. That pulls the average down for a reason unrelated to how the class did.</p>
 
     <p>3. Explain the difference between a <code>null</code> and a <code>NaN</code>, with code that produces each.</p>
 <pre>
