@@ -37,6 +37,65 @@
       <li>The code that returns a table with one row for each major, giving the smallest GPA, the largest GPA, the median GPA, and the correlation between study hours and GPA within that major.</li>
       <li>Finally, in a sentence or two of your own words, explain what it means to say that aggregation <em>reduces</em> rows, and give an example of a question about these students that aggregation therefore cannot answer.</li>
     </ol>
+
+    <h3>Solutions</h3>
+    <p>1. For each major, count the students and count the students who have a GPA recorded, then explain why the difference matters.</p>
+<pre>
+(
+    students
+    .group_by(c.major, maintain_order=True)
+    .agg(
+        n = pl.len(),
+        n_gpa = c.gpa.count()
+    )
+)</pre>
+    <p><code>pl.len()</code> counts every row in the group. <code>c.gpa.count()</code> counts only the non-missing values in the <code>gpa</code> column, so it is smaller in any major where some students have no GPA yet. The difference matters because an average GPA is computed only from the students who have one. If a major has twelve students but only two GPAs, its average is built from those two, and nothing in a column of averages shows that.</p>
+
+    <p>2. Count the distinct majors in the class.</p>
+<pre>
+(
+    students
+    .select(n_majors = c.major.n_unique())
+)</pre>
+    <p>There is no grouping here because the question asks for one number about the whole class. <code>.n_unique()</code> counts different values, not rows. It treats a missing value as one more distinct value, so if some students had no major listed, the count would be one higher than the number of real majors.</p>
+
+    <p>3. Summarize the whole dataset in one row with the total study hours, the average GPA, and the number of students, and explain why <code>.agg</code> will not work.</p>
+<pre>
+(
+    students
+    .select(
+        study_hours_total = c.study_hours.sum(),
+        gpa_avg = c.gpa.mean(),
+        n = pl.len()
+    )
+)</pre>
+    <p>In Polars, <code>.agg</code> always follows a <code>.group_by</code>, and here there are no groups, so calling it directly on <code>students</code> is an error. <code>.select</code> accepts the same aggregating expressions and collapses the whole frame to a single row. The average GPA uses only the students who have one, while <code>pl.len()</code> counts all of them, including those still waiting for a GPA.</p>
+
+    <p>4. For each major, give the smallest, largest, and median GPA, along with the correlation between study hours and GPA.</p>
+<pre>
+(
+    students
+    .group_by(c.major, maintain_order=True)
+    .agg(
+        gpa_min = c.gpa.min(),
+        gpa_max = c.gpa.max(),
+        gpa_median = c.gpa.median(),
+        gpa_corr = pl.corr(c.study_hours, c.gpa)
+    )
+)</pre>
+    <p>The column names are your choice. The first three summaries are methods called on the <code>gpa</code> column. The correlation is different: it needs two columns, so it is written as the function <code>pl.corr</code> with both columns passed in. <code>maintain_order=True</code> is optional, since the question does not ask for any particular order.</p>
+
+    <p>5. Explain what it means for aggregation to reduce rows, and give a question about the students that aggregation cannot answer.</p>
+<pre>
+Aggregation takes all the rows in a group and returns one row that
+summarizes them. After computing the average GPA for each major, the
+individual students are gone from the result; their GPAs went into the
+average and the rows were thrown away. So aggregation cannot answer
+"how far above or below their major's average GPA is each student?",
+because that answer needs the major's average and one row per student
+at the same time.</pre>
+    <p>This is one possible answer; there is no single correct one. Check that yours says the result has exactly one row per group and that the original rows are gone. Your example should be a question whose answer needs a group-level number attached to every individual student. The next chapter introduces the tool for that kind of question.</p>
+
   </div>
 
   <script src="../js/site.js"></script>

@@ -37,6 +37,124 @@
       <li>We collected only the 500 most recent edits per page, so give a comparison between two authors that this quietly ruins.</li>
       <li>Calling <code>.dt.convert_time_zone()</code> on the naive timestamps gives the right answer on this data anyway, so explain why getting the right answer can be the problem.</li>
     </ol>
+
+    <h3>Solutions</h3>
+
+    <p>1. The hidden assumption behind the row-number axis, and what would break it.</p>
+<pre>
+The row number stands in for the date only if the data has exactly one row per
+day, sorted in calendar order, with no days missing. Then row 45 really is the
+45th day of the year and the spacing between rows is one day everywhere.
+
+The axis starts lying as soon as any part of that fails:
+
+  - Missing days. The source leaves out days on which a page had no views, so
+    some of the quieter pages are already missing a few. After a gap, every
+    later row sits one or more days to the left of where it belongs, and two
+    points that are a week apart get drawn next to each other.
+  - A different sort order. Sort by views, or forget to sort after a join, and
+    the row number no longer follows time at all.
+  - Numbering before filtering. If the row index is added to the whole table
+    and the filter comes after, Chaucer's rows are numbered by their position
+    among all 75 authors.
+
+None of these raise an error. The plot still draws a clean line, which is why
+the assumption is hard to notice.
+</pre>
+
+    <p>2. What the <code>Date</code> type gives you that a row number or fractional year cannot.</p>
+<pre>
+A Date knows it is a date on the calendar. That gives three things.
+
+First, readable axes. plotnine labels a Date axis with real dates, and
+scale_x_date() lets us choose the breaks and format ("1 month", "%Y-%m"). A
+fractional year like 2025.12 has to be explained to the reader, and a row
+number cannot be read as a date at all.
+
+Second, calendar structure. The .dt namespace pulls out the weekday, month,
+day of year, and quarter. The weekday is the clearest case: neither a row number
+nor a fractional year can tell you that a day was a Tuesday without extra
+work. This is also how we found that Chaucer's tallest spike was 14 February.
+
+Third, exact arithmetic and comparison. A Date handles months of different
+lengths and leap years correctly, where the fractional-year formula pretends
+every month has 31 days. Dates can be filtered against pl.date(2025, 2, 14)
+and do not depend on the table being sorted or complete, unlike the row number.
+</pre>
+
+    <p>3. What evidence would be needed to establish that Chaucer's readers are students doing coursework.</p>
+<pre>
+There is no single correct answer. A good response says that the weekday
+pattern is only consistent with student readers, then names evidence that could
+tell student readers apart from other explanations.
+
+The table counts page loads. It has no information about who loaded the page
+or why, so a weekday dip on Saturdays fits many stories: students, office
+workers browsing at their desks, teachers preparing lessons, or automated
+traffic that runs on a working-week schedule.
+
+Evidence that would move the claim forward, from weaker to stronger:
+
+  - The academic calendar in the counts. If the page is read for coursework,
+    views should fall in July and August and over the winter break, and rise
+    when terms start. The same weekday dip should be weaker or absent in
+    those months.
+  - Comparison authors. An author who is rarely taught should show a weaker
+    weekday pattern than Chaucer. If every page in the corpus shows the same
+    dip, the pattern is about Wikipedia traffic in general and not about
+    Chaucer's readers.
+  - Data about the readers themselves, which this table does not have: where
+    visits were referred from (course websites or learning platforms), the
+    places they came from, or a survey of readers.
+
+The first two can be checked with the data we have, but they only make the
+story more or less plausible. Establishing it needs the third kind of evidence.
+</pre>
+
+    <p>4. A comparison between two authors that collecting only the 500 most recent edits ruins.</p>
+<pre>
+Several answers work. A good one compares two authors over a fixed period of
+time, since each author's 500 edits cover a different period.
+
+Example: count the edits made to each page in 2023 and conclude that Chaucer's
+article was more actively edited than Emily Brontë's that year. Brontë's page is
+edited so often that her last 500 edits reach back only to late 2024, so her
+count for 2023 comes out as zero. Chaucer's 500 edits reach back to 2021, so his
+2023 count is a real number. The table shows Chaucer far ahead, when the true
+result is probably the opposite.
+
+The same problem affects any count of edits over a calendar period, such as
+growth in article size over "the last five years" or edits per year. Comparing
+the total number of edits is broken in a different way: every busy page has
+exactly 500 because of the cap.
+
+Nothing warns you. The data for missing years simply has no rows, which looks
+the same as a year with no edits. A fair comparison either limits both authors
+to the period both are observed (from the later of the two earliest
+timestamps onward) or compares rates computed over each author's own window.
+</pre>
+
+    <p>5. Why getting the right answer from <code>.dt.convert_time_zone()</code> on naive timestamps can be the problem.</p>
+<pre>
+Calling .dt.convert_time_zone() on a naive column assumes the times were in UTC.
+Wikipedia does report revision timestamps in UTC, so on this data the assumption
+holds and the output is correct.
+
+The problem is that the correct output hides the assumption. Nothing in the code
+says "these timestamps are UTC," so a reader cannot check whether the author
+knew that or got lucky. Any check you run on this data passes, so there is
+nothing to catch the mistake. When the same code is later reused on naive local
+timestamps from another source, it shifts every one of them by the offset from
+UTC, and it again gives no error or warning. Code that is right by accident is
+harder to fix than code that fails, because it has already been trusted.
+
+Writing .dt.replace_time_zone("UTC") first, then .dt.convert_time_zone(...),
+states the assumption in the code, where a reader can see it and check it
+against the source.
+</pre>
+
+    <div style="height:200px"></div>
+
   </div>
 
   <script src="../js/site.js"></script>
