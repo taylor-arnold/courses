@@ -37,6 +37,78 @@
       <li>For each of the two questions below, say whether you would answer it with <code>.group_by</code> and <code>.agg</code> or with <code>.over</code>, explain why in a sentence, and write the code: (a) which major has the highest average GPA, and (b) which students have a GPA above the average for their own major.</li>
       <li>The code that uses <code>semesters</code> to draw a line plot, one line per student, showing how each student's GPA compares over time to the average GPA of every student in that same semester.</li>
     </ol>
+
+    <h3>Solutions</h3>
+    <p>1. Add each student's rank by GPA within their own major, with rank one going to the highest GPA.</p>
+<pre>
+(
+    students
+    .with_columns(
+        gpa_rank = c.gpa.rank(descending=True).over(c.major)
+    )
+)</pre>
+    <p><code>descending=True</code> gives rank one to the largest value, and <code>.over(c.major)</code> starts the ranking over within each major. The rows do not need to be sorted first, because <code>.rank()</code> works from the values themselves.</p>
+
+    <p>2. Sort the students from most to fewest study hours and compute the running percentage of the class's total study hours. Explain the two sums.</p>
+<pre>
+(
+    students
+    .sort(c.study_hours, descending=True)
+    .with_columns(
+        cum_share = c.study_hours.cum_sum() / c.study_hours.sum() * 100
+    )
+)</pre>
+    <p><code>.cum_sum()</code> is a running total that grows on every row, while <code>.sum()</code> is the fixed total for the whole class, the same number on every row. Dividing the first by the second gives the share of all study hours reached so far. The sort has to come first, since the running total adds up rows in the order they appear.</p>
+
+    <p>3. Add a smoothed GPA to <code>semesters</code> that averages each semester with the two before it, and say which rows come back missing.</p>
+<pre>
+(
+    semesters
+    .sort(c.name, c.semester)
+    .with_columns(
+        gpa_smooth = c.gpa.rolling_mean(window_size=3).over(c.name)
+    )
+)</pre>
+    <p>The first two semesters of each student come back missing, because they do not yet have three semesters in their window. The <code>.over(c.name)</code> makes this happen for every student. Without it, the window would slide across the boundary between students, and a student's first semesters would be averaged with the last semesters of the student sorted before them. If a semester's GPA is itself missing, the windows that include it also come back missing.</p>
+
+    <p>4. Choose between <code>.group_by</code> with <code>.agg</code> and <code>.over</code> for two questions, explain the choice, and write the code.</p>
+<pre>
+(a) Which major has the highest average GPA?
+
+This needs .group_by and .agg, because the answer is about majors, so
+the result should have one row for each major.
+
+(
+    students
+    .group_by(c.major)
+    .agg(gpa_avg = c.gpa.mean())
+    .sort(c.gpa_avg, descending=True)
+)
+
+(b) Which students have a GPA above the average for their own major?
+
+This needs .over, because the answer is a list of students, so every
+student has to stay in the table to be compared with their major's
+average.
+
+(
+    students
+    .filter(c.gpa &gt; c.gpa.mean().over(c.major))
+)</pre>
+    <p>For (a), the major at the top of the sorted table is the answer. Adding <code>.head(n=1)</code> to keep only that row is also fine.</p>
+
+    <p>5. Draw a line plot from <code>semesters</code>, one line per student, comparing each student's GPA over time to the average GPA of all students in the same semester.</p>
+<pre>
+(
+    semesters
+    .with_columns(
+        gpa_diff = c.gpa - c.gpa.mean().over(c.semester)
+    )
+    .ggplot(aes(c.semester, c.gpa_diff, color=c.name))
+    .geom_line()
+)</pre>
+    <p>This window groups by semester rather than by student, so each row gets the average GPA of everyone enrolled that semester. A value of <code>gpa_diff</code> above zero means the student did better than that semester's average. The plot needs one point per student per semester, which is why it uses <code>.over</code> instead of <code>.agg</code>. Several answers work here. Another good one plots the ratio <code>c.gpa / c.gpa.mean().over(c.semester)</code>, where one means the student matches the average.</p>
+
   </div>
 
   <script src="../js/site.js"></script>

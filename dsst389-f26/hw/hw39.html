@@ -40,6 +40,112 @@
       <li>Say what an author's list of top adjectives is actually a measurement of.</li>
       <li>Say why raw counts keep pushing generic words to the top no matter which part of speech you filter to.</li>
     </ol>
+
+    <h3>Solutions</h3>
+
+    <p>1. The annotation table for the sentence, with <code>tid</code>, <code>token</code>, <code>lemma</code>, and <code>upos</code>.</p>
+<pre>
+tid  token      lemma      upos
+---  ---------  ---------  -----
+  1  In         in         ADP
+  2  1847       1847       NUM
+  3  ,          ,          PUNCT
+  4  Charlotte  Charlotte  PROPN
+  5  Brontë     Brontë     PROPN
+  6  published  publish    VERB
+  7  Jane       Jane       PROPN
+  8  Eyre       Eyre       PROPN
+  9  under      under      ADP
+ 10  the        the        DET
+ 11  name       name       NOUN
+ 12  Currer     Currer     PROPN
+ 13  Bell       Bell       PROPN
+ 14  .          .          PUNCT
+
+The comma and the final period are tokens of their own, so the sentence has 14
+rows and not 12. Each name is split into one token per word. Getting the count
+of rows right matters more than any single upos label; the model can also
+make mistakes, such as tagging "Currer" as a common noun.
+</pre>
+
+    <p>2. The rows where the lemma differs from the token, and the rule behind each.</p>
+<pre>
+There are two.
+
+  - Row 1, "In" becomes "in". The capital letter is there only because the word
+    starts the sentence, so the lemma removes it.
+  - Row 6, "published" becomes "publish". Verbs are reduced to their base
+    form, so the past tense ending is removed.
+
+Every other row keeps its form. The proper nouns keep their capitals because
+the capital is part of the name. "name" is already a singular noun, and the
+number, punctuation, preposition, and article have no other form to reduce to.
+</pre>
+
+    <p>3. Adding <code>ent_type</code> and <code>ent_iob</code> columns.</p>
+<pre>
+tid  token      ent_type      ent_iob
+---  ---------  ------------  -------
+  1  In                       O
+  2  1847       DATE          B
+  3  ,                        O
+  4  Charlotte  PERSON        B
+  5  Brontë     PERSON        I
+  6  published                O
+  7  Jane       WORK_OF_ART   B
+  8  Eyre       WORK_OF_ART   I
+  9  under                    O
+ 10  the                      O
+ 11  name                     O
+ 12  Currer     PERSON        B
+ 13  Bell       PERSON        I
+ 14  .                        O
+
+Each entity starts with a B, its later tokens get an I, and everything outside
+an entity is O with an empty ent_type. The sentence has four entities, and the
+cumulative sum of the B rows from the reading would number them 1 to 4.
+
+The doubtful row is Jane Eyre. The correct type is WORK_OF_ART because it is
+a novel here, but it is also a woman's name, and the small model is much better
+at people than at titles. It may well label those two tokens PERSON. That is
+the error to expect, and it would make the PERSON count for this page include
+a book. A good answer marks WORK_OF_ART as the right label and says the model
+might not produce it. "Currer Bell" is a pen name, but the model sees two
+capitalized words that look like a person's name, so PERSON is likely.
+</pre>
+
+    <p>4. What an author's list of top adjectives measures.</p>
+<pre>
+It measures how the Wikipedia article about the author is written, after spaCy
+has tagged and lemmatized it. The pages are about the authors and were written
+by Wikipedia editors, so the list says nothing direct about the adjectives the
+author used in their own books.
+
+Two things are mixed in the list. Some adjectives describe the subject, such as
+"metaphysical" for John Donne or "supernatural" for Ann Radcliffe, because
+editors describe the author's work with them. Others, such as "more," "other,"
+and "many," come from the editors' writing habits and appear on every page.
+The counts also depend on the length of the article and on the tagger's
+mistakes, since a word the model tags as something else never enters the list.
+</pre>
+
+    <p>5. Why raw counts push generic words to the top whatever part of speech you filter to.</p>
+<pre>
+A raw count measures how often a word appears. Words that are common in all
+English prose are also common on each page, so they win on any single page
+too. Filtering by part of speech does not change that, because every part of
+speech has its own common, general words. The nouns have "year," "life," and
+"work," and the adjectives have "more," "other," and "many." Each filter just
+brings a different set of generic words to the top.
+
+What we usually want is the words that are frequent on this page compared with
+the others, and a raw count has no information about the other pages. Answering
+that needs a comparison with the rest of the collection. TF-IDF, in the next
+chapter, weights each count down by how many documents the word appears in.
+</pre>
+
+    <div style="height:200px"></div>
+
   </div>
 
   <script src="../js/site.js"></script>
