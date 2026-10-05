@@ -37,6 +37,60 @@
       <li>The code that adds a column to <code>semesters</code> giving the change in each student's GPA from the previous semester, along with a sentence explaining what would go wrong if you left the <code>.over()</code> off, and a sentence explaining which rows of the result come back as missing values and why.</li>
       <li>A few students have a semester with no GPA recorded. Write the code that replaces each of those missing values with that student's most recent previously recorded GPA.</li>
     </ol>
+
+    <h3>Solutions</h3>
+    <p>1. Add each student's study hours as a percentage of the total study hours in their major, keeping every student.</p>
+<pre>
+(
+    students
+    .with_columns(
+        study_share = c.study_hours / c.study_hours.sum().over(c.major) * 100
+    )
+)</pre>
+    <p>Read the expression from the inside out. <code>c.study_hours.sum()</code> is a total, and <code>.over(c.major)</code> computes that total separately within each major and writes it onto every student in the major. The division then happens row by row. Put the aggregation first and <code>.over()</code> second. Writing <code>c.study_hours.over(c.major).sum()</code> runs without an error, but every student gets the total for the whole class.</p>
+
+    <p>2. Add a column with the average GPA of each student's major, and describe how the shape differs from the <code>.group_by</code> and <code>.agg</code> version.</p>
+<pre>
+(
+    students
+    .with_columns(
+        gpa_major_avg = c.gpa.mean().over(c.major)
+    )
+)</pre>
+    <p>This result has one row for each student and keeps all of the original columns, with the major's average repeated on every student in that major. The <code>.group_by</code> and <code>.agg</code> version holds the same averages, but it has one row for each major and only two columns: <code>major</code> and the average.</p>
+
+    <p>3. Keep only the students whose GPA is above the median GPA of their own major, without adding a column.</p>
+<pre>
+(
+    students
+    .filter(c.gpa &gt; c.gpa.median().over(c.major))
+)</pre>
+    <p>A windowed expression is still an expression, so it can go directly inside <code>.filter</code>. The median of each major is computed, compared against each student, and then discarded, so no new column appears in the result. Students with no GPA are also dropped, because comparing a missing value gives a missing result and the filter keeps only rows where the condition is true.</p>
+
+    <p>4. Add a column to <code>semesters</code> with the change in each student's GPA from the previous semester. Explain what goes wrong without <code>.over()</code> and which rows come back missing.</p>
+<pre>
+(
+    semesters
+    .sort(c.name, c.semester)
+    .with_columns(
+        gpa_change = c.gpa - c.gpa.shift(1).over(c.name)
+    )
+)</pre>
+    <p>The sort comes first because "the previous semester" only means something once each student's rows are in semester order. <code>.shift(1)</code> looks one row up, and <code>.over(c.name)</code> keeps it from looking across the boundary between two students.</p>
+    <p>Without the <code>.over()</code>, each student's first semester would be compared with the last semester of whichever student sorts just before them. The code would still run, and those rows would show a change in GPA that is meaningless.</p>
+    <p>Each student's first semester comes back missing, because there is no earlier semester to subtract. Since some GPAs are missing in this data (see question 5), a semester with no GPA also gives a missing change, as does the semester right after it. A missing value in a subtraction makes the result missing.</p>
+
+    <p>5. Replace each missing GPA in <code>semesters</code> with that student's most recent earlier GPA.</p>
+<pre>
+(
+    semesters
+    .sort(c.name, c.semester)
+    .with_columns(
+        gpa = c.gpa.forward_fill().over(c.name)
+    )
+)</pre>
+    <p><code>.forward_fill()</code> replaces each missing value with the closest value above it, so the rows have to be sorted by student and semester first. The <code>.over(c.name)</code> matters here for the same reason as in question 4. Without it, a student whose first semester is missing would take a GPA from a different student. With it, that first semester stays missing, since the student has no earlier GPA to borrow. Giving the new column the name <code>gpa</code> replaces the old column; a new name such as <code>gpa_filled</code> is also fine if you want to keep both.</p>
+
   </div>
 
   <script src="../js/site.js"></script>

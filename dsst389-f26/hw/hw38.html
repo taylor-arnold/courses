@@ -37,6 +37,129 @@
       <li>Say why <code>strategy="nearest"</code> would be the wrong choice for an asof join asking whether edits follow attention.</li>
       <li>Say why the table pairing authors who were alive at the same time would tell you nothing if it were built from the 376 Victorians instead of these 75 authors.</li>
     </ol>
+
+    <h3>Solutions</h3>
+
+    <p>1. Why throwing information away by truncating a timestamp is the point.</p>
+<pre>
+The revisions are recorded to the second, and almost no two edits share the
+same second. Grouping by the raw timestamp would put nearly every edit in a
+group of its own, so counting edits per group would return a column of ones.
+
+Truncation discards the part of the timestamp the question does not care
+about. After .dt.truncate("1h") or .dt.date(), every edit made in the same hour
+or on the same day shares one value, and .group_by() can collect them:
+
+(
+    page_revisions
+    .with_columns(
+        date = c.timestamp.dt.date()
+    )
+    .group_by(c.date)
+    .agg(
+        count = pl.len()
+    )
+)
+
+Choosing the unit of truncation is choosing the question. Per hour asks about
+bursts of editing, and per day asks about busy days. The minutes and seconds
+were noise for either question, and removing them is what turns an event log
+into a time series.
+</pre>
+
+    <p>2. How the "size equals the size two edits ago" rule could flag an edit that is not a reversion.</p>
+<pre>
+The rule only compares byte counts, so any two edits whose size changes cancel
+out will trigger it. Several examples work. Two clear ones:
+
+  - Two unrelated edits. One editor adds a 60-byte sentence to the section on
+    Chaucer's life, and a later editor deletes a different 60-byte sentence
+    from the section on his works. The article is back to its old size but
+    contains different text, and the second edit is flagged.
+  - Edits that do not change the size. If three edits in a row each fix a typo
+    by swapping one letter for another, the size is the same in all three
+    rows. The third edit equals the size two edits back and is flagged,
+    although nothing was undone.
+
+The reading calls the rule a heuristic for this reason. Confirming a reversion
+needs the text of the article or the editor's comment, since the size column
+cannot tell the same article apart from a different one of the same length.
+</pre>
+
+    <p>3. What a five-row rolling mean averages when edit gaps range from forty seconds to eight months.</p>
+<pre>
+It averages whatever five edits happen to be next to each other, however much
+time they cover. In the busy stretch, five edits might span a few minutes, so
+the mean is close to the size of the article at one moment. In the quiet
+stretch, five edits might span three years, so the mean blends versions of the
+article from very different times.
+
+Each point on the smoothed line therefore means something different. The
+amount of smoothing changes along the series, and a single edit in the quiet
+stretch stays inside the window for years of the plot. The row-count window
+assumes the rows are evenly spaced, which was true for the yearly cellphone
+data and is false here.
+
+A window defined by time fixes this, because every point then averages the
+same span:
+
+(
+    page_revisions
+    .filter(c.doc_id == "Geoffrey Chaucer")
+    .sort(c.timestamp)
+    .with_columns(
+        size_smooth = c.size.rolling_mean_by(by=c.timestamp, window_size="30d")
+    )
+)
+</pre>
+
+    <p>4. Why <code>strategy="nearest"</code> is wrong for an asof join asking whether edits follow attention.</p>
+<pre>
+The question is about order in time: did readers arrive before the edit? The
+answer can only use view counts from at or before the moment of the edit.
+
+Each daily view count is stored at midnight. With "nearest," an edit made at
+6 p.m. is closer to the next midnight than to the one before it, so it is
+matched with the following day's views. Any edit made after noon would be
+paired with tomorrow's count. That count includes traffic that came after the
+edit, and possibly traffic caused by the same event that prompted it, so a
+high number could not be read as attention that led to the edit.
+
+strategy="backward" matches each edit to the most recent record at or before
+it, which is the count for the day the edit was made:
+
+(
+    edits_2025
+    .join_asof(
+        views_daily,
+        left_on=c.timestamp,
+        right_on=c.moment,
+        by="doc_id",
+        strategy="backward"
+    )
+)
+</pre>
+
+    <p>5. Why the "alive at the same time" table would say nothing if built from the 376 Victorians.</p>
+<pre>
+Because nearly all of the Victorian novelists were born within a few decades of
+each other, so almost every pair of them overlaps. The join would return nearly
+every possible pair, and the answer to "were these two alive at the same time?"
+would be yes almost every time.
+
+A table where the answer is always yes cannot tell any pair apart from any
+other. As a network, it would connect almost every author to almost every other
+author, leaving no structure to study. The choice of population settled the
+question before the join ran.
+
+The 75 authors span eight centuries, so the join keeps a few hundred of the
+5,550 possible pairs, and whether two authors overlapped varies from pair to
+pair. The question is only informative over a population that varies in the
+thing being asked about, which is why the reading built the second corpus.
+</pre>
+
+    <div style="height:200px"></div>
+
   </div>
 
   <script src="../js/site.js"></script>
