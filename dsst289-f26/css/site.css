@@ -154,3 +154,9 @@ td:nth-child(3) {
     font-weight: bold;
 }
 
+.td-note {
+    background-color: #fdf6dc;
+    text-align: center;
+    font-style: italic;
+    padding: 6px 10px;
+}
