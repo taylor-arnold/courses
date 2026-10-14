@@ -650,223 +650,245 @@
   },
   {
     "id": "q12-01",
-    "question": "Q12.01: `geom_bar` and `geom_col` look almost identical. What is the difference?",
+    "question": "Q12.01: What is a primary key?",
     "options": [
-      { "letter": "A", "text": "`geom_bar` takes an x and a y you supply, while `geom_col` counts the rows in each category itself." },
-      { "letter": "B", "text": "`geom_bar` works only on numbers and `geom_col` works only on text." },
-      { "letter": "C", "text": "`geom_bar` draws vertical bars and `geom_col` draws horizontal bars; otherwise they are the same." },
-      { "letter": "D", "text": "`geom_bar` takes one categorical aesthetic and counts the rows in each category itself, while `geom_col` takes an x and a y and draws each y value you supply as the bar height." }
+      { "letter": "A", "text": "Any column that contains only numbers." },
+      { "letter": "B", "text": "One or more columns that uniquely and minimally identify each row of a table." },
+      { "letter": "C", "text": "The first column of a table, whatever it contains." },
+      { "letter": "D", "text": "A column that has been sorted so its values are in order." }
+    ],
+    "correct": "B"
+  },
+  {
+    "id": "q12-02",
+    "question": "Q12.02: By default, `.join()` performs an inner join. When a key value in the left table has no match in the right table, what happens to that row?",
+    "options": [
+      { "letter": "A", "text": "The join raises an error and stops." },
+      { "letter": "B", "text": "It is kept, with the new columns filled with zero." },
+      { "letter": "C", "text": "It is kept, with the new columns filled with null." },
+      { "letter": "D", "text": "It is dropped from the result." }
     ],
     "correct": "D"
   },
   {
-    "id": "q12-02",
-    "question": "Q12.02: How does a histogram (`geom_histogram`) turn a numeric column into a plot?",
+    "id": "q12-03",
+    "question": "Q12.03: The column `iso` is a primary key in the `country` table but a foreign key in the `border` table. What actually distinguishes a primary key from a foreign key?",
     "options": [
-      { "letter": "A", "text": "It cuts the number line into equal intervals called bins and counts how many values fall into each one." },
-      { "letter": "B", "text": "It fits a smooth curve whose area sums to one." },
-      { "letter": "C", "text": "It draws one point for every value in the column." },
-      { "letter": "D", "text": "It counts the rows in each named category of the column." }
+      { "letter": "A", "text": "Which table the key appears in: it is primary where it uniquely identifies each row, and foreign in another table that references it." },
+      { "letter": "B", "text": "Whether the values are text or numeric." },
+      { "letter": "C", "text": "Whether the column was created before or after the join." },
+      { "letter": "D", "text": "How many columns make up the key, primary keys being single columns and foreign keys being multiple." }
     ],
     "correct": "A"
   },
   {
-    "id": "q12-03",
-    "question": "Q12.03: The bars of a count plot come out in a jumbled order. According to the chapter, how do you fix the order?",
+    "id": "q12-04",
+    "question": "Q12.04: You want to join `border` to `country`, but the matching column is called `iso_neighbor` in `border` and `iso` in `country`. How do you tell `.join()` about the mismatch?",
     "options": [
-      { "letter": "A", "text": "Nothing is needed; a categorical axis is always sorted alphabetically by default." },
-      { "letter": "B", "text": "Set the order inside `aes()` with an `order=` argument." },
-      { "letter": "C", "text": "Sort the data before it is plotted, because a categorical axis follows the order the values first appear in the data." },
-      { "letter": "D", "text": "Add a `sort_axis()` layer to the plot after the geometry." }
+      { "letter": "A", "text": "Pass `on=[c.iso_neighbor, c.iso]` as a two-element list." },
+      { "letter": "B", "text": "Pass `how=\"left_right\"` so Polars matches the columns by position." },
+      { "letter": "C", "text": "Use `left_on=c.iso_neighbor` and `right_on=c.iso` to name the column in each table." },
+      { "letter": "D", "text": "You cannot; the two columns must share a name before any join." }
     ],
     "correct": "C"
   },
   {
-    "id": "q12-04",
-    "question": "Q12.04: In `.geom_smooth(method=\"lm\", se=False)`, what do the two options do?",
-    "options": [
-      { "letter": "A", "text": "`method=\"lm\"` fits a straight line of best fit, and `se=False` turns off the confidence band drawn around it." },
-      { "letter": "B", "text": "`method=\"lm\"` limits the model to the mean, and `se=False` hides the fitted line." },
-      { "letter": "C", "text": "`method=\"lm\"` fits a flexible non-linear curve, and `se=False` makes the line thicker." },
-      { "letter": "D", "text": "`method=\"lm\"` sorts the data, and `se=False` sets the standard error to zero in the data." }
-    ],
-    "correct": "A"
-  },
-  {
     "id": "q12-05",
-    "question": "Q12.05: To order a boxplot's regions the chapter sorts with `c.hdi.median().over(c.region)`, not a plain `.sort(c.hdi)`. Why does the plain sort give the wrong order?",
+    "question": "Q12.05: You accidentally use a right-hand table that has two rows for `\"AFG\"` instead of one, then join it to `border` on `iso`. What happens?",
     "options": [
-      { "letter": "A", "text": "Sorting countries by their own HDI orders each region by whichever country comes first, that is, by the region's lowest HDI, rather than by the middle of its distribution; ordering categories by a group summary means sorting by that summary computed with `.over()`." },
-      { "letter": "B", "text": "`geom_boxplot` ignores the sort entirely, so only the window version has any effect." },
-      { "letter": "C", "text": "The plain sort orders the regions alphabetically instead of by HDI." },
-      { "letter": "D", "text": "A plain `.sort(c.hdi)` raises an error because HDI has missing values." }
+      { "letter": "A", "text": "Every Afghanistan row in `border` matches both AFG rows, so the result gains extra duplicate rows and no error is raised." },
+      { "letter": "B", "text": "Polars keeps only the first AFG row, so the result is unchanged." },
+      { "letter": "C", "text": "Polars drops all Afghanistan rows because the key is ambiguous." },
+      { "letter": "D", "text": "Polars raises an error because the join key is not unique." }
     ],
     "correct": "A"
   },
   {
-    "id": "q13-01",
-    "question": "Q13.01: By default, when you map color to a categorical column, plotnine uses the viridis palette. Why is it a good default?",
+    "id": "q12-06",
+    "question": "Q12.06: Before using a table as the right-hand side of a join, you run this check and get True:\n\n```python\n(\n    c_sml\n    .select(c.iso)\n    .n_unique() == len(c_sml)\n)\n```\n\nWhat has this confirmed?",
     "options": [
-      { "letter": "A", "text": "It matches the `theme_minimal` background exactly." },
-      { "letter": "B", "text": "It sorts the categories alphabetically as it assigns colors." },
-      { "letter": "C", "text": "It uses the fewest colors possible, always three." },
-      { "letter": "D", "text": "It is friendly to color-blind readers, prints well in black and white, and holds up on a poor projector." }
+      { "letter": "A", "text": "The two tables you are about to join have the same number of rows." },
+      { "letter": "B", "text": "The `iso` column has no repeated values, so it is a safe key that will not multiply rows in the join." },
+      { "letter": "C", "text": "The `iso` column contains no missing values." },
+      { "letter": "D", "text": "The join will keep every row of the left table." }
+    ],
+    "correct": "B"
+  },
+  {
+    "id": "q12-07",
+    "question": "Q12.07: Both `c.gini.mean().over(c.region)` and grouping to a region summary then joining it back attach each region's average Gini to every row. Since `.over()` does it in one step, when is the agg-then-join version worth the extra work?",
+    "options": [
+      { "letter": "A", "text": "When you want the result to have one row per region instead of one row per original row." },
+      { "letter": "B", "text": "When the summary must be attached without adding a new column." },
+      { "letter": "C", "text": "When the table is too large for `.over()` to handle." },
+      { "letter": "D", "text": "When you also need the one-row-per-region summary table for its own sake, to inspect, plot, or join elsewhere, since `.over()` never materializes that table." }
     ],
     "correct": "D"
   },
   {
-    "id": "q13-02",
-    "question": "Q13.02: What does `facet_wrap()` do to a plot?",
+    "id": "q13-01",
+    "question": "Q13.01: What is a unit of observation?",
     "options": [
-      { "letter": "A", "text": "It splits the data by a categorical variable and lays out a grid of small panels, one per group." },
-      { "letter": "B", "text": "It wraps long axis labels onto multiple lines." },
-      { "letter": "C", "text": "It merges several categories into a single combined panel." },
-      { "letter": "D", "text": "It adds a legend that maps each color to a category." }
+      { "letter": "A", "text": "The total number of rows in the table." },
+      { "letter": "B", "text": "The entity that each row of the table represents, the \"who\" or \"what\" the data are recorded about." },
+      { "letter": "C", "text": "The unit in which a measurement is recorded, such as meters or days." },
+      { "letter": "D", "text": "The column that holds the measured value." }
     ],
-    "correct": "A"
+    "correct": "B"
+  },
+  {
+    "id": "q13-02",
+    "question": "Q13.02: According to the tidy data rules, which of the following must be true?",
+    "options": [
+      { "letter": "A", "text": "Every missing value is filled with zero before analysis." },
+      { "letter": "B", "text": "Every table is as wide as possible, with one column per measurement." },
+      { "letter": "C", "text": "Every variable is a single column, every observation is a single row, and every table holds a single unit of observation." },
+      { "letter": "D", "text": "Every column is numeric, every row is sorted, and every table has a primary key." }
+    ],
+    "correct": "C"
   },
   {
     "id": "q13-03",
-    "question": "Q13.03: For coloring points by an unordered categorical column, the chapter uses `scale_color_brewer(type=\"qual\", ...)`. Why a qualitative palette?",
+    "question": "Q13.03: A biologist records the height of 100 plants over 14 days, using one row for each plant-and-day combination. What is the unit of observation, and how many rows does the table have?",
     "options": [
-      { "letter": "A", "text": "The categories have no order, so you want colors that are easy to tell apart rather than colors that run along a single ramp." },
-      { "letter": "B", "text": "A qualitative palette puts the categories in numeric order along a gradient." },
-      { "letter": "C", "text": "Qualitative palettes always use exactly two colors, which is enough for any category." },
-      { "letter": "D", "text": "Only qualitative palettes work with continuous numeric columns." }
+      { "letter": "A", "text": "The unit of observation is day, and the table has 14 rows." },
+      { "letter": "B", "text": "The unit of observation is plant, and the table has 100 rows." },
+      { "letter": "C", "text": "The unit of observation is height, and the table has one row per distinct height." },
+      { "letter": "D", "text": "The unit of observation is plant × day, and the table has 100 × 14 = 1,400 rows." }
     ],
-    "correct": "A"
+    "correct": "D"
   },
   {
     "id": "q13-04",
-    "question": "Q13.04: You add a `labs` layer but set only `x` and `title`. What happens to the other labels, such as the y-axis and the legend?",
+    "question": "Q13.04: The chapter stresses that tidiness is a property of a table relative to a unit of observation. What does that mean?",
     "options": [
-      { "letter": "A", "text": "They keep their default labels, the raw column names, since `labs` changes only the aesthetics you name." },
-      { "letter": "B", "text": "They are removed from the plot entirely." },
-      { "letter": "C", "text": "The plot raises an error, because `labs` requires every aesthetic to be labeled." },
-      { "letter": "D", "text": "They all take the value of the title you set." }
+      { "letter": "A", "text": "A table is either tidy or untidy once and for all, no matter what you do with it." },
+      { "letter": "B", "text": "The same table can be tidy for one unit of observation and untidy for another; it depends on which unit your analysis needs, not on the values alone." },
+      { "letter": "C", "text": "Tidiness depends only on whether the values are numbers or text." },
+      { "letter": "D", "text": "A table is tidy only if it has more rows than columns." }
     ],
-    "correct": "A"
+    "correct": "B"
   },
   {
     "id": "q13-05",
-    "question": "Q13.05: By default every panel of a facet shares one x-axis and one y-axis. What does setting `scales=\"free\"` do, and why does the chapter say to use it rarely?",
+    "question": "Q13.05: The cellphone data has one row per year-and-country with columns `year`, `iso`, and `cell`. If it is reshaped so each country becomes its own column, why is the result untidy for the unit of observation year × country?",
     "options": [
-      { "letter": "A", "text": "It adds more panels to the grid, one per numeric column." },
-      { "letter": "B", "text": "It gives each panel its own axis ranges, which can make a small panel legible but destroys the across-panel comparison that shared axes make possible." },
-      { "letter": "C", "text": "It forces all panels onto a single shared axis, which is what makes comparison possible." },
-      { "letter": "D", "text": "It removes the axes from every panel, leaving only the data." }
+      { "letter": "A", "text": "The reshaped table adds new information that was not in the original, which tidiness forbids." },
+      { "letter": "B", "text": "The `cell` values become text, and tidy tables must be numeric." },
+      { "letter": "C", "text": "The reshaped table has fewer rows than columns, and tidy tables must have more rows." },
+      { "letter": "D", "text": "Country is no longer stored in a column; it has become a set of column names, which breaks the rule that every variable is a single column." }
+    ],
+    "correct": "D"
+  },
+  {
+    "id": "q13-06",
+    "question": "Q13.06: The \"atomic cells\" guideline says what about the values in a column?",
+    "options": [
+      { "letter": "A", "text": "Each cell should be formatted with bold or color to mark its meaning." },
+      { "letter": "B", "text": "Each cell should hold a number, never text." },
+      { "letter": "C", "text": "Each cell should hold only a single thing; if you might use part of it, split it into separate columns." },
+      { "letter": "D", "text": "Each cell should combine related values, separated by commas, to save columns." }
+    ],
+    "correct": "C"
+  },
+  {
+    "id": "q13-07",
+    "question": "Q13.07: Following the chapter's rules for naming variables, which of these is a valid column name?",
+    "options": [
+      { "letter": "A", "text": "`birth-year`" },
+      { "letter": "B", "text": "`Birth Year`" },
+      { "letter": "C", "text": "`2nd_author`" },
+      { "letter": "D", "text": "`birth_year`" }
+    ],
+    "correct": "D"
+  },
+  {
+    "id": "q13-08",
+    "question": "Q13.08: The \"prefer numeric\" guideline says a measurement like a price should be stored as a number. Where should the currency type go?",
+    "options": [
+      { "letter": "A", "text": "In the same cell as the price, such as \"20 USD\"." },
+      { "letter": "B", "text": "Nowhere; the currency should simply be dropped from the dataset." },
+      { "letter": "C", "text": "In a separate column, so the price column stays purely numeric." },
+      { "letter": "D", "text": "In a formatting rule applied to the price cell." }
+    ],
+    "correct": "C"
+  },
+  {
+    "id": "q13-09",
+    "question": "Q13.09: The \"minimal formatting\" guideline permits some formatting in a data spreadsheet. What does it forbid?",
+    "options": [
+      { "letter": "A", "text": "Naming each sheet after the table it contains." },
+      { "letter": "B", "text": "Using conditional formatting to highlight data-entry errors." },
+      { "letter": "C", "text": "Using formatting, such as a cell's color, to hold actual data; that information belongs in an extra column instead." },
+      { "letter": "D", "text": "Making the first row bold or adjusting the column widths." }
+    ],
+    "correct": "C"
+  },
+  {
+    "id": "q13-10",
+    "question": "Q13.10: You have a table whose unit of observation is day × plant, and you also want to store each plant's species. Following the \"respect unit of observation\" principle, where should species go?",
+    "options": [
+      { "letter": "A", "text": "In the column names of the day × plant table, one column per species." },
+      { "letter": "B", "text": "In a separate table whose unit of observation is plant, to avoid copying the species onto every day's row and the inconsistencies that invites." },
+      { "letter": "C", "text": "In the day × plant table, repeated on every row for that plant." },
+      { "letter": "D", "text": "In a formatting rule that colors each plant's rows by species." }
     ],
     "correct": "B"
   },
   {
     "id": "q14-01",
-    "question": "Q14.01: What is a unit of observation?",
+    "question": "Q14.01: A data dictionary documents a dataset. What does the chapter say it records?",
     "options": [
-      { "letter": "A", "text": "The column that holds the measured value." },
-      { "letter": "B", "text": "The unit in which a measurement is recorded, such as meters or days." },
-      { "letter": "C", "text": "The entity that each row of the table represents, the \"who\" or \"what\" the data are recorded about." },
-      { "letter": "D", "text": "The total number of rows in the table." }
+      { "letter": "A", "text": "A backup copy of the data stored in a second file format." },
+      { "letter": "B", "text": "For each variable, information such as its name, measurement units, and expected values or categories, along with any decisions made while collecting the data." },
+      { "letter": "C", "text": "A running log of every change made to the raw CSV file after it was loaded." },
+      { "letter": "D", "text": "The Python code used to read each file into a DataFrame." }
     ],
-    "correct": "C"
+    "correct": "B"
   },
   {
     "id": "q14-02",
-    "question": "Q14.02: According to the tidy data rules, which of the following must be true?",
+    "question": "Q14.02: The chapter recommends two ways to record a date in a dataset. What are they?",
     "options": [
-      { "letter": "A", "text": "Every column is numeric, every row is sorted, and every table has a primary key." },
-      { "letter": "B", "text": "Every missing value is filled with zero before analysis." },
-      { "letter": "C", "text": "Every variable is a single column, every observation is a single row, and every table holds a single unit of observation." },
-      { "letter": "D", "text": "Every table is as wide as possible, with one column per measurement." }
+      { "letter": "A", "text": "A count of days since the first day of collection, so that two dates can be subtracted." },
+      { "letter": "B", "text": "Either one column for each part (year, month, day, and so on), or a single column in the ISO 8601 form `YYYY-MM-DD`." },
+      { "letter": "C", "text": "Whatever format the spreadsheet program displays by default, since the format is converted when the file is exported." },
+      { "letter": "D", "text": "A single column in the `MM/DD/YYYY` form that most readers in the United States expect." }
     ],
-    "correct": "C"
+    "correct": "B"
   },
   {
     "id": "q14-03",
-    "question": "Q14.03: A biologist records the height of 100 plants over 14 days, using one row for each plant-and-day combination. What is the unit of observation, and how many rows does the table have?",
+    "question": "Q14.03: How does the chapter say to record a missing value in a numeric column?",
     "options": [
-      { "letter": "A", "text": "The unit of observation is height, and the table has one row per distinct height." },
-      { "letter": "B", "text": "The unit of observation is plant × day, and the table has 100 × 14 = 1,400 rows." },
-      { "letter": "C", "text": "The unit of observation is day, and the table has 14 rows." },
-      { "letter": "D", "text": "The unit of observation is plant, and the table has 100 rows." }
+      { "letter": "A", "text": "Color the cell and attach a comment explaining why the value is missing." },
+      { "letter": "B", "text": "Leave the cell blank." },
+      { "letter": "C", "text": "Enter `0`, since that is what a missing measurement contributes to a sum." },
+      { "letter": "D", "text": "Enter a code such as `-99` or `999` that could not be a real measurement." }
     ],
     "correct": "B"
   },
   {
     "id": "q14-04",
-    "question": "Q14.04: The chapter stresses that tidiness is a property of a table relative to a unit of observation. What does that mean?",
+    "question": "Q14.04: A table describes a set of recorded interviews stored as `.mp3` files. How does the chapter say to connect the recordings to the table?",
     "options": [
-      { "letter": "A", "text": "Tidiness depends only on whether the values are numbers or text." },
-      { "letter": "B", "text": "A table is tidy only if it has more rows than columns." },
-      { "letter": "C", "text": "A table is either tidy or untidy once and for all, no matter what you do with it." },
-      { "letter": "D", "text": "The same table can be tidy for one unit of observation and untidy for another; it depends on which unit your analysis needs, not on the values alone." }
+      { "letter": "A", "text": "Embed the audio in the spreadsheet so that the data and the recordings travel together." },
+      { "letter": "B", "text": "Name each row after its file so that the file name never has to appear as a value." },
+      { "letter": "C", "text": "Transcribe each recording into a text cell, since only text can be stored as data." },
+      { "letter": "D", "text": "Add a column holding each recording's file name, with its path if the files are not all in one folder." }
     ],
     "correct": "D"
   },
   {
     "id": "q14-05",
-    "question": "Q14.05: The cellphone data has one row per year-and-country with columns `year`, `iso`, and `cell`. If it is reshaped so each country becomes its own column, why is the result untidy for the unit of observation year × country?",
+    "question": "Q14.05: A `visits` table records every time someone enters a library, and the same person can visit several times a day. Why does the chapter suggest a synthetic key here, and what would it look like?",
     "options": [
-      { "letter": "A", "text": "Country is no longer stored in a column; it has become a set of column names, which breaks the rule that every variable is a single column." },
-      { "letter": "B", "text": "The reshaped table has fewer rows than columns, and tidy tables must have more rows." },
-      { "letter": "C", "text": "The `cell` values become text, and tidy tables must be numeric." },
-      { "letter": "D", "text": "The reshaped table adds new information that was not in the original, which tidiness forbids." }
+      { "letter": "A", "text": "No combination of the recorded columns reliably identifies one visit, so each row gets a made-up unique id such as a UUID." },
+      { "letter": "B", "text": "The key is the row number in the spreadsheet, which the chapter says is always unique enough." },
+      { "letter": "C", "text": "A synthetic key is required in every table, so it would be added even if `person` and `date` were already unique." },
+      { "letter": "D", "text": "The person's name should be replaced with a number to protect their privacy, and that number is the synthetic key." }
     ],
     "correct": "A"
-  },
-  {
-    "id": "q15-01",
-    "question": "Q15.01: The \"atomic cells\" guideline says what about the values in a column?",
-    "options": [
-      { "letter": "A", "text": "Each cell should hold a number, never text." },
-      { "letter": "B", "text": "Each cell should combine related values, separated by commas, to save columns." },
-      { "letter": "C", "text": "Each cell should be formatted with bold or color to mark its meaning." },
-      { "letter": "D", "text": "Each cell should hold only a single thing; if you might use part of it, split it into separate columns." }
-    ],
-    "correct": "D"
-  },
-  {
-    "id": "q15-02",
-    "question": "Q15.02: Following the chapter's rules for naming variables, which of these is a valid column name?",
-    "options": [
-      { "letter": "A", "text": "`birth-year`" },
-      { "letter": "B", "text": "`birth_year`" },
-      { "letter": "C", "text": "`2nd_author`" },
-      { "letter": "D", "text": "`Birth Year`" }
-    ],
-    "correct": "B"
-  },
-  {
-    "id": "q15-03",
-    "question": "Q15.03: The \"prefer numeric\" guideline says a measurement like a price should be stored as a number. Where should the currency type go?",
-    "options": [
-      { "letter": "A", "text": "Nowhere; the currency should simply be dropped from the dataset." },
-      { "letter": "B", "text": "In a separate column, so the price column stays purely numeric." },
-      { "letter": "C", "text": "In the same cell as the price, such as \"20 USD\"." },
-      { "letter": "D", "text": "In a formatting rule applied to the price cell." }
-    ],
-    "correct": "B"
-  },
-  {
-    "id": "q15-04",
-    "question": "Q15.04: The \"minimal formatting\" guideline permits some formatting in a data spreadsheet. What does it forbid?",
-    "options": [
-      { "letter": "A", "text": "Using conditional formatting to highlight data-entry errors." },
-      { "letter": "B", "text": "Using formatting, such as a cell's color, to hold actual data; that information belongs in an extra column instead." },
-      { "letter": "C", "text": "Making the first row bold or adjusting the column widths." },
-      { "letter": "D", "text": "Naming each sheet after the table it contains." }
-    ],
-    "correct": "B"
-  },
-  {
-    "id": "q15-05",
-    "question": "Q15.05: You have a table whose unit of observation is day × plant, and you also want to store each plant's species. Following the \"respect unit of observation\" principle, where should species go?",
-    "options": [
-      { "letter": "A", "text": "In the day × plant table, repeated on every row for that plant." },
-      { "letter": "B", "text": "In a separate table whose unit of observation is plant, to avoid copying the species onto every day's row and the inconsistencies that invites." },
-      { "letter": "C", "text": "In a formatting rule that colors each plant's rows by species." },
-      { "letter": "D", "text": "In the column names of the day × plant table, one column per species." }
-    ],
-    "correct": "B"
   },
   {
     "id": "q16-01",
@@ -925,222 +947,167 @@
   },
   {
     "id": "q17-01",
-    "question": "Q17.01: A data dictionary documents a dataset. What does the chapter say it records?",
+    "question": "Q17.01: The `cellphone` table is long, with columns `year`, `iso`, and `cell`. To reshape it wide, one column per country, the pipeline is:\n\n```python\n(\n    cellphone\n    .pivot(index=c.year, on=c.iso, values=c.cell)\n)\n```\n\nWhat do the three arguments name, in order?",
     "options": [
-      { "letter": "A", "text": "For each variable, information such as its name, measurement units, and expected values or categories, along with any decisions made while collecting the data." },
-      { "letter": "B", "text": "A running log of every change made to the raw CSV file after it was loaded." },
-      { "letter": "C", "text": "The Python code used to read each file into a DataFrame." },
-      { "letter": "D", "text": "A backup copy of the data stored in a second file format." }
+      { "letter": "A", "text": "Three columns that must all be numeric for the pivot to run." },
+      { "letter": "B", "text": "The three columns to sort by before reshaping." },
+      { "letter": "C", "text": "The column to index the new rows (`year`), the column whose values become new column names (`iso`), and the column that fills the cells (`cell`)." },
+      { "letter": "D", "text": "The columns to drop, keep, and rename, in that order." }
     ],
-    "correct": "A"
+    "correct": "C"
   },
   {
     "id": "q17-02",
-    "question": "Q17.02: The `pl.read_csv()` function has an `encoding` argument. When do you need to set it to something like `\"windows-1252\"`?",
+    "question": "Q17.02: A column `lang_codes` holds a list of language codes in each cell, produced by `c.lang.str.split(\"|\")`. What does calling `.explode(c.lang_codes)` do?",
     "options": [
-      { "letter": "A", "text": "When there are extra title rows above the real header that must be skipped." },
-      { "letter": "B", "text": "When a numeric column needs to be forced to load as text." },
-      { "letter": "C", "text": "When the file uses a semicolon instead of a comma between columns." },
-      { "letter": "D", "text": "When the file was saved in an older or Windows encoding, so that reading it as the default UTF-8 would turn a character like \"é\" into garbled text." }
+      { "letter": "A", "text": "It spreads the list elements across new columns, one per element." },
+      { "letter": "B", "text": "It keeps only the first element of each list and drops the rest." },
+      { "letter": "C", "text": "It joins the list elements back into a single comma-separated string." },
+      { "letter": "D", "text": "It gives each list element its own row, duplicating the other columns so one row can become several." }
     ],
     "correct": "D"
   },
   {
     "id": "q17-03",
-    "question": "Q17.03: A survey CSV records missing answers as the string `\"-99\"`. If you read it and do nothing about this, what goes wrong, and how does `null_values` help?",
+    "question": "Q17.03: You call `.unpivot(index=c.year)` on the wide `cellphone` frame without naming the output columns. What are the two new columns called, and how would you rename them?",
     "options": [
-      { "letter": "A", "text": "Polars loads `\"-99\"` as text in every column; passing `null_values=[\"-99\"]` converts the whole file to numbers." },
-      { "letter": "B", "text": "Polars drops every row containing `\"-99\"`; passing `null_values=[\"-99\"]` keeps those rows." },
-      { "letter": "C", "text": "Polars raises an error on the first `\"-99\"`; passing `null_values=[\"-99\"]` suppresses the error so the file loads." },
-      { "letter": "D", "text": "Polars treats `\"-99\"` as a real value, here a number, which corrupts your summaries; passing `null_values=[\"-99\"]` loads those entries as missing instead." }
+      { "letter": "A", "text": "They default to variable and value; set `variable_name` and `value_name` to choose your own names." },
+      { "letter": "B", "text": "They default to key and val; set `index` and `values` to rename them." },
+      { "letter": "C", "text": "They default to column and data; set `on` and `values` to rename them." },
+      { "letter": "D", "text": "They take the names of the first two original columns and cannot be renamed." }
+    ],
+    "correct": "A"
+  },
+  {
+    "id": "q17-04",
+    "question": "Q17.04: With the wide frame `cell_wide` (one column per country), mapping `color=c.iso` in plotnine fails. Why, and what fixes it?",
+    "options": [
+      { "letter": "A", "text": "plotnine cannot use color with `geom_line`; switching to `geom_point` fixes it." },
+      { "letter": "B", "text": "There is no `iso` column in the wide frame, only a column per country; unpivoting country back into one `iso` column lets `color=c.iso` draw one line per country." },
+      { "letter": "C", "text": "The `iso` column is numeric and color needs text; casting it to a string fixes it." },
+      { "letter": "D", "text": "The frame has too many columns; dropping all but two fixes it." }
+    ],
+    "correct": "B"
+  },
+  {
+    "id": "q17-05",
+    "question": "Q17.05: The chapter calls pivot and unpivot \"round trips\" but says aggregation is different. Why does this distinction support the advice to store data in a longer format?",
+    "options": [
+      { "letter": "A", "text": "Long tables always use less memory than wide ones, so they are cheaper to store." },
+      { "letter": "B", "text": "Aggregation is faster on long tables, so storing data long avoids slow pivots later." },
+      { "letter": "C", "text": "Wide tables cannot be saved as CSV files, so long storage is the only portable option." },
+      { "letter": "D", "text": "Pivot and unpivot only rearrange values, so a long table can be reshaped into any wide layout an analysis needs; aggregation discards information and cannot be reversed, so a pre-aggregated table cannot be recovered." }
     ],
     "correct": "D"
   },
   {
-    "id": "q17-04",
-    "question": "Q17.04: A ZIP-code column full of values like `\"02138\"` loads as an integer and becomes 2138. Which `pl.read_csv()` argument fixes this, and why does the problem happen?",
-    "options": [
-      { "letter": "A", "text": "`schema_overrides={\"zip_code\": pl.Utf8}`, because Polars guesses the column is numeric and an integer type silently drops the leading zero." },
-      { "letter": "B", "text": "`skip_rows=1`, because the leading zero is read as a separate header row." },
-      { "letter": "C", "text": "`null_values=[\"0\"]`, because the leading zero is treated as a missing-value code." },
-      { "letter": "D", "text": "`separator=\",\"`, because the zero is split into its own column." }
-    ],
-    "correct": "A"
-  },
-  {
-    "id": "q17-05",
-    "question": "Q17.05: A colleague in Europe sends a CSV whose fields are separated by semicolons, because it was exported from a system set to a locale where the comma already means something else. Which argument loads it correctly, and what is the comma being used for in that locale?",
-    "options": [
-      { "letter": "A", "text": "`separator=\";\"`, because in that locale the comma is the decimal separator inside numbers, so another character has to separate the fields." },
-      { "letter": "B", "text": "`skip_rows=1`, because the comma marks a banner row that must be skipped." },
-      { "letter": "C", "text": "`null_values=[\",\"]`, because a lone comma is that locale's missing-value code." },
-      { "letter": "D", "text": "`encoding=\"windows-1252\"`, because the comma is reserved for the file's character encoding." }
-    ],
-    "correct": "A"
-  },
-  {
     "id": "q18-01",
-    "question": "Q18.01: What is a primary key?",
+    "question": "Q18.01: `geom_bar` and `geom_col` look almost identical. What is the difference?",
     "options": [
-      { "letter": "A", "text": "One or more columns that uniquely and minimally identify each row of a table." },
-      { "letter": "B", "text": "A column that has been sorted so its values are in order." },
-      { "letter": "C", "text": "Any column that contains only numbers." },
-      { "letter": "D", "text": "The first column of a table, whatever it contains." }
+      { "letter": "A", "text": "`geom_bar` takes one categorical aesthetic and counts the rows in each category itself, while `geom_col` takes an x and a y and draws each y value you supply as the bar height." },
+      { "letter": "B", "text": "`geom_bar` takes an x and a y you supply, while `geom_col` counts the rows in each category itself." },
+      { "letter": "C", "text": "`geom_bar` draws vertical bars and `geom_col` draws horizontal bars; otherwise they are the same." },
+      { "letter": "D", "text": "`geom_bar` works only on numbers and `geom_col` works only on text." }
     ],
     "correct": "A"
   },
   {
     "id": "q18-02",
-    "question": "Q18.02: By default, `.join()` performs an inner join. When a key value in the left table has no match in the right table, what happens to that row?",
+    "question": "Q18.02: How does a histogram (`geom_histogram`) turn a numeric column into a plot?",
     "options": [
-      { "letter": "A", "text": "It is kept, with the new columns filled with zero." },
-      { "letter": "B", "text": "The join raises an error and stops." },
-      { "letter": "C", "text": "It is kept, with the new columns filled with null." },
-      { "letter": "D", "text": "It is dropped from the result." }
+      { "letter": "A", "text": "It fits a smooth curve whose area sums to one." },
+      { "letter": "B", "text": "It draws one point for every value in the column." },
+      { "letter": "C", "text": "It counts the rows in each named category of the column." },
+      { "letter": "D", "text": "It cuts the number line into equal intervals called bins and counts how many values fall into each one." }
     ],
     "correct": "D"
   },
   {
     "id": "q18-03",
-    "question": "Q18.03: The column `iso` is a primary key in the `country` table but a foreign key in the `border` table. What actually distinguishes a primary key from a foreign key?",
+    "question": "Q18.03: The bars of a count plot come out in a jumbled order. According to the chapter, how do you fix the order?",
     "options": [
-      { "letter": "A", "text": "Whether the column was created before or after the join." },
-      { "letter": "B", "text": "Whether the values are text or numeric." },
-      { "letter": "C", "text": "Which table the key appears in: it is primary where it uniquely identifies each row, and foreign in another table that references it." },
-      { "letter": "D", "text": "How many columns make up the key, primary keys being single columns and foreign keys being multiple." }
-    ],
-    "correct": "C"
-  },
-  {
-    "id": "q18-04",
-    "question": "Q18.04: You want to join `border` to `country`, but the matching column is called `iso_neighbor` in `border` and `iso` in `country`. How do you tell `.join()` about the mismatch?",
-    "options": [
-      { "letter": "A", "text": "Use `left_on=c.iso_neighbor` and `right_on=c.iso` to name the column in each table." },
-      { "letter": "B", "text": "You cannot; the two columns must share a name before any join." },
-      { "letter": "C", "text": "Pass `how=\"left_right\"` so Polars matches the columns by position." },
-      { "letter": "D", "text": "Pass `on=[c.iso_neighbor, c.iso]` as a two-element list." }
-    ],
-    "correct": "A"
-  },
-  {
-    "id": "q18-05",
-    "question": "Q18.05: For a single key column, a semi- or anti-join can be replaced by `.is_in()`. When is a semi- or anti-join genuinely more useful than `.is_in()`?",
-    "options": [
-      { "letter": "A", "text": "When the two tables have exactly the same number of rows." },
-      { "letter": "B", "text": "When the key spans several columns and you need to know whether a whole combination matches, which `.is_in()` cannot express." },
-      { "letter": "C", "text": "When the key column is numeric rather than text." },
-      { "letter": "D", "text": "When you want to add the right table's columns to the result." }
+      { "letter": "A", "text": "Add a `sort_axis()` layer to the plot after the geometry." },
+      { "letter": "B", "text": "Sort the data before it is plotted, because a categorical axis follows the order the values first appear in the data." },
+      { "letter": "C", "text": "Nothing is needed; a categorical axis is always sorted alphabetically by default." },
+      { "letter": "D", "text": "Set the order inside `aes()` with an `order=` argument." }
     ],
     "correct": "B"
   },
   {
-    "id": "q19-01",
-    "question": "Q19.01: Before using a table as the right-hand side of a join, you run this check and get True:\n\n```python\n(\n    c_sml\n    .select(c.iso)\n    .n_unique() == len(c_sml)\n)\n```\n\nWhat has this confirmed?",
+    "id": "q18-04",
+    "question": "Q18.04: In `.geom_smooth(method=\"lm\", se=False)`, what do the two options do?",
     "options": [
-      { "letter": "A", "text": "The `iso` column has no repeated values, so it is a safe key that will not multiply rows in the join." },
-      { "letter": "B", "text": "The two tables you are about to join have the same number of rows." },
-      { "letter": "C", "text": "The join will keep every row of the left table." },
-      { "letter": "D", "text": "The `iso` column contains no missing values." }
+      { "letter": "A", "text": "`method=\"lm\"` limits the model to the mean, and `se=False` hides the fitted line." },
+      { "letter": "B", "text": "`method=\"lm\"` sorts the data, and `se=False` sets the standard error to zero in the data." },
+      { "letter": "C", "text": "`method=\"lm\"` fits a flexible non-linear curve, and `se=False` makes the line thicker." },
+      { "letter": "D", "text": "`method=\"lm\"` fits a straight line of best fit, and `se=False` turns off the confidence band drawn around it." }
+    ],
+    "correct": "D"
+  },
+  {
+    "id": "q18-05",
+    "question": "Q18.05: To order a boxplot's regions the chapter sorts with `c.hdi.median().over(c.region)`, not a plain `.sort(c.hdi)`. Why does the plain sort give the wrong order?",
+    "options": [
+      { "letter": "A", "text": "Sorting countries by their own HDI orders each region by whichever country comes first, that is, by the region's lowest HDI, rather than by the middle of its distribution; ordering categories by a group summary means sorting by that summary computed with `.over()`." },
+      { "letter": "B", "text": "The plain sort orders the regions alphabetically instead of by HDI." },
+      { "letter": "C", "text": "`geom_boxplot` ignores the sort entirely, so only the window version has any effect." },
+      { "letter": "D", "text": "A plain `.sort(c.hdi)` raises an error because HDI has missing values." }
     ],
     "correct": "A"
   },
   {
-    "id": "q19-02",
-    "question": "Q19.02: What does the `.join_asof()` method do?",
+    "id": "q19-01",
+    "question": "Q19.01: By default, when you map color to a categorical column, plotnine uses the viridis palette. Why is it a good default?",
     "options": [
-      { "letter": "A", "text": "It returns every combination of rows from the two tables." },
-      { "letter": "B", "text": "It keeps only left-table rows that have an exact match in the right table." },
-      { "letter": "C", "text": "It matches each row in the left table to the right-table row whose key is nearest by a numeric comparison, rather than requiring the keys to be exactly equal." },
-      { "letter": "D", "text": "It joins two tables only when their column names are identical." }
+      { "letter": "A", "text": "It uses the fewest colors possible, always three." },
+      { "letter": "B", "text": "It matches the `theme_minimal` background exactly." },
+      { "letter": "C", "text": "It is friendly to color-blind readers, prints well in black and white, and holds up on a poor projector." },
+      { "letter": "D", "text": "It sorts the categories alphabetically as it assigns colors." }
     ],
     "correct": "C"
+  },
+  {
+    "id": "q19-02",
+    "question": "Q19.02: What does `facet_wrap()` do to a plot?",
+    "options": [
+      { "letter": "A", "text": "It splits the data by a categorical variable and lays out a grid of small panels, one per group." },
+      { "letter": "B", "text": "It adds a legend that maps each color to a category." },
+      { "letter": "C", "text": "It merges several categories into a single combined panel." },
+      { "letter": "D", "text": "It wraps long axis labels onto multiple lines." }
+    ],
+    "correct": "A"
   },
   {
     "id": "q19-03",
-    "question": "Q19.03: You accidentally use a right-hand table that has two rows for `\"AFG\"` instead of one, then join it to `border` on `iso`. What happens?",
+    "question": "Q19.03: For coloring points by an unordered categorical column, the chapter uses `scale_color_brewer(type=\"qual\", ...)`. Why a qualitative palette?",
     "options": [
-      { "letter": "A", "text": "Polars drops all Afghanistan rows because the key is ambiguous." },
-      { "letter": "B", "text": "Polars raises an error because the join key is not unique." },
-      { "letter": "C", "text": "Every Afghanistan row in `border` matches both AFG rows, so the result gains extra duplicate rows and no error is raised." },
-      { "letter": "D", "text": "Polars keeps only the first AFG row, so the result is unchanged." }
+      { "letter": "A", "text": "A qualitative palette puts the categories in numeric order along a gradient." },
+      { "letter": "B", "text": "The categories have no order, so you want colors that are easy to tell apart rather than colors that run along a single ramp." },
+      { "letter": "C", "text": "Only qualitative palettes work with continuous numeric columns." },
+      { "letter": "D", "text": "Qualitative palettes always use exactly two colors, which is enough for any category." }
     ],
-    "correct": "C"
+    "correct": "B"
   },
   {
     "id": "q19-04",
-    "question": "Q19.04: The `.join_where()` method takes a filter-style expression, such as `(c.gini - c.gini_right).abs() < 5`, to decide which pairs of rows to keep. Which description matches what it computes?",
+    "question": "Q19.04: You add a `labs` layer but set only `x` and `title`. What happens to the other labels, such as the y-axis and the legend?",
     "options": [
-      { "letter": "A", "text": "The nearest single match in the right table for each left row." },
-      { "letter": "B", "text": "Only rows whose keys are exactly equal in both tables." },
-      { "letter": "C", "text": "The same result as a cross join followed by that filter, but without holding every row combination in memory at once." },
-      { "letter": "D", "text": "All rows of the left table, with nulls wherever the condition fails." }
+      { "letter": "A", "text": "They are removed from the plot entirely." },
+      { "letter": "B", "text": "The plot raises an error, because `labs` requires every aesthetic to be labeled." },
+      { "letter": "C", "text": "They keep their default labels, the raw column names, since `labs` changes only the aesthetics you name." },
+      { "letter": "D", "text": "They all take the value of the title you set." }
     ],
     "correct": "C"
   },
   {
     "id": "q19-05",
-    "question": "Q19.05: Both `c.gini.mean().over(c.region)` and grouping to a region summary then joining it back attach each region's average Gini to every row. Since `.over()` does it in one step, when is the agg-then-join version worth the extra work?",
+    "question": "Q19.05: By default every panel of a facet shares one x-axis and one y-axis. What does setting `scales=\"free\"` do, and why does the chapter say to use it rarely?",
     "options": [
-      { "letter": "A", "text": "When the table is too large for `.over()` to handle." },
-      { "letter": "B", "text": "When you also need the one-row-per-region summary table for its own sake, to inspect, plot, or join elsewhere, since `.over()` never materializes that table." },
-      { "letter": "C", "text": "When you want the result to have one row per region instead of one row per original row." },
-      { "letter": "D", "text": "When the summary must be attached without adding a new column." }
+      { "letter": "A", "text": "It forces all panels onto a single shared axis, which is what makes comparison possible." },
+      { "letter": "B", "text": "It gives each panel its own axis ranges, which can make a small panel legible but destroys the across-panel comparison that shared axes make possible." },
+      { "letter": "C", "text": "It adds more panels to the grid, one per numeric column." },
+      { "letter": "D", "text": "It removes the axes from every panel, leaving only the data." }
     ],
     "correct": "B"
-  },
-  {
-    "id": "q20-01",
-    "question": "Q20.01: The `cellphone` table is long, with columns `year`, `iso`, and `cell`. To reshape it wide, one column per country, the pipeline is:\n\n```python\n(\n    cellphone\n    .pivot(index=c.year, on=c.iso, values=c.cell)\n)\n```\n\nWhat do the three arguments name, in order?",
-    "options": [
-      { "letter": "A", "text": "The column to index the new rows (`year`), the column whose values become new column names (`iso`), and the column that fills the cells (`cell`)." },
-      { "letter": "B", "text": "The columns to drop, keep, and rename, in that order." },
-      { "letter": "C", "text": "The three columns to sort by before reshaping." },
-      { "letter": "D", "text": "Three columns that must all be numeric for the pivot to run." }
-    ],
-    "correct": "A"
-  },
-  {
-    "id": "q20-02",
-    "question": "Q20.02: A column `lang_codes` holds a list of language codes in each cell, produced by `c.lang.str.split(\"|\")`. What does calling `.explode(c.lang_codes)` do?",
-    "options": [
-      { "letter": "A", "text": "It joins the list elements back into a single comma-separated string." },
-      { "letter": "B", "text": "It keeps only the first element of each list and drops the rest." },
-      { "letter": "C", "text": "It gives each list element its own row, duplicating the other columns so one row can become several." },
-      { "letter": "D", "text": "It spreads the list elements across new columns, one per element." }
-    ],
-    "correct": "C"
-  },
-  {
-    "id": "q20-03",
-    "question": "Q20.03: You call `.unpivot(index=c.year)` on the wide `cellphone` frame without naming the output columns. What are the two new columns called, and how would you rename them?",
-    "options": [
-      { "letter": "A", "text": "They take the names of the first two original columns and cannot be renamed." },
-      { "letter": "B", "text": "They default to column and data; set `on` and `values` to rename them." },
-      { "letter": "C", "text": "They default to key and val; set `index` and `values` to rename them." },
-      { "letter": "D", "text": "They default to variable and value; set `variable_name` and `value_name` to choose your own names." }
-    ],
-    "correct": "D"
-  },
-  {
-    "id": "q20-04",
-    "question": "Q20.04: With the wide frame `cell_wide` (one column per country), mapping `color=c.iso` in plotnine fails. Why, and what fixes it?",
-    "options": [
-      { "letter": "A", "text": "There is no `iso` column in the wide frame, only a column per country; unpivoting country back into one `iso` column lets `color=c.iso` draw one line per country." },
-      { "letter": "B", "text": "plotnine cannot use color with `geom_line`; switching to `geom_point` fixes it." },
-      { "letter": "C", "text": "The `iso` column is numeric and color needs text; casting it to a string fixes it." },
-      { "letter": "D", "text": "The frame has too many columns; dropping all but two fixes it." }
-    ],
-    "correct": "A"
-  },
-  {
-    "id": "q20-05",
-    "question": "Q20.05: The chapter calls pivot and unpivot \"round trips\" but says aggregation is different. Why does this distinction support the advice to store data in a longer format?",
-    "options": [
-      { "letter": "A", "text": "Long tables always use less memory than wide ones, so they are cheaper to store." },
-      { "letter": "B", "text": "Aggregation is faster on long tables, so storing data long avoids slow pivots later." },
-      { "letter": "C", "text": "Pivot and unpivot only rearrange values, so a long table can be reshaped into any wide layout an analysis needs; aggregation discards information and cannot be reversed, so a pre-aggregated table cannot be recovered." },
-      { "letter": "D", "text": "Wide tables cannot be saved as CSV files, so long storage is the only portable option." }
-    ],
-    "correct": "C"
   }
 ]

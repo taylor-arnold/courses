@@ -28,10 +28,10 @@ homework automatically (see "Generating the sample questions" below).
   | 04 | `~/gh/fds2/04_graphics.qmd` |
   | 05 | `~/gh/fds2/05_group.qmd` |
   | 06 | `~/gh/fds2/06_window.qmd` |
-  | 07 | `~/gh/fds2/07_graphics_ii.qmd` |
-  | 08 | `~/gh/fds2/08_combine.qmd` |
+  | 07 | `~/gh/fds2/07_combine.qmd` |
+  | 08 | `~/gh/fds2/08_collect.qmd` |
   | 09 | `~/gh/fds2/09_restructure.qmd` |
-  | 10 | `~/gh/fds2/10_collect.qmd` |
+  | 10 | `~/gh/fds2/10_graphics_ii.qmd` |
   | 11 | `~/gh/fds2/11_spatial_data.qmd` |
   | 12 | `~/gh/fds2/12_apis.qmd` |
   | 13 | `~/gh/fds2/13_temporal_data.qmd` |
@@ -65,19 +65,20 @@ homework automatically (see "Generating the sample questions" below).
   | 09 | `05_group.qmd` | 5.6–5.9 |
   | 10 | `06_window.qmd` | 6.1–6.5 |
   | 11 | `06_window.qmd` | 6.6–6.9 |
-  | 12 | `07_graphics_ii.qmd` | 7.1–7.6 |
-  | 13 | `07_graphics_ii.qmd` | 7.7–7.10 |
-  | 14 | `09_restructure.qmd` | 9.1–9.4 |
-  | 15 | `10_collect.qmd` | 10.1–10.5 |
+  | 12 | `07_combine.qmd` | 7.1–7.5 |
+  | 13 | `08_collect.qmd` | 8.1–8.7 |
+  | 14 | `08_collect.qmd` | 8.8–8.11 |
+  | 15 | *(data collection practice / project launch — no reading)* | — |
   | 16 | *(project workshop — no reading)* | — |
-  | 17 | `10_collect.qmd` | 10.6–10.10 |
-  | 18 | `08_combine.qmd` | 8.1–8.6 |
-  | 19 | `08_combine.qmd` | 8.7–8.9 |
-  | 20 | `09_restructure.qmd` | 9.5–9.8 |
+  | 17 | `09_restructure.qmd` | 9.1–9.6 |
+  | 18 | `10_graphics_ii.qmd` | 10.1–10.6 |
+  | 19 | `10_graphics_ii.qmd` | 10.7–10.10 |
+  | 20 | *(data collection practice — no reading)* | — |
   | 21 | *(project workshop — no reading)* | — |
 
-  Homeworks 16 and 21 are project workshops with no reading; they get no poll
-  questions. Skip them.
+  Homeworks 15, 16, 20, and 21 are project workshops or data collection
+  practice days with no reading; they get no poll questions. Skip them. (The
+  existing Q16 entries are about the project itself, not a reading.)
 
 - **The `ta-humanizer` skill.** Run the prose you write — question stems and
   option text — through it before finalizing (see "Humanize the prose").
@@ -130,7 +131,7 @@ homework that has no questions yet**:
 
 1. Read `poll/questions.json` and find the highest homework number that already
    has questions. The next homework is the target. Skip any homework with no
-   reading (16 and 21) — go to the following one.
+   reading (15, 16, 20, and 21) — go to the following one.
 2. Look up that homework in the "Homework readings" table to get its chapter file
    and section range, and read those sections in full.
 3. Write five questions on that reading, graded by difficulty:

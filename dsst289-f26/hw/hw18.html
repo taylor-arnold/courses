@@ -28,14 +28,14 @@
       </span>
     </p>
     <p>
-      Assume you have three datasets loaded into Python. The first, <code>students</code>, has one row for each student in the class, with columns named <code>name</code>, <code>major</code>, <code>year</code>, <code>gpa</code>, and <code>study_hours</code>. The second, <code>majors</code>, has one row for each major offered by the university, with columns named <code>major</code>, <code>department</code>, and <code>n_faculty</code>. The third, <code>roommates</code>, has one row for each pair of students who live together, with columns named <code>name</code> and <code>roommate</code>, both of which hold student names. Hand write the following.
+      Assume you have a dataset loaded into Python called <code>students</code>, with one row for each student in the class and columns named <code>name</code>, <code>major</code>, <code>year</code>, <code>gpa</code>, and <code>study_hours</code>. Hand write the following.
     </p>
     <ol>
-      <li>A primary key for each of the three datasets, along with a foreign key in <code>roommates</code> and the table whose primary key it refers to.</li>
-      <li>The code that adds each student's department to the <code>students</code> dataset, along with a sentence explaining which of the two tables you put on the left of the join and why.</li>
-      <li>Suppose that a few students have declared a major that does not appear in the <code>majors</code> table at all. Describe what the code you wrote in part (2) does with those students, and then write a second version of the code that keeps every student in the result no matter what.</li>
-      <li>The code that adds two columns to the <code>roommates</code> dataset, one giving the GPA of the student named in <code>name</code> and one giving the GPA of the student named in <code>roommate</code>, with the two columns clearly distinguished from each other.</li>
-      <li>The code that returns the rows of <code>roommates</code> whose <code>name</code> has no match at all in <code>students</code>, along with a sentence about what such a row would tell you about your data, followed by the code that keeps only the students who have a roommate listed, without adding any new columns to <code>students</code>.</li>
+      <li>The code that produces a bar plot of the number of students in each major, letting plotnine do the counting for you, with the bars running horizontally and ordered from the most common major to the least.</li>
+      <li>The code that produces the same plot, but where you compute the counts yourself before any of the plotting code, followed by a sentence explaining the difference between the two geometries you used in parts (1) and (2) and how you decide which one a given task calls for.</li>
+      <li>The code that produces a histogram of <code>study_hours</code>, choosing a sensible width for the bins, along with a sentence explaining what the height of a single bar of your histogram tells us.</li>
+      <li>The code that produces a boxplot of the GPAs in each major, with the majors ordered by their GPA, followed by the <code>.group_by</code> and <code>.agg</code> code that would compute by hand the three numbers that make up each box.</li>
+      <li>The code that produces a scatter plot of <code>study_hours</code> and <code>gpa</code> with a straight line of best fit drawn through the points and no confidence band around it.</li>
     </ol>
   </div>
 
