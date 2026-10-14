@@ -36,6 +36,28 @@
       <li>Suppose we want to add each student's department to the <code>students</code> dataset by joining it with <code>majors</code>, but a few students have declared a major that does not appear in the <code>majors</code> table. Describe, in words, what the default join does with those students and what a left join does with them instead. If the goal is to count the students in each department, say which of the two you would use and why.</li>
       <li>We want a table showing which pairs of roommates share a major. Describe, in words, the steps needed to build it. Your description should say how many times <code>students</code> has to be joined to <code>roommates</code>, which column of <code>roommates</code> each join matches on, why the second join needs a suffix, and what the final step compares.</li>
     </ol>
+
+    <h3>Solutions</h3>
+    <p>1. A primary key for each dataset.</p>
+<pre>
+students:  name
+majors:    major
+roommates: name and roommate together</pre>
+    <p>A student who lives with two people appears in two rows of <code>roommates</code>, so <code>name</code> on its own does not identify a row, and the same is true of <code>roommate</code>. The pair of columns taken together does, because the same two students are not listed together twice.</p>
+
+    <p>2. Every foreign key, with the table it appears in and the table it refers to.</p>
+<pre>
+major     in students   refers to majors
+name      in roommates  refers to students
+roommate  in roommates  refers to students</pre>
+    <p>Whether a column is a primary key or a foreign key depends on the table it sits in. In <code>majors</code>, <code>major</code> identifies a row, so it is the primary key there. In <code>students</code>, many rows can share the same major, so there it is a foreign key pointing back at <code>majors</code>.</p>
+
+    <p>3. What the default join and a left join do with students whose major is missing from <code>majors</code>, and which to use when counting students in each department.</p>
+    <p>The default is an inner join. It keeps only the rows that match in both tables, so those students disappear from the result with no warning. A left join keeps every row of <code>students</code> and fills in <code>department</code> and <code>n_faculty</code> with <code>null</code> for the students who have no match. For counting students by department, the left join is the safer choice: the counts then add up to the number of students in the class, and the students with an unknown department show up as their own <code>null</code> group instead of silently vanishing from the total.</p>
+
+    <p>4. The steps needed to build a table of roommate pairs who share a major.</p>
+    <p><code>students</code> has to be joined to <code>roommates</code> twice, because each row of <code>roommates</code> refers to two different students. The first join matches the <code>name</code> column of <code>roommates</code> to the <code>name</code> column of <code>students</code> and brings in the first student's major. The second join matches the <code>roommate</code> column of <code>roommates</code> to the <code>name</code> column of <code>students</code> and brings in the second student's major. Both joins add a column called <code>major</code>, so the second join needs a suffix, such as <code>_roommate</code>, to keep the two columns apart. The final step filters the rows to those where the two major columns are equal. Selecting only <code>name</code> and <code>major</code> from <code>students</code> before joining keeps the other student columns from being copied in twice.</p>
+
   </div>
 
   <script src="../js/site.js"></script>

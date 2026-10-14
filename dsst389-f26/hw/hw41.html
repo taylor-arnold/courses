@@ -43,6 +43,98 @@
       <li>Say what causes the top TF-IDF terms to be names and places where the top raw counts were words like "year" and "work".</li>
       <li>Say whether TF-IDF is a property of a word, of a document, or of a collection.</li>
     </ol>
+
+    <h3>Solutions</h3>
+
+    <p>1. The term-frequency matrix for the four phrases.</p>
+<pre>
+          add  and  chop  garlic  in  oil  olive  onion  pan  sauté  the  to
+Phrase 1   0    1    1      1     0    0     0      1     0     0     1    0
+Phrase 2   0    0    3      1     0    0     0      0     0     0     1    0
+Phrase 3   0    0    0      1     1    1     1      0     0     1     1    0
+Phrase 4   1    1    0      0     0    1     1      1     1     0     2    1
+
+There are 12 distinct terms. Check the row totals against the phrase lengths
+(5, 5, 6, and 9 words) and look for the two cells above 1: "chop" three times
+in phrase 2 and "the" twice in phrase 4.
+</pre>
+
+    <p>2. TF-IDF of "chop", "the", and "garlic" in phrase 2, and the ranking of its terms.</p>
+<pre>
+tfidf = tf * ( log((N + 1) / (df + 1)) + 1 ),  with N = 4 phrases
+
+Document frequencies (the number of phrases containing each term):
+  chop   appears in phrases 1 and 2        df = 2
+  the    appears in all four phrases       df = 4
+  garlic appears in phrases 1, 2, and 3    df = 3
+
+"chop"    idf = log(5 / 3) + 1 = 0.511 + 1 = 1.511
+          tfidf = 3 * 1.511 = 4.53
+
+"the"     idf = log(5 / 5) + 1 = 0 + 1     = 1.000
+          tfidf = 1 * 1.000 = 1.00
+
+"garlic"  idf = log(5 / 4) + 1 = 0.223 + 1 = 1.223
+          tfidf = 1 * 1.223 = 1.22
+
+Ranking for phrase 2: chop (4.53), garlic (1.22), the (1.00).
+
+These use raw counts, as the reading's small matrices do. The wrapper
+DSText.compute_tfidf divides each count by the length of the document first
+(3/5, 1/5, 1/5), which gives 0.91, 0.24, and 0.20. The scores shrink but the
+ranking is the same, because every term in the phrase is divided by the same 5.
+</pre>
+
+    <p>3. Why "the" still scores above zero, and what <code>max_df=0.5</code> would do to it.</p>
+<pre>
+Because of the "+ 1" added after the logarithm. "the" appears in every
+phrase, so log((4 + 1) / (4 + 1)) = log(1) = 0. The smoothing then adds 1,
+making the idf 1 and the TF-IDF equal to the term frequency. Without the
+"+ 1," the score would be exactly zero. With it, a word in every document is
+never boosted, but it is not erased either, so it can still outrank a rarer
+word if it is used often enough.
+
+max_df=0.5 drops every term that appears in more than half of the documents
+before any score is computed. "the" appears in 4 of 4 phrases (1.0), so it
+would be removed and have no row in the output at all. "garlic" (3 of 4, 0.75)
+would be removed as well. "chop," at exactly 2 of 4, passes the filter,
+because the reading's code keeps df / N &lt;= max_df. Phrase 2 would be left
+with only "chop."
+</pre>
+
+    <p>4. Why the top TF-IDF terms are names and places when the top raw counts were words like "year" and "work".</p>
+<pre>
+Words like "year," "work," "life," and "death" appear in nearly every
+biography, so they have high counts on every page. Two parts of the method
+push them down. The idf is close to its minimum for a word found in almost
+every document, so it adds no weight. In the reading's code the max_df=0.5
+filter goes further and removes any lemma found in more than half of the 75
+pages, so these words are gone before scoring.
+
+The names of people, places, and titles connected to one author appear
+on that author's page and on few others. Their document frequency is low, so
+the idf is high, and a name used several times on one page ends up with a
+large score. TF-IDF rewards words that are frequent in the document and rare in
+the collection, and on author biographies those are mostly proper nouns.
+</pre>
+
+    <p>5. Whether TF-IDF is a property of a word, a document, or a collection.</p>
+<pre>
+It is a property of a word in a document, measured against a collection. The
+score belongs to a (term, document) pair: the tf comes from the document, and
+the idf comes from N and df, which are counts over the whole collection.
+
+The collection is the part that is easy to forget. The same word on the same
+page gets a different score in a different collection. "novel" on Charles
+Dickens's page would score low among the 376 Victorian novelists, where almost
+every page uses it, and higher among the 75 authors, where many of the poets
+and playwrights do not. It also changes with what counts as a document, since splitting pages into
+paragraphs changes every df. A TF-IDF score cannot be reported without saying
+which collection it was computed against.
+</pre>
+
+    <div style="height:200px"></div>
+
   </div>
 
   <script src="../js/site.js"></script>

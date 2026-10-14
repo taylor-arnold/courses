@@ -41,6 +41,119 @@
       <li>Say what a claim like "Chaucer's page has the longest sentences" is really a claim about, given that Wikipedia editors wrote the pages.</li>
       <li>Say what a KWIC display of a word shows you that its raw count cannot.</li>
     </ol>
+
+    <h3>Solutions</h3>
+
+    <p>1. PMI of "of the" and "poet laureate" in a corpus of 1,000 tokens and 999 bigrams.</p>
+<pre>
+PMI(w1, w2) = log( P(w1, w2) / (P(w1) * P(w2)) )
+
+The bigram probability divides by the 999 bigrams, and the word probabilities
+divide by the 1,000 tokens, as in the reading's code.
+
+"of the"
+  P(of, the) = 20 / 999    = 0.02002
+  P(of)      = 60 / 1000   = 0.06
+  P(the)     = 100 / 1000  = 0.10
+  P(of) * P(the)           = 0.006
+  ratio = 0.02002 / 0.006  = 3.337
+  PMI = log(3.337)         = 1.20
+
+"poet laureate"
+  P(poet, laureate) = 5 / 999  = 0.005005
+  P(poet)           = 40 / 1000 = 0.04
+  P(laureate)       = 5 / 1000  = 0.005
+  P(poet) * P(laureate)         = 0.0002
+  ratio = 0.005005 / 0.0002     = 25.03
+  PMI = log(25.03)              = 3.22
+
+"poet laureate" has the higher PMI, 3.22 against 1.20, although "of the"
+occurs four times as often. "of the" appears about three times more often
+than chance predicts, which is what you expect from two very common words.
+"laureate" never appears except after "poet," so the pair appears 25 times
+more often than chance predicts. That is the sign of a collocation.
+</pre>
+
+    <p>2. Why the code keeps only bigrams that occur at least five times before ranking by PMI.</p>
+<pre>
+Because PMI is largest for pairs of rare words, and a pair seen once is mostly
+noise. Take two words that each occur once in the corpus from question 1 and
+happen to sit next to each other:
+
+  P(w1, w2) = 1 / 999, P(w1) = P(w2) = 1 / 1000
+  ratio = (1 / 999) / (1 / 1000)^2 = 1001
+  PMI = log(1001) = 6.91
+
+That is higher than "poet laureate" and it is the highest score any pair can
+get, so without the filter the top of the ranking fills with one-off pairs:
+typos, foreign phrases, odd names. A single co-occurrence cannot show that two
+words belong together, since it may be chance. Requiring five occurrences
+removes those pairs and leaves the ones where the pattern repeats. The number
+five is a judgment call; a larger corpus could use a higher cutoff.
+</pre>
+
+    <p>3. Entity ids and reassembled entity text for the token sequence.</p>
+<pre>
+After dropping the O tokens (and, lived, in), five tokens remain. The
+new_entity flag is true on each B, and its cumulative sum gives the id:
+
+token      ent_type  ent_iob  new_entity  entity_id
+---------  --------  -------  ----------  ---------
+Emily      PERSON    B        true        1
+Brontë     PERSON    I        false       1
+Charlotte  PERSON    B        true        2
+Brontë     PERSON    I        false       2
+Haworth    GPE       B        true        3
+
+Grouping by entity_id and ent_type and joining the tokens with a space gives:
+
+entity_id  ent_type  entity_text
+---------  --------  ----------------
+1          PERSON    Emily Brontë
+2          PERSON    Charlotte Brontë
+3          GPE       Haworth
+
+The B on "Charlotte" is what keeps the two sisters apart. Once "and" is
+dropped, their tokens are adjacent and share the type PERSON, so only the new
+B starts a new id.
+</pre>
+
+    <p>4. What "Chaucer's page has the longest sentences" is really a claim about.</p>
+<pre>
+It is a claim about the prose of the Wikipedia editors who wrote and revised
+Chaucer's article. It says nothing about Chaucer's own sentences. The page is
+written about Chaucer, in present-day encyclopedia English, by many people over
+many years.
+
+It is also a claim about how spaCy split the page into sentences, since the
+metric averages words per sentence as the model counted them. Anything the
+splitter handles badly, such as a quoted passage of Middle English verse or a
+list with no periods, can turn into one long "sentence" and raise the average.
+A careful statement would be "the text of Chaucer's Wikipedia article, as
+split by spaCy, has the longest average sentence in the corpus." Before trusting
+the ranking, it is worth reading the longest sentences on the page.
+</pre>
+
+    <p>5. What a KWIC display of a word shows that its raw count cannot.</p>
+<pre>
+A count says how often a word appears. A KWIC display shows each use of the
+word with the words around it, so you can see how it is used.
+
+From the display you can tell which sense of the word is meant, what phrases it
+sits in, whether it is usually a subject or an object, and which verbs and
+adjectives go with it. You can also catch cases where the count is misleading:
+a word that appears mostly inside a book title or a quotation, a phrase that is
+repeated as boilerplate across many pages, or two different words that were
+given the same lemma. A count of "poetry" treats all of these the same.
+
+For this reason the reading recommends a quick concordance whenever a
+frequency table suggests that a word matters:
+
+DSText.kwic(anno, "poetry", max_num=15, window=5)
+</pre>
+
+    <div style="height:200px"></div>
+
   </div>
 
   <script src="../js/site.js"></script>
