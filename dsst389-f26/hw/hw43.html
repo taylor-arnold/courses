@@ -36,6 +36,100 @@
       <li>Say what you are actually comparing when you put the two UMAP plots side by side.</li>
       <li>Give one explanation for the French projection grouping the authors differently that has nothing to do with editors, and say what you would check to rule it out.</li>
     </ol>
+
+    <h3>Solutions</h3>
+
+    <p>1. Why the higher rate of determiners in French is a linguistic difference and not an editorial one.</p>
+<pre>
+A linguistic difference comes from the grammar of the language. An editorial
+difference comes from choices the editors made about what to write.
+
+French grammar requires an article before nearly every noun, including many
+places where English uses none. English writes "poetry was his first love,"
+and French writes "la poésie fut son premier amour." Any French text has
+more determiners than its English counterpart, whether it is a Wikipedia
+article, a novel, or a recipe. The gap would be there even if the French
+editors had translated the English pages word for word.
+
+So the higher rate tells us about French and nothing about how French editors
+see these authors. An editorial difference would be something the editors could
+have written otherwise: which works they mention, how much space they give to
+an author's life, which people and places appear. Comparisons between the two
+editions have to look past the grammatical differences to find those.
+</pre>
+
+    <p>2. What makes the English and French document vectors incomparable.</p>
+<pre>
+Each axis of the space is a lemma, and the two spaces are built from different
+lemmas. The English vectors have axes such as "poem," "novel," and "write,"
+and the French vectors have axes such as "poème," "roman," and "écrire."
+Nothing in the method says that "poem" and "poème" are the same axis, so an
+English page and a French page about the same poet share almost no
+coordinates.
+
+The vocabularies are also filtered separately. max_df=0.5 is applied within
+each corpus, so the set of terms kept, and so the set of axes, is decided by
+each collection on its own terms. If you computed the angle between an English
+vector and a French one, it would be close to pi / 2 for nearly every pair.
+The few shared axes would be names spelled the same way in both languages.
+That distance would measure the difference between the languages, not between
+the pages.
+</pre>
+
+    <p>3. What you compare when you put the two UMAP plots side by side.</p>
+<pre>
+You compare the structure of the two collections: which authors are grouped
+together and which sit apart in each edition. Each plot is built from its own
+space, so a point's position on one plot has no meaning on the other.
+
+The coordinates themselves are arbitrary. UMAP's axes have no names, and a
+projection can come out rotated or flipped without changing what it says. An
+author being in the upper left in English and the lower right in French means
+nothing. What can be compared is the neighborhoods: does Wordsworth sit near
+Coleridge in both, do the Brontës stay together, does an author move from the
+poets to the novelists? Remember too that the French plot has 73 points
+and the English one 75, because two authors have no French page.
+</pre>
+
+    <p>4. An explanation for different French groupings that has nothing to do with editors, and how to rule it out.</p>
+<pre>
+Several answers work. A good one names a cause in the data or the pipeline,
+not in the editors' views, and then names a specific check.
+
+One explanation is page length. If many French pages are short, each vector is
+built from a few dozen lemmas, and the distances between them are noisy. The
+groupings would then reflect chance overlaps in a small vocabulary, and a
+different grouping would say nothing about how French editors see the
+authors. To check, count the alphabetic tokens per page in anno_fr and compare
+them with the English counts:
+
+(
+    anno_fr
+    .filter(c.is_alpha)
+    .group_by(c.doc_id)
+    .agg(n_words = pl.len())
+    .sort(c.n_words)
+)
+
+If the authors whose position changes are mostly the ones with short French
+pages, length is a likely cause. If they have pages as long as their English
+ones, it is not.
+
+Other good answers:
+
+  - The French spaCy model tags and lemmatizes differently, or less
+    accurately, so the same content produces different terms. Check by
+    reading the lemmas for a few pages and looking for errors.
+  - UMAP is random, and two runs on the same data can group points
+    differently. Check by running the English and French projections several
+    times and seeing which groupings hold up every time.
+  - The corpora differ: 73 documents against 75 changes N and every
+    document frequency. Check by dropping the same two authors from the
+    English corpus and rebuilding its plot.
+</pre>
+
+    <div style="height:200px"></div>
+
   </div>
 
   <script src="../js/site.js"></script>

@@ -38,6 +38,127 @@
       <li>An example, drawn from data you have actually seen in another class, at a job, or online, of a table that breaks the first tidy-data condition, along with a note about what a tidied version of it would look like.</li>
       <li>Suppose that we also want to record each student's major and the topic of each class meeting. Say which table each of these two variables belongs in, following the <em>respect unit of observation</em> principle from the reading, and explain what goes wrong if the major is recorded in the <em>student × meeting</em> table instead. Then write out the name of every table and every column you would end up with, following the naming rules from the reading, and say which of the three layouts from part (1) you would use to collect the attendance itself and why.</li>
     </ol>
+
+    <h3>Solutions</h3>
+    <p>1. Three ways to store the attendance data. For each, give the unit of observation, the size of the table, and a small mock-up.</p>
+<pre>
+Table A: one row for each student, one column for each meeting.
+Unit of observation: student.
+Size: 20 rows and 26 columns (a name column plus 25 meetings).
+
+  name    | m01   | m02   | m03
+  --------+-------+-------+------
+  Ana     | true  | true  | false
+  Ben     | true  | false | true
+  Chloe   | false | true  | true
+
+Table B: one row for each meeting, one column for each student.
+Unit of observation: meeting.
+Size: 25 rows and 21 columns (a meeting column plus 20 students).
+
+  meeting | Ana   | Ben   | Chloe
+  --------+-------+-------+------
+  m01     | true  | true  | false
+  m02     | true  | false | true
+  m03     | false | true  | true
+
+Table C: one row for each student at each meeting.
+Unit of observation: student × meeting.
+Size: 20 × 25 = 500 rows and 3 columns.
+
+  name    | meeting | present
+  --------+---------+--------
+  Ana     | m01     | true
+  Ana     | m02     | true
+  Ana     | m03     | false
+  Ben     | m01     | true
+  Ben     | m02     | false</pre>
+    <p>The same attendance values appear in all three tables; only the arrangement changes. Other ways to record a single meeting, such as the meeting date or a <code>"present"</code>/<code>"absent"</code> string, are fine.</p>
+
+    <p>2. A primary key for each table, and how a primary key relates to the unit of observation.</p>
+<pre>
+Table A: name
+Table B: meeting
+Table C: name and meeting together
+
+The primary key has to uniquely identify the unit of observation. When
+the unit is a single thing, such as a student, one column is enough.
+When the unit is a combination, such as student × meeting, the key needs
+a column for each part, and neither column is unique on its own.</pre>
+    <p>If two students could share a name, a student ID column would be a safer key than <code>name</code>.</p>
+
+    <p>3. The three conditions for tidy data in your own words, and whether each table is tidy for the unit student × meeting.</p>
+<pre>
+The three conditions:
+  1. Each variable gets exactly one column of its own.
+  2. Each observation gets exactly one row of its own.
+  3. Each table is about one unit of observation.
+
+Table A is not tidy for student × meeting. It breaks the first
+condition: the meeting variable has been moved into the column names
+m01, m02, and so on. It also breaks the second condition, because one
+row holds 25 observations.
+
+Table B is not tidy for student × meeting either. It breaks the first
+condition in the same way, but here the student variable has gone into
+the column names, and one row holds 20 observations.
+
+Table C is tidy for student × meeting. The name, the meeting, and
+whether the student was present each have their own column, and each
+row is one student at one meeting.</pre>
+
+    <p>4. How one of the untidy tables could be tidy for a different question, and a question for which it would be the better layout.</p>
+<pre>
+Tidiness depends on the unit of observation. Table A is a tidy table if
+the unit of observation is a single student, with one row for each
+student recording what that student did all semester. It would be the
+better layout for a question such as "Which students missed more than
+three meetings?", since the answer is about students and each student
+already has exactly one row.</pre>
+    <p>Table B works just as well here, for a question about meetings such as "Which class meeting had the lowest attendance?"</p>
+
+    <p>5. A real example of a table that breaks the first tidy-data condition, and what a tidied version would look like.</p>
+<pre>
+This question has no single correct answer. A strong response describes
+a specific table the student has actually seen and names the variable
+that has been moved into the column names or split across several
+columns. It then describes the tidied table: its unit of observation,
+its column names, and roughly how many rows it would have.
+
+One possible example: a spreadsheet of monthly sales at a job, with one
+row for each product and one column for each month (Jan, Feb, Mar,
+...). Month is a variable, but it is stored in the column names. A
+tidied version would have the unit of observation product × month and
+three columns, product, month, and sales, with one row for each product
+in each month. Twelve months of data on 50 products would give
+600 rows.</pre>
+
+    <p>6. Where each student's major and each meeting's topic belong, what goes wrong if the major is put in the attendance table, the names of every table and column, and which layout to collect the attendance in.</p>
+<pre>
+A major describes a student, so it belongs in a table whose unit of
+observation is a student. A topic describes a meeting, so it belongs
+in a table whose unit of observation is a meeting. Neither describes
+a whole student × meeting row, so neither belongs in the attendance
+table.
+
+If major were a column of the attendance table, each student's major
+would be copied onto all 25 of their rows. Nothing stops the copies
+from disagreeing if a student changes major in week six and only some
+of the rows are updated, and a count of students by major first has
+to be untangled from the 25 repeats of every student.
+
+  student:    name, major
+  meeting:    meeting, date, topic
+  attendance: name, meeting, present
+
+Collect the attendance in Table C, the long student × meeting layout.
+The reading says to prefer longer to wider: a new meeting becomes a
+new row rather than a new column, there is only one long layout but
+two wide ones to choose between, and the long table is tidy for the
+unit student × meeting, which is the unit at which attendance is
+actually recorded.</pre>
+    <p>Other names are fine as long as they use only lower-case letters, numbers, and underscores, start with a letter, and leave out metadata that is not needed to tell two columns apart. The meeting's date belongs in the <code>meeting</code> table for the same reason the topic does: it describes the meeting, not the student at the meeting.</p>
+
   </div>
 
   <script src="../js/site.js"></script>

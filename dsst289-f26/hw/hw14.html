@@ -38,6 +38,149 @@
       <li>The <code>student</code> table uses <code>name</code> as its primary key. Describe the situation in which <code>name</code> stops being a valid primary key, and say what the reading suggests doing about it. Then write out the first three rows of <code>student</code> and of <code>attendance</code> as they would look after the change, and explain why the change has to be made in both tables.</li>
       <li>A description of how the three tables and the data dictionary would be laid out in a single spreadsheet file, following the reading's guidelines and its worked example: how many sheets there are, what each one is named, what sits in cell A1 of each, and where the data dictionary goes. Then name one kind of formatting the reading allows and one it forbids, and say what format you would save the data in once the semester is over and why.</li>
     </ol>
+
+    <h3>Solutions</h3>
+    <p>1. A data dictionary for the three tables, and the relationships between them.</p>
+<pre>
+table       column   type     units / expected values
+student     name     string   the student's full name as it appears
+                              on the roster; primary key
+student     major    string   a major from the university catalog,
+                              spelled as the catalog spells it;
+                              "Undeclared" if none has been chosen
+meeting     meeting  integer  1 to 25, in the order the class meets;
+                              primary key
+meeting     date     date     YYYY-MM-DD, the day the class met
+meeting     topic    string   the material covered, in a few words
+attendance  name     string   foreign key to student.name
+attendance  meeting  integer  foreign key to meeting.meeting
+attendance  present  boolean  true if the student was in the room
+                              when class started, false otherwise;
+                              blank if attendance was not recorded
+
+Relationships:
+  attendance.name    -> student.name     (foreign key -> primary key)
+  attendance.meeting -> meeting.meeting  (foreign key -> primary key)
+The primary key of attendance is name and meeting together.</pre>
+    <p>Your decisions may differ, for example whether arriving ten minutes late counts as present. What matters is that every column is listed, each one has a type and a set of expected values, and the decisions are written down rather than left in your head. The reading also says to note any key that has a different name in the two tables it links. Here the names match, which is worth saying explicitly.</p>
+
+    <p>2. The two recommended ways to record the date of a meeting, one reason to prefer each, and what is wrong with <code>10/21/26</code>.</p>
+<pre>
+Separate columns, one for each part:
+  year  month  day  hour  minute
+  2026  10     21   9     30
+
+A single column in the ISO 8601 format:
+  date
+  2026-10-21 09:30:00     (or 2026-10-21 if the time is not needed)
+
+Separate columns are easier to filter and group by, since every
+meeting in October is a filter on month with no parsing, and they are
+honest when a part is unknown, since a missing day is just a blank
+cell. A single ISO column keeps the whole date in one place, sorts
+correctly even as plain text because the largest unit comes first,
+and is a standard that every program can read.
+
+10/21/26 is ambiguous. Readers in most of the world put the day before
+the month, so they cannot tell which number is which; nothing says
+whether 26 means 1926 or 2026; and as text it sorts by month rather
+than by year.</pre>
+
+    <p>3. What goes in the <code>present</code> cells for the two unrecorded meetings, how a reader tells absent from unrecorded, and where a note about it belongs.</p>
+<pre>
+The cells are left blank. The reading's rule is that a blank entry is
+the one way to mark a missing value that every program reads the same
+way. A code such as -99 or "unknown" would be read as a real value,
+and false would be a lie, since the students were not necessarily
+absent.
+
+A student who was absent has false in the cell. A student whose
+attendance was never recorded has nothing in the cell. Those are
+different facts and they get different entries, so the distinction
+survives into Python, where the first is False and the second is null.
+
+The note goes in an extra column, for example a notes column in the
+meeting table reading "attendance not recorded, instructor out sick",
+since the fact describes the meeting rather than any one student. It
+should also appear in the data dictionary. It should not go in a row
+or cell outside the table, and it should not be carried by formatting,
+such as shading the blank cells yellow, because neither survives the
+export to a plain-text file.</pre>
+
+    <p>4. Where the whiteboard photographs go, the column that connects them, the value for the third meeting, and why the images stay out of the spreadsheet.</p>
+<pre>
+A photograph is taken once per meeting, so it describes a meeting and
+belongs in the meeting table. Add a column holding the file name:
+
+  meeting  date        topic            photo_file
+  3        2026-09-02  Filtering rows   whiteboard_03.jpg
+
+If the photographs are not all in one folder, the value holds the
+full path, such as photos/fall2026/whiteboard_03.jpg.
+
+The image is data, but the table holds only metadata about it. A
+spreadsheet cell cannot hold an image in any way that survives export
+to a plain-text file, and the file name is enough to find the image
+when it is needed. This is the same advice the reading gives for text,
+audio, and video: keep the files on disk and point at them from the
+table.</pre>
+
+    <p>5. When <code>name</code> stops being a valid primary key, what to do about it, the first rows of the two tables after the change, and why both tables change.</p>
+<pre>
+Two students with the same name break the key. A primary key has to
+identify a row uniquely, and as soon as two rows share a name, the
+name no longer does. This can happen in a class of twenty, and it is
+certain to happen if the tables are reused across semesters.
+
+The reading's fix is a synthetic key: a column of made-up values that
+are unique by construction, either a UUID or a short id you assign.
+
+  student:
+    student_id  name          major
+    s01         Ana Ortiz     History
+    s02         Ben Lee       Music
+    s03         Ben Lee       Biology
+
+  attendance:
+    student_id  meeting  present
+    s01         1        true
+    s02         1        true
+    s03         1        false
+
+The change has to be made in both tables because a foreign key is the
+primary key of another table appearing here. The name column in
+attendance pointed at student.name; once student.name is no longer a
+key, a row of attendance reading "Ben Lee" cannot be matched to one
+student. The foreign key in attendance has to become student_id so
+that the relation still resolves to a single row.</pre>
+
+    <p>6. The layout of the spreadsheet file, one kind of formatting allowed and one forbidden, and the format to save the data in once the semester is over.</p>
+<pre>
+One file with four sheets. Three sheets hold the tables and are named
+student, meeting, and attendance, the names the tables will have as
+Python objects. Each sheet starts in cell A1 with the first column
+name, the other column names run across row 1, and the data start in
+row 2. Nothing else sits on the sheet: no title, no totals, no notes
+off to the side. The fourth sheet, named data_dictionary, goes first
+or last and holds the dictionary from question 1 as a table of its
+own, with one row for each column being described.
+
+Allowed: bold column names in row 1, widened columns, or conditional
+formatting that turns a present cell red when it holds anything other
+than true, false, or a blank. These help you enter the data and hold
+no information of their own.
+
+Forbidden: using formatting to record data, such as shading a cell to
+mean "arrived late". That information needs its own column, because
+the shading disappears the moment the sheet is exported.
+
+While the data are still being entered, keep the .xlsx file or the
+Google Sheet, since it holds all four tables and avoids the errors of
+converting back and forth. Once the semester is over, export each
+sheet to its own CSV file for sharing and long-term storage. Plain
+text has no formatting to lose, needs no particular program to read,
+and will still open in twenty years.</pre>
+
   </div>
 
   <script src="../js/site.js"></script>

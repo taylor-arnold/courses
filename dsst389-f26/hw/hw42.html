@@ -36,6 +36,97 @@
       <li>Say what it actually means for two Wikipedia pages to be close in this space, given that these are articles and not novels.</li>
       <li>Say what the distance table shows you that the UMAP plot cannot.</li>
     </ol>
+
+    <h3>Solutions</h3>
+
+    <p>1. Euclidean and angle distances from A = (3, 0, 1) to B = (15, 0, 5) and to C = (0, 3, 0).</p>
+<pre>
+Euclidean distance: the square root of the sum of squared differences.
+
+  A to B:  (15 - 3, 0 - 0, 5 - 1) = (12, 0, 4)
+           sqrt(144 + 0 + 16) = sqrt(160) = 12.65
+
+  A to C:  (0 - 3, 3 - 0, 0 - 1) = (-3, 3, -1)
+           sqrt(9 + 9 + 1) = sqrt(19) = 4.36
+
+Angle distance: arccos( (a . b) / (|a| |b|) ).
+
+  |A| = sqrt(9 + 0 + 1)   = sqrt(10)  = 3.162
+  |B| = sqrt(225 + 0 + 25) = sqrt(250) = 15.81
+  |C| = sqrt(0 + 9 + 0)   = 3
+
+  A to B:  A . B = 3*15 + 0*0 + 1*5 = 50
+           50 / (3.162 * 15.81) = 50 / 50 = 1
+           arccos(1) = 0
+
+  A to C:  A . C = 3*0 + 0*3 + 1*0 = 0
+           0 / (3.162 * 3) = 0
+           arccos(0) = pi / 2 = 1.571
+
+Euclidean distance puts C nearer to A (4.36 against 12.65). Angle distance
+puts B nearer (0 against 1.571).
+</pre>
+
+    <p>2. Which measure is right about A's nearest neighbor, and what B is.</p>
+<pre>
+The angle distance is right. B = 5 * A, so B uses the three terms in exactly
+the same proportions as A: three parts "poem," no "novel," one part "london."
+It reads like the same kind of document at five times the size, for example a
+much longer page about the same subject. The angle distance is 0 because the
+two vectors point in the same direction.
+
+C shares no terms with A at all. It is about novels and never mentions poems or
+London, so it is as different from A as a document can be, which is why its
+angle is the maximum, pi / 2. Euclidean distance calls C closer only because C
+and A are both short vectors near the origin and B is a long one far away.
+The disagreement shows what Euclidean distance measures here: mostly the size
+of the vectors and not the mix of vocabulary, which is what the reading means
+by the difference in length swamping the difference in vocabulary.
+</pre>
+
+    <p>3. What it means for two Wikipedia pages to be close in this space.</p>
+<pre>
+It means the two articles use similar distinctive vocabulary in similar
+proportions. Because max_df=0.5 removes the words most pages share, the
+remaining terms are mostly names, places, titles, and subject words. Two pages
+are close when their editors wrote about the same people, places, periods, and
+kinds of work, such as two Romantic poets whose articles mention the Lake
+District and each other.
+
+It is a statement about the articles and not about the authors' own writing.
+Two authors with very different prose styles can have close pages if the
+encyclopedia describes them in the same terms, and a page can be close to
+another because both follow the same article structure or were shaped by the
+same editors. Closeness also depends on the choices made in building the
+vectors: lemmas and not tokens, and the max_df and min_df cutoffs.
+</pre>
+
+    <p>4. What the distance table shows that the UMAP plot cannot.</p>
+<pre>
+The table gives exact distances between every pair of pages in the full
+vector space. The UMAP plot is a two-dimensional picture that squeezes
+thousands of dimensions onto a page, so the gaps on the plot only roughly match
+the real distances.
+
+From the table you can read off each page's single nearest neighbor and how
+near it is. You can see that some pages have a very close neighbor while others
+are far from everything, which the reading notes cannot be judged from the plot.
+The table is also data that you can sort, filter, and join. For example, this
+gives the nearest neighbor of every page:
+
+(
+    text_dist_both
+    .sort(c.doc_id, c.distance)
+    .group_by(c.doc_id, maintain_order=True)
+    .head(1)
+)
+
+and keeping pairs below a distance cutoff turns it into the edge list of a
+network. The plot is better for seeing the overall groupings at a glance.
+</pre>
+
+    <div style="height:200px"></div>
+
   </div>
 
   <script src="../js/site.js"></script>
