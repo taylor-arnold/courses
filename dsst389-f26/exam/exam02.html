@@ -32,12 +32,12 @@
 
     <ul>
       <li><b>Multiple choice</b> (ten questions). Four options; circle the one best answer. The right answer is always clearly right, but at least one of the others will look plausible if you are not careful: it is usually the answer you get by making one of the mistakes we have discussed all unit, such as forgetting a null, letting a shift run across a group boundary, or reading a boundary as strict when it is inclusive.</li>
-      <li><b>Fill in the blank</b> (eleven questions). A number, a date, a row count, or a short piece of text, with one correct answer. Many questions have two or three blanks. Numbers should be exact or rounded to two decimal places, with units where they apply.</li>
+      <li><b>Fill in the blank</b> (eleven questions). A number, a date, a row count, or a short piece of text, with one correct answer. Many questions have two or three blanks. Numbers should be exact or rounded to two decimal places (a third decimal place is fine), with units where they apply. Write a datetime in the form <code>2025-02-18 03:00:00</code> (the seconds may be left off when they are zero) and a duration in days, hours, and minutes, such as <i>6 days 17 hours 50 minutes</i>; a duration converted to a single unit, such as a count of minutes, is also accepted.</li>
     </ul>
 
     <p><b>You do not need to memorize any function names, arguments, or formulas.</b> There is no reference sheet for this exam. Instead, anything you need is given with the question itself: when a question uses a formula (TF-IDF, Euclidean distance) or depends on how a method behaves (what <code>strategy="backward"</code> means, what a format code such as <code>%d</code> stands for), the question states it. What you do need is to understand the ideas well enough to apply them to a table in front of you. Bring a calculator; a few questions ask for a natural logarithm or a square root.</p>
 
-    <p>The exam covers <a href="https://taylor-arnold.github.io/fds2/book/13_temporal_data.html" target="_blank" rel="noopener noreferrer">Chapter 13</a>, <a href="https://taylor-arnold.github.io/fds2/book/14_text_annotations.html" target="_blank" rel="noopener noreferrer">Chapter 14</a>, and <a href="https://taylor-arnold.github.io/fds2/book/15_text_vectors.html" target="_blank" rel="noopener noreferrer">Chapter 15</a>, along with Homeworks 35 through 43. Chapter 12 (Data APIs) is deliberately not tested here: the API work is hard to assess on paper, and it is exercised directly in the final project, which relies on it heavily.</p>
+    <p>The exam covers <a href="https://taylor-arnold.github.io/fds2/book/13_temporal_data.html" target="_blank" rel="noopener noreferrer">Chapter 13</a>, <a href="https://taylor-arnold.github.io/fds2/book/14_text_annotations.html" target="_blank" rel="noopener noreferrer">Chapter 14</a>, and <a href="https://taylor-arnold.github.io/fds2/book/15_text_vectors.html" target="_blank" rel="noopener noreferrer">Chapter 15</a>, along with Homeworks 37 through 43. Chapter 12 (Data APIs) is deliberately not tested here: the API work is hard to assess on paper, and it is exercised directly in the final project, which relies on it heavily.</p>
 
     <h3>What You Need To Know</h3>
 
@@ -53,11 +53,11 @@
     </ol>
     <p>Time zones are <b>not</b> on the exam. You should know that they exist and that Wikipedia reports timestamps in UTC, but no question asks you to convert between zones.</p>
 
-    <p><b>Task B. Shifts on an edit log</b> (four questions). The same edit log, sorted by <code>doc_id</code> and then <code>timestamp</code>.</p>
+    <p><b>Task B. Window functions on time</b> (four questions). The same edit log, sorted by <code>doc_id</code> and then <code>timestamp</code>.</p>
     <ol start="6">
       <li><code>c.size.diff()</code> is <code>c.size - c.size.shift(1)</code>. With <code>.over(c.doc_id)</code> it restarts for each page, so the first row of each page is null. Without it, the first row of the second page is compared against the last row of the first page, producing a number that describes an edit that never happened. Give both values.</li>
       <li>A comparison against null is null, not false, and <code>~null</code> is still null. <code>.filter()</code> keeps only rows that are true, so nulls are dropped whichever way the filter is written. Count the rows that survive a filter such as <code>.filter(~c.is_reversion)</code>, where <code>is_reversion</code> is <code>c.size == c.size.shift(2).over(c.doc_id)</code>.</li>
-      <li>Subtracting a shifted timestamp column from the timestamp gives a duration, the gap since the previous edit to the same page. Read individual gaps off the table, find the largest, and count the nulls (one per page).</li>
+      <li>Subtracting a shifted timestamp column from the timestamp gives a duration, the gap since the previous edit to the same page. Read individual gaps off the table, find the largest, and count the nulls (one per page). A negative shift such as <code>c.size.shift(-1).over(c.doc_id)</code> pulls the value from the row <i>below</i>, so its nulls fall at the bottom of each page rather than the top.</li>
       <li>Filtering on the shifted or differenced column, such as <code>.filter(c.size_diff &lt; 0)</code> to find edits that shrank a page, and naming the rows that come back.</li>
     </ol>
     <p>Rolling means, the <code>rolling_mean_by</code> family, and the <code>total_hours()</code> and <code>total_days()</code> conversions are <b>not</b> on the exam.</p>
@@ -92,7 +92,7 @@
 
     <h3>Practice Questions</h3>
 
-    <p>Every question below is in the exam's own format and matches one of the questions on the exam, using a parallel dataset. Work through all of them with the tables in front of you and a calculator, as you will on the day; the answers follow each question. If you can do these, you can do the exam. The questions use a small corpus of three authors, identified by <code>doc_id</code>: Ada Kerr, Bram Vale, and Cleo Nash.</p>
+    <p>Every question below is in the exam's own format and uses a parallel dataset. Every question on the exam has a twin here, and there are a few extra practice questions beyond that, so this set is a little longer than the exam itself. Work through all of them with the tables in front of you and a calculator, as you will on the day; the answers follow each question. If you can do these, you can do the exam. The questions use a small corpus of three authors, identified by <code>doc_id</code>: Ada Kerr, Bram Vale, and Cleo Nash.</p>
 
     <h3>Task A. Dates and Times</h3>
 
