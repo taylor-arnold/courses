@@ -85,7 +85,7 @@
 
     <p>Your pipeline produces a directory of Parquet files and a manifest, in the two-layer structure of Chapter 12: the requests cache is the raw layer, the tables are the processed layer, and everything in the second can be rebuilt from the first without touching the network. At minimum you collect:</p>
 
-    <p><b>pages</b> &mdash; the spine. One row per page, carrying <code>page_id</code> as the stable key and <code>doc_id</code> as the readable one, exactly as the authors table did. Every other table joins back to this one.</p>
+    <p><b>pages</b> &mdash; the spine. One row per page, with <code>doc_id</code> as the primary key: the resolved article title, unique within your corpus, and the same string that every other table carries to join back to this one. The authors table also kept Wikipedia's numeric <code>page_id</code>; you may skip it. A single readable key is enough for a corpus you build and freeze yourself, and it keeps every join in the analysis on one column.</p>
 
     <p><b>texts</b> &mdash; one row per page, the plain-text extract. This feeds Chapters 14 and 15.</p>
 
