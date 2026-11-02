@@ -1,0 +1,119 @@
+title,symbol,atomic_number,period,block,category
+Hydrogen,H,1,1,s,reactive nonmetal
+Helium,He,2,1,s,noble gas
+Lithium,Li,3,2,s,alkali metal
+Beryllium,Be,4,2,s,alkaline earth metal
+Boron,B,5,2,p,metalloid
+Carbon,C,6,2,p,reactive nonmetal
+Nitrogen,N,7,2,p,reactive nonmetal
+Oxygen,O,8,2,p,reactive nonmetal
+Fluorine,F,9,2,p,reactive nonmetal
+Neon,Ne,10,2,p,noble gas
+Sodium,Na,11,3,s,alkali metal
+Magnesium,Mg,12,3,s,alkaline earth metal
+Aluminum,Al,13,3,p,post-transition metal
+Silicon,Si,14,3,p,metalloid
+Phosphorus,P,15,3,p,reactive nonmetal
+Sulfur,S,16,3,p,reactive nonmetal
+Chlorine,Cl,17,3,p,reactive nonmetal
+Argon,Ar,18,3,p,noble gas
+Potassium,K,19,4,s,alkali metal
+Calcium,Ca,20,4,s,alkaline earth metal
+Scandium,Sc,21,4,d,transition metal
+Titanium,Ti,22,4,d,transition metal
+Vanadium,V,23,4,d,transition metal
+Chromium,Cr,24,4,d,transition metal
+Manganese,Mn,25,4,d,transition metal
+Iron,Fe,26,4,d,transition metal
+Cobalt,Co,27,4,d,transition metal
+Nickel,Ni,28,4,d,transition metal
+Copper,Cu,29,4,d,transition metal
+Zinc,Zn,30,4,d,transition metal
+Gallium,Ga,31,4,p,post-transition metal
+Germanium,Ge,32,4,p,metalloid
+Arsenic,As,33,4,p,metalloid
+Selenium,Se,34,4,p,reactive nonmetal
+Bromine,Br,35,4,p,reactive nonmetal
+Krypton,Kr,36,4,p,noble gas
+Rubidium,Rb,37,5,s,alkali metal
+Strontium,Sr,38,5,s,alkaline earth metal
+Yttrium,Y,39,5,d,transition metal
+Zirconium,Zr,40,5,d,transition metal
+Niobium,Nb,41,5,d,transition metal
+Molybdenum,Mo,42,5,d,transition metal
+Technetium,Tc,43,5,d,transition metal
+Ruthenium,Ru,44,5,d,transition metal
+Rhodium,Rh,45,5,d,transition metal
+Palladium,Pd,46,5,d,transition metal
+Silver,Ag,47,5,d,transition metal
+Cadmium,Cd,48,5,d,transition metal
+Indium,In,49,5,p,post-transition metal
+Tin,Sn,50,5,p,post-transition metal
+Antimony,Sb,51,5,p,metalloid
+Tellurium,Te,52,5,p,metalloid
+Iodine,I,53,5,p,reactive nonmetal
+Xenon,Xe,54,5,p,noble gas
+Cesium,Cs,55,6,s,alkali metal
+Barium,Ba,56,6,s,alkaline earth metal
+Lanthanum,La,57,6,f,lanthanide
+Cerium,Ce,58,6,f,lanthanide
+Praseodymium,Pr,59,6,f,lanthanide
+Neodymium,Nd,60,6,f,lanthanide
+Promethium,Pm,61,6,f,lanthanide
+Samarium,Sm,62,6,f,lanthanide
+Europium,Eu,63,6,f,lanthanide
+Gadolinium,Gd,64,6,f,lanthanide
+Terbium,Tb,65,6,f,lanthanide
+Dysprosium,Dy,66,6,f,lanthanide
+Holmium,Ho,67,6,f,lanthanide
+Erbium,Er,68,6,f,lanthanide
+Thulium,Tm,69,6,f,lanthanide
+Ytterbium,Yb,70,6,f,lanthanide
+Lutetium,Lu,71,6,d,lanthanide
+Hafnium,Hf,72,6,d,transition metal
+Tantalum,Ta,73,6,d,transition metal
+Tungsten,W,74,6,d,transition metal
+Rhenium,Re,75,6,d,transition metal
+Osmium,Os,76,6,d,transition metal
+Iridium,Ir,77,6,d,transition metal
+Platinum,Pt,78,6,d,transition metal
+Gold,Au,79,6,d,transition metal
+Mercury (element),Hg,80,6,d,transition metal
+Thallium,Tl,81,6,p,post-transition metal
+Lead,Pb,82,6,p,post-transition metal
+Bismuth,Bi,83,6,p,post-transition metal
+Polonium,Po,84,6,p,post-transition metal
+Astatine,At,85,6,p,metalloid
+Radon,Rn,86,6,p,noble gas
+Francium,Fr,87,7,s,alkali metal
+Radium,Ra,88,7,s,alkaline earth metal
+Actinium,Ac,89,7,f,actinide
+Thorium,Th,90,7,f,actinide
+Protactinium,Pa,91,7,f,actinide
+Uranium,U,92,7,f,actinide
+Neptunium,Np,93,7,f,actinide
+Plutonium,Pu,94,7,f,actinide
+Americium,Am,95,7,f,actinide
+Curium,Cm,96,7,f,actinide
+Berkelium,Bk,97,7,f,actinide
+Californium,Cf,98,7,f,actinide
+Einsteinium,Es,99,7,f,actinide
+Fermium,Fm,100,7,f,actinide
+Mendelevium,Md,101,7,f,actinide
+Nobelium,No,102,7,f,actinide
+Lawrencium,Lr,103,7,d,actinide
+Rutherfordium,Rf,104,7,d,transition metal
+Dubnium,Db,105,7,d,transition metal
+Seaborgium,Sg,106,7,d,transition metal
+Bohrium,Bh,107,7,d,transition metal
+Hassium,Hs,108,7,d,transition metal
+Meitnerium,Mt,109,7,d,unknown
+Darmstadtium,Ds,110,7,d,unknown
+Roentgenium,Rg,111,7,d,unknown
+Copernicium,Cn,112,7,d,unknown
+Nihonium,Nh,113,7,p,unknown
+Flerovium,Fl,114,7,p,unknown
+Moscovium,Mc,115,7,p,unknown
+Livermorium,Lv,116,7,p,unknown
+Tennessine,Ts,117,7,p,unknown
+Oganesson,Og,118,7,p,unknown
