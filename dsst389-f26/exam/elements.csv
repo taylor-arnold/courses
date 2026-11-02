@@ -1,4 +1,4 @@
-title,symbol,atomic_number,period,block,category
+doc_id,symbol,atomic_number,period,block,category
 Hydrogen,H,1,1,s,reactive nonmetal
 Helium,He,2,1,s,noble gas
 Lithium,Li,3,2,s,alkali metal
