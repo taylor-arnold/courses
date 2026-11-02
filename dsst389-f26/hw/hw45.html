@@ -40,6 +40,111 @@
       <li>Split your drawing into two clusters and say which cluster node D belongs in and why the answer is not obvious.</li>
       <li>Say what an edge in the Wikipedia network actually records, given that no author in the corpus ever linked to anyone.</li>
     </ol>
+
+    <h3>Solutions</h3>
+
+    <p>1. Draw the network, give each node's degree, and count the components.</p>
+<pre>
+One clear drawing puts a triangle on each side with D in the middle:
+
+    A                   F
+    | \                / |
+    |   C --- D --- E    |
+    | /                \ |
+    B                   G
+
+Degrees (the number of edges touching each node):
+
+  A  2      B  2      C  3      D  2      E  3      F  2      G  2
+
+The degrees add up to 16, twice the 8 edges, which is a quick check. There is
+one component: every node can be reached from every other by following edges,
+so the network is connected.
+</pre>
+
+    <p>2. Closeness centrality of A and of D.</p>
+<pre>
+Shortest-path distances (number of edges):
+
+  from A:  B 1, C 1, D 2, E 3, F 4, G 4      total 15
+  from D:  C 1, E 1, A 2, B 2, F 2, G 2      total 10
+
+Closeness is the reciprocal of the total distance:
+
+  A:  1 / 15 = 0.067
+  D:  1 / 10 = 0.100
+
+Many programs multiply by the number of other nodes (6), which gives
+6 / 15 = 0.40 for A and 6 / 10 = 0.60 for D. The reading's close column uses
+the harmonic version, which sums the reciprocals of the distances instead:
+
+  A:  1 + 1 + 1/2 + 1/3 + 1/4 + 1/4 = 3.33
+  D:  1 + 1 + 1/2 + 1/2 + 1/2 + 1/2 = 4.00
+
+Every version ranks D above A. D is at most two steps from anything, while A
+is four steps from F and G.
+</pre>
+
+    <p>3. The node on every shortest path between the two triangles, and why its betweenness is highest while its degree is among the lowest.</p>
+<pre>
+D. The only route from the left triangle {A, B, C} to the right one {E, F, G}
+is C - D - E, so every shortest path between the two sides passes through D.
+
+Betweenness counts, for each pair of other nodes, whether the shortest path
+between them runs through the node. Each pair here has only one shortest path:
+
+  D:  every pair with one node on each side, 3 * 3 = 9 pairs
+  C:  A or B paired with D, E, F, or G,     2 * 4 = 8 pairs
+  E:  F or G paired with A, B, C, or D,     2 * 4 = 8 pairs
+  A, B, F, G:  0, since no shortest path runs through them
+
+So D ranks first with 9, even though its degree of 2 ties for the lowest in
+the network. Degree counts neighbors, and betweenness counts the routes that
+depend on a node. D has only two neighbors, but it is the only bridge between
+the two halves. Removing D would split the network into two groups of three.
+Removing C or E would also disconnect it, but would cut off only two nodes.
+</pre>
+
+    <p>4. Split the network into two clusters and decide where D belongs.</p>
+<pre>
+The two clusters are the triangles, {A, B, C} and {E, F, G}, since each has
+three edges inside it and one edge leading out.
+
+D can go in either one, and neither is better. D has one edge to each side
+(C - D and D - E), and the network is a mirror image around D. Putting D with
+{A, B, C} leaves one edge between the clusters (D - E). Putting it with
+{E, F, G} also leaves one (C - D). A clustering method that tries to keep
+edges inside groups has no reason to prefer either, so the result depends on
+how the algorithm breaks ties, such as the order of the nodes in the edge list.
+
+Either answer is correct if it gives this reason. The general point is that
+bridge nodes are the ones whose cluster labels are least reliable. When a
+clustering on real data puts a node like this in one group, the choice tells
+you little about that node.
+</pre>
+
+    <p>5. What an edge in the Wikipedia network records.</p>
+<pre>
+It records that a Wikipedia editor put a link from one author's article to
+another author's article, in the main body text, and that the link was still
+there when the data was collected. The authors themselves never linked to
+anything. The edge is a record of how the encyclopedia is written.
+
+Several things shape whether an edge exists. The article has to mention the
+other author, and Wikipedia's convention is to link the first mention of a
+subject that has its own article. Longer articles mention more people, so
+they have more outgoing links. The link could have been added or removed at
+any point, so the network describes one snapshot of the pages. In the
+undirected version, the direction of the link has also been thrown away.
+
+So an edge is evidence that editors thought the second author worth mentioning
+in the first author's article. That often follows a real connection, such as
+influence, friendship, a biography, or a rivalry, but the edge does not say
+which one, and a missing edge does not show that no connection existed.
+</pre>
+
+    <div style="height:200px"></div>
+
   </div>
 
   <script src="../js/site.js"></script>

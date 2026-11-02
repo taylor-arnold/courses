@@ -38,6 +38,222 @@
       <li>The population, written as a rule. One or two sentences, precise enough that somebody else could follow them and arrive at the same set of pages: which language edition, which categories or which source list or which Wikidata criteria, whether you descend into subcategories, and what you do with pages that are lists, disambiguations, or redirects.</li>
       <li>How many pages you expect the rule to produce, and how you know. The project calls for 75 to 250 pages. If your estimate falls outside that range, say how you will change the rule.</li>
     </ol>
+
+    <h3>Solutions</h3>
+
+    <p>This homework is a project proposal, so none of the questions has a single correct answer. For each one, the notes below say what a strong answer contains and what to check before handing it in. A running example uses the 118 chemical elements, one of the populations suggested in the project description. It is one possible proposal, not a model to copy, and the numbers in it are estimates that a real proposal would have to check.</p>
+
+    <p>1. The population, written as a rule, with the expected number of pages.</p>
+<pre>
+A strong rule names every choice a stranger would otherwise have to guess:
+
+  - the language edition (en.wikipedia.org, or another);
+  - the enumeration route: which categories, which outside list (with its
+    date or edition), or which Wikidata criteria;
+  - for categories, whether you descend into subcategories, and how deep;
+  - what happens to lists, disambiguation pages, and redirects;
+  - how many pages come out, and how you found that number.
+
+Check that someone else could follow it and get the same set. "Important
+chemists" fails that test. A test that works is to give the rule to a
+classmate and ask them to list five pages it admits.
+
+The count must be between 75 and 250, and "how you know" should be a
+measurement: the category's member count, the length of the outside list, or
+the number of rows the Wikidata query returned. A guess does not count.
+
+Example:
+
+  The population is the English Wikipedia articles for the 118 elements on
+  the IUPAC periodic table (the version date goes in the manifest), found by
+  looking up each element's English name with redirects=1. When a name resolves to a
+  disambiguation page, as "Mercury" does, we use the element's article
+  ("Mercury (element)"). Isotope articles and list pages are excluded.
+
+  Expected size: 118 pages, one per element, since the source list has 118
+  entries and every element has an English article.
+</pre>
+
+    <p>2. One page the rule wrongly admits and one it wrongly excludes, and what you will do about each.</p>
+<pre>
+A strong answer names two real pages, says why each is a problem in terms of
+the research questions, and makes a decision. It does not say "my rule has no
+edge cases." Every rule has them, and your workshop partner will find them.
+
+Look for pages your rule admits that are a different kind of thing from the
+rest: a list, a stub created by a bot, a page about an event and not a person.
+For pages it excludes, think of things with a missing category tag, an
+alternate name, or a page split into two articles.
+
+Either decision is fine if it comes with a reason. Changing the rule is right
+when the problem would bias a comparison you plan to make. Keeping the rule
+and documenting the problem is right when the change would make the rule
+harder to follow than the problem is worth.
+
+Example:
+
+  Admitted but doubtful: Oganesson (element 118). Only a handful of atoms
+  have ever been made, and its article is about how it was synthesized, not
+  about its chemistry. Keep it and document it. The split between natural and
+  synthetic elements is one of the planned comparisons, so the synthetic
+  elements have to stay in.
+
+  Excluded but arguably belongs: Deuterium. It has its own article and is
+  often discussed like an element, but it is an isotope of hydrogen. Keep
+  the rule. Adding isotopes would mean deciding which of hundreds of isotope
+  articles count. The manifest will say that isotope articles are excluded.
+</pre>
+
+    <p>3. Three or four research questions, each with the tables it needs and the sentence that would answer it.</p>
+<pre>
+Check each question against three tests:
+
+  - You do not already know the answer. "Do famous pages get more views?"
+    fails this test.
+  - It compares groups or variables. "How many links does each page have?"
+    is a count. "Do pages in group A have more links than those in group B?"
+    is a comparison.
+  - It names the tables it uses, and the answer sentence could come out
+    either way. If only one answer is possible, the question is not
+    finished.
+
+Across the questions, try to cover the layers the analysis must include:
+revisions or page views, text, and the link network. At least one question
+should join two layers.
+
+Example:
+
+  Q1. Are elements known since antiquity more central in the link network
+      than elements discovered after 1900?
+      Tables: pages (with discovery_year), links.
+      Answer sentence: "Elements known since antiquity have a median
+      in-degree of __ within the corpus, compared with __ for elements
+      discovered after 1900."
+
+  Q2. Do synthetic elements have a different weekly rhythm of page views
+      from natural ones?
+      Tables: pages (with occurrence), pageviews.
+      Answer sentence: "The weekday-to-weekend ratio of views is __ for
+      synthetic elements and __ for natural ones."
+
+  Q3. When the element pages are projected with TF-IDF and UMAP, do they group
+      by position in the periodic table or by when they were discovered?
+      Tables: pages, texts.
+      Answer sentence: "The nearest neighbor of most pages shares its
+      [block / discovery era], and the other variable matches only __% of the
+      time."
+</pre>
+
+    <p>4. The metadata columns you will add yourself.</p>
+<pre>
+A strong answer has at least two columns, and for each one gives:
+
+  - a name and a type (integer, string, Boolean);
+  - units, or the full set of allowed values;
+  - a source named so a reader can find it: a specific reference work,
+    database, or official record, not "Google" and not Wikipedia itself;
+  - a written rule for ambiguous and missing cases;
+  - the research question it serves.
+
+The coding rule for hard cases is the part most often missing. Decide it now,
+before you see how it affects the results. Then check that every column is
+used by a question in part 3. Cut any column that is not.
+
+Example:
+
+  discovery_year (integer, calendar year). Source: the discovery year column
+  in the Royal Society of Chemistry's online periodic table. Elements known
+  since antiquity (such as gold, iron, and carbon) get null here and true in
+  a separate Boolean column, known_in_antiquity. When a discovery is credited
+  to more than one year, we use the earliest year listed. Serves Q1 and Q3.
+
+  occurrence (string: "primordial", "from decay", or "synthetic"). Source:
+  the same table's natural abundance entry. Elements found in nature only in
+  trace amounts, which were first made in a laboratory, are coded by how they
+  were first obtained, "synthetic." Serves Q2.
+</pre>
+
+    <p>5. The tables, with keys and expected row counts, and the two stated decisions.</p>
+<pre>
+A strong answer has one line per table giving its name, unit of observation,
+primary key, foreign keys with the table each points to, and an expected row
+count. The project requires at least pages, texts, links, revisions,
+pageviews, and langlinks, plus your metadata. Every foreign key should point
+at pages through page_id.
+
+Check that each primary key really is unique. For example, a revisions table
+keyed on (page_id, timestamp) fails if two edits land in the same second, and
+rev_id avoids the problem. Row counts should come with their arithmetic, since
+that is what shows you have thought about the size.
+
+Example:
+
+  pages       one row per element;          key page_id;       118 rows
+              (carries doc_id and the metadata columns)
+  texts       one row per element;          key page_id;       118 rows
+              page_id -> pages
+  links       one row per outgoing link;    key (page_id, link_title);
+              page_id -> pages;             roughly 30,000 rows (about 250
+              links per page, a guess to check in part 6)
+  revisions   one row per revision;         key rev_id;
+              page_id -> pages;             at most 118 * 500 = 59,000 rows
+  pageviews   one row per page per day;     key (page_id, date);
+              page_id -> pages;             at most 118 * 365 = 43,070 rows
+  langlinks   one row per page per language; key (page_id, lang);
+              page_id -> pages;             roughly 118 * 100 = 11,800 rows
+
+  Revision cap: the 500 most recent revisions per page. That is one request
+  per page. None of the questions above needs the full history, which for
+  pages like Hydrogen is long. Any finding from the revisions will account
+  for each page's 500 edits covering a different span of time.
+
+  Page view window: 2025-01-01 to 2025-12-31. A fixed, complete calendar year
+  gives the same data on every rerun and covers one full school year, which
+  matters for Q2 because element pages are likely read for coursework.
+</pre>
+
+    <p>6. Three pages examined by hand, and what they suggest about the rest.</p>
+<pre>
+This part cannot be answered from anywhere but your own browser, so this
+guide gives no numbers. A strong answer records, for each of the three pages:
+
+  - the length (word count, or number of screens or sections);
+  - the number of revisions in the history and the date of the oldest visible
+    one (the "View history" tab, set to show 500 at a time);
+  - how many links in the opening section point to other pages in your
+    population.
+
+Then it draws a conclusion about the rest of the corpus. Examples: whether
+the short pages are too short for text analysis, whether the long pages will
+hit the revision cap within a few months, and whether the link network within
+the corpus will be dense or nearly empty.
+
+The last part asks for the single thing that worries you most. Name one
+concrete thing, such as "the short page's opening section links to no other
+element," and say what you will do about it. A vague worry, like "the data
+might be messy," gives your partner nothing to work with.
+</pre>
+
+    <p>7. The two least certain parts of the proposal, written as questions for your partner.</p>
+<pre>
+A strong answer asks two specific questions that a partner could answer in
+ten minutes with your proposal in front of them. Point them at the choices
+you made with the least evidence, usually the rule's edge cases, the coding
+of an ambiguous metadata column, or whether a research question can come out
+either way.
+
+Weak: "Is my population good?"
+Better, from the running example:
+
+  - "Would you code elements that occur in nature in trace amounts but were
+    first made in a laboratory, such as technetium, as synthetic or natural?
+    Q2 depends on the answer."
+  - "Is Q3 a real question, or does anyone who knows the periodic table
+    already know that the pages will group by block?"
+</pre>
+
+    <div style="height:200px"></div>
+
   </div>
 
   <script src="../js/site.js"></script>
