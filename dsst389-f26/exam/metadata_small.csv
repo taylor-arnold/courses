@@ -1,0 +1,13 @@
+doc_id,symbol,atomic_number,period,block,category
+Hydrogen,H,1,1,s,reactive nonmetal
+Helium,He,2,1,s,noble gas
+Carbon,C,6,2,p,reactive nonmetal
+Oxygen,O,8,2,p,reactive nonmetal
+Sodium,Na,11,3,s,alkali metal
+Aluminum,Al,13,3,p,post-transition metal
+Iron,Fe,26,4,d,transition metal
+Copper,Cu,29,4,d,transition metal
+Silver,Ag,47,5,d,transition metal
+Gold,Au,79,6,d,transition metal
+Mercury (element),Hg,80,6,d,transition metal
+Uranium,U,92,7,f,actinide
