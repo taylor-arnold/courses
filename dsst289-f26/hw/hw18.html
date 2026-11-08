@@ -37,6 +37,73 @@
       <li>The code that produces a boxplot of the GPAs in each major, with the majors ordered by their GPA, followed by the <code>.group_by</code> and <code>.agg</code> code that would compute by hand the three numbers that make up each box.</li>
       <li>The code that produces a scatter plot of <code>study_hours</code> and <code>gpa</code> with a straight line of best fit drawn through the points and no confidence band around it.</li>
     </ol>
+
+    <h3>Solutions</h3>
+    <p>1. Bar plot of the number of students in each major, counted by plotnine, with horizontal bars ordered from the most common major to the least.</p>
+<pre>
+(
+    students
+    .sort(pl.len().over(c.major))
+    .ggplot(aes(c.major))
+    .geom_bar(fill="white", color="black")
+    .coord_flip()
+)</pre>
+    <p><code>geom_bar</code> counts the rows in each major itself, so the table has no column of counts to sort on. Sorting by <code>pl.len().over(c.major)</code> writes the size of each student's major onto their row and orders the rows by it. The bars follow the order the majors appear in the data. <code>.coord_flip()</code> makes the bars run horizontally and puts the first major at the bottom, so the ascending sort places the most common major at the top. The fill and color are optional.</p>
+
+    <p>2. The same plot with the counts computed before plotting, and a sentence on the difference between the two geometries.</p>
+<pre>
+(
+    students
+    .group_by(c.major)
+    .agg(pl.len().alias("n"))
+    .sort(c.n)
+    .ggplot(aes(c.major, c.n))
+    .geom_col(fill="white", color="black")
+    .coord_flip()
+)</pre>
+    <p><code>geom_bar</code> takes one categorical aesthetic and counts the rows in each category for you. <code>geom_col</code> takes both an <code>x</code> and a <code>y</code> and draws each <code>y</code> value as the height of a bar. Use <code>geom_bar</code> when you want a raw count of rows and the data still has one row per observation. Use <code>geom_col</code> when the number you want to show is already a column in the table, as it is after <code>.group_by</code> and <code>.agg</code>. Here the ordering comes from a plain <code>.sort(c.n)</code>, because the count is now a column.</p>
+
+    <p>3. Histogram of <code>study_hours</code> with a sensible bin width, and what the height of one bar means.</p>
+<pre>
+(
+    students
+    .ggplot(aes(c.study_hours))
+    .geom_histogram(fill="white", color="black", binwidth=2, boundary=0)
+)</pre>
+    <p>Several bin widths work here. A good choice depends on the range of the data; if weekly study hours run from about zero to twenty, a width of 2 gives around ten bins. Setting <code>boundary=0</code> makes the bins start at whole numbers, such as 0 to 2 and 2 to 4, which makes them easy to read. The height of a bar is the number of students whose study hours fall inside that bar's interval. A bar from 4 to 6 with a height of 7 means seven students study between four and six hours.</p>
+
+    <p>4. Boxplot of GPA in each major, with the majors ordered by GPA, followed by the code that computes the three numbers behind each box.</p>
+<pre>
+(
+    students
+    .sort(c.gpa.median().over(c.major))
+    .ggplot(aes(c.major, c.gpa))
+    .geom_boxplot()
+    .coord_flip()
+)
+
+(
+    students
+    .group_by(c.major)
+    .agg(
+        q25 = c.gpa.quantile(0.25),
+        q50 = c.gpa.quantile(0.50),
+        q75 = c.gpa.quantile(0.75)
+    )
+    .sort(c.q50)
+)</pre>
+    <p>The majors are ordered by their median GPA, which is the line in the middle of each box. Sorting by <code>c.gpa</code> alone would not work, because it would order the majors by their lowest GPA. The box runs from the 25th percentile to the 75th, with the median at the 50th. The <code>.coord_flip()</code> is optional but makes the major names easier to read.</p>
+
+    <p>5. Scatter plot of <code>study_hours</code> and <code>gpa</code> with a straight line of best fit and no confidence band.</p>
+<pre>
+(
+    students
+    .ggplot(aes(c.study_hours, c.gpa))
+    .geom_point()
+    .geom_smooth(method="lm", se=False)
+)</pre>
+    <p><code>method="lm"</code> fits a straight line, and <code>se=False</code> turns off the confidence band. Putting <code>study_hours</code> on the x-axis treats study time as the variable that might explain GPA.</p>
+
   </div>
 
   <script src="../js/site.js"></script>

@@ -34,7 +34,7 @@ ANS_DIR = ROOT / "ans"
 INDEX_PATH = ROOT / "index.html"
 
 TIMEZONE = ZoneInfo("America/New_York")
-RELEASE_TIME = time(11, 0)
+RELEASE_TIME = time(9, 0)
 
 HEADER = "<h3>Solutions</h3>"
 # The container div closes on its own line, two spaces in, just above <script>.

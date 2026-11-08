@@ -37,6 +37,134 @@
       <li>Say why closeness centrality is unavailable once the network is directed.</li>
       <li>Say what you would conclude about an author who is central in the page-link network but peripheral in the textual-distance network.</li>
     </ol>
+
+    <h3>Solutions</h3>
+
+    <p>1. The co-citation edge list for the four outside pages, and the network with a count of 2 or more.</p>
+<pre>
+Each outside page contributes one co-citation for every pair of authors it
+links to:
+
+  page 1 (A, B, C):  A-B, A-C, B-C
+  page 2 (A, B):     A-B
+  page 3 (B, C):     B-C
+  page 4 (C, D):     C-D
+
+Counting the pairs gives the edge list:
+
+  doc_id  doc_id2  count
+  A       B        2
+  A       C        1
+  B       C        2
+  C       D        1
+
+Keeping only counts of 2 or more leaves A-B and B-C:
+
+  A --- B --- C
+
+D has no remaining edges, so it drops out of the network entirely, the same
+way the three unlinked authors drop out of the reading's link network.
+</pre>
+
+    <p>2. What a fifth page, a list article linking to all four authors, does to the edge list, and why the reading thresholds the count.</p>
+<pre>
+The list adds 1 to the count of every pair among the four authors, which is
+all 6 pairs:
+
+  doc_id  doc_id2  count
+  A       B        3
+  A       C        2
+  A       D        1
+  B       C        3
+  B       D        1
+  C       D        2
+
+With the same cutoff of 2, the network gains A-C and C-D. Those edges exist
+only because a single list mentioned all four authors. A list says the pages
+share a category and nothing more specific than that. A list of all 75
+authors in the corpus would add 75 * 74 / 2 = 2,775 pairs at once, joining
+everyone to everyone.
+
+The threshold asks for a pair to be co-cited by several different pages before
+it becomes an edge. One list, or a few, cannot push a pair over a high cutoff
+like the reading's count greater than 6, while pairs that many pages discuss
+together still pass. The example also shows the limit: with a cutoff of 2,
+one list was enough to add edges, so the cutoff has to be high enough relative
+to how many list-like pages link into the corpus.
+</pre>
+
+    <p>3. The symmetric k = 2 nearest-neighbor network for five documents.</p>
+<pre>
+First, each document's two nearest neighbors:
+
+  A:  B (0.20), C (0.50)
+  B:  A (0.20), C (0.30)
+  C:  B (0.30), D (0.40)       A is third at 0.50
+  D:  E (0.35), C (0.40)
+  E:  D (0.35), C (0.85)
+
+Then keep a pair only when each is in the other's list:
+
+  A-B  yes  (A lists B, B lists A)
+  A-C  no   (A lists C, but C does not list A)
+  B-C  yes
+  C-D  yes
+  C-E  no   (E lists C, but C does not list E)
+  D-E  yes
+
+The network is a chain:
+
+  A --- B --- C --- D --- E
+
+No node has degree above k = 2. C is on the list of four documents, and it
+would be a hub in a one-sided nearest-neighbor network. Here it keeps only
+the two neighbors it chose itself.
+</pre>
+
+    <p>4. Why closeness centrality is unavailable once the network is directed.</p>
+<pre>
+Closeness is built from the shortest-path distance between a node and every
+other node. In a directed network, a path has to follow the arrows. That
+causes two problems.
+
+First, many nodes cannot reach many others. A page with no outgoing links
+within the corpus reaches no one, and following arrows out of most pages
+reaches only part of the network. Those distances are undefined, so the sum of
+distances cannot be computed.
+
+Second, distance is no longer the same in both directions. The distance from
+X to Y can be 1 while the distance from Y to X is 4 or undefined. "How close
+is this node to everyone?" splits into two questions, how easily it reaches
+others and how easily others reach it, and a single closeness score does not
+say which one it answers. So the reading's directed node table leaves it out
+and keeps in-degree, out-degree, eigenvector, and betweenness, which have
+directed versions.
+</pre>
+
+    <p>5. What to conclude about an author who is central in the page-link network but peripheral in the textual-distance network.</p>
+<pre>
+There is no single correct answer, but a good one starts from what each
+network records. The link network records which pages Wikipedia editors
+link to each other. The distance network records how similar the vocabulary
+of the pages is. An author central in the first and peripheral in the second
+is a common reference point in other articles, but their own article is
+written in words that the other articles do not share.
+
+One plausible reading: the author is famous enough that editors mention them
+across many periods and genres, as an influence or a point of comparison, while
+their own page is full of names that belong to them alone, such as the titles
+of their works, their characters, and the people around them. Shakespeare's
+page, for example, could be linked from nearly everywhere and still be far
+from other pages in TF-IDF terms because of all its play titles.
+
+Both facts are about Wikipedia, not about the author's writing. Before drawing
+a conclusion, check the page's top TF-IDF terms to see what makes it distant,
+and check its length and number of outgoing links, since a long page that
+links to many others can look central for that reason alone.
+</pre>
+
+    <div style="height:200px"></div>
+
   </div>
 
   <script src="../js/site.js"></script>
