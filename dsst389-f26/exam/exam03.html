@@ -23,121 +23,81 @@
     <p style="padding: 0 1em 1em 1em; font-size: 0.9em">
       <span style="padding-right: 0.5em">
         <b>
-          <a href="../index.html">[← back]</a>
+          <a href="../index.html">[&larr; back]</a>
         </b>
       </span>
     </p>
 
-    <p>The third exam is 75 minutes. It has twenty-five short questions spread across five tasks, labeled A through E. As on the first two exams, every task gives you a small dataset &mdash; an edge list, a node table, a pixel array, a handful of vectors &mdash; together with the code that runs on it, and your job is to say what comes out. As on the second exam, every question is either multiple choice or fill-in-the-blank, and you write your answers directly on the exam:</p>
+    <p>The third exam is 75 minutes. It has twelve short questions spread across four tasks, labeled A through D. It is shorter than the second exam because it covers only four class days. As on the first two exams, every task gives you a small dataset &mdash; an edge list, a list of citing pages, a pixel array, a handful of vectors &mdash; together with the code that runs on it, and your job is to say what comes out. As on the second exam, every question is either multiple choice or fill-in-the-blank, and you write your answers directly on the exam:</p>
 
     <ul>
-      <li><b>Multiple choice.</b> Four options; circle the one best answer. The right answer is always clearly right, but at least one of the others will look plausible if you are not careful: it is usually the answer you get by making one of the mistakes we have discussed all unit, such as reading a BGR array as RGB, dividing by the number of pixels instead of the number of values, or trusting a picture&rsquo;s layout over its edges.</li>
-      <li><b>Fill in the blank.</b> A number, a label, a row count, or a short piece of text, with one correct answer. Numbers should be exact or rounded to two decimal places.</li>
+      <li><b>Multiple choice</b> (seven questions). Four options; circle the one best answer. The right answer is always clearly right, but at least one of the others will look plausible if you are not careful: it is usually the answer you get by making one of the mistakes we have discussed all unit, such as reading a BGR array as RGB, dividing by the number of pixels instead of the number of values, or trusting where a node is drawn over which edges it has.</li>
+      <li><b>Fill in the blank</b> (five questions). A number, a label, a row count, or a short piece of text, with one correct answer. Several questions have two or more blanks. Numbers should be exact or rounded to two decimal places.</li>
     </ul>
 
-    <p>The questions come in the same kinds as before, just in a shorter form: fill in a value from the output of some code, compute something by hand (a degree, a shortest path, a centrality score, a mean pixel value, a dot product), spot what goes wrong when code contains a common trap, or pick the statement that correctly explains a result.</p>
-
-    <p><b>You do not need to memorize any function names, arguments, column names, or formulas.</b> There is no reference sheet for this exam. Instead, anything you need is given with the question itself: the definitions of closeness and betweenness, what co-citation means, the BGR channel order, and the angle distance are all stated where they are used. What you do need is to understand the ideas well enough to apply them. The network is drawn for you, so you will not have to draw it yourself, but bring a pencil to sketch on it as you work, and bring a calculator.</p>
+    <p><b>You do not need to memorize any function names, arguments, or formulas.</b> There is no reference sheet for this exam. Instead, anything you need is given with the question itself: the definitions of closeness and betweenness, what co-citation means, the BGR channel order, and the fact that the dot product of unit vectors is their cosine similarity are all stated where they are used. What you do need is to understand the ideas well enough to apply them to the data in front of you. The network is drawn for you; bring a pencil to sketch on it as you work, and bring a calculator.</p>
 
     <p>The exam covers <a href="https://taylor-arnold.github.io/fds2/book/16_network_data.html" target="_blank" rel="noopener noreferrer">Chapter 16</a> and <a href="https://taylor-arnold.github.io/fds2/book/17_image_data.html" target="_blank" rel="noopener noreferrer">Chapter 17</a>, along with Homeworks 45 through 48.</p>
 
-    <h3>What You Need To Be Able To Do</h3>
+    <h3>What You Need To Know</h3>
 
-    <p>Only the following will be needed for the exam.</p>
+    <p>The exam has four tasks. Each one uses a specific kind of data and tests a specific, short list of ideas. The lists below are complete: if an idea is not here, it is not on the exam.</p>
 
-    <p><b>Building a network.</b></p>
+    <p><b>Task A. Network metrics</b> (four questions). An undirected network given as an edge list, with a drawing of the same network beside it.</p>
     <ol>
-      <li>Given an edge list, drawing the network, and given a drawing, writing the edge list back out.</li>
-      <li>Given a network, writing the degree of every node, counting the components, and saying which component is numbered 1.</li>
+      <li>The degree of a node is its number of neighbors. A component is a set of nodes that can all reach one another by following edges. Read the degree of a named node off the drawing and count the components. The node table from <code>DSNetwork.process</code> has a <code>component</code> column that labels each node's component, but no question depends on which number a component is given.</li>
+      <li>The distance between two nodes is the number of edges on the shortest path between them, not the length of the line on the page. Closeness is the sum of the <i>reciprocals</i> of a node's distances to every other node in its component. Compute it for a named node.</li>
+      <li>Betweenness adds up, over every pair of other nodes, the fraction of their shortest paths that pass through a node. On the exam every pair that matters has a single shortest path, so betweenness is a count: find the pairs whose shortest path has to cross a node and count them.</li>
+      <li>A bridge between two dense groups can have the lowest degree in its component and the highest betweenness. Know why, and know that where a node is drawn plays no part in any of these scores.</li>
+      <li>The <code>cluster</code> column splits a component into groups with many edges inside them. For a node that sits symmetrically between two groups, the label it gets is an arbitrary tiebreak, printed with the same confidence as every other label.</li>
     </ol>
+    <p>Eigenvector centrality, the internals of the clustering algorithm, the <code>x</code> and <code>y</code> layout columns, and splitting credit between tied shortest paths are <b>not</b> on the exam.</p>
 
-    <p><b>Centrality and clusters.</b></p>
-    <ol start="3">
-      <li>Given a drawing, computing the shortest-path distance from a named node to every other node in its component.</li>
-      <li>Computing the closeness centrality of a node from those distances.</li>
-      <li>Given a drawing, finding the shortest paths that run between two dense regions, naming the nodes they all pass through, and computing a betweenness score.</li>
-      <li>Given a drawing, splitting it into the clusters a community detection algorithm would find, and naming the node whose cluster is genuinely ambiguous.</li>
+    <p><b>Task B. Co-citation</b> (two questions). A short table of outside pages and the authors each one links to.</p>
+    <ol start="6">
+      <li>Two authors are joined by a co-citation edge whenever some <i>third</i> page links to both of them, and the edge's <code>count</code> is the number of such pages. A page that links to three authors contributes three pairs. Write the edge list, count its rows, and give the count for a named pair.</li>
+      <li>Know what a missing pair means: no citing page links to both authors. It says nothing about whether the two authors' own pages link to each other.</li>
     </ol>
+    <p>Directed networks (in-degree and out-degree), distance networks, and nearest neighbor networks are <b>not</b> on the exam.</p>
 
-    <p><b>Kinds of network.</b></p>
-    <ol start="7">
-      <li>Given a list of outside pages and what each one links to, writing the co-citation edge list with a count for every pair.</li>
-    </ol>
-
-    <p><b>Images as arrays.</b></p>
+    <p><b>Task C. Images as arrays</b> (three questions). A tiny image printed as an OpenCV array whose channels are all 0 or 255.</p>
     <ol start="8">
-      <li>Given a printed pixel array whose channels are all 0 or 255, giving its shape, naming the color of each pixel, and computing the mean pixel value, and saying what a whole-image statistic like brightness does and does not capture.</li>
+      <li>The shape is (height, width, channels). <code>img.mean()</code>, the brightness the chapter records, averages over <i>every</i> number in the array, channels included, so a 2 &times; 3 image averages 18 numbers, not 6.</li>
+      <li>OpenCV stores channels in BGR order: <code>[255, 0, 0]</code> is blue and <code>[0, 0, 255]</code> is red. Name the color of each pixel, and count how many would be misnamed by someone who read the array as RGB (black, white, and green read the same either way). Reordering channels changes the names of colors but not the mean.</li>
+      <li>A whole-image statistic such as brightness describes the entire frame, background and lighting included, not just the bird. Pick the statement that explains a pattern in brightness across species.</li>
     </ol>
+    <p>HSV, the color proportions from <code>compute_colors</code>, and writing OpenCV code are <b>not</b> on the exam.</p>
 
-    <p><b>Images as vectors.</b></p>
-    <ol start="9">
-      <li>Given image and text embeddings, computing the dot product of each image with each category and giving the predicted label.</li>
-      <li>Saying why the dot product of unit vectors is the cosine similarity, what zero-shot classification does when the true category is not on the list, and why it needs a model like SigLIP that embeds images and text in the same space.</li>
+    <p><b>Task D. Embeddings and zero-shot classification</b> (three questions). A few image vectors and category text vectors in three dimensions, all of unit length.</p>
+    <ol start="11">
+      <li>For vectors of unit length the dot product is the cosine similarity, so a larger dot product means a closer match. Compute the dot product of an image with each category and give the label with the largest one.</li>
+      <li>Zero-shot classification is an argmax over the list of categories you supply. It always returns one of them, even when the true category is missing from the list, and adding a category can change an image's label.</li>
+      <li>Zero-shot classification needs a model such as SigLIP that puts images and text in one shared space. ViT embeds only images, so even though its embeddings separate the species well, there are no text vectors to compare against. Both models give dense vectors, unlike TF-IDF.</li>
     </ol>
+    <p>The architecture and training of ViT or SigLIP, UMAP, and the angle distance (the arccos) are <b>not</b> on the exam.</p>
 
-    <p>We will not have the internals of walktrap or of any other community detection algorithm, the architecture of a Vision Transformer, the training of any neural network, or writing OpenCV code from scratch.</p>
+    <h3>Practice Questions</h3>
 
-    <h3>Practice Exam Questions and Answers</h3>
+    <p>Every question below is in the exam's own format and uses a parallel dataset. Every question on the exam has a twin here, and there are a few extra practice questions beyond that, so this set is a little longer than the exam itself. Work through all of them with the data in front of you and a calculator, as you will on the day; the answers follow each question. If you can do these, you can do the exam.</p>
 
-    <p>The practice questions below are written in a longer, open-ended form: each one asks you to work through a whole problem and explain it. They are good preparation because every multiple choice or fill-in-the-blank question on the exam is a small piece of a problem like these. If you can do these, you can do the exam. A few extra questions written in the exam&rsquo;s own format are at the <a href="#extra">end of this page</a>.</p>
+    <h3>Task A. Network Metrics</h3>
 
-    <h3>Task A. Building the Network</h3>
+    <p>An undirected network is given by the following edge list, one row per edge. Below it is the same network, drawn.</p>
 
-    <p>An undirected network is given by the following edge list.</p>
+    <table border="1">
+      <tr><th>doc_id</th><th>doc_id2</th></tr>
+      <tr><td>P</td><td>Q</td></tr>
+      <tr><td>P</td><td>R</td></tr>
+      <tr><td>Q</td><td>R</td></tr>
+      <tr><td>R</td><td>S</td></tr>
+      <tr><td>S</td><td>T</td></tr>
+      <tr><td>T</td><td>U</td></tr>
+      <tr><td>T</td><td>V</td></tr>
+      <tr><td>U</td><td>V</td></tr>
+      <tr><td>W</td><td>X</td></tr>
+    </table>
 
-<pre>
-doc_id   doc_id2          P–Q    P–R    Q–R    R–S
-P        Q                S–T    T–U    T–V    U–V
-P        R                W–X
-Q        R
-R        S        (the nine edges, written compactly on the right)
-S        T
-T        U
-T        V
-U        V
-W        X
-</pre>
-
-    <p><b>1.</b> Draw the network described by the edge list above. Then, treating your picture as the given, read the edge list back off it, and say why the two representations carry exactly the same information.</p>
-
-<pre>
-The drawing is two triangles joined by a two-edge bridge, plus a separate pair:
-
-    P                     U                      W ---- X
-    | \                 / |
-    |   R ---- S ---- T   |
-    | /                 \ |
-    Q                     V
-
-Reading the edges back off the drawing gives the same nine, in any order: P–Q,
-P–R, Q–R, R–S, S–T, T–U, T–V, U–V, W–X. An edge list and a drawing are two views
-of one object: the edge list is what the computer stores, the drawing is what you
-reason about, and neither holds anything the other lacks. The one thing the
-drawing adds is the LAYOUT: where a node sits on the page is a choice made for
-legibility, not a fact about the network, so the same edge list can be drawn a
-hundred ways and every one of them is correct.
-</pre>
-
-    <p><b>2.</b> Write the degree of every node, say how many components the network has, and say which one <code>DSNetwork.process</code> numbers as component 1.</p>
-
-<pre>
-    degree:  P 2   Q 2   R 3   S 2   T 3   U 2   V 2   W 1   X 1
-
-TWO components. Component 1 is {P, Q, R, S, T, U, V}, with seven nodes, and
-component 2 is {W, X}, with two. Components are numbered in DESCENDING ORDER OF
-SIZE, so component 1 is always the largest. That numbering is a convention worth
-remembering, because it is what makes `filter(c.component == 1)` mean "keep the
-main body of the network" rather than "keep some arbitrary piece of it."
-
-Note that R and T have the highest degree, at 3, while S, the node holding the
-two halves together, has a degree of only 2 despite sitting at the center of
-the network.
-</pre>
-
-    <p>Here is the picture, drawn to scale. The rest of the practice questions refer to it.</p>
-
-    <p>
-    <svg viewBox="0 0 660 330" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:660px; height:auto; display:block; margin:1em auto;" font-family="sans-serif">
+    <svg viewBox="0 0 660 320" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:660px; height:auto; display:block; margin:1em auto;" font-family="sans-serif">
       <g stroke="#222" stroke-width="2" fill="none">
         <line x1="80" y1="60"  x2="80"  y2="180"/>
         <line x1="80" y1="60"  x2="190" y2="120"/>
@@ -173,113 +133,128 @@ the network.
         <text x="230" y="291">W</text>
         <text x="370" y="291">X</text>
       </g>
-
-      <g font-size="13" fill="#666" text-anchor="middle" font-style="italic">
-        <text x="325" y="235">component 1 (seven nodes)</text>
-        <text x="300" y="322">component 2</text>
-      </g>
     </svg>
-    </p>
 
-    <h3>Task B. Centrality</h3>
+    <p>The code <code>node, edge, G = DSNetwork.process(edges, directed=False)</code> returns a node table with one row per node. A <i>component</i> is a set of nodes that can all reach one another by following edges, and the <i>degree</i> of a node is its number of neighbors. The <i>distance</i> between two nodes is the number of edges on the shortest path between them. The two centrality scores below are computed separately within each component.</p>
+    <ul>
+      <li><b>Closeness</b> of a node: the sum of the <i>reciprocals</i> of its distances to every other node in its component.</li>
+      <li><b>Betweenness</b> of a node: for every pair of <i>other</i> nodes, the fraction of the shortest paths between them that pass through this node, added up over all pairs.</li>
+    </ul>
 
-    <p><b>3.</b> Compute the shortest-path distance from <b>S</b> to every other node in its component, and from <b>P</b> to every other node.</p>
-
-<pre>
-From S:   R=1   T=1   P=2   Q=2   U=2   V=2
-From P:   Q=1   R=1   S=2   T=3   U=4   V=4
-
-Distance is counted in EDGES, not in the length of the lines on the page. From S,
-R and T are one hop away and everything else is two, so S reaches its whole
-component in at most two steps. From P the far side is a long way off: U and V
-are four hops away, because the only route to them runs P–R–S–T–U. Nodes outside
-a node's own component get no entry at all; the distance to W or X is not large,
-it is UNDEFINED, which is why these scores are computed one component at a time.
-</pre>
-
-    <p><b>4.</b> Using those distances, compute the closeness centrality of <b>S</b>, of <b>P</b>, and of <b>R</b>, where closeness is the sum of the reciprocals of the distances from the node to every other node in its component.</p>
+    <p><b>1.</b> (Fill in the blank.) The degree of <code>S</code> is ________, the degree of <code>R</code> is ________, and the network has ________ components.</p>
 
 <pre>
-Closeness is the sum of the RECIPROCALS of the distances:
+2;  3;  2.
 
-    close(S) = 1/1 + 1/1 + 1/2 + 1/2 + 1/2 + 1/2
-             = 2 + 2 = 4.00
+    degree:  P 2   Q 2   R 3   S 2   T 3   U 2   V 2   W 1   X 1
 
-    close(P) = 1/1 + 1/1 + 1/2 + 1/3 + 1/4 + 1/4
-             = 2 + 0.5 + 0.333 + 0.5 = 3.33
-
-    close(R) = 1/1 + 1/1 + 1/1 + 1/2 + 1/3 + 1/3
-             = 3 + 0.5 + 0.667 = 4.17
-
-S is closer to the network as a whole than P is, which the picture agrees with:
-S can reach every node in two hops, while P needs four to get to U or V. The
-reciprocal is what makes the score behave: a node four hops away contributes
-only 0.25, so being far from something costs you little, while being adjacent to
-it is worth a full point. Closeness rewards being NEAR EVERYTHING, not near one
-thing. R edges out S, 4.17 to 4.00: its three neighbors at distance 1 are worth
-more than S's better position in the middle.
+The two components are the seven nodes {P, Q, R, S, T, U, V} and the pair
+{W, X}. Note that S, the node holding the two triangles together, has one of
+the lowest degrees in its component despite sitting in the middle of it.
 </pre>
 
-    <p><b>5.</b> Find every shortest path that runs from a node in <code>{P, Q, R}</code> to a node in <code>{T, U, V}</code>. Say which node lies on all of them, and compute its betweenness.</p>
+    <p><b>2.</b> (Fill in the blank.) The closeness of <code>S</code> is ________, and the betweenness of <code>S</code> is ________.</p>
 
 <pre>
-Every path from the left triangle to the right one must cross the bridge, and
-the bridge is R–S–T. There is no other route: cut S out and the network falls
-into two disconnected halves.
+4.00;  9.
 
-The pairs that must cross are the nine pairs of {P,Q,R} x {T,U,V}, and every one
-of them has a unique shortest path, each running through S. So
+From S, R and T are one hop away and P, Q, U, V are two hops away:
 
-    betweenness(S) = 9.00
+    close(S) = 1/1 + 1/1 + 1/2 + 1/2 + 1/2 + 1/2 = 4.00
 
-(For the record, betweenness(R) = betweenness(T) = 8.00, and every other node
-scores 0.00. R and T sit on the nine crossing paths too, but R misses the three
-that start at R itself, and it picks up P–S and Q–S, netting 8.)
+Every path from the left triangle {P, Q, R} to the right one {T, U, V} has to
+cross S, and each of those 3 x 3 = 9 pairs has a single shortest path. No
+other pair needs S, so
 
-S is a BRIDGE: the network's entire traffic between its two halves is funneled
-through it, and nothing else can carry it. Betweenness is the metric that finds
-these nodes, the ones that are not necessarily popular but are unavoidable.
+    betweenness(S) = 9
+
+W and X play no part in either score: they are in a different component, and
+the distance to them is not large but undefined.
 </pre>
 
-    <p>The <code>node</code> table below is what <code>DSNetwork.process(edges, directed=False)</code> returns for this network. The layout columns <code>x</code> and <code>y</code> are omitted.</p>
+    <p><b>3.</b> (Fill in the blank.) The closeness of <code>P</code> is ________, and the closeness of <code>R</code> is ________.</p>
+
+<pre>
+3.33;  4.17.
+
+    From P:  Q = 1, R = 1, S = 2, T = 3, U = 4, V = 4
+    close(P) = 1 + 1 + 1/2 + 1/3 + 1/4 + 1/4 = 3.33
+
+    From R:  P = 1, Q = 1, S = 1, T = 2, U = 3, V = 3
+    close(R) = 1 + 1 + 1 + 1/2 + 1/3 + 1/3 = 4.17
+
+R edges out S (4.17 to 4.00): three neighbors at distance 1 are worth more than
+S's position in the middle. The reciprocal makes being far from something cheap
+and being adjacent to it valuable. Adding up the distances instead of their
+reciprocals (14 for P) is the tempting wrong answer.
+</pre>
+
+    <p><b>4.</b> (Multiple choice.) <code>S</code> has one of the lowest degrees in its component but the highest betweenness. Which statement best explains this?</p>
+    <ol type="A">
+      <li>The score must be an error: a node with only two neighbors can lie on at most one shortest path.</li>
+      <li>S is a bridge: every shortest path between the two triangles passes through it, so it is unavoidable even though it has only two neighbors.</li>
+      <li>S has the highest closeness in its component, and betweenness always ranks nodes in the same order as closeness.</li>
+      <li>Betweenness rewards the node drawn nearest the middle of the picture, and S is drawn in the middle.</li>
+    </ol>
+
+<pre>
+(B). Betweenness finds the nodes that are not popular but are unavoidable.
+(D) is false because the drawing plays no part in the computation; move S
+anywhere on the page and its score is unchanged. (C) is false twice over: R and
+T have higher closeness (4.17) than S (4.00), as question 3 showed, and the
+two scores need not agree. (A) confuses neighbors with paths: S's two
+neighbors are the two ends of nine different shortest paths.
+</pre>
+
+    <p><b>5.</b> (Multiple choice.) The node table below is what <code>DSNetwork.process(edges, directed=False)</code> returns for this network, with the layout columns <code>x</code> and <code>y</code> omitted. The <code>cluster</code> column splits the seven-node component into {P, Q, R} and {S, T, U, V}. Which statement best describes the placement of <code>S</code>?</p>
 
     <table border="1">
-      <tr><th>id</th><th>component</th><th>component_size</th><th>cluster</th><th>degree</th><th>between</th></tr>
-      <tr><td>P</td><td>1</td><td>7</td><td>0</td><td>2</td><td>0.0</td></tr>
-      <tr><td>Q</td><td>1</td><td>7</td><td>0</td><td>2</td><td>0.0</td></tr>
-      <tr><td>R</td><td>1</td><td>7</td><td>0</td><td>3</td><td>8.0</td></tr>
-      <tr><td>S</td><td>1</td><td>7</td><td>1</td><td>2</td><td><b>9.0</b></td></tr>
-      <tr><td>T</td><td>1</td><td>7</td><td>1</td><td>3</td><td>8.0</td></tr>
-      <tr><td>U</td><td>1</td><td>7</td><td>1</td><td>2</td><td>0.0</td></tr>
-      <tr><td>V</td><td>1</td><td>7</td><td>1</td><td>2</td><td>0.0</td></tr>
-      <tr><td>W</td><td>2</td><td>2</td><td>2</td><td>1</td><td>0.0</td></tr>
-      <tr><td>X</td><td>2</td><td>2</td><td>2</td><td>1</td><td>0.0</td></tr>
+      <tr><th>id</th><th>component</th><th>component_size</th><th>cluster</th><th>degree</th><th>between</th><th>close</th></tr>
+      <tr><td>P</td><td>1</td><td>7</td><td>0</td><td>2</td><td>0.0</td><td>3.33</td></tr>
+      <tr><td>Q</td><td>1</td><td>7</td><td>0</td><td>2</td><td>0.0</td><td>3.33</td></tr>
+      <tr><td>R</td><td>1</td><td>7</td><td>0</td><td>3</td><td>8.0</td><td>4.17</td></tr>
+      <tr><td>S</td><td>1</td><td>7</td><td>1</td><td>2</td><td>9.0</td><td>4.00</td></tr>
+      <tr><td>T</td><td>1</td><td>7</td><td>1</td><td>3</td><td>8.0</td><td>4.17</td></tr>
+      <tr><td>U</td><td>1</td><td>7</td><td>1</td><td>2</td><td>0.0</td><td>3.33</td></tr>
+      <tr><td>V</td><td>1</td><td>7</td><td>1</td><td>2</td><td>0.0</td><td>3.33</td></tr>
+      <tr><td>W</td><td>2</td><td>2</td><td>2</td><td>1</td><td>0.0</td><td>1.00</td></tr>
+      <tr><td>X</td><td>2</td><td>2</td><td>2</td><td>1</td><td>0.0</td><td>1.00</td></tr>
     </table>
 
-    <p><b>6.</b> The <code>cluster</code> column splits component 1 into <code>{P, Q, R}</code> and <code>{S, T, U, V}</code>. Say which cluster you would have put S in, why the answer is not obvious, and what that says about reading cluster labels in general.</p>
+    <ol type="A">
+      <li>It shows that S is more strongly attached to the right triangle, since <code>T</code> has a higher degree than <code>R</code>.</li>
+      <li>It is essentially arbitrary: the network is symmetric, S is attached equally to both triangles, and the algorithm had to put it somewhere.</li>
+      <li>It is correct, because the edge S&ndash;T comes after the edge R&ndash;S in the edge list.</li>
+      <li>It is an error: S should have a cluster of its own, because it has the highest betweenness.</li>
+    </ol>
 
 <pre>
-The algorithm put S with T, U, and V. It had no good reason to.
+(B). Swap P with U, Q with V, and R with T, and you get the identical network
+back, with S mapped to itself. S is one edge from R and one edge from T and
+belongs to neither triangle more than the other. R and T both have degree 3,
+so (A) is false.
 
-Look at the drawing: it is SYMMETRIC. Swap P with U, Q with V, and R with T, and
-you get the identical network back, with S mapped to itself. S sits exactly in
-the middle, one edge from R and one edge from T, belonging to neither triangle
-and equally attached to both. There is no fact of the matter about which cluster
-it is in. The algorithm had to return something, so it returned {S, T, U, V},
-and had the edge list been typed in a different order it might just as easily
-have returned {P, Q, R, S}.
-
-The general lesson is that a cluster label is an OUTPUT OF AN ALGORITHM, not a
-property of a node. For nodes deep inside a dense group the label is stable and
-means something. For nodes on a boundary it can be an arbitrary tiebreak, and
-nothing in the node table distinguishes the two cases: S's cluster label is
-printed with exactly the same confidence as P's. If a finding depends on which
-side of a boundary one node fell, it is not a finding.
+A cluster label is an OUTPUT OF AN ALGORITHM, not a property of a node. For
+nodes deep inside a dense group the label is stable and means something. For a
+node on a boundary it can be an arbitrary tiebreak, and nothing in the node
+table tells the two cases apart: S's label is printed with exactly the same
+confidence as P's.
 </pre>
 
-    <h3>Task C. Co-citation</h3>
+    <p><b>6.</b> (Fill in the blank.) Suppose the edge R&ndash;S is deleted. The network then has ________ components, the largest has ________ nodes, and the betweenness of <code>S</code> becomes ________.</p>
 
-    <p>Five outside pages link to the authors P, Q, R, and S as follows.</p>
+<pre>
+3;  4;  0.
+
+The pieces are {S, T, U, V} (4 nodes), {P, Q, R} (3), and {W, X} (2). S stays
+attached to the right triangle through S–T, but it is now a dead end: no
+shortest path between two other nodes passes through it. A node's betweenness
+depends on the whole network, not just on its own edges.
+</pre>
+
+    <h3>Task B. Co-citation</h3>
+
+    <p>In a co-citation network, two authors are joined by an edge whenever some <i>third</i> page links to both of them. The <code>count</code> of an edge is the number of such pages. Five outside pages link to the authors P, Q, R, and S as follows.</p>
 
     <table border="1">
       <tr><th>citing page</th><th>links to</th></tr>
@@ -290,11 +265,12 @@ side of a boundary one node fell, it is not a finding.
       <tr><td>page 5</td><td>P, S</td></tr>
     </table>
 
-    <p><b>7.</b> Write the co-citation edge list, giving the count for every pair of authors that shares at least one citing page.</p>
+    <p><b>7.</b> (Fill in the blank.) The co-citation edge list has ________ rows. The <code>count</code> for the pair P&ndash;Q is ________, and for the pair Q&ndash;R is ________.</p>
 
 <pre>
-A co-citation edge joins two authors whenever some third page links to BOTH. Go
-through the pages and tally every pair:
+5;  2;  2.
+
+Go through the pages and tally every pair:
 
     page 1 (P,Q,R)  ->  P–Q, P–R, Q–R
     page 2 (P,Q)    ->  P–Q
@@ -309,154 +285,29 @@ through the pages and tally every pair:
     Q       R               2      (pages 1, 3)
     R       S               1      (page 4)
 
-Q–S has a count of 0 and so is not a row at all: no page links to both.
+Page 1 links to three authors and so contributes three pairs. Counting one row
+per page-and-pair (7) instead of one row per pair is the tempting wrong answer.
 </pre>
 
-    <h3>Task D. Images as Arrays</h3>
-
-    <p>OpenCV reads a tiny image and prints the following array.</p>
-
-<pre>
-img = [[[  0,   0, 255], [255,   0,   0]],
-       [[  0, 255,   0], [255, 255, 255]]]
-</pre>
-
-    <p><b>8.</b> Give <code>img.shape</code>, name the color of each of the four pixels (every channel is either 0 or 255, so each pixel is a primary, black, or white), and compute <code>img.mean()</code>, which is the brightness the chapter would record. Say how many numbers you averaged over.</p>
-
-<pre>
-img.shape is (2, 2, 3): two rows of pixels, two columns, three channels.
-
-THE TRAP IS THAT OPENCV STORES CHANNELS IN BGR ORDER, NOT RGB. Read the triples
-as blue, green, red:
-
-    [0,0] = [  0,   0, 255]   B=0   G=0   R=255   -> RED
-    [0,1] = [255,   0,   0]   B=255 G=0   R=0     -> BLUE
-    [1,0] = [  0, 255,   0]   B=0   G=255 R=0     -> GREEN
-    [1,1] = [255, 255, 255]   equal in all three  -> WHITE
-
-Anyone reading these as RGB gets the first two pixels exactly backwards, and
-nothing about the array announces which convention it is in. Green and white are
-unaffected, because they are symmetric under the swap, which is what makes the
-error so easy to miss: two of your four pixels come out right.
-
-The mean is over ALL TWELVE NUMBERS, not the four pixels:
-
-    255 + 255 + 255 + 765 = 1530
-    1530 / 12 = 127.5
-
-The channel axis is part of the average. A common mistake is to average the four
-pixel sums, which gives 1530/4 = 382.5, a number larger than the maximum a pixel
-value can take.
-</pre>
-
-    <h3>Task E. Embeddings and Zero-Shot Classification</h3>
-
-    <p>Suppose SigLIP embedded images and text into a space with only three dimensions. Two images and three category descriptions embed to the following unit-length vectors.</p>
-
-<pre>
-img1    = (0.6, 0.8, 0.0)          canary  = (1.0, 0.0, 0.0)
-img2    = (0.0, 0.8, 0.6)          peacock = (0.0, 0.0, 1.0)
-                                   robin   = (0.8, 0.6, 0.0)
-</pre>
-
-    <p><b>9.</b> Compute the dot product of each image with each category, and give the predicted label for both images. Then say why the dot product is the right thing to compute here, and what it has to do with the angle distance from Chapter 15.</p>
-
-<pre>
-    img1 . canary  = 0.6(1.0) + 0.8(0.0) + 0.0(0.0) = 0.60
-    img1 . peacock = 0.6(0.0) + 0.8(0.0) + 0.0(1.0) = 0.00
-    img1 . robin   = 0.6(0.8) + 0.8(0.6) + 0.0(0.0) = 0.48 + 0.48 = 0.96
-
-    img2 . canary  = 0.00
-    img2 . peacock = 0.0(0.0) + 0.8(0.0) + 0.6(1.0) = 0.60
-    img2 . robin   = 0.0(0.8) + 0.8(0.6) + 0.6(0.0) = 0.48
-
-    img1 -> ROBIN   (0.96, the largest of its three)
-    img2 -> PEACOCK (0.60, the largest of its three)
-
-The classifier is nothing more than "take the argmax of these numbers." That is
-the whole of zero-shot classification: embed the image, embed each category
-NAME, and pick the category whose text vector the image vector points most
-nearly toward.
-
-The dot product is the right thing because ALL OF THESE VECTORS ARE UNIT LENGTH,
-and the dot product of two unit vectors is exactly their cosine similarity. It is
-the same quantity that sat inside the arccos of the angle distance formula in
-Chapter 15. Nothing new has been introduced: img1's score of 0.96 against robin
-corresponds to an angle of arccos(0.96) = 0.28 radians, about 16 degrees, and its
-score of 0.00 against peacock is a full right angle. Once documents and images
-are both points in a vector space, the same small geometric toolkit does the work
-in both places.
-</pre>
-
-
-    <h3 id="extra">Extra Practice: Multiple Choice and Fill-in-the-Blank</h3>
-
-    <p>The questions below show what the exam format looks like, using the same data as the practice questions above. They are here so the format holds no surprises; they are not the best way to study. <b>The long-form questions above are the better preparation.</b> Each one walks through a whole problem, and its answer explains every nuance along the way: the bridge with the lowest degree, the distance that is undefined rather than large, the cluster label that is a tiebreak, the channel order that nothing in the array announces. Any of those details can become a multiple choice or fill-in-the-blank question on the exam, and a short question like the ones below only ever tests one of them at a time.</p>
-
-    <p><b>10.</b> (Multiple choice.) In the network from Task A, suppose the edge R&ndash;S is deleted. Which nodes are then in component 1?</p>
+    <p><b>8.</b> (Multiple choice.) The pair Q&ndash;S does not appear in the co-citation edge list. What does that tell you?</p>
     <ol type="A">
-      <li>{P, Q, R}, because P is the first node in the edge list.</li>
-      <li>{S, T, U, V}, because it is now the largest component.</li>
-      <li>All seven of {P, Q, R, S, T, U, V}, because component numbers are assigned before the edge is deleted.</li>
-      <li>{W, X}, because it is the only component left unchanged.</li>
+      <li>The pages for Q and S do not link to each other.</li>
+      <li>Q and S were filtered out for having too few citing pages.</li>
+      <li>None of the five citing pages links to both Q and S.</li>
+      <li>Q and S are in different components of the co-citation network.</li>
     </ol>
 
 <pre>
-(B). Deleting R-S splits the old component 1 into {P, Q, R} and {S, T, U, V}.
-S stays with the right-hand triangle through S-T. There are now three
-components, of sizes 4, 3, and 2, and they are numbered in descending order of
-size, so {S, T, U, V} is component 1.
-
-The numbers are computed from the network you hand to DSNetwork.process, so they
-always describe the current edge list, which rules out (C). And the order of the
-edge list never matters, which rules out (A).
+(C). A co-citation edge is about a THIRD page, not about Q and S themselves.
+Q and S could link to each other directly and the pair would still be absent,
+since co-citation never looks at their own links, which rules out (A). (D) is
+false: Q and S are in the same component, through R or P.
 </pre>
 
-    <p><b>11.</b> (Fill in the blank.) In the original network from Task A, the closeness of T is ________ and the closeness of U is ________.</p>
+    <p><b>9.</b> (Fill in the blank.) In the co-citation network, the degree of <code>P</code> is ________, and the sum of the counts on <code>P</code>'s edges is ________.</p>
 
 <pre>
-4.17 and 3.33.
-
-    From T:  S = 1, U = 1, V = 1, R = 2, P = 3, Q = 3
-    close(T) = 3 + 1/2 + 1/3 + 1/3 = 4.17
-
-    From U:  T = 1, V = 1, S = 2, R = 3, P = 4, Q = 4
-    close(U) = 2 + 1/2 + 1/3 + 1/4 + 1/4 = 3.33
-
-You could have saved the arithmetic: the network is symmetric, T is the mirror
-image of R, and U is the mirror image of P, so their scores must match the ones
-computed in question 4.
-</pre>
-
-    <p><b>12.</b> (Multiple choice.) In the original network from Task A, S has betweenness 9. Suppose one edge, P&ndash;U, is added. What happens to the betweenness of S?</p>
-    <ol type="A">
-      <li>It stays at 9, since S still lies on the path between the two triangles.</li>
-      <li>It falls to 0, since S is no longer needed to get from one triangle to the other.</li>
-      <li>It falls to 2.</li>
-      <li>It rises, since the network now has more paths for S to sit on.</li>
-    </ol>
-
-<pre>
-(C). The new edge gives the two triangles a second connection that does not
-touch S, and most crossing pairs now have a shortest path that avoids S:
-
-    R-T   R-S-T (2 edges) is the only shortest path           -> 1
-    Q-T   Q-R-S-T and Q-P-U-T, both 3 edges; half go via S     -> 1/2
-    R-V   R-S-T-V and R-P-U-V, both 3 edges; half go via S     -> 1/2
-    every other pair has a shortest path avoiding S          -> 0
-
-    betweenness(S) = 1 + 1/2 + 1/2 = 2
-
-(B) is the tempting answer, and it is right that S is no longer a bridge. But
-betweenness counts SHORTEST paths, and for R and T the route through S is still
-the shortest one. Notice also the halves: when two shortest paths tie, each
-node on one of them gets only a share of the credit.
-</pre>
-
-    <p><b>13.</b> (Fill in the blank.) In the co-citation network from Task C, the degree of P is ________, and the sum of the counts on P&rsquo;s edges is ________.</p>
-
-<pre>
-3 and 4.
+3;  4.
 
 P shares a citing page with Q (count 2), R (count 1), and S (count 1). Degree
 counts neighbors, so it is 3; the counts add up to 4. The two numbers answer
@@ -464,10 +315,72 @@ different questions: how many authors P keeps company with, versus how many
 times it does.
 </pre>
 
-    <p><b>14.</b> (Multiple choice.) A classmate reverses the channel order of the Task D array from BGR to RGB before calling <code>img.mean()</code>. What does the mean become?</p>
+    <h3>Task C. Images as Arrays</h3>
+
+    <p>OpenCV reads a tiny image and prints the array below. OpenCV stores an image as an array of shape (height, width, channels), with values from 0 to 255, and it stores the three channels in <b>BGR</b> order: blue, then green, then red. Every channel here is 0 or 255, so each pixel is red, green, blue, black, or white.</p>
+
+<pre>
+img = [[[  0,   0, 255], [255,   0,   0]],
+       [[  0, 255,   0], [255, 255, 255]]]
+</pre>
+
+    <p><b>10.</b> (Fill in the blank.) <code>img.shape</code> is ________. <code>img.mean()</code>, the brightness the chapter would record, averages over ________ numbers and returns ________.</p>
+
+<pre>
+(2, 2, 3);  12;  127.5.
+
+Two rows of pixels, two columns, three channels. The mean is over ALL TWELVE
+NUMBERS, not the four pixels:
+
+    255 + 255 + 255 + 765 = 1530
+    1530 / 12 = 127.5
+
+Dividing by the 4 pixels instead gives 382.5, a number larger than any single
+value in the array can be, which is a sign that something has gone wrong.
+</pre>
+
+    <p><b>11.</b> (Multiple choice.) How many of the four pixels would be given the wrong color name by someone who read the array as RGB?</p>
+    <ol type="A">
+      <li>0</li>
+      <li>1</li>
+      <li>2</li>
+      <li>4</li>
+    </ol>
+
+<pre>
+(C). Read the triples as blue, green, red:
+
+    [0,0] = [  0,   0, 255]   B=0   G=0   R=255   -> RED
+    [0,1] = [255,   0,   0]   B=255 G=0   R=0     -> BLUE
+    [1,0] = [  0, 255,   0]   B=0   G=255 R=0     -> GREEN
+    [1,1] = [255, 255, 255]   equal in all three  -> WHITE
+
+An RGB reading swaps the first two. Green and white read the same either way,
+which is what makes the mistake so easy to miss: half the pixels come out
+right.
+</pre>
+
+    <p><b>12.</b> (Multiple choice.) Computing <code>img.mean()</code> for every photo in the birds dataset, the course found that ostrich photos tend to be the brightest. What is the most likely explanation?</p>
+    <ol type="A">
+      <li>Ostrich feathers are white, and white feathers produce the largest values in all three channels.</li>
+      <li>Ostriches are larger than the other birds, so they fill more of the frame.</li>
+      <li>The ostrich photos were read in RGB order instead of BGR.</li>
+      <li>Ostriches tend to be photographed outdoors in bright, open settings, and the mean averages over the whole frame, background included.</li>
+    </ol>
+
+<pre>
+(D). A pixel statistic describes the whole photograph: subject, background,
+and lighting mixed together. The same bird photographed against a white
+background scores higher than it does against a dark one. (A) is tempting, but
+the bird is only part of the frame, and much of an ostrich is dark. (C) cannot be right: as the next
+question shows, channel order changes the names of colors, not the numbers
+being averaged.
+</pre>
+
+    <p><b>13.</b> (Multiple choice.) A classmate reverses the channel order of the array above from BGR to RGB before calling <code>img.mean()</code>. What does the mean become?</p>
     <ol type="A">
       <li>It is unchanged at 127.5.</li>
-      <li>It falls, because the red pixel&rsquo;s 255 moves to a different channel.</li>
+      <li>It falls, because the red pixel's 255 moves to a different channel.</li>
       <li>It rises, because RGB order puts the brightest channel first.</li>
       <li>It cannot be computed until the pixels are also reordered.</li>
     </ol>
@@ -479,18 +392,71 @@ they are in. Channel order matters when you NAME a color, not when you average
 it: the red and blue pixels trade names, and the mean stays at 127.5.
 </pre>
 
-    <p><b>15.</b> (Fill in the blank.) Suppose a fourth category, <code>jay</code> = (0.0, 0.6, 0.8), is added to the three in Task E. The label of img2 becomes ________, with a dot product of ________.</p>
+    <h3>Task D. Embeddings and Zero-Shot Classification</h3>
+
+    <p>Suppose SigLIP embedded images and text into a space with only three dimensions. Two images and three category descriptions embed to the following vectors, all of unit length. For vectors of unit length, the dot product is the cosine similarity from Chapter 15, so a larger dot product means a closer match. To classify an image zero-shot, compute its dot product with each category's text vector and give it the label with the largest dot product.</p>
 
 <pre>
-jay, with 0.96.
+img1    = (0.6, 0.8, 0.0)          canary  = (1.0, 0.0, 0.0)
+img2    = (0.0, 0.8, 0.6)          peacock = (0.0, 0.0, 1.0)
+                                   robin   = (0.8, 0.6, 0.0)
+</pre>
+
+    <p><b>14.</b> (Fill in the blank.) The dot product of <code>img1</code> with <code>canary</code> is ________, with <code>peacock</code> is ________, and with <code>robin</code> is ________, so <code>img1</code> is labeled ________.</p>
+
+<pre>
+0.60;  0.00;  0.96;  robin.
+
+    img1 . canary  = 0.6(1.0) + 0.8(0.0) + 0.0(0.0) = 0.60
+    img1 . peacock = 0.6(0.0) + 0.8(0.0) + 0.0(1.0) = 0.00
+    img1 . robin   = 0.6(0.8) + 0.8(0.6) + 0.0(0.0) = 0.48 + 0.48 = 0.96
+
+The classifier is nothing more than "take the largest of these numbers."
+</pre>
+
+    <p><b>15.</b> (Multiple choice.) Suppose <code>img2</code> is actually a photo of a jay, which is not one of the three categories. What does the zero-shot classifier return for it?</p>
+    <ol type="A">
+      <li>"jay", because SigLIP was trained on far more categories than the three supplied.</li>
+      <li>"peacock", the closest of the categories supplied, with no warning that the true answer is missing.</li>
+      <li>Nothing (a null), because no dot product is close enough to 1.</li>
+      <li>An error, because the image does not match any of the categories.</li>
+    </ol>
+
+<pre>
+(B). img2 scores 0.00 with canary, 0.60 with peacock, and 0.48 with robin.
+Zero-shot classification is an argmax over the candidate list you supplied. It
+always returns one of those labels, however poor the best match is, and it
+cannot name a category it was not given, whatever the model saw in training.
+</pre>
+
+    <p><b>16.</b> (Multiple choice.) The chapter also embeds the bird photos with ViT, whose embeddings separate the ten species almost perfectly in a UMAP plot. What does SigLIP provide that zero-shot classification needs and ViT does not?</p>
+    <ol type="A">
+      <li>Dense embeddings, in which nearly every number is non-zero.</li>
+      <li>A training set that included the ten bird species.</li>
+      <li>A single space shared by images and text, so an image vector can be compared with the vector of a category's name.</li>
+      <li>Embeddings of exactly 768 numbers.</li>
+    </ol>
+
+<pre>
+(C). Zero-shot classification compares an image vector with the vector of a
+category's NAME, which requires images and text to live in one shared space.
+ViT embeds only images, so there is nothing to compare against. (A) is true of
+SigLIP but also of ViT: both give dense vectors, unlike TF-IDF. (B) misses the
+point: the UMAP plot shows that ViT's embeddings describe the birds well
+without knowing their names.
+</pre>
+
+    <p><b>17.</b> (Fill in the blank.) Suppose a fourth category, <code>jay = (0.0, 0.6, 0.8)</code>, is added to the three above. The label of <code>img2</code> becomes ________, with a dot product of ________.</p>
+
+<pre>
+jay;  0.96.
 
     img2 . jay = 0.0(0.0) + 0.8(0.6) + 0.6(0.8) = 0.48 + 0.48 = 0.96
 
 That beats peacock's 0.60, so img2's label changes even though img2 itself did
-not. Zero-shot classification is an argmax over the list of candidates you
-supplied: add a candidate and a label can change; leave the right one out and
-the classifier returns the closest wrong one, with no warning. img1's label is
-unaffected: img1 . jay = 0.8(0.6) = 0.48, still below robin's 0.96.
+not. Add a candidate and a label can change; leave the right one out and the
+classifier returns the closest wrong one. img1's label is unaffected:
+img1 . jay = 0.8(0.6) = 0.48, still below robin's 0.96.
 </pre>
 
     <div style="height:200px"></div>

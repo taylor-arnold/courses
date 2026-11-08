@@ -23,186 +23,439 @@
     <p style="padding: 0 1em 1em 1em; font-size: 0.9em">
       <span style="padding-right: 0.5em">
         <b>
-          <a href="../index.html">[← back]</a>
+          <a href="../index.html">[&larr; back]</a>
         </b>
       </span>
     </p>
-    <p>The third exam consists of 15 questions in the same style as the first two exams: hand-written code blocks, this time concerning the four RVA flights tables described below. You should generally be comfortable with the material in <a href="https://taylor-arnold.github.io/fds2/book/07_combine.html" target="_blank" rel="noopener noreferrer">Chapter 7</a>, <a href="https://taylor-arnold.github.io/fds2/book/08_collect.html" target="_blank" rel="noopener noreferrer">Chapter 8</a>, <a href="https://taylor-arnold.github.io/fds2/book/09_restructure.html" target="_blank" rel="noopener noreferrer">Chapter 9</a>, and <a href="https://taylor-arnold.github.io/fds2/book/10_graphics_ii.html" target="_blank" rel="noopener noreferrer">Chapter 10</a>. However, only those items mentioned below, along with <u>everything listed on Exams I and II</u>, will be required for this exam.</p>
 
-    <p>The questions all concern the four RVA flights tables. The first, <code>rva</code>, has one row for each flight, with the columns <code>year</code>, <code>month</code>, <code>day</code>, <code>dep_time</code>, <code>sched_dep_time</code>, <code>dep_delay</code>, <code>arr_time</code>, <code>sched_arr_time</code>, <code>arr_delay</code>, <code>carrier</code>, <code>flight</code>, <code>tailnum</code>, <code>origin</code>, <code>dest</code>, <code>air_time</code>, and <code>distance</code>. The second, <code>airport</code>, has one row for each airport, with the columns <code>faa</code>, <code>name</code>, <code>lat</code>, <code>lon</code>, <code>alt</code>, and <code>tzone</code>. The third, <code>airline</code>, has one row for each airline, with the columns <code>carrier</code> and <code>name</code>. The fourth, <code>plane</code>, has one row for each aircraft, with the columns <code>tailnum</code>, <code>year</code>, <code>manufacturer</code>, <code>model</code>, <code>engines</code>, and <code>seats</code>.</p>
+    <p>The third exam is 75 minutes. It has fifteen short questions spread across five tasks, labeled A through E. <b>This exam works differently from the first two: you will not write any code.</b> Instead, every task gives you a small table, often together with the code that runs on it, and your job is to say what comes out or to pick the statement that explains it. Every question is either multiple choice or fill-in-the-blank, and you write your answers directly on the exam:</p>
+
+    <ul>
+      <li><b>Multiple choice</b> (eight questions). Four options; circle the one best answer. The right answer is always clearly right, but at least one of the others will look plausible if you are not careful: it is usually the answer you get by making one of the mistakes we have discussed in class, such as forgetting that the default join drops unmatched rows, counting a repeated key twice in a semi-join, or using <code>geom_bar</code> where <code>geom_col</code> is needed.</li>
+      <li><b>Fill in the blank</b> (seven questions). A number, a row count, or a short piece of text, with one correct answer. Most questions have two or three blanks. Numbers should be exact.</li>
+    </ul>
+
+    <p><b>You do not need to memorize any function names or arguments.</b> There is no reference sheet for this exam. Instead, anything you need is given with the question itself: what each kind of join keeps, the three rules of tidy data, what the arguments of <code>.pivot()</code> do, and how <code>binwidth</code> and <code>boundary</code> cut up a histogram are all stated where they are used. What you do need is to understand the ideas well enough to apply them to a small table in front of you. No calculator is needed.</p>
+
+    <p>The exam covers <a href="https://taylor-arnold.github.io/fds2/book/07_combine.html" target="_blank" rel="noopener noreferrer">Chapter 7</a>, <a href="https://taylor-arnold.github.io/fds2/book/08_collect.html" target="_blank" rel="noopener noreferrer">Chapter 8</a>, <a href="https://taylor-arnold.github.io/fds2/book/09_restructure.html" target="_blank" rel="noopener noreferrer">Chapter 9</a>, and <a href="https://taylor-arnold.github.io/fds2/book/10_graphics_ii.html" target="_blank" rel="noopener noreferrer">Chapter 10</a>, along with Homeworks 12 through 14, 18, and 19.</p>
+
+    <h3>What You Need To Know</h3>
+
+    <p>The exam has five tasks. Each one uses a specific kind of table and tests a specific, short list of ideas. The lists below are complete: if an idea is not here, it is not on the exam.</p>
+
+    <p><b>Task A. Keys and joins</b> (four questions). Two small tables: one with a row for each event (such as a flight) and one with a row for each thing the events refer to (such as an aircraft).</p>
     <ol>
-      <li>Building a bar plot with <code>geom_bar</code>, which counts the rows in each category for you, and with <code>geom_col</code>, which draws a number you have already computed. You should be able to say which one a given task calls for and why.</li>
-      <li>Ordering the categories of a plot by sorting the data before piping it into plotnine, including sorting by a window aggregate such as <code>.sort(pl.len().over(c.col))</code> or a median <code>.over</code> the category, and treating a numeric column as a category by casting it to a string with <code>.cast(pl.String)</code>.</li>
-      <li>Building a histogram with <code>geom_histogram</code>, setting either <code>binwidth</code> or <code>bins</code>, and being able to say what the height of a single bar means. You should also know <code>geom_density</code> and its <code>adjust</code> option.</li>
-      <li>Building a boxplot with <code>geom_boxplot</code>, and writing the <code>.group_by</code> and <code>.agg</code> code that computes by hand the three numbers that make up each box.</li>
-      <li>Adding a line of best fit with <code>geom_smooth(method="lm", se=False)</code>.</li>
-      <li>Flipping the axes of a plot with <code>coord_flip</code>.</li>
-      <li>Changing the scale of a plot by adding <code>scale_x_log10</code>, <code>scale_y_log10</code>, <code>scale_color_cmap_d</code>, or <code>scale_size_area</code>. You should also know how to assign a specific color to each category with <code>scale_color_manual</code>, and how to pin the start of an axis with the <code>limits</code> option of <code>scale_x_continuous</code> or <code>scale_y_continuous</code>. You do not need to know how to set the breaks manually.</li>
-      <li>Splitting a plot into a grid of small panels with <code>facet_wrap</code>.</li>
-      <li>Labeling a plot with <code>labs</code>, including the <code>x</code>, <code>y</code>, <code>color</code>, <code>title</code>, <code>subtitle</code>, and <code>caption</code> arguments.</li>
-      <li>Identifying the primary key of a table and the foreign keys that point to it, and checking whether a column really is a primary key by comparing <code>.n_unique()</code> against <code>len()</code>.</li>
-      <li>Combining two datasets using <code>.join</code>, where the key may have multiple columns (<code>on=[c.key1, c.key2]</code>) or different names in the two tables (<code>left_on</code> and <code>right_on</code>). You should be able to say which table belongs on the left and why, and to use <code>suffix</code> when joining the same table twice.</li>
-      <li>Changing the type of a join with <code>how="left"</code>, and saying what an inner join does with rows that have no match.</li>
-      <li>Using the filtering joins <code>how="semi"</code> and <code>how="anti"</code>, and saying what a row returned by an anti-join tells you about your data.</li>
-      <li>Reshaping a table with <code>.pivot(index=, on=, values=)</code> and <code>.unpivot(index=, variable_name=, value_name=)</code>, and explaining why plotnine usually needs the long version.</li>
-      <li>Splitting a packed cell with <code>.str.split</code> and unraveling the result with <code>.explode</code>.</li>
-      <li>We will not have <code>.join_asof</code> or <code>.join_where</code> on this exam.</li>
+      <li>A primary key identifies a row of its table. A foreign key is a primary key of another table that appears in this one, where it may repeat. The same column can be the primary key of one table and a foreign key in another; which it is depends on the table it sits in. A column is a primary key only if its number of distinct values (<code>.n_unique()</code>) equals the number of rows (<code>len()</code>).</li>
+      <li>The default join keeps only the rows of the left table that have a match. <code>how="left"</code> keeps every row of the left table and fills <code>null</code> where there is no match. Give the number of rows each returns and the value a given row gets. When a key repeats in the left table, each of its rows gets the matching values.</li>
+      <li><code>how="semi"</code> keeps the rows of the left table that have a match, and <code>how="anti"</code> keeps those that do not. Neither adds any columns, and a semi-join never repeats a row, however many matches it has. Count the rows each returns.</li>
+      <li>A row returned by an anti-join is a key with no match on the other side, which is worth chasing down: the other table may be incomplete, or the key may be mistyped.</li>
     </ol>
-    <p></p>
-    <p>Many questions will require putting multiple functions together in a method chain. All can be done with at most three data methods and three graphics methods. Your code should follow the class formatting rules of putting parentheses around the whole block, starting with the DataFrame, and having each method on its own line.</p>
+    <p>Right, full, and cross joins, <code>.join_asof</code>, and <code>.join_where</code> are <b>not</b> on the exam.</p>
 
-    <h3>Practice Exam Questions and Answers</h3>
-    <p>The questions below use the <code>movie</code> dataset from the earlier study guides, with columns <code>year</code>, <code>title</code>, <code>mpa</code>, <code>runtime</code>, <code>gross</code>, <code>rating_count</code>, <code>rating</code>, and <code>metacritic</code>. They also use a second table, <code>people</code>, with one row for each person who worked on a film and the columns <code>year</code>, <code>title</code>, <code>role</code> (either "director" or "starring"), <code>person</code>, and <code>gender</code>.</p>
+    <p><b>Task B. Tidy data</b> (three questions). A small table laid out the way someone might type it into a spreadsheet.</p>
+    <ol start="5">
+      <li>The unit of observation is what each row of a table describes, such as <i>carrier</i> or <i>carrier &times; day</i>. Name the unit of observation of a table, and give the number of rows and columns in the tidy version for a different unit of observation.</li>
+      <li>A table is tidy when every variable is a single column, every observation is a single row, and every table holds a single unit of observation. Every value in a table should describe the whole unit of observation: a fact about a carrier does not belong in a <i>carrier &times; day</i> table, and goes in its own table instead.</li>
+      <li>A missing value is a blank cell: not a 0, not a special code, and not a note. Notes belong in a notes column or the data dictionary.</li>
+    </ol>
+    <p>The spreadsheet guidelines (A1, sheets as tables, formatting), data dictionaries, the naming rules, dates, multimedia, and synthetic keys are <b>not</b> on the exam. They are covered by the homeworks and by your final project.</p>
 
-    <p>1. Create a horizontal bar plot of the number of films with each MPA rating, letting plotnine do the counting for you, with the bars ordered from the most common rating to the least.</p>
+    <p><b>Task C. Pivot and explode</b> (three questions). A long table of counts, and a table with several values packed into one cell.</p>
+    <ol start="8">
+      <li><code>.pivot(index=, on=, values=)</code> makes one row for each value of <code>index</code>, one new column for each distinct value of <code>on</code>, and fills the cells from <code>values</code>. Give the number of rows and columns of the result, and count the <code>null</code> cells left by combinations that never occurred. A pivot only rearranges values, so it can be undone; an aggregation such as a sum per group cannot.</li>
+      <li>plotnine maps aesthetics to columns, so it needs the long table. In a wide table the categories are column names rather than values, so there is no column to map to color. <code>.unpivot()</code> puts them back into a column.</li>
+      <li><code>.str.split("|")</code> turns a packed cell into a list, and <code>.explode()</code> gives each element of the list its own row, copying the other columns. Count the rows after exploding and the rows after a following <code>.group_by()</code>, and read off one count.</li>
+    </ol>
+    <p>The arguments of <code>.unpivot()</code> and <code>.fill_null()</code> are <b>not</b> on the exam.</p>
+
+    <p><b>Task D. Statistical geometries</b> (three questions). A list of numbers, or a description of a table that has already been summarized.</p>
+    <ol start="11">
+      <li><code>geom_bar</code> counts the rows in each category for you; <code>geom_col</code> draws a number that is already a column of the table. Say which one a task calls for and why.</li>
+      <li>A histogram cuts the number line into bins of width <code>binwidth</code>, with one edge at <code>boundary</code>, and the height of each bar is the number of values in its bin. Given a short list of numbers, give the height of a named bar and the number of bars.</li>
+      <li>A boxplot box runs from the 25th to the 75th percentile of each group, with a line at the median. With five values in order, these are the second, fourth, and third values.</li>
+    </ol>
+    <p>Density plots, <code>geom_smooth</code>, ordering categories with <code>.over()</code>, and casting a number to a string are <b>not</b> on the exam.</p>
+
+    <p><b>Task E. Facets and labels</b> (two questions). A short block of plotting code.</p>
+    <ol start="14">
+      <li><code>facet_wrap</code> draws one small panel per category. By default all panels share the same axes, which is what makes them comparable; <code>scales="free_y"</code> gives each panel its own y-axis, which makes each panel easier to read and the panels harder to compare.</li>
+      <li><code>.labs()</code> changes only the labels it is given. Any label left out keeps its default, which is the name of the column.</li>
+    </ol>
+    <p>Scale functions (<code>scale_color_manual</code>, <code>scale_x_log10</code>, the limits and breaks options), themes, and the best-practice guidelines are <b>not</b> on the exam.</p>
+
+    <h3>Practice Questions</h3>
+
+    <p>Every question below is in the exam's own format and uses a parallel dataset. Every question on the exam has a twin here, and there are a few extra practice questions beyond that, so this set is a little longer than the exam itself. Work through all of them with the tables in front of you, as you will on the day; the answers follow each question. If you can do these, you can do the exam. The questions use a small set of tables about films shown at three Richmond theaters.</p>
+
+    <h3>Task A. Keys and Joins</h3>
+
+    <p>The <code>screening</code> table has one row for each of six screenings, and the <code>film</code> table has one row for each of four films.</p>
+
+    <table border="1">
+      <tr><th>screening</th><th>theater</th><th>title</th></tr>
+      <tr><td>1</td><td>Byrd</td><td>Vertigo</td></tr>
+      <tr><td>2</td><td>Byrd</td><td>Jaws</td></tr>
+      <tr><td>3</td><td>Movieland</td><td>Jaws</td></tr>
+      <tr><td>4</td><td>Movieland</td><td>Heat</td></tr>
+      <tr><td>5</td><td>Criterion</td><td>Alien</td></tr>
+      <tr><td>6</td><td>Byrd</td><td>Psycho</td></tr>
+    </table>
+
+    <table border="1">
+      <tr><th>title</th><th>runtime</th></tr>
+      <tr><td>Vertigo</td><td>128</td></tr>
+      <tr><td>Jaws</td><td>124</td></tr>
+      <tr><td>Heat</td><td>170</td></tr>
+      <tr><td>Rocky</td><td>120</td></tr>
+    </table>
+
+    <p>By default, <code>.join()</code> keeps only the rows of the left table that have a match in the right table. With <code>how="left"</code> it keeps every row of the left table and fills <code>null</code> where there is no match. With <code>how="semi"</code> it keeps the rows of the left table that have a match, and with <code>how="anti"</code> the rows that do not; neither adds any columns.</p>
+
+    <p><b>1.</b> (Multiple choice.) Which statement about the column <code>title</code> is correct?</p>
+    <ol type="A">
+      <li>It is a primary key of both tables, because it has the same name in each.</li>
+      <li>It is not a key in either table, because <code>Jaws</code> appears twice in <code>screening</code>.</li>
+      <li>It is a primary key of <code>film</code> and a foreign key in <code>screening</code>.</li>
+      <li>It is a primary key of <code>screening</code>, because every screening shows exactly one film.</li>
+    </ol>
+
 <pre>
-(
-    movie
-    .sort(pl.len().over(c.mpa), descending=True)
-    .ggplot(aes(c.mpa))
-    .geom_bar()
-    .coord_flip()
-)</pre>
+(C). Each film has one row in `film`, so `title` identifies a row there. In
+`screening` one film can be shown many times (Jaws is shown twice), so there
+it is a foreign key pointing back at `film`. Whether a column is a primary
+or a foreign key depends on the table it sits in, not on its name, which
+rules out (A). The repeat in `screening` is exactly what a foreign key is
+allowed to do, which rules out (B).
+</pre>
 
-    <p>2. Create a histogram of the runtimes of the films, using a bin width of ten minutes. What does the height of a single bar tell us?</p>
-<pre>
-# The height of the bar spanning 90 to 100 is the number of films in the
-# dataset whose runtime falls between 90 and 100 minutes.
-(
-    movie
-    .ggplot(aes(c.runtime))
-    .geom_histogram(binwidth=10, boundary=0)
-)</pre>
+    <p><b>2.</b> (Fill in the blank.) The code <code>screening.join(film, on=c.title)</code> returns ________ rows. With <code>how="left"</code> added, it returns ________ rows, and the value of <code>runtime</code> for screening 6 is ________.</p>
 
-    <p>3. Create a boxplot showing the rating of the films for each MPA rating, with the categories ordered by rating and the boxes running horizontally. Then write the code that computes by hand the three numbers that make up each box.</p>
 <pre>
-(
-    movie
-    .sort(c.rating.median().over(c.mpa))
-    .ggplot(aes(c.mpa, c.rating))
-    .geom_boxplot()
-    .coord_flip()
+4;  6;  null.
+
+Screenings 1 to 4 have a match, and Jaws matches both of its screenings, so
+the default join keeps four rows. The left join keeps all six:
+
+    screening  theater    title    runtime
+    1          Byrd       Vertigo      128
+    2          Byrd       Jaws         124
+    3          Movieland  Jaws         124
+    4          Movieland  Heat         170
+    5          Criterion  Alien       null
+    6          Byrd       Psycho      null
+
+Alien and Psycho are not in `film`, so their runtime is null, not 0.
+</pre>
+
+    <p><b>3.</b> (Fill in the blank.) The code <code>screening.join(film, on=c.title, how="anti")</code> returns ________ rows. The code <code>film.join(screening, on=c.title, how="semi")</code> returns ________ rows.</p>
+
+<pre>
+2;  3.
+
+The anti-join keeps screenings 5 and 6, whose films have no row in `film`.
+The semi-join keeps the films that were shown at least once: Vertigo, Jaws,
+and Heat. Jaws was shown twice but appears once, because a semi-join only
+filters the rows of the left table and never repeats them. Rocky was never
+shown and is dropped. Answering 4, by counting Jaws twice, is the tempting
+wrong answer.
+</pre>
+
+    <p><b>4.</b> (Multiple choice.) Screening 5 appears in the output of the anti-join in question 3. What does that tell you?</p>
+    <ol type="A">
+      <li>Screening 5 was cancelled, so it has no film.</li>
+      <li>The film <code>Alien</code> has no row in <code>film</code>: either the table is incomplete or the title is mistyped, and it is worth finding out which.</li>
+      <li>Alien is longer than any film in the <code>film</code> table.</li>
+      <li>Screening 5 will be dropped from every join with <code>film</code>, whatever <code>how</code> is set to.</li>
+    </ol>
+
+<pre>
+(B). An anti-join returns the rows whose key has no match on the other side,
+which makes it a quick check on the quality of your data. Nothing in the
+tables says anything about cancellations or runtimes. (D) is false: the left
+join in question 2 kept screening 5.
+</pre>
+
+    <p><b>5.</b> (Fill in the blank.) The code <code>screening.select(c.title).n_unique()</code> returns ________, and <code>len(screening)</code> returns ________, so <code>title</code> ________ (is / is not) a primary key of <code>screening</code>.</p>
+
+<pre>
+5;  6;  is not.
+
+There are five distinct titles in six rows, because Jaws repeats. A column is
+a primary key only if the number of distinct values equals the number of
+rows. `screening` is the column that identifies a row of this table.
+</pre>
+
+    <h3>Task B. Tidy Data</h3>
+
+    <p>A theater manager records the number of tickets sold at four theaters on each day of one weekend in a spreadsheet, as below. A dataset is <i>tidy</i> when every variable is a single column, every observation is a single row, and every table holds a single unit of observation.</p>
+
+    <table border="1">
+      <tr><th>theater</th><th>fri</th><th>sat</th><th>sun</th></tr>
+      <tr><td>Byrd</td><td>120</td><td>210</td><td>180</td></tr>
+      <tr><td>Movieland</td><td>300</td><td>420</td><td>390</td></tr>
+      <tr><td>Criterion</td><td>150</td><td>260</td><td>240</td></tr>
+      <tr><td>Westhampton</td><td>80</td><td>130</td><td>110</td></tr>
+    </table>
+
+    <p><b>6.</b> (Fill in the blank.) The unit of observation of this table is ________. A tidy table with the unit of observation <i>theater &times; day</i>, holding the same numbers, has ________ rows and ________ columns.</p>
+
+<pre>
+theater;  12;  3.
+
+Each row describes one theater. In the long table each row is one theater on
+one day, 4 x 3 = 12 rows, with the columns theater, day, and tickets:
+
+    theater    day   tickets
+    Byrd       fri       120
+    Byrd       sat       210
+    Byrd       sun       180
+    Movieland  fri       300
+    ...
+
+The day has moved out of the column names and into a column of its own. The
+wide table is not wrong: it is tidy for the unit of observation theater.
+</pre>
+
+    <p><b>7.</b> (Multiple choice.) The manager adds a column <code>capacity</code>, the number of seats in each theater, to the 12-row <i>theater &times; day</i> table. What is wrong with this?</p>
+    <ol type="A">
+      <li>Capacity is a fact about a theater, not about a theater on a day: it is repeated three times per theater, nothing stops the copies from disagreeing, and it belongs in a separate table with one row per theater.</li>
+      <li>Nothing: every row now has all the information about its theater in one place.</li>
+      <li>A capacity is a count, and a tidy table may not hold two counts.</li>
+      <li>The column name is too short to describe what it holds.</li>
+    </ol>
+
+<pre>
+(A). Every value in a table should describe the whole unit of observation.
+Capacity describes a theater, so it goes once in a `theater` table, and we
+join it in when an analysis needs it. (B) is the tempting answer: having
+everything in one place is convenient, but it is what a join is for.
+</pre>
+
+    <p><b>8.</b> (Multiple choice.) Movieland's ticket count for Saturday was lost. Following the reading, what should that cell hold?</p>
+    <ol type="A">
+      <li>0, since no tickets were recorded.</li>
+      <li>The value &minus;1, a code that cannot be a real count.</li>
+      <li>The text <code>lost (register crashed)</code>, so that readers know why it is empty.</li>
+      <li>Nothing: the cell should be left blank.</li>
+    </ol>
+
+<pre>
+(D). A blank is the only way to mark a missing value that every program reads
+the same way. A 0 claims that Movieland sold no tickets, which is a different
+and false fact. A code like -1 will be averaged in by anyone who does not know
+about it. The explanation belongs in a notes column or in the data dictionary,
+never in the cell itself, where it would turn a numeric column into text.
+</pre>
+
+    <h3>Task C. Pivot and Explode</h3>
+
+    <p>The <code>counts</code> table gives the number of screenings at each theater in each of three weeks. Not every theater showed a film every week.</p>
+
+    <table border="1">
+      <tr><th>week</th><th>theater</th><th>n</th></tr>
+      <tr><td>1</td><td>Byrd</td><td>50</td></tr>
+      <tr><td>1</td><td>Criterion</td><td>40</td></tr>
+      <tr><td>2</td><td>Byrd</td><td>45</td></tr>
+      <tr><td>2</td><td>Movieland</td><td>30</td></tr>
+      <tr><td>3</td><td>Criterion</td><td>35</td></tr>
+      <tr><td>3</td><td>Movieland</td><td>20</td></tr>
+    </table>
+
+<pre>
+counts_wide = (
+    counts
+    .pivot(index=c.week, on=c.theater, values=c.n)
 )
+</pre>
 
-(
-    movie
-    .group_by(c.mpa)
-    .agg(
-        q25 = c.rating.quantile(0.25),
-        q50 = c.rating.quantile(0.50),
-        q75 = c.rating.quantile(0.75)
-    )
-)</pre>
+    <p>The <code>index</code> column gives the rows of the output, each distinct value of the <code>on</code> column becomes a new column, and the <code>values</code> column fills the cells.</p>
 
-    <p>4. Create a scatterplot of the number of ratings on the x-axis and the gross on the y-axis, with both axes on a logarithmic scale and a straight line of best fit drawn through the points with no confidence band around it.</p>
+    <p><b>9.</b> (Fill in the blank.) <code>counts_wide</code> has ________ rows and ________ columns, and ________ of its cells are <code>null</code>.</p>
+
+<pre>
+3;  4;  3.
+
+    week   Byrd   Criterion   Movieland
+    1        50          40        null
+    2        45        null          30
+    3      null          35          20
+
+One row per week, and four columns: `week` plus one per theater. The nine
+theater cells hold the six counts in the long table; the other three
+combinations never occurred, so they are null. Forgetting the `week` column
+(3 columns) is the tempting wrong answer.
+</pre>
+
+    <p><b>10.</b> (Multiple choice.) Why can't plotnine draw a line plot with one line for each theater directly from <code>counts_wide</code>?</p>
+    <ol type="A">
+      <li>The table would first have to be sorted by theater.</li>
+      <li>plotnine cannot draw a plot from a table that contains null values.</li>
+      <li>Line plots need at least five points per line, and each theater has only three weeks.</li>
+      <li>There is no <code>theater</code> column to map to the color aesthetic: the theaters are column names, not values. Unpivoting puts them back into a column.</li>
+    </ol>
+
+<pre>
+(D). plotnine maps aesthetics to columns. In the wide table, Byrd, Criterion,
+and Movieland are three separate columns, and nothing tells plotnine that
+they are three values of one variable. The long `counts` table already has a
+`theater` column, which is why plotnine prefers long data.
+</pre>
+
+    <p><b>11.</b> (Multiple choice.) What is the difference between pivoting <code>counts</code> to <code>counts_wide</code> and computing <code>counts.group_by(c.theater).agg(total = c.n.sum())</code>?</p>
+    <ol type="A">
+      <li>There is none: both produce one row per theater.</li>
+      <li>The pivot only rearranges the numbers, so unpivoting gets them all back; the aggregation adds them up, and the weekly counts cannot be recovered from the totals.</li>
+      <li>The pivot loses the week, and the aggregation keeps it.</li>
+      <li>The aggregation is tidy and the pivot never is.</li>
+    </ol>
+
+<pre>
+(B). Pivoting and unpivoting are round trips: no values are created or
+destroyed, only moved. Aggregation changes the unit of observation in one
+direction only. This is the reason the reading recommends storing data long:
+a long table can always be pivoted into whatever wide shape you need, but an
+aggregated table cannot be un-aggregated.
+</pre>
+
+    <p>The <code>film</code> table has a column listing each film's genres, packed into one cell and separated by <code>|</code>.</p>
+
+    <table border="1">
+      <tr><th>title</th><th>genres</th></tr>
+      <tr><td>Vertigo</td><td>Drama|Thriller</td></tr>
+      <tr><td>Jaws</td><td>Thriller</td></tr>
+      <tr><td>Heat</td><td>Crime|Drama|Thriller</td></tr>
+      <tr><td>Rocky</td><td>Drama</td></tr>
+    </table>
+
 <pre>
 (
-    movie
-    .ggplot(aes(c.rating_count, c.gross))
-    .geom_point()
-    .geom_smooth(method="lm", se=False)
-    .scale_x_log10()
-    .scale_y_log10()
-)</pre>
-
-    <p>5. Create a scatterplot of rating against gross, split into a grid of small panels, one for each MPA rating, with the points colored by MPA rating and the legend hidden. Then add a full set of labels to it.</p>
-<pre>
-(
-    movie
-    .ggplot(aes(c.rating, c.gross))
-    .geom_point(aes(color=c.mpa), show_legend=False)
-    .facet_wrap("mpa")
-    .labs(
-        x="Average viewer rating",
-        y="Gross (millions of dollars)",
-        title="Ratings and box office by MPA rating",
-        caption="Data from IMDb"
-    )
-)</pre>
-
-    <p>6. Join the <code>people</code> table to the movies data and count the number of films directed by each person. Hint: you need to join on both year and title.</p>
-<pre>
-# This is the better approach, because year and title together are the
-# primary key of movie and a foreign key in people, so we put people on
-# the left and movie on the right.
-(
-    people
-    .filter(c.role == "director")
-    .join(movie, on=[c.year, c.title])
-    .group_by(c.person)
-    .agg(count = pl.len())
-)</pre>
-
-    <p>7. A colleague sends you a new version of the <code>movie</code> table and you are not sure it has only one row per film. Write the code that would tell you, before you join anything, whether <code>title</code> on its own is a genuine primary key of that table. What happens to the join in question 6 if it is not, and why does Python not warn you?</p>
-<pre>
-(
-    movie
-    .select(c.title)
-    .n_unique() == len(movie)
-)
-
-# If it comes back False, a title with two rows will match every row of
-# people twice, so the join silently produces extra, duplicated rows.
-# Nothing raises an error: Polars did exactly what we asked, which is to
-# match every row of the left table against every matching row of the
-# right table, however many there are. The row count is the only place
-# the problem shows up, which is why we check the key beforehand.</pre>
-
-    <p>8. Return the rows of <code>people</code> whose film does not appear anywhere in the <code>movie</code> table at all. Then keep only the films that have at least one person listed for them, without adding any new columns.</p>
-<pre>
-(
-    people
-    .join(movie, on=[c.year, c.title], how="anti")
-)
-
-(
-    movie
-    .join(people, on=[c.year, c.title], how="semi")
-)</pre>
-
-    <p>9. Add the gross of each film to the <code>people</code> table, keeping every person in the result even when the film is missing from the <code>movie</code> table.</p>
-<pre>
-(
-    people
-    .join(movie.select(c.year, c.title, c.gross), on=[c.year, c.title], how="left")
-)</pre>
-
-    <p>10. Compute the number of films with each MPA rating in each year, and then reshape the result so that there is one row for each year and one column for each MPA rating.</p>
-<pre>
-(
-    movie
-    .group_by(c.year, c.mpa)
-    .agg(count = pl.len())
-    .pivot(index=c.year, on=c.mpa, values=c.count)
-    .fill_null(0)
-)</pre>
-
-    <p>11. Starting from the wide table in question 10, suppose you want to draw a line plot of the number of films over time, with one line per MPA rating. Explain why you cannot do this directly, and then write the code that reshapes the data and draws the plot.</p>
-<pre>
-# There is no mpa column in the wide table to map to the color
-# aesthetic. Each MPA rating is a column name rather than a value of a
-# variable, and plotnine has no way of knowing that those column names
-# all belong to the same underlying variable. Unpivoting puts the MPA
-# rating back into the data as a column.
-(
-    movie_wide
-    .unpivot(index=c.year, variable_name=c.mpa, value_name=c.count)
-    .ggplot(aes(c.year, c.count, color=c.mpa))
-    .geom_line()
-)</pre>
-
-    <p>12. Pretend there exists a column in <code>movie</code> called <code>genres</code>, holding all of the genres of a film packed into a single cell as text and separated by the character <code>|</code>, as in "Drama|Romance". Write the code that turns the data into a table with one row for each film and each of its genres, and then report how many films fall into each genre.</p>
-<pre>
-(
-    movie
-    .with_columns(
-        genre = c.genres.str.split("|")
-    )
-    .explode(c.genre)
+    film
+    .with_columns(genre = c.genres.str.split("|"))   # a list of the parts
+    .explode(c.genre)                                # one row per element
     .group_by(c.genre)
-    .agg(count = pl.len())
-)</pre>
+    .agg(n = pl.len())
+)
+</pre>
 
+    <p><b>12.</b> (Fill in the blank.) Before the <code>.group_by()</code>, the exploded table has ________ rows. The final result has ________ rows, and the value of <code>n</code> for <code>Drama</code> is ________.</p>
+
+<pre>
+7;  3;  3.
+
+Exploding gives one row per film and genre: 2 + 1 + 3 + 1 = 7 rows, with the
+title copied onto each one. There are three distinct genres (Drama, Thriller,
+and Crime). Drama appears for Vertigo, Heat, and Rocky; Thriller also has 3,
+and Crime has 1.
+</pre>
+
+    <h3>Task D. Statistical Geometries</h3>
+
+    <p><b>13.</b> (Multiple choice.) A classmate computes the average attendance at each theater with <code>.group_by(c.theater)</code> and <code>.agg(avg = c.attendance.mean())</code>, and wants to draw each average as a bar. Which geometry should they use, and why?</p>
+    <ol type="A">
+      <li><code>geom_col</code>, because the height of each bar is already a column of the table; <code>geom_bar</code> would count the rows instead.</li>
+      <li><code>geom_bar</code>, because it computes the average of each group for you.</li>
+      <li><code>geom_histogram</code>, because the averages are numeric.</li>
+      <li><code>geom_bar</code>, because the plot is a bar plot.</li>
+    </ol>
+
+<pre>
+(A). `geom_bar` takes a single categorical aesthetic and counts the rows in
+each category for you. Handed the summary table, which has one row per
+theater, it would draw every bar with a height of 1. `geom_col` takes an x
+and a y and draws each y as given. Neither one computes an average, which
+rules out (B).
+</pre>
+
+    <p><b>14.</b> (Fill in the blank.) The code <code>screening.ggplot(aes(c.theater)).geom_bar()</code>, using the <code>screening</code> table from Task A, draws ________ bars, and the bar for Byrd has a height of ________.</p>
+
+<pre>
+3;  3.
+
+One bar per theater (Byrd, Movieland, Criterion), and Byrd has three rows in
+`screening` (screenings 1, 2, and 6). Here geom_bar is the right choice,
+because the count is what we want and the table has no count column.
+</pre>
+
+    <p>The runtimes, in minutes, of ten films are:</p>
+
+<pre>
+85    92    98    104    107    112    118    126    133    151
+</pre>
+
+    <p>They are drawn with <code>geom_histogram(binwidth=20, boundary=0)</code>, which cuts the number line into bins 20 minutes wide, with one bin edge at 0, and draws one bar for each bin from the lowest value to the highest.</p>
+
+    <p><b>15.</b> (Fill in the blank.) The bar spanning 100 to 120 minutes has a height of ________, and the histogram has ________ bars.</p>
+
+<pre>
+4;  4.
+
+With an edge at 0 and a width of 20, the edges fall at 80, 100, 120, 140, and
+160, and the bins hold:
+
+    80 to 100:   85, 92, 98             3
+    100 to 120:  104, 107, 112, 118     4
+    120 to 140:  126, 133               2
+    140 to 160:  151                    1
+
+The height of a bar is the number of films whose runtime falls in that bin.
+</pre>
+
+    <p><b>16.</b> (Fill in the blank.) The attendance at the Byrd's five screenings last week was 20, 40, 50, 70, and 90. In a boxplot of attendance by theater, the box for Byrd runs from the 25th to the 75th percentile, which here is from ________ to ________, with a line at the median, ________.</p>
+
+<pre>
+40 to 70, with a line at 50.
+
+With five values in order, the median is the third, and the 25th and 75th
+percentiles are the second and the fourth. These are the three numbers that
+geom_boxplot computes for each group before it draws anything. Giving the
+smallest and largest values (20 and 90) is the tempting wrong answer: those
+are where the whiskers reach, not the box.
+</pre>
+
+    <h3>Task E. Facets and Labels</h3>
+
+    <p>The <code>screening_full</code> table has one row for each screening, with columns including <code>theater</code>, <code>runtime</code>, and <code>attendance</code>.</p>
+
+<pre>
+(
+    screening_full
+    .ggplot(aes(c.runtime, c.attendance))
+    .geom_point(aes(color=c.theater), show_legend=False)
+    .facet_wrap("theater")
+)
+</pre>
+
+    <p><b>17.</b> (Multiple choice.) This code draws one small panel per theater. A classmate changes the last line to <code>.facet_wrap("theater", scales="free_y")</code>, which gives each panel its own range on the y-axis. Which statement is correct?</p>
+    <ol type="A">
+      <li>The panels can now be compared more easily, because each theater's attendance fills its whole panel.</li>
+      <li>Each panel becomes easier to read on its own, but a point that sits higher in one panel no longer necessarily has a larger attendance than a lower point in another panel.</li>
+      <li>The x-axis of each panel also gets its own range.</li>
+      <li>Nothing changes, because every panel already has its own axes.</li>
+    </ol>
+
+<pre>
+(B). By default every panel shares one x-axis and one y-axis, which is what
+makes the panels comparable at a glance, and it rules out (D). Freeing the
+y-axis trades that comparison for legibility within each panel, the opposite
+of (A). Only the y-axis is freed, so (C) is false.
+</pre>
+
+    <p><b>18.</b> (Multiple choice.) The original plot has <code>.labs(y="Tickets sold", title="Attendance and runtime")</code> added to it. Which statement describes the result?</p>
+    <ol type="A">
+      <li>The x-axis has no label, because <code>.labs()</code> replaces every label at once.</li>
+      <li>The code raises an error, because <code>.labs()</code> needs a label for every aesthetic in the plot.</li>
+      <li>The x-axis is labeled <code>runtime</code>, because any label not given to <code>.labs()</code> keeps its default, the column name.</li>
+      <li>The title replaces the label on the x-axis.</li>
+    </ol>
+
+<pre>
+(C). `.labs()` changes only the labels it is given and leaves the rest alone.
+The defaults are the column names, which is why they are fine while you are
+exploring (they are the names you type) and worth replacing before you show
+the plot to anyone else.
+</pre>
+
+    <div style="height:200px"></div>
   </div>
 
   <script src="../js/site.js"></script>
