@@ -37,6 +37,115 @@
       <li>Say what has to be true about the original training data for these embeddings to be useful on our birds.</li>
       <li>Say what the classifier's high accuracy does and does not demonstrate.</li>
     </ol>
+
+    <h3>Solutions</h3>
+
+    <p>1. Dot products of the two images with each category, the predicted labels, and the same after adding <code>finch</code>.</p>
+<pre>
+The dot product multiplies matching entries and adds them up.
+
+img1 = (0.8, 0.6, 0.0)
+  canary   0.8*1.0 + 0.6*0.0 + 0.0*0.0 = 0.80
+  peacock  0.8*0.0 + 0.6*0.0 + 0.0*1.0 = 0.00
+  robin    0.8*0.6 + 0.6*0.8 + 0.0*0.0 = 0.96    predicted: robin
+
+img2 = (0.0, 0.6, 0.8)
+  canary   0.0*1.0 + 0.6*0.0 + 0.8*0.0 = 0.00
+  peacock  0.0*0.0 + 0.6*0.0 + 0.8*1.0 = 0.80    predicted: peacock
+  robin    0.0*0.6 + 0.6*0.8 + 0.8*0.0 = 0.48
+
+Adding finch = (0.7, 0.7, 0.1):
+
+  img1 . finch = 0.8*0.7 + 0.6*0.7 + 0.0*0.1 = 0.56 + 0.42 + 0.00 = 0.98
+  img2 . finch = 0.0*0.7 + 0.6*0.7 + 0.8*0.1 = 0.00 + 0.42 + 0.08 = 0.50
+
+img1 now scores highest with finch (0.98 against robin's 0.96), so its
+prediction changes from robin to finch. img2 stays peacock (0.80 against
+0.50). None of the original six scores changed.
+</pre>
+
+    <p>2. What the changed prediction shows about what a zero-shot prediction depends on.</p>
+<pre>
+The prediction depends on the list of candidate labels as well as on the image
+and the model. The classifier picks whichever label on the list is closest, so
+adding a label can take the top spot even though every existing score is the
+same. The model never judges whether an image "is a robin" on its own terms.
+It only ranks the options it was given.
+
+Two consequences follow. First, the classifier cannot answer "none of these."
+An image of a duck given only these labels would still come out as one of them.
+Second, close scores make fragile predictions. img1 went from robin to finch
+on a margin of 0.02. So a zero-shot result should be reported together with
+the label set used, and ideally with the wording of the text prompts, since
+"robin" and "a photo of a robin" give different text embeddings.
+</pre>
+
+    <p>3. Why the UMAP plot separates the ten species when the model was never told they exist.</p>
+<pre>
+Because the ViT model learned general visual features during its original
+training, on 14 million images labeled with 21,843 classes. To tell that many
+classes apart, it had to learn features for shapes, textures, feathers, beaks,
+and the kinds of scenes objects appear in. Those features are what the
+768-dimensional embedding records. Our ten species differ in exactly these
+ways, so photographs of the same species land near each other.
+
+The separation is a property of the embeddings. UMAP was not given the labels
+either; it only kept images that were close in the full space close on the
+plot. The colors come from our labels, added afterward.
+
+The task also helps. These ten species look very different from each other:
+an ostrich, a hummingbird, and a peacock are hard to confuse. The photographs
+of one species also tend to share settings, and the embedding captures scene
+as well as bird. Ten similar-looking sparrows would probably not separate so
+cleanly.
+</pre>
+
+    <p>4. What has to be true of the original training data for the embeddings to be useful on our birds.</p>
+<pre>
+It has to contain images like ours, labeled in ways that required the model to
+notice the differences we care about.
+
+For ViT, that means many ordinary photographs, including photographs of birds
+in natural settings. The labels have to be fine enough that the model learned
+to separate kinds of birds and not just "bird" from "not bird." If the model
+had been trained only on, say, medical scans or line drawings, its features
+would describe the wrong things.
+
+For SigLIP, the image-caption pairs also have to connect appearance to words.
+There must have been enough pictures captioned with words like "canary" and
+"peacock" for the text embedding of the name to land near the images. A rare
+species, or one usually described by a name the captions seldom used, would
+be classified poorly. Whatever habits the training data had, such as typical
+backgrounds or which birds were photographed most, carry over into our
+results.
+</pre>
+
+    <p>5. What the classifier's high accuracy does and does not show.</p>
+<pre>
+It shows that on this collection, with these ten labels, SigLIP's embedding of
+nearly every photograph is closest to the name of the right species. It did
+this without any labeled examples or training on our part, so the method works
+well enough to be a strong starting point for tasks like this one.
+
+It does not show:
+
+  - that it would work as well on harder tasks, such as similar-looking
+    species, many more labels, or photographs taken in other ways;
+  - that it recognizes the bird and not the setting, since backgrounds are
+    part of the embedding;
+  - that the model has not seen these images before. It was trained on
+    images from the internet, and a public bird dataset could have been
+    among them;
+  - that it can reject an image that fits none of the labels, since it
+    always picks one of the ten.
+
+The few errors, birds in odd positions or cut off at the edge of the frame,
+are a reminder that the accuracy is measured on mostly clear, well-framed
+photographs.
+</pre>
+
+    <div style="height:200px"></div>
+
   </div>
 
   <script src="../js/site.js"></script>

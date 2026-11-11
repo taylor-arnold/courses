@@ -45,6 +45,117 @@
       <li>Given that the darkest images have black backgrounds and the brightest have white ones, say what the <code>brightness</code> column is actually a measurement of.</li>
       <li>The images with the most yellow pixels are largely hummingbirds shot against yellow-green foliage, so say what would go wrong if you used the color-proportion columns to predict a bird's species.</li>
     </ol>
+
+    <h3>Solutions</h3>
+
+    <p>1. Upload a zip folder of your corpus to your Box folder.</p>
+<pre>
+There is no correct answer to this question. It is complete once the zip
+file is in your Box folder and you have written down its name, the number
+of pages in your corpus, and the date you collected it.
+</pre>
+
+    <p>2. The shape, the color of each pixel, and the mean pixel value of the 2×2 image.</p>
+<pre>
+Shape: (2, 2, 3). That is 2 rows of pixels, 2 columns, and 3 color channels.
+
+OpenCV stores the channels in BGR order (blue, green, red), so:
+
+  row 0, col 0   [255,   0,   0]   blue
+  row 0, col 1   [  0,   0, 255]   red
+  row 1, col 0   [  0, 255,   0]   green
+  row 1, col 1   [255, 255, 255]   white
+
+Reading [255, 0, 0] as red is the mistake to avoid; in RGB order it would be,
+but OpenCV puts blue first.
+
+The mean is taken over all 12 numbers:
+
+  (255 + 255 + 255 + 3 * 255) / 12 = 1530 / 12 = 127.5
+
+Each of the three colored pixels contributes one 255, and the white pixel
+contributes three.
+</pre>
+
+    <p>3. M, m, C, hue, saturation, and value for R = 0.2, G = 0.6, B = 0.4.</p>
+<pre>
+M = max(0.2, 0.6, 0.4) = 0.6
+m = min(0.2, 0.6, 0.4) = 0.2
+C = M - m = 0.6 - 0.2 = 0.4
+
+V = M = 0.6
+
+S = C / V = 0.4 / 0.6 = 0.667
+
+The maximum is G, so the hue uses the green case:
+
+H = 60 * ( (B - R) / C + 2 )
+  = 60 * ( (0.4 - 0.2) / 0.4 + 2 )
+  = 60 * ( 0.5 + 2 )
+  = 60 * 2.5
+  = 150 degrees
+
+150 degrees sits between green (120) and cyan (180), so the pixel is a
+fairly vivid, medium-bright blue-green. OpenCV would store it as H = 75 (it
+halves the hue), S = 170, and V = 153 (both scaled to 0 to 255).
+</pre>
+
+    <p>4. What happens to the hue formula when R = G = B = 0.5, and why the answer is not meaningful.</p>
+<pre>
+M = m = 0.5, so C = 0. Every hue case divides by C, so the formula would
+divide by zero. The reading's definition avoids this with its first case:
+when C = 0, H is set to 0 degrees. The other components are S = 0 / 0.5 = 0
+and V = 0.5, a medium gray.
+
+The 0 degrees is a convention, not a measurement. A gray pixel has no hue,
+because hue describes which channel dominates and none does. But 0 degrees is
+also the hue of red, so a program that looked only at the hue channel would
+count every gray, white, and black pixel as red. This is why
+DSImage.compute_colors checks saturation and value as well and puts
+desaturated or very dark pixels in the neutral category.
+</pre>
+
+    <p>5. What the <code>brightness</code> column measures.</p>
+<pre>
+It is the mean of every channel of every pixel in the photograph, so it
+measures the whole scene. The background is usually most of the frame, so
+the background has the most influence on the score. Lighting and photographic
+style also matter. The color of the bird has comparatively little effect.
+
+That is why the darkest images are the ones with black backgrounds and the
+brightest are the ones with white backgrounds. The same bird would score very
+differently photographed against snow or against a dark studio backdrop. The
+differences between species in the reading, with ostriches brightest and
+peacocks darkest, are best read as differences in how each species tends to be
+photographed, which is how the reading explains them.
+</pre>
+
+    <p>6. What would go wrong if you used the color-proportion columns to predict species.</p>
+<pre>
+The columns measure the whole scene, background included, so a model trained
+on them would learn backgrounds as much as birds. A high yellow proportion
+would come to mean "hummingbird or canary" partly because hummingbirds in this
+collection are often photographed near yellow-green foliage.
+
+Several things follow:
+
+  - A hummingbird photographed against a blue sky or a white wall would lose
+    the yellow the model relies on and be misclassified.
+  - A bird of another species photographed in yellow-green foliage would be
+    pushed toward hummingbird.
+  - Accuracy measured on this collection would look better than it is,
+    because the photographs share the same conventions. It would drop on
+    photographs taken a different way.
+  - The proportions also discard where the colors are, so there is no way to
+    separate the bird's pixels from the background's.
+
+Before trusting such a model, look at the images it gets wrong and the images
+it gets right with the highest confidence, and check whether the background is
+doing the work. Cropping the images to the bird would test this directly.
+</pre>
+
+    <div style="height:200px"></div>
+
   </div>
 
   <script src="../js/site.js"></script>

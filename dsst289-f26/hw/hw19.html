@@ -37,6 +37,86 @@
       <li>The code that adds a full set of labels to the scatter plot: a description of each axis, a title, a subtitle, and a caption naming where the data came from, along with a sentence explaining why we have not bothered to do this for any of the plots we have made so far.</li>
       <li>For each of the two questions below, name the plot you would use and explain your choice in a sentence: (a) how are the study hours of the class distributed, and (b) do students in some majors have higher GPAs than students in others? Then name the one guideline from the list at the end of the reading that you think is most often broken in the plots you have seen elsewhere, and say why.</li>
     </ol>
+
+    <h3>Solutions</h3>
+    <p>1. Color the points by major using the palette the reading recommends for color-blind readers, then write a version with a color of your choice for each of three majors.</p>
+<pre>
+(
+    students
+    .ggplot(aes(c.study_hours, c.gpa))
+    .geom_point(aes(color=c.major))
+    .scale_color_cmap_d()
+)
+
+(
+    students
+    .ggplot(aes(c.study_hours, c.gpa))
+    .geom_point(aes(color=c.major))
+    .scale_color_manual(values={
+        "Biology": "navy",
+        "Economics": "darkorange",
+        "History": "seagreen"
+    })
+)</pre>
+    <p>The recommended palette is viridis, which runs from dark purple through green to yellow. It is already the default for a categorical color, so <code>.scale_color_cmap_d()</code> names that choice without changing the plot. Leaving the scale out entirely is also correct. The homework does not name the three majors, so the ones above are placeholders. The keys in <code>values</code> have to match the values in the <code>major</code> column exactly, and any color name that plotnine knows will work.</p>
+
+    <p>2. Put grid lines and labels every five hours on the horizontal axis and start the vertical axis at zero.</p>
+<pre>
+(
+    students
+    .ggplot(aes(c.study_hours, c.gpa))
+    .geom_point()
+    .scale_x_continuous(breaks=breaks_width(5))
+    .scale_y_continuous(limits=(0, None))
+)</pre>
+    <p><code>breaks_width</code> comes from <code>mizani.breaks</code>, which the reading imports in its setup. The <code>None</code> in <code>limits</code> leaves the top of the vertical axis at its default.</p>
+
+    <p>3. Split the scatter plot into one panel per major, with points colored by major and no legend.</p>
+<pre>
+(
+    students
+    .ggplot(aes(c.study_hours, c.gpa))
+    .geom_point(aes(color=c.major), show_legend=False)
+    .facet_wrap("major")
+)</pre>
+    <p>The legend can go because each panel is already labeled with its major. The panels share the same axes by default, which lets you compare the majors at a glance.</p>
+
+    <p>4. Add axis labels, a title, a subtitle, and a caption, and explain why we have not labeled earlier plots.</p>
+<pre>
+(
+    students
+    .ggplot(aes(c.study_hours, c.gpa))
+    .geom_point()
+    .labs(
+        x="Hours Spent Studying per Week",
+        y="Grade Point Average (GPA)",
+        title="Relationship between Study Time and GPA",
+        subtitle="All students in the class",
+        caption="Data from the class survey"
+    )
+)</pre>
+    <p>The wording of the labels is up to you, and the caption should name wherever your data came from. We have not labeled earlier plots because they were for exploring the data. Default labels take no effort, so it is easy to try a different variable or setting without relabeling anything. They also show the exact column names, which are the names you need when you write the next piece of code. Full labels are worth adding once a plot is going to someone else.</p>
+
+    <p>5. Choose a plot for each of two questions and explain the choice, then name the guideline from the end of the reading that you see broken most often.</p>
+<pre>
+(a) A histogram of study_hours. The question is about the
+distribution of a single numeric variable, and a histogram shows how
+many students fall into each range of hours. A density plot is also
+a good answer.
+
+(b) A boxplot of gpa for each major. This question is about the
+relationship between a categorical variable and a numeric one, and a
+boxplot puts the median and spread of each major side by side.
+Sorting the majors by their median GPA makes the comparison easier.
+
+The guideline has no single correct answer. A strong response names
+one guideline from the list and explains why, ideally with a kind of
+plot or a specific example the student has seen, such as a news graphic
+or a report at work. One possible example: "Use color and shape only
+with a small set of categories." Line charts in the news often give
+each of a dozen or more countries its own color, so several of the
+lines look alike and the reader has to keep checking the legend.</pre>
+
   </div>
 
   <script src="../js/site.js"></script>

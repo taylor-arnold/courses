@@ -37,6 +37,76 @@
       <li>The code that turns <code>students</code> into a table with one row for each student and each language they speak, followed by the code that reports how many students in the class speak each language.</li>
       <li>A short explanation, in your own words, of why we can pivot a table and then unpivot it back without losing anything, but cannot undo an aggregation the same way, and of what this implies about the shape in which we should store a dataset that we plan to keep for a long time.</li>
     </ol>
+
+    <h3>Solutions</h3>
+    <p>1. Reshape <code>semesters</code> to one row per semester and one column per student, then turn it back.</p>
+<pre>
+gpa_wide = (
+    semesters
+    .pivot(index=c.semester, on=c.name, values=c.gpa)
+)
+
+(
+    gpa_wide
+    .unpivot(index=c.semester, variable_name=c.name, value_name=c.gpa)
+)</pre>
+    <p>Setting <code>variable_name</code> and <code>value_name</code> gives the columns their original names back instead of the defaults <code>variable</code> and <code>value</code>. A student who was not enrolled in some semester gets a <code>null</code> in the wide table. After the unpivot, that <code>null</code> becomes an extra row with a missing GPA. Adding <code>.drop_nulls()</code> removes those rows, but it also removes any semester whose GPA was already missing in <code>semesters</code>.</p>
+
+    <p>2. Name the unit of observation of each table, and give a question that is easier to answer with the wide one.</p>
+<pre>
+The wide table has the unit of observation semester. The long table
+has the unit of observation student × semester.
+
+The wide table makes it easier to compare specific students, such as
+"In each semester, how much higher was Ana's GPA than Ben's?" With
+one column per student, that is a single subtraction of the Ana
+column minus the Ben column.</pre>
+
+    <p>3. Explain why a line plot with one line per student cannot be drawn directly from the wide table, then reshape the data and draw it.</p>
+<pre>
+(
+    gpa_wide
+    .unpivot(index=c.semester, variable_name=c.name, value_name=c.gpa)
+    .ggplot(aes(c.semester, c.gpa, color=c.name))
+    .geom_line()
+)</pre>
+    <p>One line per student means mapping <code>color</code> to the student, but in the wide table the student is not a column. The students are spread across the column names, so there is nothing to write inside <code>aes()</code>. Unpivoting puts <code>name</code> back as a column, and <code>color=c.name</code> then gives each student a line.</p>
+
+    <p>4. Turn <code>students</code> into one row per student and language, then count how many students speak each language.</p>
+<pre>
+student_lang = (
+    students
+    .select(c.name, c.languages)
+    .with_columns(
+        language = c.languages.str.split("|")
+    )
+    .explode(c.language)
+)
+
+(
+    student_lang
+    .group_by(c.language)
+    .agg(pl.len().alias("n"))
+    .sort(c.n, descending=True)
+)</pre>
+    <p><code>.str.split("|")</code> turns each cell into a list of language codes, and <code>.explode()</code> gives each item in the list its own row, copying the student's name onto each one. The <code>.select</code> is optional, but it keeps the other columns from being repeated. Each student lists each language once, so counting rows gives the number of students who speak it.</p>
+
+    <p>5. Explain why a pivot can be undone but an aggregation cannot, and what that means for how to store data long term.</p>
+<pre>
+A pivot only rearranges the values. Every GPA in the long table is
+still in the wide table, just in a different place, so unpivoting
+can put each one back where it came from. An aggregation replaces many
+values with one summary, such as a mean or a maximum, and throws the
+original values away. Many different sets of values give the same
+mean, so there is no way to work backward from the summary to the
+original rows.
+
+This means a dataset we plan to keep should be stored in its most
+detailed, long form, with one row for each smallest unit we recorded.
+From there we can pivot to any wide shape or aggregate to any summary
+an analysis needs. Once a table has been aggregated, the detail is
+gone for good.</pre>
+
   </div>
 
   <script src="../js/site.js"></script>
