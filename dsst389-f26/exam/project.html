@@ -89,31 +89,33 @@
 
     <p style="height:0.5em"></p>
 
-    <p>You may pick something not on this list, and most of you should. Bring it to the workshop and defend it.</p>
+    <p>You may pick something not on this list, and most of you should.</p>
 
     <h3>The Tables</h3>
 
-    <p>Your pipeline produces a directory of Parquet files and a manifest, in the two-layer structure of Chapter 12: the requests cache is the raw layer, the tables are the processed layer, and everything in the second can be rebuilt from the first without touching the network. At minimum you collect:</p>
+    <p>The <a href="https://colab.research.google.com/github/taylor-arnold/courses/blob/main/dsst389-f26/exam/project_collect.ipynb?hl=en" target="_blank" rel="noopener noreferrer">collection notebook</a> linked at the top of this page builds the corpus for you from one file that you supply: a CSV with one row per page, holding the page title in a column named <code>doc_id</code> next to the metadata columns you compiled by hand. Run it from top to bottom and it downloads a single zip file holding the tables below as Parquet files, a manifest recording what was collected and when, and the requests cache. That zip is what the analysis notebook loads and what you hand in.</p>
 
-    <p><b>pages</b> &mdash; the spine. One row per page, with <code>doc_id</code> as the primary key: the resolved article title, unique within your corpus, and the same string that every other table carries to join back to this one. The authors table also kept Wikipedia's numeric <code>page_id</code>; you may skip it. A single readable key is enough for a corpus you build and freeze yourself, and it keeps every join in the analysis on one column.</p>
+    <p><b>pages</b> &mdash; the spine. One row per page, with <code>doc_id</code> as the primary key: the resolved article title, which every other table carries to join back to this one. Your metadata columns live here.</p>
 
-    <p><b>texts</b> &mdash; one row per page, the plain-text extract. This feeds Chapters 14 and 15.</p>
+    <p><b>texts</b> &mdash; one row per page, the prose of the article. This feeds Chapters 14 and 15.</p>
 
-    <p><b>links</b> &mdash; one row per outgoing internal link, in full. The filtered view that keeps only the edges inside your corpus is derived from it, not a substitute for it, because the network chapter may want to revisit that decision.</p>
+    <p><b>anno</b> &mdash; one row per token, the spaCy annotation of the texts from Chapter 14.</p>
 
-    <p><b>revisions</b> &mdash; the edit history, with the revision ID, timestamp, user, size, and comment. Cap it at the 500 most recent revisions per page unless your corpus is small enough that the full history is cheap and a question actually needs it. Say which you did and why.</p>
+    <p><b>links</b> &mdash; one row per outgoing internal link. The analysis notebook derives from it the view that keeps only the edges inside your corpus.</p>
 
-    <p><b>pageviews</b> &mdash; daily views over a fixed window that you state, from the REST API. Some of your pages will have none, and the 404 is an answer, not an error.</p>
+    <p><b>revisions</b> &mdash; the edit history, with the revision ID, timestamp, user, size, and comment, capped at the 500 most recent revisions per page unless you change the setting.</p>
+
+    <p><b>pageviews</b> &mdash; daily views over the fixed window set in the notebook. Some of your pages will have none, and that is an answer, not an error.</p>
 
     <p><b>langlinks</b> &mdash; which other language editions have this page, and under what title.</p>
 
-    <p><b>Two metadata columns of your own, at minimum, that do not come from the API.</b> The book's author corpus carries <code>born</code>, <code>died</code>, <code>era</code>, and <code>gender</code>, and Chapter 12 is blunt about where they came from: somebody compiled them by hand, and a reader who wants to check them has to check them against something other than Wikipedia. Do the same. Take them from a reference work, a database, an official record, or your own coding of each page, and record in the manifest where each one came from and how you resolved the ambiguous cases. Without them, every variable you can group by is one Wikipedia chose for you, and the project can only ever tell you what Wikipedia already thinks.</p>
+    <p><b>Two metadata columns of your own, at minimum, that do not come from the API.</b> The book's author corpus carries <code>born</code>, <code>died</code>, <code>era</code>, and <code>gender</code>, and somebody compiled them by hand. Do the same. Take them from a reference work, a database, an official record, or your own coding of each page, and fill in the two lines of the manifest that say where each one came from and how you resolved the ambiguous cases. Without them, every variable you can group by is one Wikipedia chose for you, and the project can only ever tell you what Wikipedia already thinks.</p>
 
-    <p>Collect politely: a real user agent, a cache, requests in series, and a pause between the ones that actually go over the network. You are one of about twenty-five people pointing a script at the same servers this month.</p>
+    <p>The notebook collects politely on your behalf, with a cache, requests in series, and a pause between the ones that actually go over the network. Put your real email address in its user agent setting. You are one of about twenty-five people pointing a script at the same servers this month.</p>
 
     <h3>The Analysis</h3>
 
-    <p>Six or more findings that answer research questions you posed in the proposal. Every finding gets a claim, the evidence, and one sentence saying what it is evidence <i>of</i> &mdash; a fact about the world, a fact about how Wikipedia is written, or something you cannot tell apart with the data you have. That third answer is a real finding and will be graded as one, as long as you say what you would have had to collect to separate them.</p>
+    <p>Six or more findings that answer research questions about your corpus. Start from the analysis notebook linked at the top of this page, which loads every table. Every finding gets a claim, the evidence, and one sentence saying what it is evidence <i>of</i> &mdash; a fact about the world, a fact about how Wikipedia is written, or something you cannot tell apart with the data you have. That third answer is a real finding and will be graded as one, as long as you say what you would have had to collect to separate them.</p>
 
     <p>Across the notebook, and explicitly labeled where they appear, you must have:</p>
 
@@ -127,39 +129,27 @@
 
     <p>At least six plots, using at least four different geometries, of which at least one is faceted and at least one is fully labeled with <code>labs</code>.</p>
 
-    <h3>The Datasheet</h3>
-
-    <p>One page, written for somebody who has your Parquet files and none of your memories. What population does this corpus claim to represent, and by what rule. Who is in it who should not be, and who is missing. What was retrieved, from which endpoints, on what date, and what would change if it were retrieved again tomorrow. Which columns came from an API and which came from you, and how you decided the cases where you had to decide. What the corpus cannot be used for. What you would collect differently if you started over.</p>
-
-    <p>The name comes from the practice of publishing a <a href="https://arxiv.org/abs/1803.09010" target="_blank" rel="noopener noreferrer">datasheet</a> alongside a dataset, in the way that an electronic component ships with a sheet stating its tolerances. Yours is a page of prose, not a form, and it is the deliverable that will still be worth something in five years.</p>
-
     <h3>Deliverables</h3>
     <ol>
-      <li><b>Proposal</b> (due at Workshop I). The population and the rule that defines it, how you will enumerate it, roughly how many pages it holds, the two-or-more metadata columns you will add by hand and where they will come from, and three or four research questions with the tables each one needs, typed up as a single document. At the workshop you will trade proposals with a partner whose job is to break your population definition: to name a page that your rule lets in and should not, and one that it keeps out and should not. Populations are locked at the end of that class.</li>
-      <li><b>The collection notebook</b>. The pipeline, start to finish, from the population rule to the Parquet files. It must run. Do it in Colab and hand it in as a <code>.py</code> file (File &rarr; Download &rarr; Download .py).</li>
-      <li><b>The corpus</b>. The Parquet tables, the manifest, and the requests cache.</li>
-      <li><b>The analysis notebook</b>. Six or more findings, meeting the requirements above. Like the collection notebook, hand it in as a <code>.py</code> file downloaded from Colab.</li>
-      <li><b>The datasheet</b>. One page, typed.</li>
+      <li><b>The corpus</b>. The zip file that the collection notebook downloads: the Parquet tables, the manifest, the requests cache, and your metadata file.</li>
+      <li><b>The analysis notebook</b>. Six or more findings, meeting the requirements above. Do the analysis in Colab and hand it in as a <code>.py</code> file (File &rarr; Download &rarr; Download .py).</li>
       <li><b>Presentation</b>. A pre-recorded video of six to eight minutes. There are no slides required and it does not need to be formal, but it should really walk us through what you found: your population and how you defined it, one network plot, one temporal plot, and a clear account of your main findings &mdash; what you learned about your subject, what you learned about Wikipedia, and how confident you are in telling those two apart. See <a href="#submitting">Submitting Your Work</a> for how to record and hand it in.</li>
     </ol>
 
     <h3>Grading</h3>
     <ul>
-      <li>Proposal and population definition &mdash; 15%</li>
-      <li>The corpus and the pipeline &mdash; 30%</li>
-      <li>Analysis notebook &mdash; 35%</li>
-      <li>Datasheet &mdash; 10%</li>
+      <li>The corpus and its population definition &mdash; 45%</li>
+      <li>Analysis notebook &mdash; 45%</li>
       <li>Presentation &mdash; 10%</li>
     </ul>
 
-    <p>The corpus is graded on the care of its definition and the honesty of its documentation, not on how exciting its subject is. A modest population, cleanly enumerated, fully keyed, and frankly described, beats an ambitious one whose foreign keys do not resolve and whose manifest cannot say where half the columns came from.</p>
+    <p>The corpus is graded on the care of its definition and the honesty of its documentation, not on how exciting its subject is. A modest population, cleanly enumerated and frankly described, beats an ambitious one whose manifest cannot say where half the columns came from.</p>
 
     <h3 id="submitting">Submitting Your Work</h3>
     <p>Everything is due by <b>noon on Monday, December 7th</b>, turned in through the shared <b>Box</b> folder. There are no live presentations, and we do not meet that day. Submit:</p>
     <ul>
-      <li>The <b>proposal</b> and the <b>datasheet</b> &mdash; two typed documents.</li>
-      <li>The <b>corpus</b> &mdash; the Parquet tables, the manifest, and the requests cache.</li>
-      <li>The <b>collection notebook</b> and the <b>analysis notebook</b>, each downloaded from Colab as a <code>.py</code> file.</li>
+      <li>The <b>corpus</b> &mdash; the zip file from the collection notebook.</li>
+      <li>The <b>analysis notebook</b>, downloaded from Colab as a <code>.py</code> file.</li>
       <li>The <b>presentation video</b>.</li>
     </ul>
 
@@ -181,11 +171,11 @@
       </tr>
       <tr>
         <td><b>2026-10-14</b></td>
-        <td>Project launched in class, and the proposal assigned: the population, the rule, the metadata, the questions. You have two weeks for it. Nothing in it depends on Exam II, and nothing in it should be done the night before the workshop.</td>
+        <td>Project launched in class, and <a href="../hw/hw44.html">Homework 44</a> assigned: choose your population and write down the rule that defines it.</td>
       </tr>
       <tr>
         <td><b>2026-10-28</b></td>
-        <td><b>Workshop I.</b> Proposal due. You will trade proposals with a partner, who will try to break your population definition. Populations are locked at the end of class, and collection begins that afternoon.</td>
+        <td><b>Workshop I.</b> <a href="../hw/hw44.html">Homework 44</a> due. You will trade population definitions with a partner, who will try to break yours. Populations are locked at the end of class, and collection begins that afternoon.</td>
       </tr>
       <tr>
         <td><b>2026-11-04</b></td>
@@ -205,11 +195,9 @@
       </tr>
       <tr>
         <td><b>2026-12-07</b></td>
-        <td><b>Everything due at noon.</b> No class meeting. Submit through Box: the proposal, the corpus, both notebooks, the datasheet, and the presentation video.</td>
+        <td><b>Everything due at noon.</b> No class meeting. Submit through Box: the corpus, the analysis notebook, and the presentation video.</td>
       </tr>
     </table>
-
-    <p>One piece of slack is built into that calendar on purpose, and you should use it. The proposal is a two-week homework because choosing a population well is the part of this project that most repays being slept on, and because the week before the workshop is the week of Exam II. Everything else comes together at the end: the corpus, both notebooks, the datasheet, and the recorded presentation are all due at noon on December 7th. The two class meetings before that are open office hours rather than presentation days, so bring whatever is still giving you trouble.</p>
 
     <div style="height:100px"></div>
   </div>

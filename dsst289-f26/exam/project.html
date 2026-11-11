@@ -37,7 +37,7 @@
 
     <p>You will design a relational dataset about your own life, collect it by hand over fourteen days, document it, analyze it, and present it. The analysis will use every tool from the second half of the course, applied to data that only you possess. It closes with a hand-drawn visualization in the spirit of the <a href="https://www.dear-data.com/theproject" target="_blank" rel="noopener noreferrer"><i>Dear Data</i></a> project.</p>
 
-    <p>A note before anything else. If you are doing something you would not want to write down in a dataset that I will read, do not write it down. Substitute a broader category, or leave the hour blank and record it as missing. Note in your data dictionary that you have done so. This costs you nothing on the grade and it is the honest way to handle it. Your data will not be published or shared with anyone else in the class; everything you turn in is seen only by the two instructors.</p>
+    <p>A note before anything else. If you are doing something you would not want to write down in a dataset that I will read, do not write it down. Substitute a broader category, or leave the hour blank and record it as missing. Note in your data sheet that you have done so. This costs you nothing on the grade and it is the honest way to handle it. Your data will not be published or shared with anyone else in the class; everything you turn in is seen only by the two instructors.</p>
 
     <h3>The Collection Window</h3>
     <p>Collection runs from <b>Monday, November 2nd at 00:00</b> through <b>Sunday, November 15th at 23:59</b>. That is fourteen consecutive days, entirely on campus, and it ends before anyone leaves for the break. There is no work to do over the break.</p>
@@ -56,25 +56,24 @@
 
     <p><b>courses</b> &mdash; one row for each course you are taking. Include a primary key and at least three metadata columns, such as the difficulty, whether it counts for your major, or the time of day it meets.</p>
 
-    <p><b>one table of your own</b> &mdash; at least one further table that exists only because one of your research questions needs it, and whose unit of observation is genuinely different from the four above. It might be one row per meal, per assignment, per conversation, per song, per trip off campus. You will defend in the proposal why this is a separate table rather than extra columns on an existing one.</p>
+    <p><b>one table of your own</b> &mdash; at least one further table that exists only because one of your research questions needs it, and whose unit of observation is genuinely different from the four above. It might be one row per meal, per assignment, per conversation, per song, per trip off campus.</p>
 
     <p><b>weather</b> &mdash; provided by me. One row for each hour of the collection window, 336 in all, recorded at Richmond International Airport, with the columns <code>date</code>, <code>hour</code>, <code>temp</code>, <code>dewp</code>, <code>humid</code>, <code>wind_speed</code>, <code>precip</code>, and <code>visib</code>. It joins to your <code>hours</code> table on <code>date</code> and <code>hour</code>. This is the one part of your dataset whose keys you do not control, which is exactly the point: it is the same discipline as the RVA flights data, and it is what turns "here is my week" into "here is my week against something else."</p>
 
-    <p>The real file cannot exist until the window closes, so it will be posted on November 16th, the morning after collection ends. In the meantime, <a href="../extra/weather_sample.csv">weather_sample.csv</a> holds the same fourteen days from <i>last</i> November, with exactly the same columns and the same shape. Build and test your join against the sample; when the real file arrives, only the values change. Every hour of the window is present in the table, so if your <code>hours</code> table is complete, an inner join will not change its row count. If it does, you have found something worth knowing.</p>
+    <p>The table is <a href="../extra/weather.csv">weather.csv</a>, and the analysis notebook reads it for you. Temperature and dew point are in degrees Celsius, humidity in percent, wind speed in kilometers per hour, precipitation in millimeters, and visibility in kilometers. Every hour of the window is already in the file, but the hours that have not happened yet are empty. The complete table is posted on November 16th, the morning after collection ends. If your <code>hours</code> table is complete, an inner join will not change its row count. If it does, you have found something worth knowing.</p>
 
     <h3>Deliverables</h3>
     <ol>
-      <li><b>Proposal</b> (<a href="../hw/hw16.html">Homework 16</a>, due at Workshop I). Research questions, measurements, tables, units of observation, keys, and a relational diagram, typed up as a single document. Your schema is locked at the end of Workshop I. Anything you change after that has to be recorded as a change.</li>
-      <li><b>Documentation</b> (<a href="../hw/hw17.html">Homework 17</a>). A complete data dictionary, written as the collection begins and updated at the end to describe what you actually collected rather than what you planned to. Plus a short reflection: how you actually recorded the data and when, what you left out, what is missing and why, what you had to change mid-collection, and what bias is built into the schema you chose. What a dataset refuses to record is a decision, and this is where you own the ones you made. Like the proposal, this is typed and turned in as a single document.</li>
       <li><b>The data</b>. Every table as a CSV file, in a tidy layout, with the naming and formatting rules from Chapter 8 followed throughout.</li>
-      <li><b>Analysis notebook</b>. Three to five findings that answer your research questions. The notebook must contain, and explicitly label, at least one join, one <code>.group_by</code> with <code>.agg</code>, one window function with <code>.over</code>, and one pivot or unpivot. It must contain at least four plots using at least three different geometries, of which at least one is faceted and at least one is fully labeled with <code>labs</code>. A finding that the data cannot settle a question is a real finding, as long as you say what you would have needed to collect instead. Do the analysis in Colab and hand it in as a <code>.py</code> file (File &rarr; Download &rarr; Download .py).</li>
-      <li><b>The postcard</b>. A hand-drawn visualization of some part of your two weeks, on a standard letter-sized (8.5 &times; 11 inch) sheet of paper, encoding at least three variables, with a legend on the back, in the spirit of the <i>Dear Data</i> postcards. Along with it, one paragraph arguing what the drawing shows that your plotnine charts cannot, and one paragraph on what it hides. You should be able to point at any mark on the page and name the rows and columns that produced it. It must be visible in your presentation video and handed in physically (see <a href="#submitting">Submitting Your Work</a>).</li>
+      <li><b>The data sheet</b>. One typed document. Start from the data dictionary you wrote for <a href="../hw/hw17.html">Homework 17</a> and update it to describe what you actually collected: every table, every column with its type and its units or set of values, and the keys that link the tables. End with a short paragraph on what is missing from your data and anything you changed along the way.</li>
+      <li><b>Analysis notebook</b>. Three to five findings that answer your research questions. Start from the analysis notebook linked at the top of this page, which loads your tables and the weather. The notebook must contain, and explicitly label, at least one join, one <code>.group_by</code> with <code>.agg</code>, one window function with <code>.over</code>, and one pivot or unpivot. It must contain at least four plots using at least three different geometries, of which at least one is faceted and at least one is fully labeled with <code>labs</code>. A finding that the data cannot settle a question is a real finding, as long as you say what you would have needed to collect instead. Hand it in as a <code>.py</code> file (File &rarr; Download &rarr; Download .py).</li>
+      <li><b>The postcard</b>. A hand-drawn visualization of some part of your two weeks, on a standard letter-sized (8.5 &times; 11 inch) sheet of paper, encoding at least three variables, with a legend on the back, in the spirit of the <i>Dear Data</i> postcards. You should be able to point at any mark on the page and name the rows and columns that produced it. It must be visible in your presentation video and handed in physically (see <a href="#submitting">Submitting Your Work</a>).</li>
       <li><b>Presentation</b>. A pre-recorded video of three to five minutes. There are no slides and it does not need to be formal: hold your postcard up to the camera, describe what it shows and how to read it, and then talk us through the one or two findings from your analysis that you found most interesting. See <a href="#submitting">Submitting Your Work</a> for how to record and hand it in.</li>
     </ol>
 
     <h3>Grading</h3>
     <ul>
-      <li>Proposal, schema, and documentation &mdash; 25%</li>
+      <li>Data sheet and the design of your tables &mdash; 25%</li>
       <li>The collected data &mdash; 25%</li>
       <li>Analysis notebook &mdash; 30%</li>
       <li>Postcard &mdash; 10%</li>
@@ -85,7 +84,7 @@
     <h3 id="submitting">Submitting Your Work</h3>
     <p>Everything is due by <b>11:59pm on Monday, December 7th</b>. There are no live presentations, and we do not meet that day. Everything except the postcard is turned in through the shared <b>Box</b> folder:</p>
     <ul>
-      <li>The <b>proposal</b> and the <b>documentation</b> &mdash; two typed documents (<a href="../hw/hw16.html">Homework 16</a> and <a href="../hw/hw17.html">Homework 17</a>).</li>
+      <li>The <b>data sheet</b> &mdash; one typed document.</li>
       <li>The <b>data</b> &mdash; every table as a CSV file.</li>
       <li>The <b>analysis</b> &mdash; your notebook, downloaded from Colab as a <code>.py</code> file.</li>
       <li>The <b>presentation video</b>.</li>
@@ -113,16 +112,8 @@
         <td>Project launched in class. <a href="../hw/hw16.html">Homework 16</a> assigned: research questions, measurements, tables, keys.</td>
       </tr>
       <tr>
-        <td><b>2026-10-28</b></td>
-        <td><b>Workshop I.</b> <a href="../hw/hw16.html">Homework 16</a> due: the full proposal and schema. You will trade schemas with a partner, who will try to break yours. Schemas are locked at the end of class.</td>
-      </tr>
-      <tr>
-        <td><b>2026-11-02</b></td>
-        <td><b>Collection begins</b> at midnight. <a href="../hw/hw17.html">Homework 17</a> due: the data dictionary for the schema you just locked.</td>
-      </tr>
-      <tr>
         <td><b>2026-11-15</b></td>
-        <td><b>Collection ends</b> at 11:59. The weather table is posted the next morning.</td>
+        <td><b>Collection ends</b> at 11:59. The complete weather table is posted the next morning.</td>
       </tr>
       <tr>
         <td><b>2026-11-18</b></td>
