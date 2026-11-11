@@ -15,6 +15,10 @@ Run this once, after the collection window closes:
 It writes weather.csv, which joins to a student's hours table on date + hour.
 Every hour of the window is present, so an inner join against a complete hours
 table preserves the row count. Hours with no usable observation are null.
+
+All values are in metric units: temp and dewp in degrees Celsius, humid in
+percent, wind_speed in kilometers per hour, precip in millimeters, and visib
+in kilometers.
 """
 
 import argparse
@@ -35,6 +39,17 @@ FIELDS = {
     "sknt": "wind_speed",
     "p01i": "precip",
     "vsby": "visib",
+}
+
+# The archive reports in U.S. units: degrees Fahrenheit, knots, inches, and
+# statute miles. Each finished column is converted to metric as (x - offset) *
+# scale. Relative humidity is already a percentage and is left alone.
+METRIC = {
+    "temp": (32.0, 5 / 9),        # Fahrenheit -> Celsius
+    "dewp": (32.0, 5 / 9),        # Fahrenheit -> Celsius
+    "wind_speed": (0.0, 1.852),   # knots -> kilometers per hour
+    "precip": (0.0, 25.4),        # inches -> millimeters
+    "visib": (0.0, 1.609344),     # statute miles -> kilometers
 }
 
 
@@ -76,6 +91,10 @@ def build(raw: pl.DataFrame, start: date, end: date) -> pl.DataFrame:
         )
         .group_by(c.date, c.hour)
         .agg([c(name).mean() for name in FIELDS.values()])
+        .with_columns(
+            [((c(name) - offset) * scale).alias(name)
+             for name, (offset, scale) in METRIC.items()]
+        )
     )
 
     # The spine: every hour of the window, whether or not it was observed.
