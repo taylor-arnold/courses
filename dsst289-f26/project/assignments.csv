@@ -1,0 +1,14 @@
+assignment_id,course_id,title,kind,due_date,points,est_hours,stress
+a01,MATH211,Problem Set 8,problem set,2026-11-02,20,3.0,3
+a02,FREN221,Oral Presentation Outline,presentation,2026-11-03,10,1.0,2
+a03,DSST289,Homework 18,homework,2026-11-04,10,1.5,2
+a04,MATH211,Quiz 5,quiz,2026-11-04,15,2.0,4
+a05,FREN221,Vocabulary Quiz 6,quiz,2026-11-05,10,0.5,1
+a06,MATH211,Problem Set 9,problem set,2026-11-06,20,3.5,4
+a07,DSST289,Homework 19,homework,2026-11-09,10,1.5,2
+a08,MUS127,Listening Journal 4,journal,2026-11-10,10,1.0,1
+a09,FREN221,Oral Presentation,presentation,2026-11-10,50,4.0,5
+a10,DSST289,Homework 20,homework,2026-11-11,10,2.0,3
+a11,MATH211,Problem Set 10,problem set,2026-11-11,20,3.0,3
+a12,FREN221,Composition 3,essay,2026-11-12,30,2.5,3
+a13,MATH211,Exam 3,exam,2026-11-13,100,8.0,5

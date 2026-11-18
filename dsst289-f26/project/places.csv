@@ -1,0 +1,8 @@
+place_id,name,lat,lon,kind,walk_min
+dorm,Lakeview Hall,37.5733,-77.5372,residence,0
+library,Boatwright Memorial Library,37.5747,-77.5396,academic,5
+dhall,Heilman Dining Center,37.5763,-77.5383,dining,6
+jepson,Jepson Hall,37.5779,-77.5381,academic,9
+commons,Tyler Haynes Commons,37.5765,-77.5399,social,7
+gym,Weinstein Center for Recreation,37.5789,-77.5412,recreation,12
+booker,Booker Hall of Music,37.5741,-77.5421,academic,8

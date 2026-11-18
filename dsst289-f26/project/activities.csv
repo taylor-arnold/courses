@@ -1,0 +1,9 @@
+activity_id,name,category,is_academic
+sleep,sleeping,rest,false
+class,attending class,school,true
+study,studying,school,true
+eat,eating a meal,daily life,false
+exercise,exercising,health,false
+social,time with friends,leisure,false
+relax,relaxing alone,leisure,false
+chores,laundry and errands,daily life,false

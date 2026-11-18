@@ -1,0 +1,5 @@
+course_id,title,credits,difficulty,for_major,meet_time
+DSST289,Introduction to Data Science,1.0,3,true,afternoon
+MATH211,Discrete Structures,1.0,5,true,morning
+FREN221,French Conversation,1.0,2,false,morning
+MUS127,Jazz History,0.5,1,false,afternoon
